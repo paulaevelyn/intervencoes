@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+
+<!-- PWA / Atalho na home screen -->
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="assets/floresca-icon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#3D5A52">
+<meta name="application-name" content="Floresça">
+
+<!-- iOS (Safari não lê o manifest) -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Floresça">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+<title>Floresça — Cultivando Emoções Positivas</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="extra.css">
+</head>
+<body>
+
+<!-- SPLASH SCREEN -->
+<div id="splash">
+  <div class="splash-inner">
+    <img src="assets/floresca-logo.svg" alt="Floresça" class="splash-logo">
+    <div class="splash-dots">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</div>
+
+<div id="app">
+
+<!-- ONBOARDING — 9 slides -->
+<div id="onboard">
+
+  <!-- 0: Acolhimento -->
+  <div class="ob-slide on" id="obs0">
+    <div class="ob-top">
+      <div class="ob-brand">
+        <img src="assets/floresca-logo.svg" alt="Floresça" width="200">
+      </div>
+      <div class="ob-icon">🌱</div>
+      <div class="ob-title">E se a pergunta não for<br>"como sofrer menos"?</div>
+      <div class="ob-body">Durante décadas, a psicologia estudou quase só o que dói: ansiedade, tristeza, medo. Mas há outra pergunta, igualmente científica: <strong>o que faz a vida valer a pena?</strong><br><br>Emoções positivas não são luxo, nem "frescura". Elas <strong>ampliam a mente, constroem recursos e fortalecem a resiliência</strong> — mas são sutis e passageiras. Se ninguém as cultiva, elas passam despercebidas.</div>
+      <div class="ob-quote">
+        "As emoções difíceis gritam. As positivas sussurram. Este app existe para você aprender a escutá-las."
+      </div>
+    </div>
+    <div class="ob-dots"><div class="ob-dot on"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div></div>
+    <button class="btn" onclick="obNext(1)">Continuar</button>
+    <button class="btn ghost" onclick="obSkip()" style="margin-top:0">Já conheço o app</button>
+  </div>
+
+  <!-- 1: A metáfora do jardim -->
+  <div class="ob-slide" id="obs1">
+    <div class="ob-top">
+      <div class="ob-icon"><img src="assets/floresca-icon.svg" alt="" width="72"></div>
+      <div class="ob-title">Deixa eu te contar sobre um jardim.</div>
+      <div class="ob-body">Um jardim não cresce por força de vontade. Ninguém puxa uma planta para cima para ela crescer mais rápido.<br><br>O que um bom jardineiro faz é diferente: <em>prepara o solo, planta sementes, rega um pouco todos os dias</em> — e presta atenção ao que está brotando, em vez de olhar só para as ervas daninhas.</div>
+      <div class="ob-quote">
+        "Emoções positivas são como plantas: pequenas no início, discretas, fáceis de ignorar. Mas com atenção e cuidado repetido, elas viram um jardim — e o jardim vira abrigo."
+      </div>
+      <div class="ob-body">Este app é o Floresça — o seu jardim. Não prometemos felicidade constante — isso não existe. Prometemos que você vai aprender a <strong>notar, saborear e cultivar</strong> o que faz bem, mesmo em semanas difíceis.</div>
+    </div>
+    <div class="ob-dots"><div class="ob-dot"></div><div class="ob-dot on"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div></div>
+    <button class="btn" onclick="obNext(2)">Faz sentido 🌿</button>
+  </div>
+
+  <!-- 2: O que é esta intervenção -->
+  <div class="ob-slide" id="obs2">
+    <div class="ob-top">
+      <div class="ob-icon">🔬</div>
+      <div class="ob-title">Ciência a serviço do bem-estar.</div>
+      <div class="ob-body">O Floresça reúne as abordagens com <strong>mais evidência</strong> sobre emoções positivas e bem-estar:</div>
+      <div class="ob-pill-row">
+        <div class="ob-pill amber">🌻 Psicologia Positiva<span class="ob-pill-sub">Fredrickson · Seligman · Bryant</span></div>
+        <div class="ob-pill mint">💚 TFC<span class="ob-pill-sub">Terapia Focada na Compaixão</span></div>
+        <div class="ob-pill coral">🧪 Experimentos<span class="ob-pill-sub">Comportamentais (TCC)</span></div>
+        <div class="ob-pill lav">⚙️ Ciência do Hábito<span class="ob-pill-sub">Modelo COM-B</span></div>
+      </div>
+      <div class="ob-body">Cada exercício aqui tem uma razão de ser, publicada em centenas de estudos.<br><br>E uma coisa importante: cultivar emoções positivas <strong>não é fingir que está tudo bem</strong>. Não é "positividade tóxica". As emoções difíceis continuam válidas e bem-vindas — este app apenas garante que as boas também tenham espaço.<br><br><strong>O Floresça complementa, não substitui</strong> o trabalho com um/a psicólogo/a.</div>
+    </div>
+    <div class="ob-dots"><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot on"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div></div>
+    <button class="btn" onclick="obNext(3)">Entendi</button>
+  </div>
+
+  <!-- 3: Como funciona (os canteiros) -->
+  <div class="ob-slide" id="obs3">
+    <div class="ob-top">
+      <div class="ob-icon">🗺️</div>
+      <div class="ob-title">O cultivo tem 8 canteiros.</div>
+      <div class="ob-body" style="margin-bottom:12px">Cada módulo é um canteiro do jardim. Você avança no seu ritmo — sem pressa, sem pressão.</div>
+      <div class="ob-step-list">
+        <div class="ob-step-item">
+          <div class="ob-step-icon mint">🌅</div>
+          <div class="ob-step-text"><strong>Por que cultivar</strong><span>A ciência das emoções positivas — e por que o cérebro as ignora</span></div>
+        </div>
+        <div class="ob-step-item">
+          <div class="ob-step-icon lav">🎨</div>
+          <div class="ob-step-text"><strong>O repertório</strong><span>As 10 emoções positivas — nomear com precisão amplia o sentir</span></div>
+        </div>
+        <div class="ob-step-item">
+          <div class="ob-step-icon amber">🔍</div>
+          <div class="ob-step-text"><strong>Notar</strong><span>Treinar o radar para o que já está indo bem</span></div>
+        </div>
+        <div class="ob-step-item">
+          <div class="ob-step-icon coral">🍯</div>
+          <div class="ob-step-text"><strong>Saborear</strong><span>Amplificar e prolongar o que é bom — presente, passado e futuro</span></div>
+        </div>
+        <div class="ob-step-item">
+          <div class="ob-step-icon mint">🙏</div>
+          <div class="ob-step-text"><strong>Gratidão</strong><span>A prática com mais evidência da psicologia positiva</span></div>
+        </div>
+        <div class="ob-step-item">
+          <div class="ob-step-icon lav">💚</div>
+          <div class="ob-step-text"><strong>Contentamento</strong><span>O sistema calmante (TFC) — o bem-estar que não depende de conquista</span></div>
+        </div>
+        <div class="ob-step-item">
+          <div class="ob-step-icon coral">🧪</div>
+          <div class="ob-step-text"><strong>Crenças e experimentos</strong><span>Testar na prática os medos que bloqueiam a alegria</span></div>
+        </div>
+        <div class="ob-step-item">
+          <div class="ob-step-icon amber">🌳</div>
+          <div class="ob-step-text"><strong>Um jardim que dura</strong><span>Transformar práticas em hábitos — recursos para a vida</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="ob-dots"><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot on"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div></div>
+    <button class="btn" onclick="obNext(4)">Que jardim bonito!</button>
+  </div>
+
+  <!-- 4: Como o app funciona na prática -->
+  <div class="ob-slide" id="obs4">
+    <div class="ob-top">
+      <div class="ob-icon">🎯</div>
+      <div class="ob-title">Como funciona na prática.</div>
+      <div class="ob-body" style="margin-bottom:14px">O Floresça é um <strong>curso interativo</strong> desenhado para caber no dia a dia — aprender, notar e experimentar:</div>
+      <div class="ob-num-steps">
+        <div class="ob-num-step">
+          <div class="ob-num-circle" style="background:var(--mint-xl);color:var(--mint-d)">1</div>
+          <div class="ob-num-step-body"><strong>Módulos progressivos</strong><span>Leituras curtas, quizzes, cartas interativas e práticas guiadas. Você ganha XP e desbloqueia novos canteiros.</span></div>
+        </div>
+        <div class="ob-num-step">
+          <div class="ob-num-circle" style="background:var(--amber-l);color:#7A4A10">2</div>
+          <div class="ob-num-step-body"><strong>Registro de momentos</strong><span>Sempre que algo bom acontecer — mesmo pequeno — registre. Notar já é metade do cultivo.</span></div>
+        </div>
+        <div class="ob-num-step">
+          <div class="ob-num-circle" style="background:var(--coral-xl);color:var(--coral-d)">3</div>
+          <div class="ob-num-step-body"><strong>Laboratório de experimentos</strong><span>Micro-experiências para sentir na pele: você prevê o que vai sentir, testa, e compara. A mente costuma se surpreender.</span></div>
+        </div>
+        <div class="ob-num-step">
+          <div class="ob-num-circle" style="background:var(--lav-l);color:#3D2E7A">4</div>
+          <div class="ob-num-step-body"><strong>Progresso visível</strong><span>Conquistas, sequências, repertório de emoções e gráficos do seu cultivo.</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="ob-dots"><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot on"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div></div>
+    <button class="btn" onclick="obNext(5)">Adorei, vamos lá!</button>
+  </div>
+
+  <!-- 5: Check-in -->
+  <div class="ob-slide" id="obs5">
+    <div class="ob-top">
+      <div class="ob-icon">💬</div>
+      <div class="ob-title">Uma pergunta antes de plantarmos.</div>
+      <div class="ob-body" style="margin-bottom:20px">Não há resposta certa. Esta escolha só ajuda o Floresça a personalizar a experiência para você.</div>
+      <div class="ob-q">
+        <p>Como estão as emoções positivas na sua vida hoje?</p>
+        <div class="ob-opts">
+          <button class="ob-opt" onclick="obSelect(this,0)">🌷 Sinto coisas boas, mas passam rápido — quero aprender a aproveitá-las mais</button>
+          <button class="ob-opt" onclick="obSelect(this,1)">🍂 Sinto que os dias passam no automático — quase não noto o que é bom</button>
+          <button class="ob-opt" onclick="obSelect(this,2)">🌵 Sentir alegria é difícil para mim — às vezes parece que não é para mim ou que algo vai dar errado</button>
+        </div>
+      </div>
+    </div>
+    <div class="ob-dots"><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot on"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div></div>
+    <button class="btn" id="ob-btn3" disabled onclick="obNext(6)" style="opacity:.45">Continuar</button>
+  </div>
+
+  <!-- 6: Sobre os dados (pesquisa) -->
+  <div class="ob-slide" id="obs6">
+    <div class="ob-top">
+      <div class="ob-research-badge">🔬 Parte de uma iniciativa de pesquisa</div>
+      <div class="ob-title">Juntos tornamos a psicologia mais acessível.</div>
+      <div class="ob-body">O Floresça faz parte de um projeto do <strong>Psicoterapia e Afins</strong> para <em>democratizar ferramentas de saúde mental</em> — porque um acompanhamento profissional ainda é inacessível para muitas pessoas.<br><br>Para que possamos melhorar o app e medir o seu real impacto, coletamos dados anônimos de uso: as suas respostas, progresso e padrões — <strong>sem nunca saber quem você é</strong>.</div>
+      <div class="ob-banner">
+        <div class="ob-banner-icon">📍</div>
+        <div class="ob-banner-text"><strong>Os dados ficam neste dispositivo.</strong> Só são compartilhados se você clicar em "Contribuir para a pesquisa" — de forma anônima, voluntária e a qualquer momento.</div>
+      </div>
+      <div class="ob-body" style="margin-top:10px">Ao participar, você não apenas cuida de si — você <strong>ajuda outras pessoas</strong> que virão depois.</div>
+    </div>
+    <div class="ob-dots"><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot on"></div><div class="ob-dot"></div><div class="ob-dot"></div></div>
+    <button class="btn" onclick="obNext(7)">Quero fazer parte disso</button>
+  </div>
+
+  <!-- 7: Consentimento -->
+  <div class="ob-slide" id="obs7">
+    <div class="ob-top">
+      <div class="ob-icon">📋</div>
+      <div class="ob-title">Só mais uma coisa.</div>
+      <div class="ob-body">Por exigência ética da pesquisa, precisamos do seu consentimento formal para usar os dados. É rápido.</div>
+      <div class="consent-box">
+        <div class="consent-items">
+          <div class="consent-item"><span class="consent-item-icon">🔒</span><span><strong>Privacidade garantida</strong> — os dados ficam neste dispositivo; só saem se você exportar voluntariamente.</span></div>
+          <div class="consent-item"><span class="consent-item-icon">🙈</span><span><strong>Totalmente anônimo</strong> — nenhum dado pessoal identificável é coletado.</span></div>
+          <div class="consent-item"><span class="consent-item-icon">🗑️</span><span><strong>Controle total</strong> — você pode apagar tudo a qualquer momento em "Dados".</span></div>
+          <div class="consent-item"><span class="consent-item-icon">🧪</span><span><strong>Objetivo</strong> — avaliar a eficácia de intervenções digitais em saúde mental.</span></div>
+        </div>
+        <label class="consent-check">
+          <input type="checkbox" id="consent-cb" onchange="obConsentToggle(this)">
+          <span class="consent-check-lbl">Li, entendi e concordo com o uso anônimo dos meus dados para fins de pesquisa científica.</span>
+        </label>
+      </div>
+    </div>
+    <div class="ob-dots"><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot on"></div><div class="ob-dot"></div></div>
+    <button class="btn" id="ob-btn5" disabled onclick="obNext(8)" style="opacity:.45">Continuar →</button>
+  </div>
+
+  <!-- 8: Perfil -->
+  <div class="ob-slide" id="obs8">
+    <div class="ob-top">
+      <div class="ob-icon">👋</div>
+      <div class="ob-title">Como prefere ser chamada/o?</div>
+      <div class="ob-body">Estes dados são opcionais mas ajudam a entender quem usa o Floresça — e a tornar a psicologia cada vez mais acessível para todos. Tudo é anônimo.</div>
+
+      <div class="demo-form">
+
+        <div class="demo-field">
+          <label class="demo-label">Como quer ser chamada/o?</label>
+          <input type="text" class="demo-input" id="demo-name" placeholder="Ex: Ana, João, Ju…" maxlength="40" autocomplete="off">
+        </div>
+
+        <div class="demo-field">
+          <label class="demo-label">Género</label>
+          <div class="demo-pill-row">
+            <button class="demo-pill" onclick="demoPick('gender','feminino',this)">Feminino</button>
+            <button class="demo-pill" onclick="demoPick('gender','masculino',this)">Masculino</button>
+            <button class="demo-pill" onclick="demoPick('gender','nao-binario',this)">Não-binário</button>
+            <button class="demo-pill" onclick="demoPick('gender','outro',this)">Outro</button>
+            <button class="demo-pill" onclick="demoPick('gender','prefiro-nao-dizer',this)">Prefiro não dizer</button>
+          </div>
+        </div>
+
+        <div class="demo-field">
+          <label class="demo-label">Idade</label>
+          <input type="number" class="demo-input demo-input-sm" id="demo-age" placeholder="Ex: 28" min="12" max="99" inputmode="numeric">
+        </div>
+
+        <div class="demo-field demo-field-2col">
+          <div>
+            <label class="demo-label">Cidade</label>
+            <input type="text" class="demo-input" id="demo-city" placeholder="Ex: São Paulo" maxlength="60">
+          </div>
+          <div>
+            <label class="demo-label">País</label>
+            <input type="text" class="demo-input" id="demo-country" placeholder="Ex: Brasil" maxlength="60">
+          </div>
+        </div>
+
+        <div class="demo-field">
+          <label class="demo-label">Faz acompanhamento psicológico?</label>
+          <div class="demo-pill-row">
+            <button class="demo-pill" onclick="demoPick('therapy','sim',this)">Sim</button>
+            <button class="demo-pill" onclick="demoPick('therapy','nao',this)">Não</button>
+            <button class="demo-pill" onclick="demoPick('therapy','pausado',this)">Fiz, estou em pausa</button>
+            <button class="demo-pill" onclick="demoPick('therapy','lista-espera',this)">Aguardando vaga</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="ob-dots"><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot on"></div></div>
+    <button class="btn" onclick="obFinish()">Plantar a primeira semente 🌱</button>
+    <button class="btn ghost" onclick="obFinish()" style="margin-top:0">Pular esta etapa</button>
+  </div>
+
+</div>
+
+<!-- PRÉ-TESTE (SPANE + Crenças) -->
+<div class="scr" id="scr-pretest" style="padding-bottom:0">
+  <div id="pretest-content"></div>
+</div>
+
+<!-- HOME -->
+<div class="scr on" id="scr-home">
+  <div class="home-hero">
+    <div class="home-date" id="h-date"></div>
+    <div class="home-hi"   id="h-hi">Olá 👋</div>
+    <div class="home-sub"  id="h-sub"></div>
+  </div>
+  <div id="h-nudge"></div>
+  <div id="h-xp"></div>
+  <div class="stats">
+    <div class="stat"><div class="stat-n" style="color:var(--mint)"  id="hs-mod">0</div><div class="stat-l">canteiros</div></div>
+    <div class="stat"><div class="stat-n" style="color:var(--coral)" id="hs-str">0</div><div class="stat-l">dias seguidos</div></div>
+    <div class="stat"><div class="stat-n" style="color:var(--lav)"   id="hs-xp">0</div><div class="stat-l">XP total</div></div>
+  </div>
+  <div class="card">
+    <div class="card-lbl">Momentos positivos — 7 dias</div>
+    <svg class="chart-svg" id="h-chart" viewBox="0 0 320 72"></svg>
+    <div id="h-chart-empty" style="display:none;font-size:13px;color:var(--muted);text-align:center;padding:14px 0">Registre um momento bom para ver seu gráfico.</div>
+  </div>
+  <div class="sdiv">Acesso rápido</div>
+  <div class="quick-grid">
+    <div class="quick-card" onclick="goTo('modules')">
+      <div class="quick-icon">📚</div>
+      <div class="quick-title">Módulos</div>
+      <div class="quick-sub" id="h-mod-sub">Continue cultivando</div>
+    </div>
+    <div class="quick-card" onclick="goTo('lab')">
+      <div class="quick-icon">🧪</div>
+      <div class="quick-title">Laboratório</div>
+      <div class="quick-sub" id="h-lab-sub">Experimentos para sentir</div>
+    </div>
+    <div class="quick-card" onclick="goTo('assess')">
+      <div class="quick-icon">📋</div>
+      <div class="quick-title">Autoavaliação</div>
+      <div class="quick-sub" id="h-assess-sub">SPANE · Como você se sente</div>
+    </div>
+    <div class="quick-card" onclick="goTo('dados')">
+      <div class="quick-icon">🔒</div>
+      <div class="quick-title">Dados</div>
+      <div class="quick-sub">Privacidade e exportação</div>
+    </div>
+  </div>
+  <div class="sdiv" id="h-rec-lbl" style="display:none">Momento mais recente</div>
+  <div id="h-rec"></div>
+
+  <!-- Brand footer -->
+  <div class="brand-footer">
+    <div class="brand-footer-top">
+      <svg width="32" height="38" viewBox="0 0 52 62" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="26" cy="10" r="9.5" fill="#3D5A52"/>
+        <path d="M2 29Q26 13 50 29" stroke="#D96C63" stroke-width="4.8" stroke-linecap="round"/>
+        <path d="M8 40Q26 25 44 40" stroke="#D96C63" stroke-width="4.8" stroke-linecap="round"/>
+        <path d="M15 51Q26 38 37 51" stroke="#D96C63" stroke-width="4.8" stroke-linecap="round"/>
+        <circle cx="26" cy="57.5" r="6" fill="#D96C63"/>
+      </svg>
+      <div class="brand-footer-text">
+        <div class="brand-footer-title">Psicoterapia e Afins</div>
+        <div class="brand-footer-sub">Tornando a psicologia mais acessível</div>
+      </div>
+    </div>
+    <div class="brand-footer-links">
+      <a href="https://www.psicoterapiaeafins.com.br" target="_blank" class="brand-link mint">🌐 Site</a>
+      <a href="https://www.instagram.com/psicoterapiaeafins" target="_blank" class="brand-link coral">📷 @psicoterapiaeafins</a>
+    </div>
+  </div>
+</div>
+
+<!-- MÓDULOS (lista) -->
+<div class="scr" id="scr-modules">
+  <div class="hdr"><h1>Módulos</h1><p>Os canteiros do seu jardim.</p></div>
+  <div id="modules-list"></div>
+</div>
+
+<!-- MÓDULO (view passo a passo) -->
+<div class="scr" id="scr-module" style="padding-bottom:0">
+  <div id="module-content"></div>
+</div>
+
+<!-- REGISTRO DE MOMENTOS -->
+<div class="scr" id="scr-diary">
+  <div class="hdr"><h1>Momentos</h1><p>Registre o que fez bem — mesmo o pequeno.</p></div>
+  <div id="diary-form" style="padding:0 16px"></div>
+  <div id="diary-hist"></div>
+</div>
+
+<!-- LABORATÓRIO DE EXPERIMENTOS -->
+<div class="scr" id="scr-lab">
+  <div class="hdr"><h1>Laboratório</h1><p>Preveja, teste, compare. Sinta na prática.</p></div>
+  <div id="lab-content"></div>
+</div>
+
+<!-- PROGRESSO -->
+<div class="scr" id="scr-progress">
+  <div class="hdr"><h1>Progresso</h1><p>Seu cultivo em dados.</p></div>
+  <div id="progress-content"></div>
+</div>
+
+<!-- AUTOAVALIAÇÃO (SPANE) -->
+<div class="scr" id="scr-assess">
+  <div class="hdr"><h1>Autoavaliação</h1><p>Como andam suas emoções.</p></div>
+  <div id="assess-wrap"></div>
+</div>
+
+<!-- DADOS -->
+<div class="scr" id="scr-dados">
+  <div class="hdr"><h1>Dados e privacidade</h1><p>Controle total sobre suas informações.</p></div>
+  <!-- Pesquisa -->
+  <div class="sdiv">Investigação</div>
+  <div class="set-group">
+    <div class="set-row" style="cursor:default">
+      <div style="flex:1">
+        <div class="set-lbl">🔬 Contribuir para a pesquisa</div>
+        <div class="set-desc" id="sync-desc">A carregar…</div>
+      </div>
+      <button id="sync-btn" class="btn" style="padding:7px 16px;font-size:13px;width:auto;flex-shrink:0" onclick="syncToResearch()">Enviar</button>
+    </div>
+  </div>
+
+  <!-- Instalar -->
+  <div class="sdiv">Atalho</div>
+  <div class="set-group">
+    <div class="set-row" onclick="showInstallModal()"><div><div class="set-lbl">📲 Instalar na tela de início</div><div class="set-desc">Abra o Floresça como um app, com o ícone da flor</div></div><span class="set-arr">›</span></div>
+  </div>
+
+  <!-- Lembretes -->
+  <div class="sdiv">Lembretes</div>
+  <div class="set-group">
+    <div class="set-row" style="cursor:default">
+      <div style="flex:1">
+        <div class="set-lbl">🔔 Lembrete diário de cultivo</div>
+        <div class="set-desc">Uma notificação gentil para manter o hábito</div>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="rem-toggle" onchange="toggleReminders(this)">
+        <span class="switch-track"></span>
+      </label>
+    </div>
+    <div class="set-row" id="rem-hour-row" style="cursor:default;display:none">
+      <div style="flex:1">
+        <div class="set-lbl">Horário</div>
+        <div class="set-desc">Escolha um momento calmo do seu dia</div>
+      </div>
+      <select id="rem-hour" class="demo-input" style="width:auto;padding:8px 12px" onchange="setReminderHour(this)">
+        <option value="8">08:00</option>
+        <option value="12">12:00</option>
+        <option value="18">18:00</option>
+        <option value="20" selected>20:00</option>
+        <option value="21">21:00</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Sobre o app -->
+  <div class="sdiv">Sobre este app</div>
+  <div class="legal-card">
+    <div class="legal-item">
+      <span class="legal-item-icon">🏛️</span>
+      <div><strong>Criado por Psicoterapia e Afins</strong>
+      Um projeto para tornar a psicologia baseada em evidências mais acessível a todos.<br>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
+        <a href="https://www.psicoterapiaeafins.com.br" target="_blank" class="brand-link mint" style="font-size:12px">🌐 psicoterapiaeafins.com.br</a>
+        <a href="https://www.instagram.com/psicoterapiaeafins" target="_blank" class="brand-link coral" style="font-size:12px">📷 @psicoterapiaeafins</a>
+      </div></div>
+    </div>
+    <div class="legal-item">
+      <span class="legal-item-icon">⚕️</span>
+      <div><strong>Não é tratamento psicológico</strong>
+      Este app é um recurso <em>psicoeducativo</em> baseado em evidências científicas (Psicologia Positiva, TFC, TCC). Ele complementa — mas não substitui — o acompanhamento com um/a psicólogo/a.</div>
+    </div>
+    <div class="legal-item">
+      <span class="legal-item-icon">💚</span>
+      <div><strong>A terapia potencializa os resultados</strong>
+      Se você está enfrentando sofrimento intenso, humor deprimido persistente ou dificuldades que interferem na sua vida, procure um profissional de saúde mental. A psicoterapia é o recurso mais eficaz disponível.</div>
+    </div>
+    <div class="legal-item">
+      <span class="legal-item-icon">©️</span>
+      <div><strong>Direitos autorais</strong>
+      © 2026 Psicoterapia e Afins. Todos os direitos reservados. Conteúdo protegido. Proibida a reprodução total ou parcial sem autorização prévia e por escrito.</div>
+    </div>
+  </div>
+
+  <!-- Privacidade -->
+  <div class="sdiv">Privacidade</div>
+  <div class="priv" style="flex-direction:column;gap:8px">
+    <div style="display:flex;gap:9px;align-items:flex-start">
+      <span style="font-size:16px;flex-shrink:0">🔒</span>
+      <div class="priv-body"><strong>100% local.</strong> Todos os seus dados ficam salvos exclusivamente neste dispositivo (localStorage). Nada é enviado a servidores externos. Sem conta, sem login, sem rastreamento.</div>
+    </div>
+    <div class="priv-body" style="padding-left:25px">⚠️ Limpar o histórico do navegador apaga os dados. Use a exportação para não perdê-los.</div>
+  </div>
+
+  <!-- Exportar -->
+  <div class="sdiv">Exportar</div>
+  <div class="set-group">
+    <div class="set-row" onclick="exportHTML()"><div><div class="set-lbl">Relatório pessoal (HTML)</div><div class="set-desc">Relatório com design, pronto para imprimir ou compartilhar</div></div><span class="set-arr">›</span></div>
+    <div class="set-row" onclick="exportJSON()"><div><div class="set-lbl">Dados brutos (JSON)</div><div class="set-desc">Todos os registros para arquivo ou envio à psicóloga</div></div><span class="set-arr">›</span></div>
+    <div class="set-row" onclick="exportCSV()"><div><div class="set-lbl">Exportar para pesquisa (CSV)</div><div class="set-desc">Inclui pré/pós-teste SPANE e crenças — para investigadores</div></div><span class="set-arr">›</span></div>
+  </div>
+
+  <!-- Gerenciar -->
+  <div class="sdiv">Gerenciar</div>
+  <div class="set-group">
+    <div class="set-row danger" onclick="openModal('del')"><div><div class="set-lbl">Apagar todos os dados</div><div class="set-desc">Remove tudo deste dispositivo. Irreversível.</div></div><span class="set-arr" style="color:#C0392B">›</span></div>
+  </div>
+
+  <div class="copyright-block">
+    © 2026 <a href="https://www.psicoterapiaeafins.com.br" target="_blank">Psicoterapia e Afins</a> · Todos os direitos reservados<br>
+    Recurso psicoeducativo — baseado em evidências — não substitui psicoterapia<br>
+    <a href="https://www.instagram.com/psicoterapiaeafins" target="_blank">@psicoterapiaeafins</a>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<nav id="nav">
+  <div class="nav-logo"><img src="assets/floresca-icon.svg" alt="Floresça"></div>
+  <button class="nb on" id="nb-home" onclick="goTo('home')">
+    <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg><span>Início</span>
+  </button>
+  <button class="nb" id="nb-modules" onclick="goTo('modules')">
+    <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg><span>Módulos</span>
+  </button>
+  <button class="nb cta" id="nb-diary" onclick="goTo('diary')">
+    <div class="cta-ic"><svg viewBox="0 0 24 24" stroke="white" fill="none" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+    <span>Registrar</span>
+  </button>
+  <button class="nb" id="nb-lab" onclick="goTo('lab')">
+    <svg viewBox="0 0 24 24"><path d="M9 3h6"/><path d="M10 3v6.6L4.9 18a2 2 0 001.8 3h10.6a2 2 0 001.8-3L14 9.6V3"/><path d="M7.5 14h9"/></svg><span>Testar</span>
+  </button>
+  <button class="nb" id="nb-progress" onclick="goTo('progress')">
+    <svg viewBox="0 0 24 24"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/></svg><span>Progresso</span>
+  </button>
+</nav>
+
+<!-- MODAL -->
+<div id="modal-ov" onclick="closeModal(event)">
+  <div class="modal-box">
+    <div class="modal-title" id="modal-title"></div>
+    <div class="modal-body"  id="modal-body"></div>
+    <div id="modal-actions"  style="display:flex;flex-direction:column;gap:10px"></div>
+  </div>
+</div>
+
+<!-- CELEBRATE -->
+<div id="celebrate"><div class="celebrate-card" id="celebrate-card">
+  <div class="celebrate-emoji" id="cel-emoji">🎉</div>
+  <div class="celebrate-title" id="cel-title">Módulo concluído!</div>
+  <div class="celebrate-xp"    id="cel-xp">+50 XP</div>
+  <div class="celebrate-sub"   id="cel-sub"></div>
+  <button class="btn" onclick="closeCelebrate()" style="width:100%;margin:0">Continuar</button>
+</div></div>
+
+<div id="toast"></div>
+</div>
+<script src="app.js"></script>
+</body>
+</html>
