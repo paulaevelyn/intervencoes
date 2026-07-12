@@ -45,6 +45,7 @@ let D = {
   badges: [],
   obDone: false,
   obLevel: 0,
+  userProfile: null,    // { onboardingPath: 0|1|2 } — definido ao responder obs5
   moduleProgress: {},   // { m1: { steps: [true,false,...], done: false } }
   entries: [],          // registro de momentos positivos
   experiments: [],      // execuções de experimentos { id, expId, ts, date, predicted, predictNote, status, actual, noticed, tsDone }
@@ -95,6 +96,7 @@ function load(){
       if(D.demographics === undefined) D.demographics = null;
       if(!D.reminders) D.reminders = { enabled:false, hour:20 };
       if(D.installSeen === undefined) D.installSeen = false;
+      if(D.userProfile === undefined) D.userProfile = null;
     } else {
       D.participantId = generateUUID();
     }
@@ -781,6 +783,27 @@ ${svgThreeSystems()}
 ]; // end MODULES
 
 /* ══════════════════════════════════
+   TAILORING — ordem dos módulos por perfil (obs5)
+   m1 e m2 sempre primeiros (fundamentos para todos)
+   ══════════════════════════════════ */
+const MODULE_PATHS = {
+  0: ['m1','m2','m4','m3','m5','m6','m7','m8'], // sente mas passa rápido → Saborear primeiro
+  1: ['m1','m2','m3','m4','m5','m6','m7','m8'], // no automático → Notar primeiro (padrão)
+  2: ['m1','m2','m6','m3','m4','m7','m5','m8'], // medo do prazer → Calmante antes; Gratidão só após testar crenças
+};
+const PATH_EXPLANATIONS = {
+  0: 'Como as coisas boas passam rápido para você, aprender a saboreá-las vem logo no início do caminho.',
+  2: 'Seu caminho começa pelo sistema calmante e por testar crenças com carinho — preparando o terreno para práticas como a gratidão fazerem sentido.',
+};
+function modulePath(){
+  const p = D.userProfile && D.userProfile.onboardingPath;
+  return MODULE_PATHS[p] || MODULE_PATHS[1];
+}
+function orderedModules(){
+  return modulePath().map(id=>MODULES.find(m=>m.id===id)).filter(Boolean);
+}
+
+/* ══════════════════════════════════
    LABORATÓRIO — banco de experimentos
    ══════════════════════════════════ */
 const EXPERIMENTS = [
@@ -861,6 +884,7 @@ function obSelect(el,v){
   const btn=document.getElementById('ob-btn3');
   if(btn){ btn.disabled=false; btn.style.opacity='1'; }
   D.obLevel=v;
+  D.userProfile = { onboardingPath: v };
 }
 function obSkip(){ obDone(); }
 function obConsentToggle(cb){
@@ -1246,7 +1270,7 @@ function renderHome(){
   document.getElementById('hs-xp').textContent  = D.xp;
   document.getElementById('h-assess-sub').textContent = D.assessment?'Refazer avaliação':'SPANE · Como você se sente';
 
-  const next = MODULES.find(m=>!D.moduleProgress[m.id]?.done && isUnlocked(m));
+  const next = orderedModules().find(m=>!D.moduleProgress[m.id]?.done && isUnlocked(m));
   document.getElementById('h-mod-sub').textContent = next ? '▶ '+next.title : done===MODULES.length ? '✅ Todos concluídos!' : 'Continue cultivando';
 
   const expDone = D.experiments.filter(e=>e.status==='done').length;
@@ -1305,8 +1329,10 @@ function buildEntry(e){
    MODULE LIST
    ══════════════════════════════════ */
 function isUnlocked(mod){
-  if(!mod.unlockAfter) return true;
-  return D.moduleProgress[mod.unlockAfter]?.done === true;
+  const path = modulePath();
+  const idx = path.indexOf(mod.id);
+  if(idx <= 0) return true;                      // m1 (ou fora do caminho) sempre aberto
+  return D.moduleProgress[path[idx-1]]?.done === true;
 }
 function modProgress(mod){
   const mp = D.moduleProgress[mod.id];
@@ -1316,31 +1342,30 @@ function modProgress(mod){
 }
 
 function renderModuleList(){
-  const levels = ['Nível 1 — Preparar o Solo','Nível 2 — Notar e Saborear','Nível 3 — Aprofundar','Nível 4 — Florescer'];
-  let html = '';
-  levels.forEach(lv=>{
-    const mods = MODULES.filter(m=>m.levelTag===lv);
-    if(!mods.length) return;
-    html += `<div class="level-header"><div class="level-pip"></div><span class="level-title">${lv}</span></div>`;
-    mods.forEach(m=>{
-      const unlocked = isUnlocked(m);
-      const done = D.moduleProgress[m.id]?.done;
-      const pct  = modProgress(m);
-      const statusIcon = done ? '✅' : unlocked ? '▶' : '🔒';
-      html += `<div class="mod-card ${unlocked?'':'locked'}" onclick="${unlocked?'openModule(\''+m.id+'\')':'void 0'}">
-        <div class="mod-card-inner">
-          <div class="mod-emoji ${m.color}">${m.emoji}</div>
-          <div class="mod-info">
-            <div class="mod-level-tag">${m.tagline}</div>
-            <div class="mod-title">${m.title}</div>
-            <div class="mod-xp">+${m.xp} XP · ${m.steps.length} etapas</div>
-            <div class="mod-prog-bar"><div class="mod-prog-fill" style="width:${pct}%"></div></div>
-          </div>
-          <div class="mod-status">${statusIcon}</div>
+  const p = D.userProfile && D.userProfile.onboardingPath;
+  const custom = p === 0 || p === 2;
+  let html = `<div class="level-header"><div class="level-pip"></div><span class="level-title">${custom?'🌱 Seu caminho personalizado':'🌱 Seu caminho de cultivo'}</span></div>`;
+  if(custom && PATH_EXPLANATIONS[p]){
+    html += `<div style="margin:-4px 16px 12px;font-size:12.5px;color:var(--muted);line-height:1.55">${PATH_EXPLANATIONS[p]}</div>`;
+  }
+  orderedModules().forEach((m,i)=>{
+    const unlocked = isUnlocked(m);
+    const done = D.moduleProgress[m.id]?.done;
+    const pct  = modProgress(m);
+    const statusIcon = done ? '✅' : unlocked ? '▶' : '🔒';
+    html += `<div class="mod-card ${unlocked?'':'locked'}" onclick="${unlocked?'openModule(\''+m.id+'\')':'void 0'}">
+      <div class="mod-card-inner">
+        <div class="mod-emoji ${m.color}">${m.emoji}</div>
+        <div class="mod-info">
+          <div class="mod-level-tag">${m.tagline}</div>
+          <div class="mod-title">${m.title}</div>
+          <div class="mod-xp">Canteiro ${i+1} · +${m.xp} XP · ${m.steps.length} etapas</div>
+          <div class="mod-prog-bar"><div class="mod-prog-fill" style="width:${pct}%"></div></div>
         </div>
-        ${!unlocked?`<div class="mod-lock-overlay"><span class="mod-lock-msg">🔒 Complete o módulo anterior</span></div>`:''}
-      </div>`;
-    });
+        <div class="mod-status">${statusIcon}</div>
+      </div>
+      ${!unlocked?`<div class="mod-lock-overlay"><span class="mod-lock-msg">🔒 Complete o canteiro anterior</span></div>`:''}
+    </div>`;
   });
   document.getElementById('modules-list').innerHTML = html;
 }
@@ -2174,6 +2199,7 @@ async function syncToResearch({ silent=false, requirePretest=true }={}){
       participantId: D.participantId,
       consentDate:   D.consentDate,
       demographics:  D.demographics,
+      onboardingPath: D.userProfile ? D.userProfile.onboardingPath : null,
       pretest:       D.pretest,
       posttest:      D.posttest || null,
       entries:       D.entries,
