@@ -54,10 +54,15 @@ let D = {
   obLevel: 0,
   moduleProgress: {},   // { m1: { steps: [true,false,...], done: false } }
   entries: [],          // diary
+  doseRecords: [],      // dose praticada semanal { ts, date, weekStart, tags[], text }
+  doseSkipWeek: null,   // semana (segunda-feira) em que dispensou o prompt
+  moduleFeedback: [],   // vocabulário do usuário { ts, date, moduleId, word }
   assessment: null,
   nickname: '',         // como prefere ser chamada/o
   demographics: null,   // { gender, age, city, country, therapy }
-  reminders: { enabled:false, hour:20 }, // lembrete diário local
+  reminders: { enabled:false, hour:20, hourTouched:false }, // lembrete diário local
+  notificationLog: [],  // { ts, tema, foiAberta } — engajamento com notificações
+  installSeen: false,   // já viu a instrução de instalar na tela de início
   consentGiven: false,
   consentDate: null,    // ISO timestamp do consentimento
   participantId: null,  // UUID anônimo gerado uma vez
@@ -65,6 +70,7 @@ let D = {
   pretest:  null,       // { gad7: {score,level,answers}, mcq30: {scores:{wf,cw,nc,pr,nb}, answers}, date }
   posttest: null,       // same shape as pretest
   posttestRemindAfter: null, // ISO date — after which to prompt
+  userProfile: null,    // { recommendedPath:['m1',...], reasons:[], computedAt } — tailoring pelo pré-teste
   analytics: {
     sessions: [],       // [{ start, end, screen }]
     moduleEvents: [],   // [{ ts, moduleId, event }]
@@ -87,12 +93,21 @@ function load(){
       if(!D.analytics.sessions)    D.analytics.sessions=[];
       if(!D.analytics.moduleEvents)D.analytics.moduleEvents=[];
       if(!D.analytics.diaryEvents) D.analytics.diaryEvents=[];
+      if(!D.doseRecords) D.doseRecords=[];
+      if(D.doseSkipWeek === undefined) D.doseSkipWeek = null;
+      if(!D.moduleFeedback) D.moduleFeedback=[];
+      if(D.userProfile === undefined) D.userProfile = null;
+      // usuários antigos com pré-teste feito ganham o caminho personalizado na hora
+      if(!D.userProfile && D.pretest) D.userProfile = computeRecommendedPath(D.pretest);
       if(!D.participantId) D.participantId = generateUUID();
       if(D.consentDate    === undefined) D.consentDate    = null;
       if(D.lastSync       === undefined) D.lastSync       = null;
       if(D.nickname       === undefined) D.nickname       = '';
       if(D.demographics   === undefined) D.demographics   = null;
-      if(!D.reminders) D.reminders = { enabled:false, hour:20 };
+      if(!D.reminders) D.reminders = { enabled:false, hour:20, hourTouched:false };
+      if(D.reminders.hourTouched === undefined) D.reminders.hourTouched = false;
+      if(!D.notificationLog) D.notificationLog = [];
+      if(D.installSeen === undefined) D.installSeen = false;
     } else {
       D.participantId = generateUUID();
     }
@@ -139,6 +154,18 @@ const p2 = n => String(n).padStart(2,'0');
 const today = () => { const d=new Date(); return d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate()); };
 const prevDay = n => { const d=new Date(); d.setDate(d.getDate()-n); return d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate()); };
 const esc = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+function weekStart(dateStr){
+  const d = dateStr ? new Date(dateStr+'T12:00') : new Date();
+  const dow = (d.getDay()+6)%7; // 0 = segunda
+  d.setDate(d.getDate()-dow);
+  return d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate());
+}
+
+/* Dose Praticada — tags alinhadas às técnicas dos módulos */
+const DOSE_TAGS = ['🕐 Adiei uma preocupação','🔍 Percebi um pensamento automático',
+  '🧠 Questionei uma crença','🌬️ Regulei pelo corpo','🌊 Deixei um pensamento passar',
+  '💚 Fui gentil comigo mesmo/a','🎯 Agi apesar da dúvida'];
+
 const MESES = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
 const DIAS  = ['domingo','segunda-feira','terça-feira','quarta-feira','quinta-feira','sexta-feira','sábado'];
 const DIAS_C= ['D','S','T','Q','Q','S','S'];
@@ -952,6 +979,45 @@ function calcMCQ30Scores(answers){
   return subs;
 }
 
+/* ══════════════════════════════════
+   TAILORING — ordem personalizada de módulos
+   Mapeamento pré-teste → caminho:
+   · GAD-7 ≥ 15 (severo)  → M5 (regulação) logo após M1: estabilizar antes de trabalho cognitivo
+   · MCQ nc ≥ 15 (incontrolabilidade) → M7 (desfusão/ACT) + M4 (adiamento/MCT) cedo:
+     mudar a relação com o pensamento antes de questionar conteúdo
+   · MCQ pr ≥ 15 (crenças positivas)  → M3 (metacognições) cedo e M6 (reestruturação) por último:
+     evitar reforçar a crença de que a preocupação precisa ser "resolvida"
+   · MCQ nb ≥ 15 (controle = fraqueza, proxy de autocrítica) → M8 (TFC) antes das técnicas ativas
+   Limiar 15 = acima do ponto médio da subescala (6–24).
+   ══════════════════════════════════ */
+function computeRecommendedPath(pretest){
+  const s = pretest.mcq30.scores, gad = pretest.gad7.score;
+  const HI = 15;
+  const reasons = [];
+  const boosts = [];
+  if(s.nc >= HI){ boosts.push('m7','m4'); reasons.push('As preocupações parecem difíceis de controlar → começamos por técnicas que mudam a <strong>relação</strong> com os pensamentos (desfusão e adiamento), em vez de lutar contra eles.'); }
+  if(s.pr >= HI){ boosts.push('m3'); reasons.push('Preocupar-se parece útil/protetor para você → trabalhamos primeiro as <strong>crenças sobre a preocupação</strong>, antes de técnicas de questionar pensamentos.'); }
+  if(s.nb >= HI){ boosts.push('m8'); reasons.push('Há autocobrança sobre os próprios pensamentos → a <strong>autocompaixão</strong> vem antes das técnicas mais ativas.'); }
+  let rest = ['m3','m4','m5','m6','m7','m8'];
+  if(s.pr >= HI) rest = rest.filter(id=>id!=='m6').concat('m6');
+  const ordered = [...new Set([...boosts, ...rest])];
+  let path;
+  if(gad >= 15){
+    reasons.unshift('Sua ansiedade está intensa agora → a <strong>regulação pelo corpo</strong> vem logo no início, para ter alívio prático desde já.');
+    path = ['m1','m5','m2', ...ordered.filter(id=>id!=='m5')];
+  } else {
+    path = ['m1','m2', ...ordered];
+  }
+  return { recommendedPath: path, reasons, computedAt: today() };
+}
+
+const DEFAULT_PATH = ['m1','m2','m3','m4','m5','m6','m7','m8'];
+function effectivePath(){
+  const p = D.userProfile?.recommendedPath;
+  if(Array.isArray(p) && p.length===DEFAULT_PATH.length && DEFAULT_PATH.every(id=>p.includes(id))) return p;
+  return DEFAULT_PATH;
+}
+
 function finishPretest(){
   const gad7Score = _pt.gad7Answers.reduce((a,b)=>a+b,0);
   const gadLv = gad7Level(gad7Score);
@@ -977,6 +1043,8 @@ function finishPretest(){
     trackAppEvent('pretest_complete');
     // update assessment from GAD-7 pretest scores
     D.assessment = { score: gad7Score, level: gadLv, date: today(), answers: [..._pt.gad7Answers] };
+    // tailoring: caminho personalizado a partir dos escores
+    D.userProfile = computeRecommendedPath(result);
     save();
     // show brief thank-you then go home — com rede de segurança se score severo
     const el = document.getElementById('pretest-content');
@@ -987,6 +1055,7 @@ function finishPretest(){
       <p style="font-size:15px;color:var(--muted);line-height:1.7;margin-bottom:24px">
         Avaliação registrada. Ao longo da travessia voltaremos a medir<br>para ver o quanto você progrediu.
       </p>
+      ${D.userProfile && effectivePath().join()!==DEFAULT_PATH.join() ? `<div class="tip mint" style="text-align:left;max-width:340px;margin:0 auto 8px">🧭 <strong>Sua travessia foi personalizada:</strong> com base nas suas respostas, ajustamos a ordem dos módulos para o que tende a ajudar mais primeiro. Veja em "Módulos".</div>` : ''}
       ${gadLv==='sev' ? crisisCardHTML() : ''}
       <button class="btn" style="max-width:320px;margin:16px auto 0" onclick="goTo('home')">Começar a travessia ⛵</button>
     </div>`;
@@ -1099,6 +1168,7 @@ function renderHome(){
   document.getElementById('h-hi').textContent   = D.nickname ? gr+', '+D.nickname+' 👋' : gr+' 👋';
   document.getElementById('h-sub').textContent  = SUBS[now.getDate()%SUBS.length];
   renderNudge();
+  renderDoseCard();
 
   // XP bar
   const lv = getLevel(D.xp), pct = getLevelPct(D.xp), nextLv = LEVELS[lv.n] || lv;
@@ -1120,8 +1190,9 @@ function renderHome(){
   document.getElementById('hs-xp').textContent  = D.xp;
   document.getElementById('h-assess-sub').textContent = D.assessment?'Refazer avaliação':'GAD-7 · Conheça seu padrão';
 
-  // Next module
-  const next = MODULES.find(m=>!D.moduleProgress[m.id]?.done && isUnlocked(m));
+  // Next module — segue o caminho recomendado
+  const next = effectivePath().map(id=>MODULES.find(m=>m.id===id))
+    .find(m=>!D.moduleProgress[m.id]?.done && isUnlocked(m));
   document.getElementById('h-mod-sub').textContent = next ? '▶ '+next.title : done===MODULES.length ? '✅ Todos concluídos!' : 'Continue aprendendo';
 
   renderMiniChart('h-chart','h-chart-empty');
@@ -1173,8 +1244,12 @@ function buildEntry(e){
    MODULE LIST
    ══════════════════════════════════ */
 function isUnlocked(mod){
-  if(!mod.unlockAfter) return true;
-  return D.moduleProgress[mod.unlockAfter]?.done === true;
+  // desbloqueio segue o caminho recomendado: cada módulo abre o seguinte do caminho
+  const path = effectivePath();
+  const idx = path.indexOf(mod.id);
+  if(idx === 0) return true;                       // M1 é sempre a porta de entrada
+  if(idx < 0) return !mod.unlockAfter || D.moduleProgress[mod.unlockAfter]?.done === true;
+  return D.moduleProgress[path[idx-1]]?.done === true;
 }
 function modProgress(mod){
   const mp = D.moduleProgress[mod.id];
@@ -1183,33 +1258,50 @@ function modProgress(mod){
   return Math.round(done/mod.steps.length*100);
 }
 
+function modCardHTML(m){
+  const unlocked = isUnlocked(m);
+  const done = D.moduleProgress[m.id]?.done;
+  const pct  = modProgress(m);
+  const statusIcon = done ? '✅' : unlocked ? '▶' : '🔒';
+  return `<div class="mod-card ${unlocked?'':'locked'}" onclick="${unlocked?'openModule(\''+m.id+'\')':'void 0'}">
+    <div class="mod-card-inner">
+      <div class="mod-emoji ${m.color}">${m.emoji}</div>
+      <div class="mod-info">
+        <div class="mod-level-tag">${m.tagline}</div>
+        <div class="mod-title">${m.title}</div>
+        <div class="mod-xp">+${m.xp} XP · ${m.steps.length} etapas</div>
+        <div class="mod-prog-bar"><div class="mod-prog-fill" style="width:${pct}%"></div></div>
+      </div>
+      <div class="mod-status">${statusIcon}</div>
+    </div>
+    ${!unlocked?`<div class="mod-lock-overlay"><span class="mod-lock-msg">🔒 Complete o módulo anterior</span></div>`:''}
+  </div>`;
+}
+
 function renderModuleList(){
-  const levels = ['Nível 1 — Fundamentos','Nível 2 — Padrões Internos','Nível 3 — Regulação','Nível 4 — Transformação'];
+  const path = effectivePath();
+  const personalized = D.userProfile && path.join() !== DEFAULT_PATH.join();
   let html = '';
-  levels.forEach(lv=>{
-    const mods = MODULES.filter(m=>m.levelTag===lv);
-    if(!mods.length) return;
-    html += `<div class="level-header"><div class="level-pip"></div><span class="level-title">${lv}</span></div>`;
-    mods.forEach(m=>{
-      const unlocked = isUnlocked(m);
-      const done = D.moduleProgress[m.id]?.done;
-      const pct  = modProgress(m);
-      const statusIcon = done ? '✅' : unlocked ? '▶' : '🔒';
-      html += `<div class="mod-card ${unlocked?'':'locked'}" onclick="${unlocked?'openModule(\''+m.id+'\')':'void 0'}">
-        <div class="mod-card-inner">
-          <div class="mod-emoji ${m.color}">${m.emoji}</div>
-          <div class="mod-info">
-            <div class="mod-level-tag">${m.tagline}</div>
-            <div class="mod-title">${m.title}</div>
-            <div class="mod-xp">+${m.xp} XP · ${m.steps.length} etapas</div>
-            <div class="mod-prog-bar"><div class="mod-prog-fill" style="width:${pct}%"></div></div>
-          </div>
-          <div class="mod-status">${statusIcon}</div>
-        </div>
-        ${!unlocked?`<div class="mod-lock-overlay"><span class="mod-lock-msg">🔒 Complete o módulo anterior</span></div>`:''}
-      </div>`;
+  if(personalized){
+    html += `<div class="card" style="border:1.5px solid var(--mint-l)">
+      <div class="card-lbl">🧭 Travessia personalizada</div>
+      <div style="font-size:13.5px;color:var(--muted);line-height:1.6">A ordem abaixo foi sugerida com base na sua pré-avaliação. Você pode segui-la no seu ritmo — cada parada desbloqueia a próxima.</div>
+      ${(D.userProfile.reasons||[]).map(r=>`<div style="font-size:12.5px;color:var(--muted);line-height:1.55;margin-top:7px">• ${r}</div>`).join('')}
+    </div>`;
+    path.forEach((id,i)=>{
+      const m = MODULES.find(x=>x.id===id);
+      html += `<div class="level-header"><div class="level-pip"></div><span class="level-title">${i+1}ª parada</span></div>`;
+      html += modCardHTML(m);
     });
-  });
+  } else {
+    const levels = ['Nível 1 — Fundamentos','Nível 2 — Padrões Internos','Nível 3 — Regulação','Nível 4 — Transformação'];
+    levels.forEach(lv=>{
+      const mods = MODULES.filter(m=>m.levelTag===lv);
+      if(!mods.length) return;
+      html += `<div class="level-header"><div class="level-pip"></div><span class="level-title">${lv}</span></div>`;
+      mods.forEach(m=>{ html += modCardHTML(m); });
+    });
+  }
   document.getElementById('modules-list').innerHTML = html;
 }
 
@@ -1352,9 +1444,18 @@ function showCelebrate(mod){
   document.getElementById('cel-title').textContent  = mod.title+' concluído!';
   document.getElementById('cel-xp').textContent     = '+'+mod.xp+' XP conquistados';
   document.getElementById('cel-sub').textContent    = 'Seu progresso foi salvo. Continue para o próximo módulo ou registre no diário!';
+  const w = document.getElementById('cel-word'); if(w) w.value='';
   document.getElementById('celebrate-card').classList.add('show');
 }
 function closeCelebrate(){
+  // vocabulário do usuário — matéria-prima para futura escala de satisfação
+  const word = (document.getElementById('cel-word')?.value||'').trim();
+  if(word){
+    D.moduleFeedback.push({ ts:Date.now(), date:today(), moduleId:_curModId, word });
+    save();
+    trackAppEvent('module_feedback');
+    toast('Obrigada por compartilhar 💚');
+  }
   document.getElementById('celebrate-card').classList.remove('show');
   goTo('modules');
 }
@@ -1614,6 +1715,45 @@ function renderDiaryHist(){
 }
 
 /* ══════════════════════════════════
+   DOSE PRATICADA — prática ativa semanal
+   Mede o que a pessoa PRATICOU entre medições,
+   distinto do GAD-7 (sintoma) e MCQ-30 (crenças).
+   ══════════════════════════════════ */
+function renderDoseCard(){
+  const el = document.getElementById('h-dose');
+  if(!el) return;
+  const ws = weekStart();
+  const answered = D.doseRecords.some(r=>r.weekStart===ws);
+  const skipped  = D.doseSkipWeek === ws;
+  if(answered || skipped || !D.pretest){ el.innerHTML=''; return; }
+  el.innerHTML = `<div class="card" style="border:1.5px solid var(--mint-l)">
+    <div class="card-lbl">⚓ Prática da semana</div>
+    <div style="font-size:14px;line-height:1.6;margin-bottom:10px">Essa semana, o que você <strong>praticou</strong> sobre suas preocupações? Praticar é todo pequeno passo: perceber um pensamento, adiar uma preocupação, questionar uma crença, se permitir não resolver agora...</div>
+    <div class="chips" id="dose-tags" style="margin-bottom:10px">${DOSE_TAGS.map(t=>`<span class="chip" onclick="toggleChip(this)">${t}</span>`).join('')}</div>
+    <textarea id="dose-text" rows="2" maxlength="400" placeholder="Escreva aqui..." style="width:100%"></textarea>
+    <div style="display:flex;gap:8px;margin-top:10px">
+      <button class="btn mint" style="flex:1;margin:0" onclick="saveDose()">Guardar ⚓</button>
+      <button class="btn ghost" style="width:auto;margin:0;padding:0 16px" onclick="skipDose()">Agora não</button>
+    </div>
+  </div>`;
+}
+function saveDose(){
+  const text=(document.getElementById('dose-text')?.value||'').trim();
+  const tags=[...document.querySelectorAll('#dose-tags .chip.sel')].map(c=>c.textContent);
+  if(!text && !tags.length){ toast('Escolha uma tag ou escreva um pouquinho. ⚓'); return; }
+  D.doseRecords.push({ ts:Date.now(), date:today(), weekStart:weekStart(), tags, text });
+  save();
+  awardXP(15,'Prática da semana registrada');
+  trackAppEvent('dose_saved');
+  renderDoseCard();
+}
+function skipDose(){
+  D.doseSkipWeek = weekStart(); save();
+  trackAppEvent('dose_skipped');
+  renderDoseCard();
+}
+
+/* ══════════════════════════════════
    PROGRESS
    ══════════════════════════════════ */
 function renderProgress(){
@@ -1640,6 +1780,13 @@ function renderProgress(){
     if(topS.length) insights.push({c:'l',t:'🔧 Estratégias favoritas',b:`Ferramentas mais usadas: <strong>${topS.join(', ')}</strong>.`});
     const streak=calcStreak();
     if(streak>0) insights.push({c:'',t:'🔥 Sequência atual',b:`<strong>${streak} dia${streak!==1?'s':''}</strong> de prática consecutiva. Consistência cria mudança real.`});
+  }
+  // Dose praticada — semanas com prática vs. semanas desde o início
+  const doseStart = D.consentDate ? weekStart(D.consentDate.slice(0,10)) : (D.doseRecords[0]?.weekStart || null);
+  if(doseStart){
+    const totalWeeks = Math.max(1, Math.floor((new Date(weekStart()+'T12:00') - new Date(doseStart+'T12:00'))/(7*864e5)) + 1);
+    const practicedWeeks = new Set(D.doseRecords.map(r=>r.weekStart)).size;
+    insights.push({c:'l',t:'⚓ Dose praticada',b:`Semanas com prática registrada: <strong>${practicedWeeks} de ${totalWeeks}</strong> desde o início. A dose que importa é a praticada, não a recebida.`});
   }
   insights.push({c:'s',t:'📚 Módulos concluídos',b:`<strong>${doneMods.length} de ${MODULES.length}</strong> módulos concluídos · <strong>${D.xp} de ${totalXP} XP</strong> totais conquistados.`});
 
@@ -1714,7 +1861,7 @@ function renderAssessResult(){
    ══════════════════════════════════ */
 function exportJSON(){
   if(!D.entries.length){toast('Sem dados para exportar.');return;}
-  dl('farol-dados-'+today()+'.json',JSON.stringify({exportedAt:new Date().toISOString(),app:'Farol — Navegando as Preocupações',xp:D.xp,badges:D.badges,modulesCompleted:MODULES.filter(m=>D.moduleProgress[m.id]?.done).map(m=>m.title),assessment:D.assessment,entries:D.entries},null,2),'application/json');
+  dl('farol-dados-'+today()+'.json',JSON.stringify({exportedAt:new Date().toISOString(),app:'Farol — Navegando as Preocupações',xp:D.xp,badges:D.badges,modulesCompleted:MODULES.filter(m=>D.moduleProgress[m.id]?.done).map(m=>m.title),assessment:D.assessment,pretest:D.pretest,posttest:D.posttest,userProfile:D.userProfile,entries:D.entries,doseRecords:D.doseRecords,moduleFeedback:D.moduleFeedback,notificationLog:D.notificationLog},null,2),'application/json');
   toast('Dados exportados!');
 }
 function exportHTML(){
@@ -1764,6 +1911,9 @@ table{width:100%;border-collapse:collapse;background:white;border-radius:12px;ov
 </div>
 ${doneMods.length?`<h2>Módulos concluídos</h2><div class="ins"><div class="ins-b">${doneMods.map(m=>`<span class="pill">${m}</span>`).join('')}</div></div>`:''}
 ${D.assessment?`<h2>Avaliação GAD-7</h2><div class="ins"><div class="ins-b">Pontuação: <strong>${D.assessment.score}/21</strong> — ${GAD7_LABELS[D.assessment.level]||''} (${new Date(D.assessment.date+'T12:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'long'})})</div></div>`:''}
+${D.doseRecords.length?`<h2>Dose praticada (semanal)</h2>
+${[...D.doseRecords].sort((a,b)=>b.ts-a.ts).map(r=>
+  `<div class="ins"><div class="ins-t">Semana de ${new Date(r.weekStart+'T12:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'long'})}</div><div class="ins-b">${(r.tags||[]).map(t=>`<span class="pill">${esc(t)}</span>`).join('')}${r.text?`<br>${esc(r.text)}`:''}</div></div>`).join('')}`:''}
 <h2>Todos os registros</h2>
 <table><thead><tr><th>Data</th><th>Preocupação</th><th>Tipo</th><th>Estratégia</th><th>Depois</th></tr></thead><tbody>${rows}</tbody></table>
 <div class="ft">
@@ -1782,7 +1932,7 @@ ${D.assessment?`<h2>Avaliação GAD-7</h2><div class="ins"><div class="ins-b">Po
 function exportCSV(){
   const rows = [
     // header
-    ['timestamp','date','worry','type','body_reactions','strategies','intensity_after',
+    ['record_type','timestamp','date','worry','type','body_reactions','strategies','intensity_after',
      'pretest_gad7','posttest_gad7','gad7_delta',
      'pretest_mcq_pr','pretest_mcq_nc','pretest_mcq_cw','pretest_mcq_nb','pretest_mcq_wf',
      'posttest_mcq_pr','posttest_mcq_nc','posttest_mcq_cw','posttest_mcq_nb','posttest_mcq_wf'].join(','),
@@ -1796,11 +1946,40 @@ function exportCSV(){
   const csvEsc = s => '"'+String(s||'').replace(/"/g,'""')+'"';
   D.entries.forEach(e=>{
     rows.push([
-      e.ts, e.date,
+      'entry', e.ts, e.date,
       csvEsc(e.worry), e.type,
       csvEsc(e.bodyReactions?.join('|')||''),
       csvEsc(e.strategies?.join('|')||''),
       e.after,
+      gadPre, gadPost, gadDelta,
+      mcqPreRow, mcqPostRow,
+    ].join(','));
+  });
+  D.doseRecords.forEach(r=>{
+    rows.push([
+      'dose', r.ts, r.date,
+      csvEsc(r.text), '',
+      '',
+      csvEsc((r.tags||[]).join('|')),
+      '',
+      gadPre, gadPost, gadDelta,
+      mcqPreRow, mcqPostRow,
+    ].join(','));
+  });
+  D.moduleFeedback.forEach(r=>{
+    rows.push([
+      'feedback', r.ts, r.date,
+      csvEsc(r.word), r.moduleId,
+      '', '', '',
+      gadPre, gadPost, gadDelta,
+      mcqPreRow, mcqPostRow,
+    ].join(','));
+  });
+  D.notificationLog.forEach(n=>{
+    rows.push([
+      'notif', n.ts, '',
+      n.tema, n.foiAberta ? 'aberta' : 'nao_aberta',
+      '', '', '',
       gadPre, gadPost, gadDelta,
       mcqPreRow, mcqPostRow,
     ].join(','));
@@ -1838,6 +2017,10 @@ async function syncToResearch({ silent=false, requirePretest=true }={}){
       pretest:       D.pretest,
       posttest:      D.posttest || null,
       entries:       D.entries,
+      doseRecords:   D.doseRecords,
+      moduleFeedback: D.moduleFeedback,
+      notificationLog: D.notificationLog,
+      userProfile:   D.userProfile,
       xp:            D.xp,
       analytics:     D.analytics,
       modulesCompletedList: doneMods,
@@ -1902,12 +2085,13 @@ function deleteAll(){
   const pid=D.participantId, cd=D.consentDate, ls=D.lastSync;
   D={
     xp:0, badges:[], obDone:true, obLevel:D.obLevel,
-    moduleProgress:{}, entries:[], assessment:null,
+    moduleProgress:{}, entries:[], doseRecords:[], doseSkipWeek:null, moduleFeedback:[], assessment:null,
     nickname:D.nickname, demographics:D.demographics,
-    reminders:D.reminders||{enabled:false,hour:20},
+    reminders:D.reminders||{enabled:false,hour:20,hourTouched:false},
+    notificationLog:[],
     consentGiven:true, consentDate:cd,
     participantId:pid, lastSync:ls,
-    pretest:null, posttest:null, posttestRemindAfter:null,
+    pretest:null, posttest:null, posttestRemindAfter:null, userProfile:null,
     analytics:{sessions:[],moduleEvents:[],diaryEvents:[]},
   };
   save();
@@ -1945,7 +2129,16 @@ function renderNudge(){
       <button class="nudge-btn" onclick="goTo('pretest')">Responder agora</button>
     </div>`;
   }
-  // 1. Retorno após pausa — acolher sem culpa (evita o efeito "estraguei tudo")
+  // 1. Instalar na tela de início (uma vez, se ainda não instalou)
+  else if(!isInstalled() && !D.installSeen){
+    html = `<div class="nudge lav">
+      <div class="nudge-icon">📲</div>
+      <div class="nudge-body"><strong>Leve o Farol com você.</strong>
+      Adicione à tela de início para abrir como um app — com o ícone do farol e funcionando offline.</div>
+      <button class="nudge-btn" onclick="showInstallModal()">Ver como</button>
+    </div>`;
+  }
+  // 2. Retorno após pausa — acolher sem culpa (evita o efeito "estraguei tudo")
   else if(daysSince !== null && daysSince >= 3){
     html = `<div class="nudge lav">
       <div class="nudge-icon">🤗</div>
@@ -1996,6 +2189,81 @@ function maybeShowIfThen(){
 }
 
 /* ══════════════════════════════════
+   INSTALAÇÃO — atalho na tela de início (PWA)
+   ══════════════════════════════════ */
+let _installPrompt = null;
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  _installPrompt = e;
+});
+window.addEventListener('appinstalled', () => {
+  _installPrompt = null;
+  D.installSeen = true; save();
+  toast('🏮 Farol instalado! Procure o farol na tela de início.');
+  trackAppEvent('pwa_installed');
+});
+
+function isInstalled(){
+  return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+}
+
+function installInstructionsHTML(){
+  const ua = navigator.userAgent;
+  const isIOS = /iphone|ipad|ipod/i.test(ua);
+  const isAndroid = /android/i.test(ua);
+  const step = (n,txt)=>`<div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:10px">
+    <div style="width:22px;height:22px;border-radius:50%;background:var(--mint-xl);color:var(--mint-d);font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">${n}</div>
+    <div style="font-size:13.5px;line-height:1.55;text-align:left">${txt}</div>
+  </div>`;
+  if(isIOS) return `<div style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin:8px 0 10px">No iPhone/iPad (Safari)</div>`
+    + step(1,'Abra o Farol no <strong>Safari</strong> (outros navegadores não têm essa opção no iOS)')
+    + step(2,'Toque no botão <strong>Compartilhar</strong> — o quadrado com a seta para cima (⬆️), na barra inferior')
+    + step(3,'Role a lista e toque em <strong>"Adicionar à Tela de Início"</strong>')
+    + step(4,'Toque em <strong>Adicionar</strong> — o farol 🏮 aparece junto aos seus apps');
+  if(isAndroid) return `<div style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin:8px 0 10px">No Android (Chrome)</div>`
+    + step(1,'Abra o Farol no <strong>Chrome</strong>')
+    + step(2,'Toque no menu <strong>⋮</strong> (três pontinhos, no canto superior direito)')
+    + step(3,'Toque em <strong>"Adicionar à tela inicial"</strong> (ou <strong>"Instalar app"</strong>)')
+    + step(4,'Confirme — o farol 🏮 aparece junto aos seus apps');
+  return `<div style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin:8px 0 10px">No computador (Chrome/Edge)</div>`
+    + step(1,'Procure o <strong>ícone de instalação</strong> no fim da barra de endereço (um monitor com uma seta para baixo)')
+    + step(2,'Clique nele e depois em <strong>Instalar</strong>')
+    + step(3,'Se não vir o ícone: menu <strong>⋮</strong> → "Salvar e compartilhar" → <strong>"Instalar Farol"</strong>')
+    + step(4,'O app abre em janela própria, com o farol 🏮 na barra de tarefas');
+}
+
+async function installApp(){
+  if(!_installPrompt){ return; }
+  _installPrompt.prompt();
+  try{
+    const choice = await _installPrompt.userChoice;
+    if(choice && choice.outcome === 'accepted'){ closeModal(); }
+  }catch(e){}
+  _installPrompt = null;
+}
+
+function showInstallModal(){
+  D.installSeen = true; save();
+  if(isInstalled()){
+    document.getElementById('modal-title').textContent = '🏮 Já está instalado!';
+    document.getElementById('modal-body').innerHTML = 'Você já está usando o Farol como app. É só procurar o farol na tela de início sempre que quiser voltar.';
+    document.getElementById('modal-actions').innerHTML = '<button class="btn mint" onclick="closeModal()">Ótimo!</button>';
+    document.getElementById('modal-ov').classList.add('on');
+    return;
+  }
+  document.getElementById('modal-title').textContent = '📲 Farol na tela de início';
+  document.getElementById('modal-body').innerHTML =
+    `<p style="margin-bottom:12px;text-align:left">Com o atalho, o Farol vira um app de verdade: abre em tela cheia, com o ícone do farol 🏮, e funciona até sem internet.</p>`
+    + (_installPrompt
+        ? `<p style="font-size:13px;color:var(--muted);text-align:left">Boa notícia: seu navegador instala com um toque. 👇</p>`
+        : installInstructionsHTML());
+  document.getElementById('modal-actions').innerHTML =
+    (_installPrompt ? `<button class="btn mint" onclick="installApp()">Instalar agora 🏮</button>` : '')
+    + `<button class="btn ${_installPrompt?'ghost':'mint'}" onclick="closeModal();if(typeof renderNudge==='function')renderNudge()">Entendi</button>`;
+  document.getElementById('modal-ov').classList.add('on');
+}
+
+/* ══════════════════════════════════
    LEMBRETES (Notification API + Service Worker)
    Limitação honesta: sem servidor push, o lembrete dispara
    quando o browser/PWA está aberto. No Android instalado
@@ -2028,8 +2296,11 @@ async function toggleReminders(cb){
 }
 
 function setReminderHour(sel){
-  D.reminders.hour = parseInt(sel.value); save();
+  D.reminders.hour = parseInt(sel.value);
+  D.reminders.hourTouched = true; // escolheu manualmente — não sugerir horário
+  save();
   scheduleLocalReminder();
+  renderReminderUI();
   toast('Lembrete às '+sel.value+':00.');
 }
 
@@ -2046,14 +2317,54 @@ function scheduleLocalReminder(){
   _reminderTimer = setTimeout(fireReminder, next - now);
 }
 
-const REMINDER_MSGS = [
-  '🏮 O seu farol está à espera. 2 minutos de registro já contam.',
-  '🌊 Como foi o dia? Um registro rápido ajuda a mapear o padrão.',
-  '🧭 Pequena pausa para si: que preocupação merece ser anotada hoje?',
-];
+/* Banco de frases — tom sempre calmante (CFT): convite, nunca urgência ou culpa.
+   4 temas; "acolhimento" é priorizado quando há sinais de dificuldade. */
+const NOTIF_MSGS = {
+  perceber: [
+    '🏮 Um instante: que pensamento está passando por aí agora? Só observe.',
+    '🌊 Os pensamentos vêm e vão como ondas. Vale espiar quais chegaram hoje.',
+    '👀 Sem mudar nada: apenas notar o que a mente está fazendo já é prática.',
+    '💭 Que tal 30 segundos de curiosidade sobre a própria mente?',
+  ],
+  adiar: [
+    '🕐 Alguma preocupação rondando? Ela pode esperar pelo seu Tempo de Preocupação.',
+    '📝 Anotar e adiar: a preocupação fica guardada, o seu momento fica livre.',
+    '⏰ Lembrete gentil: preocupação tem hora marcada — o resto do dia é seu.',
+    '🧭 Se um "e se..." aparecer hoje, experimente: anote, adie, respire.',
+  ],
+  gentileza: [
+    '💚 Uma mão no peito, uma respiração lenta. Você merece essa pausa.',
+    '🌬️ Expire devagar. O seu corpo agradece cada expiração longa.',
+    '🤲 Fale consigo hoje como falaria com quem você ama.',
+    '🌿 Pausa de gentileza: ombros soltos, mandíbula solta, uma respiração.',
+  ],
+  acolhimento: [
+    '🤗 Sem cobrança hoje. O farol segue aceso, no seu tempo.',
+    '🏮 Dias difíceis fazem parte da travessia. Estamos aqui quando quiser.',
+    '🌊 Não precisa resolver nada agora. Só respirar já é suficiente.',
+    '💙 Você não precisa estar bem o tempo todo. O farol não julga tempestades.',
+  ],
+};
+
+/* Tema adaptativo: sem prática há 5+ dias OU GAD-7 recente ≥ 15
+   → acolhimento (nunca "pratique mais") */
+function pickNotifTheme(){
+  const lastPractice = [
+    ...D.entries.map(e=>e.ts),
+    ...D.doseRecords.map(r=>r.ts),
+  ].sort((a,b)=>b-a)[0];
+  const semPratica = !lastPractice || (Date.now()-lastPractice) >= 5*864e5;
+  const gadAlto = (D.assessment?.score ?? 0) >= 15;
+  if(semPratica || gadAlto) return 'acolhimento';
+  const temas = ['perceber','adiar','gentileza'];
+  return temas[Math.floor(Math.random()*temas.length)];
+}
+
 async function fireReminder(){
   if(!D.reminders.enabled) return;
-  const msg = REMINDER_MSGS[Math.floor(Math.random()*REMINDER_MSGS.length)];
+  const tema = pickNotifTheme();
+  const opts = NOTIF_MSGS[tema];
+  const msg = opts[Math.floor(Math.random()*opts.length)];
   try{
     const reg = await navigator.serviceWorker?.getRegistration();
     if(reg){
@@ -2061,9 +2372,43 @@ async function fireReminder(){
     } else {
       new Notification('Farol', { body: msg, icon: 'icon-192.png' });
     }
+    D.notificationLog.push({ ts: Date.now(), tema, foiAberta: false });
+    if(D.notificationLog.length > 100) D.notificationLog = D.notificationLog.slice(-100);
+    save();
     trackAppEvent('reminder_fired');
   }catch(e){ console.warn('[Farol] notificação falhou:', e); }
   scheduleLocalReminder(); // agenda o próximo
+}
+
+/* Marcada quando o usuário abre o app a partir da notificação */
+function markNotifOpened(){
+  const lastN = D.notificationLog[D.notificationLog.length-1];
+  if(lastN && !lastN.foiAberta){ lastN.foiAberta = true; save(); trackAppEvent('reminder_opened'); }
+}
+
+/* Horário adaptativo: hora em que a pessoa mais abre o app (mín. 5 aberturas) */
+function suggestedReminderHour(){
+  const opens = (D.analytics?.sessions||[]).filter(s=>s.event==='app_open');
+  if(opens.length < 5) return null;
+  const freq = {};
+  opens.forEach(s=>{ const h=new Date(s.ts).getHours(); freq[h]=(freq[h]||0)+1; });
+  const top = Object.entries(freq).sort((a,b)=>b[1]-a[1])[0];
+  return top ? parseInt(top[0]) : null;
+}
+
+function applySuggestedHour(h){
+  const sel = document.getElementById('rem-hour');
+  if(sel && ![...sel.options].some(o=>o.value===String(h))){
+    const opt = document.createElement('option');
+    opt.value = String(h); opt.textContent = p2(h)+':00';
+    sel.appendChild(opt);
+  }
+  D.reminders.hour = h;
+  D.reminders.hourTouched = true; // aceitou a sugestão — não sugerir de novo
+  save();
+  scheduleLocalReminder();
+  renderReminderUI();
+  toast('Lembrete às '+p2(h)+':00. 🔔');
 }
 
 function renderReminderUI(){
@@ -2071,13 +2416,37 @@ function renderReminderUI(){
   const sel = document.getElementById('rem-hour');
   const row = document.getElementById('rem-hour-row');
   if(cb)  cb.checked = D.reminders.enabled;
-  if(sel) sel.value  = String(D.reminders.hour);
+  if(sel){
+    if(![...sel.options].some(o=>o.value===String(D.reminders.hour))){
+      const opt = document.createElement('option');
+      opt.value = String(D.reminders.hour); opt.textContent = p2(D.reminders.hour)+':00';
+      sel.appendChild(opt);
+    }
+    sel.value = String(D.reminders.hour);
+  }
   if(row) row.style.display = D.reminders.enabled ? '' : 'none';
+  // sugestão de horário — só se nunca mexeu no padrão e há dados de uso
+  const sug = document.getElementById('rem-suggest');
+  if(sug){
+    const h = suggestedReminderHour();
+    const show = D.reminders.enabled && !D.reminders.hourTouched && h !== null && h !== D.reminders.hour;
+    sug.style.display = show ? '' : 'none';
+    sug.innerHTML = show ? `
+      <div style="flex:1">
+        <div class="set-lbl">💡 Sugestão de horário</div>
+        <div class="set-desc">Você costuma usar o app por volta das ${p2(h)}h. Quer o lembrete nesse horário?</div>
+      </div>
+      <button class="btn" style="padding:7px 16px;font-size:13px;width:auto;flex-shrink:0" onclick="applySuggestedHour(${h})">Usar ${p2(h)}h</button>` : '';
+  }
 }
 
 /* ── Service worker (offline + notificações) ── */
 if('serviceWorker' in navigator){
   navigator.serviceWorker.register('sw.js').catch(e=>console.warn('[Farol] SW:', e.message));
+  // SW avisa quando o app foi focado a partir de uma notificação
+  navigator.serviceWorker.addEventListener('message', e=>{
+    if(e.data?.type==='notif-opened') markNotifOpened();
+  });
 }
 
 /* ── Splash screen ── */
@@ -2094,6 +2463,8 @@ if('serviceWorker' in navigator){
 load();
 _classifyDone=[];
 _flipsAll=0;
+// app aberto por clique numa notificação (janela nova via SW)
+if(location.search.includes('notif=1')) markNotifOpened();
 trackAppEvent('app_open');
 scheduleLocalReminder();
 if(!D.obDone){

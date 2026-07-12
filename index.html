@@ -297,6 +297,7 @@
     <div class="home-sub"  id="h-sub"></div>
   </div>
   <div id="h-nudge"></div>
+  <div id="h-dose"></div>
   <div id="h-xp"></div>
   <div class="stats">
     <div class="stat"><div class="stat-n" style="color:var(--mint)"  id="hs-mod">0</div><div class="stat-l">módulos</div></div>
@@ -402,6 +403,12 @@
     </div>
   </div>
 
+  <!-- Instalar -->
+  <div class="sdiv">Atalho</div>
+  <div class="set-group">
+    <div class="set-row" onclick="showInstallModal()"><div><div class="set-lbl">📲 Instalar na tela de início</div><div class="set-desc">Abra o Farol como um app, com o ícone do farol</div></div><span class="set-arr">›</span></div>
+  </div>
+
   <!-- Lembretes -->
   <div class="sdiv">Lembretes</div>
   <div class="set-group">
@@ -428,6 +435,7 @@
         <option value="21">21:00</option>
       </select>
     </div>
+    <div class="set-row" id="rem-suggest" style="cursor:default;display:none"></div>
   </div>
 
   <!-- Sobre o app -->
@@ -526,6 +534,10 @@
   <div class="celebrate-title" id="cel-title">Módulo concluído!</div>
   <div class="celebrate-xp"    id="cel-xp">+50 XP</div>
   <div class="celebrate-sub"   id="cel-sub"></div>
+  <div style="margin:14px 0 16px;text-align:left">
+    <label style="font-size:12.5px;font-weight:700;color:var(--muted);display:block;margin-bottom:6px" for="cel-word">Em uma palavra: o que você sentiu com esta prática? <span style="font-weight:400">(opcional)</span></label>
+    <input type="text" id="cel-word" class="demo-input" maxlength="40" placeholder="Ex.: alívio, clareza, estranheza..." autocomplete="off">
+  </div>
   <button class="btn" onclick="closeCelebrate()" style="width:100%;margin:0">Continuar</button>
 </div></div>
 

@@ -1,7 +1,7 @@
 /* Farol — Service Worker
    Offline-first para assets, network-first para HTML.
    Incrementar CACHE_VERSION a cada deploy para forçar atualização. */
-const CACHE_VERSION = 'farol-v2';
+const CACHE_VERSION = 'farol-v3';
 const CORE = [
   './',
   './index.html',
@@ -61,13 +61,15 @@ self.addEventListener('fetch', e => {
   );
 });
 
-// Clique na notificação → abre/foca o app
+// Clique na notificação → abre/foca o app (e avisa para registrar foiAberta)
 self.addEventListener('notificationclick', e => {
   e.notification.close();
   e.waitUntil(
     self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then(list => {
-      for (const c of list) { if ('focus' in c) return c.focus(); }
-      return self.clients.openWindow('./');
+      for (const c of list) {
+        if ('focus' in c) { c.postMessage({ type: 'notif-opened' }); return c.focus(); }
+      }
+      return self.clients.openWindow('./?notif=1');
     })
   );
 });
