@@ -48,6 +48,8 @@ let D = {
   moduleProgress: {},   // { m1: { steps: [true,false,...], done: false } }
   entries: [],          // registro de momentos positivos
   experiments: [],      // execuções de experimentos { id, expId, ts, date, predicted, predictNote, status, actual, noticed, tsDone }
+  doseRecords: [],      // dose cultivada semanal { ts, date, weekStart, tags[], text }
+  doseSkipWeek: null,   // semana (segunda-feira) em que dispensou o prompt
   assessment: null,     // SPANE { p, n, b, date, answers }
   nickname: '',
   demographics: null,
@@ -84,6 +86,8 @@ function load(){
       if(!D.analytics.diaryEvents)  D.analytics.diaryEvents=[];
       if(!D.analytics.labEvents)    D.analytics.labEvents=[];
       if(!D.experiments) D.experiments=[];
+      if(!D.doseRecords) D.doseRecords=[];
+      if(D.doseSkipWeek === undefined) D.doseSkipWeek = null;
       if(!D.participantId) D.participantId = generateUUID();
       if(D.consentDate  === undefined) D.consentDate  = null;
       if(D.lastSync     === undefined) D.lastSync     = null;
@@ -133,6 +137,18 @@ const esc = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replac
 const MESES = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
 const DIAS  = ['domingo','segunda-feira','terça-feira','quarta-feira','quinta-feira','sexta-feira','sábado'];
 const DIAS_C= ['D','S','T','Q','Q','S','S'];
+
+/* Segunda-feira da semana de uma data (semana = seg-dom) */
+function weekStart(dateStr){
+  const d = dateStr ? new Date(dateStr+'T12:00') : new Date();
+  const dow = (d.getDay()+6)%7; // 0 = segunda
+  d.setDate(d.getDate()-dow);
+  return d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate());
+}
+
+/* Dose Cultivada — tags rápidas, uma por canteiro praticável */
+const DOSE_TAGS = ['🔍 Notei','🍯 Saboreei','🙏 Agradeci','💚 Me acalmei',
+  '🧪 Testei uma crença','📣 Compartilhei algo bom','🏅 Reconheci meu esforço','📅 Planejei algo bom'];
 
 /* ══════════════════════════════════
    XP / LEVEL SYSTEM — crescimento da planta
@@ -1210,6 +1226,7 @@ function renderHome(){
   document.getElementById('h-hi').textContent   = D.nickname ? gr+', '+D.nickname+' 👋' : gr+' 👋';
   document.getElementById('h-sub').textContent  = SUBS[now.getDate()%SUBS.length];
   renderNudge();
+  renderDoseCard();
 
   const lv = getLevel(D.xp), pct = getLevelPct(D.xp), nextLv = LEVELS[lv.n] || lv;
   document.getElementById('h-xp').innerHTML =
@@ -1848,6 +1865,45 @@ function cancelExperiment(){
 }
 
 /* ══════════════════════════════════
+   DOSE CULTIVADA — prática ativa semanal
+   Mede o que a pessoa PRATICOU (dose cultivada),
+   distinto do Registro de Momentos (estado).
+   ══════════════════════════════════ */
+function renderDoseCard(){
+  const el = document.getElementById('h-dose');
+  if(!el) return;
+  const ws = weekStart();
+  const answered = D.doseRecords.some(r=>r.weekStart===ws);
+  const skipped  = D.doseSkipWeek === ws;
+  if(answered || skipped || !D.pretest){ el.innerHTML=''; return; }
+  el.innerHTML = `<div class="card" style="border:1.5px solid var(--mint-l)">
+    <div class="card-lbl">🌱 Dose da semana</div>
+    <div style="font-size:14px;line-height:1.6;margin-bottom:10px">Essa semana, o que você <strong>cultivou</strong>? Cultivar é todo pequeno passo: notar, saborear, agradecer, testar uma crença...</div>
+    <div class="chips" id="dose-tags" style="margin-bottom:10px">${DOSE_TAGS.map(t=>`<span class="chip" onclick="toggleChip(this)">${t}</span>`).join('')}</div>
+    <textarea id="dose-text" rows="2" maxlength="400" placeholder="Escreva aqui..." style="width:100%"></textarea>
+    <div style="display:flex;gap:8px;margin-top:10px">
+      <button class="btn mint" style="flex:1;margin:0" onclick="saveDose()">Guardar 🌱</button>
+      <button class="btn ghost" style="width:auto;margin:0;padding:0 16px" onclick="skipDose()">Agora não</button>
+    </div>
+  </div>`;
+}
+function saveDose(){
+  const text=(document.getElementById('dose-text')?.value||'').trim();
+  const tags=[...document.querySelectorAll('#dose-tags .chip.sel')].map(c=>c.textContent);
+  if(!text && !tags.length){ toast('Escolha uma tag ou escreva um pouquinho. 🌱'); return; }
+  D.doseRecords.push({ ts:Date.now(), date:today(), weekStart:weekStart(), tags, text });
+  save();
+  awardXP(15,'Dose da semana cultivada');
+  trackAppEvent('dose_saved');
+  renderDoseCard();
+}
+function skipDose(){
+  D.doseSkipWeek = weekStart(); save();
+  trackAppEvent('dose_skipped');
+  renderDoseCard();
+}
+
+/* ══════════════════════════════════
    PROGRESS
    ══════════════════════════════════ */
 function renderProgress(){
@@ -1891,6 +1947,13 @@ function renderProgress(){
     const avgAct =(expDone.reduce((a,e)=>a+e.actual,0)/expDone.length).toFixed(1);
     const under = parseFloat(avgAct) > parseFloat(avgPred);
     insights.push({c:'s',t:'🧪 Laboratório',b:`<strong>${expDone.length} experimento${expDone.length>1?'s':''}</strong> concluído${expDone.length>1?'s':''}. Média prevista: <strong>${avgPred}/5</strong> · média sentida: <strong>${avgAct}/5</strong>.${under?' Sua mente vem <strong>subestimando</strong> o que faz bem — bom argumento contra as crenças bloqueadoras.':''}`});
+  }
+  // Dose cultivada — semanas com prática vs. semanas desde o início
+  const doseStart = D.consentDate ? weekStart(D.consentDate.slice(0,10)) : (D.doseRecords[0]?.weekStart || null);
+  if(doseStart){
+    const totalWeeks = Math.max(1, Math.floor((new Date(weekStart()+'T12:00') - new Date(doseStart+'T12:00'))/(7*864e5)) + 1);
+    const practicedWeeks = new Set(D.doseRecords.map(r=>r.weekStart)).size;
+    insights.push({c:'l',t:'🌱 Dose cultivada',b:`Semanas com prática registrada: <strong>${practicedWeeks} de ${totalWeeks}</strong> desde o início. A dose que importa é a praticada, não a recebida.`});
   }
   insights.push({c:'s',t:'📚 Canteiros cultivados',b:`<strong>${doneMods.length} de ${MODULES.length}</strong> módulos concluídos · <strong>${D.xp} de ${totalXP} XP</strong> totais conquistados.`});
 
@@ -1986,7 +2049,7 @@ function exportJSON(){
     xp:D.xp,badges:D.badges,
     modulesCompleted:MODULES.filter(m=>D.moduleProgress[m.id]?.done).map(m=>m.title),
     assessment:D.assessment,pretest:D.pretest,posttest:D.posttest,
-    entries:D.entries,experiments:D.experiments,
+    entries:D.entries,experiments:D.experiments,doseRecords:D.doseRecords,
   },null,2),'application/json');
   toast('Dados exportados!');
 }
@@ -2042,6 +2105,11 @@ table{width:100%;border-collapse:collapse;background:white;border-radius:12px;ov
 ${doneMods.length?`<h2>Módulos concluídos</h2><div class="ins"><div class="ins-b">${doneMods.map(m=>`<span class="pill">${m}</span>`).join('')}</div></div>`:''}
 ${D.assessment?`<h2>Autoavaliação SPANE</h2><div class="ins"><div class="ins-b">Positivas: <strong>${D.assessment.p}/30</strong> · Negativas: <strong>${D.assessment.n}/30</strong> · Saldo: <strong>${D.assessment.b>0?'+':''}${D.assessment.b}</strong> (${new Date(D.assessment.date+'T12:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'long'})})</div></div>`:''}
 ${expDone.length?`<h2>Experimentos (previsto vs. sentido)</h2><table><thead><tr><th>Data</th><th>Experimento</th><th>Previsto</th><th>Sentido</th><th>O que notou</th></tr></thead><tbody>${expRows}</tbody></table>`:''}
+${D.doseRecords.length?`<h2>Dose cultivada (semanal)</h2>
+<table><thead><tr><th>Semana de</th><th>Práticas</th><th>O que cultivou</th></tr></thead><tbody>
+${[...D.doseRecords].sort((a,b)=>b.ts-a.ts).map(r=>
+  `<tr><td>${new Date(r.weekStart+'T12:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'short'})}</td><td>${(r.tags||[]).join(', ')||'—'}</td><td>${esc(r.text||'—')}</td></tr>`).join('')}
+</tbody></table>`:''}
 <h2>Todos os momentos</h2>
 <table><thead><tr><th>Data</th><th>Momento</th><th>Emoções</th><th>Saboreio</th><th>Intensidade</th></tr></thead><tbody>${rows}</tbody></table>
 <div class="ft">
@@ -2075,6 +2143,9 @@ function exportCSV(){
     const exp=EXPERIMENTS.find(x=>x.id===r.expId)||{};
     rows.push(['experiment',r.tsDone,r.date,csvEsc(exp.title||r.expId),csvEsc(exp.emotion||''),r.predicted,r.actual,preCols,postCols].join(','));
   });
+  D.doseRecords.forEach(r=>{
+    rows.push(['dose',r.ts,r.date,csvEsc(r.text),csvEsc((r.tags||[]).join('|')),'','',preCols,postCols].join(','));
+  });
   if(rows.length<=1){ toast('Sem dados para exportar.'); return; }
   dl('floresca-pesquisa-'+today()+'.csv', '﻿'+rows.join('\n'), 'text/csv;charset=utf-8');
   toast('CSV exportado! 📊');
@@ -2107,6 +2178,7 @@ async function syncToResearch({ silent=false, requirePretest=true }={}){
       posttest:      D.posttest || null,
       entries:       D.entries,
       experiments:   D.experiments,
+      doseRecords:   D.doseRecords,
       xp:            D.xp,
       analytics:     D.analytics,
       modulesCompletedList: doneMods,
