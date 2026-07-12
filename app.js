@@ -51,6 +51,7 @@ let D = {
   experiments: [],      // execuções de experimentos { id, expId, ts, date, predicted, predictNote, status, actual, noticed, tsDone }
   doseRecords: [],      // dose cultivada semanal { ts, date, weekStart, tags[], text }
   doseSkipWeek: null,   // semana (segunda-feira) em que dispensou o prompt
+  moduleFeedback: [],   // vocabulário do usuário { ts, date, moduleId, word }
   assessment: null,     // SPANE { p, n, b, date, answers }
   nickname: '',
   demographics: null,
@@ -89,6 +90,7 @@ function load(){
       if(!D.experiments) D.experiments=[];
       if(!D.doseRecords) D.doseRecords=[];
       if(D.doseSkipWeek === undefined) D.doseSkipWeek = null;
+      if(!D.moduleFeedback) D.moduleFeedback=[];
       if(!D.participantId) D.participantId = generateUUID();
       if(D.consentDate  === undefined) D.consentDate  = null;
       if(D.lastSync     === undefined) D.lastSync     = null;
@@ -1490,9 +1492,17 @@ function showCelebrate(mod){
   document.getElementById('cel-title').textContent  = mod.title+' concluído!';
   document.getElementById('cel-xp').textContent     = '+'+mod.xp+' XP conquistados';
   document.getElementById('cel-sub').textContent    = 'Seu progresso foi salvo. Continue para o próximo canteiro ou registre um momento bom!';
+  const w = document.getElementById('cel-word'); if(w) w.value='';
   document.getElementById('celebrate-card').classList.add('show');
 }
 function closeCelebrate(){
+  const word = (document.getElementById('cel-word')?.value||'').trim();
+  if(word){
+    D.moduleFeedback.push({ ts:Date.now(), date:today(), moduleId:_curModId, word });
+    save();
+    trackAppEvent('module_feedback');
+    toast('Obrigada por compartilhar 💚');
+  }
   document.getElementById('celebrate-card').classList.remove('show');
   goTo('modules');
 }
@@ -2074,7 +2084,7 @@ function exportJSON(){
     xp:D.xp,badges:D.badges,
     modulesCompleted:MODULES.filter(m=>D.moduleProgress[m.id]?.done).map(m=>m.title),
     assessment:D.assessment,pretest:D.pretest,posttest:D.posttest,
-    entries:D.entries,experiments:D.experiments,doseRecords:D.doseRecords,
+    entries:D.entries,experiments:D.experiments,doseRecords:D.doseRecords,moduleFeedback:D.moduleFeedback,
   },null,2),'application/json');
   toast('Dados exportados!');
 }
@@ -2171,6 +2181,9 @@ function exportCSV(){
   D.doseRecords.forEach(r=>{
     rows.push(['dose',r.ts,r.date,csvEsc(r.text),csvEsc((r.tags||[]).join('|')),'','',preCols,postCols].join(','));
   });
+  D.moduleFeedback.forEach(r=>{
+    rows.push(['feedback',r.ts,r.date,csvEsc(r.word),r.moduleId,'','',preCols,postCols].join(','));
+  });
   if(rows.length<=1){ toast('Sem dados para exportar.'); return; }
   dl('floresca-pesquisa-'+today()+'.csv', '﻿'+rows.join('\n'), 'text/csv;charset=utf-8');
   toast('CSV exportado! 📊');
@@ -2205,6 +2218,7 @@ async function syncToResearch({ silent=false, requirePretest=true }={}){
       entries:       D.entries,
       experiments:   D.experiments,
       doseRecords:   D.doseRecords,
+      moduleFeedback: D.moduleFeedback,
       xp:            D.xp,
       analytics:     D.analytics,
       modulesCompletedList: doneMods,
