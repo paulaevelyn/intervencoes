@@ -63,6 +63,7 @@ let D = {
   reminders: { enabled:false, hour:20, hourTouched:false }, // lembrete diário local
   notificationLog: [],  // { ts, tema, foiAberta } — engajamento com notificações
   installSeen: false,   // já viu a instrução de instalar na tela de início
+  notifPromptSeen: false, // já viu o convite para ativar lembretes
   consentGiven: false,
   consentDate: null,    // ISO timestamp do consentimento
   participantId: null,  // UUID anônimo gerado uma vez
@@ -108,6 +109,7 @@ function load(){
       if(D.reminders.hourTouched === undefined) D.reminders.hourTouched = false;
       if(!D.notificationLog) D.notificationLog = [];
       if(D.installSeen === undefined) D.installSeen = false;
+      if(D.notifPromptSeen === undefined) D.notifPromptSeen = false;
     } else {
       D.participantId = generateUUID();
     }
@@ -2089,6 +2091,7 @@ function deleteAll(){
     nickname:D.nickname, demographics:D.demographics,
     reminders:D.reminders||{enabled:false,hour:20,hourTouched:false},
     notificationLog:[],
+    installSeen:D.installSeen||false, notifPromptSeen:D.notifPromptSeen||false,
     consentGiven:true, consentDate:cd,
     participantId:pid, lastSync:ls,
     pretest:null, posttest:null, posttestRemindAfter:null, userProfile:null,
@@ -2138,7 +2141,17 @@ function renderNudge(){
       <button class="nudge-btn" onclick="showInstallModal()">Ver como</button>
     </div>`;
   }
-  // 2. Retorno após pausa — acolher sem culpa (evita o efeito "estraguei tudo")
+  // 2. Convite para lembretes — uma vez, só depois da primeira prática (valor antes do pedido)
+  else if(('Notification' in window) && !D.reminders.enabled && !D.notifPromptSeen && D.pretest
+          && (D.entries.length >= 1 || MODULES.some(m=>D.moduleProgress[m.id]?.done))){
+    html = `<div class="nudge mint">
+      <div class="nudge-icon">🔔</div>
+      <div class="nudge-body"><strong>Quer um lembrete gentil por dia?</strong>
+      Um toque leve para manter a prática viva — no seu horário, no seu tom.</div>
+      <button class="nudge-btn" onclick="showNotifModal()">Ver como funciona</button>
+    </div>`;
+  }
+  // 3. Retorno após pausa — acolher sem culpa (evita o efeito "estraguei tudo")
   else if(daysSince !== null && daysSince >= 3){
     html = `<div class="nudge lav">
       <div class="nudge-icon">🤗</div>
@@ -2261,6 +2274,43 @@ function showInstallModal(){
     (_installPrompt ? `<button class="btn mint" onclick="installApp()">Instalar agora 🏮</button>` : '')
     + `<button class="btn ${_installPrompt?'ghost':'mint'}" onclick="closeModal();if(typeof renderNudge==='function')renderNudge()">Entendi</button>`;
   document.getElementById('modal-ov').classList.add('on');
+}
+
+/* ══════════════════════════════════
+   CONVITE PARA LEMBRETES
+   Explicar antes de pedir: o pedido de permissão do navegador
+   só chega depois de a pessoa aceitar o convite (SDT/CFT).
+   ══════════════════════════════════ */
+function showNotifModal(){
+  D.notifPromptSeen = true; save();
+  document.getElementById('modal-title').textContent = '🔔 Lembrete diário — como funciona';
+  document.getElementById('modal-body').innerHTML = `
+    <div style="text-align:left;font-size:13.5px;line-height:1.65">
+      <div style="display:flex;gap:9px;margin-bottom:9px"><span>🕐</span><span><strong>No máximo 1 por dia</strong>, no horário que você escolher — sempre convite, nunca cobrança.</span></div>
+      <div style="display:flex;gap:9px;margin-bottom:9px"><span>✅</span><span>Se você <strong>já praticou no dia</strong>, o lembrete nem aparece.</span></div>
+      <div style="display:flex;gap:9px;margin-bottom:9px"><span>💙</span><span>As frases se adaptam: em semanas mais difíceis, o tom é só de <strong>acolhimento</strong>.</span></div>
+      <div style="display:flex;gap:9px"><span>⚙️</span><span>Você pode <strong>desativar quando quiser</strong> em Dados → Lembretes.</span></div>
+    </div>`;
+  document.getElementById('modal-actions').innerHTML = `
+    <button class="btn mint" onclick="enableRemindersFromModal()">Ativar lembrete 🔔</button>
+    <button class="btn ghost" onclick="closeModal();renderNudge()">Agora não</button>`;
+  document.getElementById('modal-ov').classList.add('on');
+  trackAppEvent('notif_prompt_shown');
+}
+
+async function enableRemindersFromModal(){
+  closeModal();
+  const perm = await Notification.requestPermission();
+  if(perm !== 'granted'){
+    toast('Sem problema — dá para ativar depois em Dados → Lembretes.');
+    renderNudge(); return;
+  }
+  D.reminders.enabled = true; save();
+  scheduleLocalReminder();
+  renderReminderUI();
+  toast('🔔 Lembrete diário ativado! Ajuste o horário em Dados.');
+  trackAppEvent('reminders_on');
+  renderNudge();
 }
 
 /* ══════════════════════════════════
