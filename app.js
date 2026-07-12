@@ -57,6 +57,7 @@ let D = {
   demographics: null,
   reminders: { enabled:false, hour:20 },
   installSeen: false,   // já viu a instrução de instalar na tela de início
+  notifSeen: false,     // já viu a instrução de ativar lembretes
   consentGiven: false,
   consentDate: null,
   participantId: null,
@@ -98,6 +99,7 @@ function load(){
       if(D.demographics === undefined) D.demographics = null;
       if(!D.reminders) D.reminders = { enabled:false, hour:20 };
       if(D.installSeen === undefined) D.installSeen = false;
+      if(D.notifSeen === undefined) D.notifSeen = false;
       if(D.userProfile === undefined) D.userProfile = null;
     } else {
       D.participantId = generateUUID();
@@ -2332,6 +2334,15 @@ function renderNudge(){
       <button class="nudge-btn" onclick="showInstallModal()">Ver como</button>
     </div>`;
   }
+  // 1b. Ativar lembretes (uma vez, depois de conhecer a instalação)
+  else if(D.installSeen && !D.notifSeen && !D.reminders.enabled && ('Notification' in window) && Notification.permission==='default'){
+    html = `<div class="nudge mint">
+      <div class="nudge-icon">🔔</div>
+      <div class="nudge-body"><strong>Jardim se rega todo dia.</strong>
+      Um lembrete gentil por dia — só se você ainda não tiver regado — ajuda muito a criar o hábito.</div>
+      <button class="nudge-btn" onclick="showNotifModal()">Ver como funciona</button>
+    </div>`;
+  }
   // 2. Experimento ativo aguardando conclusão
   else if(activeExp){
     const exp = EXPERIMENTS.find(x=>x.id===activeExp.expId);
@@ -2470,6 +2481,82 @@ function showInstallModal(){
    LEMBRETES (Notification API + Service Worker)
    ══════════════════════════════════ */
 let _reminderTimer = null;
+
+/* Explica como os lembretes funcionam ANTES de pedir permissão ao navegador
+   (pre-permission prompt) — evita pedido "a frio", que tem alta recusa e
+   é quase irreversível de desfazer depois. */
+function showNotifModal(){
+  D.notifSeen = true; save();
+  const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  if(isIOS && !isInstalled()){
+    document.getElementById('modal-title').textContent = '📲 Primeiro, instale o app';
+    document.getElementById('modal-body').innerHTML =
+      `<p style="text-align:left">No iPhone, os lembretes só funcionam depois que o Floresça está instalado na tela de início — é uma regra da Apple, não nossa. 🌼</p>`;
+    document.getElementById('modal-actions').innerHTML =
+      `<button class="btn mint" onclick="closeModal();showInstallModal()">Ver como instalar</button>
+       <button class="btn ghost" onclick="closeModal();renderNudge()">Agora não</button>`;
+    document.getElementById('modal-ov').classList.add('on');
+    return;
+  }
+  if(!('Notification' in window)){
+    toast('Este navegador não suporta notificações.');
+    return;
+  }
+  if(Notification.permission === 'denied'){
+    document.getElementById('modal-title').textContent = '🔕 Notificações bloqueadas';
+    document.getElementById('modal-body').innerHTML =
+      `<p style="text-align:left">Você bloqueou as notificações do Floresça anteriormente. Para ativar, libere manualmente nas configurações do navegador (ícone de cadeado ao lado do endereço → Notificações → Permitir).</p>`;
+    document.getElementById('modal-actions').innerHTML = `<button class="btn mint" onclick="closeModal()">Entendi</button>`;
+    document.getElementById('modal-ov').classList.add('on');
+    return;
+  }
+  document.getElementById('modal-title').textContent = '🔔 Como funcionam os lembretes';
+  document.getElementById('modal-body').innerHTML = `
+    <div style="text-align:left;font-size:13.5px;line-height:1.6">
+      <div style="margin-bottom:10px">🔔 <strong>1 lembrete por dia</strong>, no máximo — no horário que você escolher.</div>
+      <div style="margin-bottom:10px">🤫 <strong>Se você já registrou algo naquele dia</strong>, ele nem dispara.</div>
+      <div style="margin-bottom:10px">📲 Funciona melhor com o app <strong>instalado</strong> na tela de início.</div>
+      <div style="margin-bottom:14px">🔕 Você pode <strong>desligar quando quiser</strong> em Dados → Lembretes.</div>
+      <label style="font-size:12.5px;font-weight:700;color:var(--muted);display:block;margin-bottom:6px">Horário do lembrete</label>
+      <select id="notif-hour" class="demo-input" style="width:auto;padding:8px 12px">
+        <option value="8">08:00</option>
+        <option value="12">12:00</option>
+        <option value="18">18:00</option>
+        <option value="20" selected>20:00</option>
+        <option value="21">21:00</option>
+      </select>
+    </div>`;
+  document.getElementById('modal-actions').innerHTML =
+    `<button class="btn mint" onclick="activateNotifFromModal()">Ativar lembrete 🔔</button>
+     <button class="btn ghost" onclick="closeModal();renderNudge()">Agora não</button>`;
+  document.getElementById('modal-ov').classList.add('on');
+}
+
+async function activateNotifFromModal(){
+  const hour = parseInt(document.getElementById('notif-hour')?.value || '20');
+  const perm = await Notification.requestPermission();
+  if(perm !== 'granted'){
+    toast('Permissão negada — você pode ativar depois em Dados → Lembretes.');
+    closeModal();
+    return;
+  }
+  D.reminders.enabled = true;
+  D.reminders.hour = hour;
+  save();
+  scheduleLocalReminder();
+  trackAppEvent('reminders_on');
+  closeModal();
+  toast('🔔 Lembrete ativado! Você vai receber às '+p2(hour)+':00.');
+  // notificação de boas-vindas — mostra exatamente como o lembrete vai aparecer
+  try{
+    const reg = await navigator.serviceWorker?.getRegistration();
+    const msg = '🌱 Combinado! Todo dia às '+p2(hour)+':00 eu te lembro de regar — só se você ainda não tiver passado por aqui.';
+    if(reg){ reg.showNotification('Floresça', { body: msg, icon: 'icon-192.png', badge: 'icon-192.png', tag: 'floresca-welcome' }); }
+    else { new Notification('Floresça', { body: msg, icon: 'icon-192.png' }); }
+  }catch(e){}
+  renderReminderUI();
+  if(typeof renderNudge==='function') renderNudge();
+}
 
 async function toggleReminders(cb){
   if(cb.checked){
