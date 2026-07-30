@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Segurança Interna: Etapa 3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --pea-coral: #D96C63;
+    --pea-musgo: #5E7D73;
+    --pea-areia: #F5F0E8;
+    --pea-grafite: #2E2E2E;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  body {
+    background: var(--pea-areia);
+    color: var(--pea-grafite);
+    font-family: 'Lato', Arial, sans-serif;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .pea-app {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 40px 24px 56px;
+    min-height: 100vh;
+  }
+
+  .pea-marca {
+    text-align: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--pea-musgo);
+    margin-bottom: 28px;
+    opacity: 0.85;
+  }
+
+  .pea-progresso {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 36px;
+  }
+
+  .pea-ponto {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: rgba(94, 125, 115, 0.25);
+    transition: background 0.3s ease, transform 0.3s ease;
+  }
+
+  .pea-ponto.pea-ativo {
+    background: var(--pea-coral);
+    transform: scale(1.2);
+  }
+
+  .pea-ponto.pea-concluido {
+    background: var(--pea-musgo);
+  }
+
+  .pea-tela {
+    display: none;
+    animation: pea-surgir 0.5s ease;
+  }
+
+  .pea-tela.pea-visivel {
+    display: block;
+  }
+
+  @keyframes pea-surgir {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .pea-cartao {
+    background: #FFFFFF;
+    border-radius: 18px;
+    padding: 40px 32px;
+    box-shadow: 0 2px 18px rgba(46, 46, 46, 0.06);
+  }
+
+  .pea-titulo {
+    font-family: 'Playfair Display', serif;
+    font-weight: 600;
+    font-size: 26px;
+    color: var(--pea-grafite);
+    margin: 0 0 6px;
+    line-height: 1.3;
+  }
+
+  .pea-texto {
+    font-size: 17px;
+    color: var(--pea-grafite);
+    margin: 0 0 18px;
+  }
+
+  .pea-texto:last-of-type {
+    margin-bottom: 0;
+  }
+
+  .pea-perguntas {
+    background: var(--pea-areia);
+    border-left: 3px solid var(--pea-musgo);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 22px 0;
+    list-style: none;
+  }
+
+  .pea-perguntas li {
+    font-size: 16px;
+    margin: 0 0 10px;
+    color: var(--pea-grafite);
+    padding-left: 18px;
+    position: relative;
+  }
+
+  .pea-perguntas li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 9px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--pea-musgo);
+  }
+
+  .pea-perguntas li:last-child {
+    margin-bottom: 0;
+  }
+
+  .pea-nota {
+    font-size: 14px;
+    color: rgba(46, 46, 46, 0.55);
+    margin: 12px 0 0;
+  }
+
+  .pea-navegacao {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-top: 32px;
+  }
+
+  .pea-navegacao-direita {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-left: auto;
+  }
+
+  .pea-btn {
+    font-family: 'Lato', Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    border: none;
+    border-radius: 30px;
+    padding: 14px 30px;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    white-space: nowrap;
+  }
+
+  .pea-btn:active {
+    transform: scale(0.97);
+  }
+
+  .pea-btn-continuar {
+    background: var(--pea-coral);
+    color: #FFFFFF;
+    box-shadow: 0 4px 14px rgba(217, 108, 99, 0.3);
+  }
+
+  .pea-btn-continuar:hover {
+    background: #C65B52;
+  }
+
+  .pea-btn-voltar {
+    background: transparent;
+    color: var(--pea-musgo);
+    padding: 14px 10px;
+  }
+
+  .pea-btn-voltar:hover {
+    color: var(--pea-grafite);
+  }
+
+  .pea-btn-pular {
+    background: transparent;
+    color: var(--pea-musgo);
+    border: 1.5px solid rgba(94, 125, 115, 0.35);
+    padding: 12.5px 22px;
+  }
+
+  .pea-btn-pular:hover {
+    border-color: var(--pea-musgo);
+    color: var(--pea-grafite);
+  }
+
+  .pea-link-discreto {
+    display: block;
+    text-align: center;
+    background: none;
+    border: none;
+    color: var(--pea-musgo);
+    font-family: 'Lato', Arial, sans-serif;
+    font-size: 15px;
+    text-decoration: underline;
+    cursor: pointer;
+    margin: 18px auto 0;
+    padding: 4px;
+  }
+
+  .pea-link-discreto:hover {
+    color: var(--pea-grafite);
+  }
+
+  @media (max-width: 480px) {
+    .pea-app {
+      padding: 28px 16px 44px;
+    }
+    .pea-cartao {
+      padding: 30px 22px;
+      border-radius: 14px;
+    }
+    .pea-titulo {
+      font-size: 22px;
+    }
+    .pea-texto {
+      font-size: 16px;
+    }
+    .pea-btn {
+      padding: 13px 22px;
+      font-size: 15px;
+    }
+    .pea-navegacao {
+      justify-content: center;
+    }
+    .pea-navegacao-direita {
+      margin-left: 0;
+      width: 100%;
+      justify-content: center;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="pea-app">
+
+  <div class="pea-marca">Segurança Interna</div>
+
+  <div class="pea-progresso" id="pea-progresso">
+    <span class="pea-ponto" data-indice="0"></span>
+    <span class="pea-ponto" data-indice="1"></span>
+    <span class="pea-ponto" data-indice="2"></span>
+    <span class="pea-ponto" data-indice="3"></span>
+  </div>
+
+  <!-- Tela 0: Introdução -->
+  <section class="pea-tela" data-tela="0">
+    <div class="pea-cartao">
+      <p class="pea-titulo">Pequenas portas de entrada</p>
+      <p class="pea-texto">As próximas telas trazem pequenos exercícios. Nenhum deles é obrigatório. Cada um pode ser pulado a qualquer momento, sem necessidade de explicação.</p>
+      <p class="pea-texto">A ideia não é fazer certo. É só experimentar, se fizer sentido no momento.</p>
+      <div class="pea-navegacao">
+        <span></span>
+        <div class="pea-navegacao-direita">
+          <button class="pea-btn pea-btn-continuar" data-acao="continuar">Continuar</button>
+        </div>
+      </div>
+      <button class="pea-link-discreto" data-acao="pular-tudo">Prefiro pular os exercícios por agora</button>
+    </div>
+  </section>
+
+  <!-- Tela 1: Exercício 1 - competência -->
+  <section class="pea-tela" data-tela="1">
+    <div class="pea-cartao">
+      <p class="pea-titulo">Um momento em que você deu conta</p>
+      <p class="pea-texto">Pense em uma vez, não importa quão pequena, em que você lidou com alguma coisa sozinha. Pode ter sido algo simples, como resolver um problema prático, ou mais complexo, como atravessar uma fase difícil.</p>
+      <p class="pea-texto">Algumas perguntas para ficar só com você, sem precisar responder em voz alta ou por escrito:</p>
+      <ul class="pea-perguntas">
+        <li>O que você fez naquele momento que funcionou?</li>
+        <li>O que o corpo sentiu quando percebeu que tinha dado conta?</li>
+        <li>Se essa capacidade ainda existe em você hoje, o que isso muda?</li>
+      </ul>
+      <p class="pea-nota">Não é preciso escrever nada aqui. Passar por essas perguntas em pensamento já vale.</p>
+      <div class="pea-navegacao">
+        <button class="pea-btn pea-btn-voltar" data-acao="voltar">Voltar</button>
+        <div class="pea-navegacao-direita">
+          <button class="pea-btn pea-btn-pular" data-acao="continuar">Pular</button>
+          <button class="pea-btn pea-btn-continuar" data-acao="continuar">Continuar</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tela 2: Exercício 2 - ponto de apoio -->
+  <section class="pea-tela" data-tela="2">
+    <div class="pea-cartao">
+      <p class="pea-titulo">Um ponto de apoio</p>
+      <p class="pea-texto">Se fizer sentido agora, você pode notar por um instante os pés apoiados no chão, ou uma mão apoiada em alguma superfície por perto, como a mesa ou o braço da cadeira.</p>
+      <p class="pea-texto">Não é preciso fechar os olhos nem mudar de posição. Só notar, por alguns segundos, que existe um ponto de apoio real e físico sustentando você agora.</p>
+      <p class="pea-nota">Isso é uma opção, não uma instrução obrigatória.</p>
+      <div class="pea-navegacao">
+        <button class="pea-btn pea-btn-voltar" data-acao="voltar">Voltar</button>
+        <div class="pea-navegacao-direita">
+          <button class="pea-btn pea-btn-pular" data-acao="continuar">Pular</button>
+          <button class="pea-btn pea-btn-continuar" data-acao="continuar">Continuar</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tela 3: Fechamento -->
+  <section class="pea-tela" data-tela="3">
+    <div class="pea-cartao">
+      <p class="pea-titulo">Qualquer caminho é válido</p>
+      <p class="pea-texto">Ter feito os exercícios, ter feito só um deles, ou ter pulado todos: qualquer uma dessas opções é uma resposta válida para este momento.</p>
+      <p class="pea-texto">O que importa é que a porta ficou aberta. Ela continua aberta para quando fizer sentido voltar.</p>
+      <div class="pea-navegacao">
+        <button class="pea-btn pea-btn-voltar" data-acao="voltar">Voltar</button>
+        <div class="pea-navegacao-direita">
+          <button class="pea-btn pea-btn-continuar" data-acao="concluir">Concluir esta etapa</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  var CHAVE_PROGRESSO = 'progresso_seguranca-interna';
+  var ETAPA_ATUAL = 3;
+  var PROXIMA_ETAPA = 4;
+  var TOTAL_TELAS = 4;
+
+  var telas = Array.prototype.slice.call(document.querySelectorAll('.pea-tela'));
+  var pontos = Array.prototype.slice.call(document.querySelectorAll('.pea-ponto'));
+  var telaAtual = 0;
+
+  function lerEstado() {
+    try {
+      return JSON.parse(localStorage.getItem(CHAVE_PROGRESSO)) || {};
+    } catch (erro) {
+      return {};
+    }
+  }
+
+  function carregarProgresso() {
+    var salvo = lerEstado();
+    if (salvo && salvo.etapaAtual === ETAPA_ATUAL && typeof salvo.telaAtual === 'number') {
+      return Math.min(Math.max(salvo.telaAtual, 0), TOTAL_TELAS - 1);
+    }
+    return 0;
+  }
+
+  function salvarProgresso(indiceTela, etapa) {
+    var existente = lerEstado();
+    var estado = { etapaAtual: etapa, telaAtual: indiceTela, respostas: existente.respostas || {} };
+    localStorage.setItem(CHAVE_PROGRESSO, JSON.stringify(estado));
+  }
+
+  function renderizar() {
+    telas.forEach(function (tela, indice) {
+      tela.classList.toggle('pea-visivel', indice === telaAtual);
+    });
+    pontos.forEach(function (ponto, indice) {
+      ponto.classList.toggle('pea-ativo', indice === telaAtual);
+      ponto.classList.toggle('pea-concluido', indice < telaAtual);
+    });
+    dispararRedimensionamento();
+  }
+
+  function irPara(indice) {
+    telaAtual = Math.min(Math.max(indice, 0), TOTAL_TELAS - 1);
+    salvarProgresso(telaAtual, ETAPA_ATUAL);
+    renderizar();
+    window.scrollTo(0, 0);
+  }
+
+  function concluirEtapa() {
+    salvarProgresso(0, PROXIMA_ETAPA);
+    console.log('etapa concluída: seguranca-interna, etapa ' + ETAPA_ATUAL);
+    // TODO: integração com Apps Script ao concluir etapa
+    telaAtual = TOTAL_TELAS - 1;
+    renderizar();
+  }
+
+  document.querySelectorAll('[data-acao="continuar"]').forEach(function (botao) {
+    botao.addEventListener('click', function () {
+      irPara(telaAtual + 1);
+    });
+  });
+
+  document.querySelectorAll('[data-acao="voltar"]').forEach(function (botao) {
+    botao.addEventListener('click', function () {
+      irPara(telaAtual - 1);
+    });
+  });
+
+  document.querySelectorAll('[data-acao="pular-tudo"]').forEach(function (botao) {
+    botao.addEventListener('click', function () {
+      irPara(TOTAL_TELAS - 1);
+    });
+  });
+
+  document.querySelectorAll('[data-acao="concluir"]').forEach(function (botao) {
+    botao.addEventListener('click', concluirEtapa);
+  });
+
+  function dispararRedimensionamento() {
+    var altura = document.body.scrollHeight;
+    window.parent.postMessage({ type: 'resize', height: altura }, '*');
+  }
+
+  var resizeObserver = new ResizeObserver(function () {
+    dispararRedimensionamento();
+  });
+  resizeObserver.observe(document.body);
+
+  telaAtual = carregarProgresso();
+  renderizar();
+  dispararRedimensionamento();
+})();
+</script>
+
+</body>
+</html>
