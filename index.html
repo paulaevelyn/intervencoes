@@ -40,6 +40,7 @@
   }
 
   .pea-marca {
+    display: block;
     text-align: center;
     font-family: 'Playfair Display', serif;
     font-size: 15px;
@@ -120,6 +121,109 @@
     margin: 12px 0 0;
   }
 
+  .pea-mapa {
+    list-style: none;
+    margin: 22px 0;
+    padding: 0;
+  }
+
+  .pea-mapa li {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(94, 125, 115, 0.18);
+  }
+
+  .pea-mapa li:last-child {
+    border-bottom: none;
+  }
+
+  .pea-mapa-numero {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--pea-musgo);
+    color: #FFFFFF;
+    font-family: 'Playfair Display', serif;
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2px;
+  }
+
+  .pea-mapa-texto {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .pea-mapa-texto strong {
+    display: block;
+    font-size: 16px;
+    color: var(--pea-grafite);
+  }
+
+  .pea-mapa-texto small {
+    display: block;
+    font-size: 14px;
+    color: rgba(46, 46, 46, 0.65);
+    margin-top: 2px;
+  }
+
+  .pea-mapa-status {
+    flex-shrink: 0;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    padding: 4px 10px;
+    border-radius: 12px;
+    white-space: nowrap;
+    align-self: center;
+  }
+
+  .pea-mapa-status.pea-status-concluida {
+    background: rgba(94, 125, 115, 0.15);
+    color: var(--pea-musgo);
+  }
+
+  .pea-mapa-status.pea-status-atual {
+    background: rgba(217, 108, 99, 0.15);
+    color: var(--pea-coral);
+  }
+
+  .pea-bemestar {
+    list-style: none;
+    margin: 20px 0;
+    padding: 0;
+  }
+
+  .pea-bemestar li {
+    position: relative;
+    padding-left: 20px;
+    margin-bottom: 10px;
+    font-size: 16px;
+    color: var(--pea-grafite);
+  }
+
+  .pea-bemestar li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 9px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--pea-musgo);
+  }
+
+  .pea-bemestar li:last-child {
+    margin-bottom: 0;
+  }
+
   .pea-campo-label {
     display: block;
     font-size: 14px;
@@ -190,6 +294,30 @@
     color: var(--pea-grafite);
   }
 
+  .pea-btn-apagar {
+    background: transparent;
+    border: 1.5px solid rgba(217, 108, 99, 0.4);
+    color: var(--pea-coral);
+    padding: 12px 20px;
+    font-size: 15px;
+  }
+
+  .pea-btn-apagar:hover {
+    background: rgba(217, 108, 99, 0.08);
+    border-color: var(--pea-coral);
+  }
+
+  .pea-confirmacao-apagar {
+    display: none;
+    font-size: 14px;
+    color: var(--pea-musgo);
+    margin-top: 12px;
+  }
+
+  .pea-confirmacao-apagar.pea-visivel-inline {
+    display: block;
+  }
+
   .pea-espacador {
     flex: 1;
   }
@@ -230,6 +358,12 @@
       padding: 13px 24px;
       font-size: 15px;
     }
+    .pea-mapa li {
+      flex-wrap: wrap;
+    }
+    .pea-mapa-status {
+      margin-left: 42px;
+    }
   }
 </style>
 </head>
@@ -244,6 +378,7 @@
     <span class="pea-ponto" data-indice="1"></span>
     <span class="pea-ponto" data-indice="2"></span>
     <span class="pea-ponto" data-indice="3"></span>
+    <span class="pea-ponto" data-indice="4"></span>
   </div>
 
   <!-- Tela 0: Boas-vindas -->
@@ -260,12 +395,54 @@
     </div>
   </section>
 
-  <!-- Tela 1: Como funciona -->
+  <!-- Tela 1: Mapa das cinco etapas -->
   <section class="pea-tela" data-tela="1">
     <div class="pea-cartao">
       <p class="pea-titulo">Um caminho em cinco partes</p>
-      <p class="pea-texto">O programa tem cinco etapas curtas. Primeiro você mapeia como busca segurança hoje, depois olha para a diferença entre segurança externa e interna, e nas etapas seguintes experimenta pequenas práticas, no seu próprio ritmo, até um fechamento.</p>
-      <p class="pea-texto">Nenhuma etapa exige respostas certas. Você pode pular qualquer exercício, e sempre pode voltar.</p>
+      <p class="pea-texto">Você pode ver abaixo o que cada etapa traz. Nenhuma delas exige respostas certas, e você pode pular qualquer exercício.</p>
+      <ol class="pea-mapa">
+        <li>
+          <span class="pea-mapa-numero">1</span>
+          <span class="pea-mapa-texto">
+            <strong>Mapear</strong>
+            <small>Reconhecer onde você busca segurança hoje.</small>
+          </span>
+          <span class="pea-mapa-status" data-status-etapa="1"></span>
+        </li>
+        <li>
+          <span class="pea-mapa-numero">2</span>
+          <span class="pea-mapa-texto">
+            <strong>Diferenciar</strong>
+            <small>Segurança que vem de fora e segurança que se constrói por dentro.</small>
+          </span>
+          <span class="pea-mapa-status" data-status-etapa="2"></span>
+        </li>
+        <li>
+          <span class="pea-mapa-numero">3</span>
+          <span class="pea-mapa-texto">
+            <strong>Praticar, parte 1</strong>
+            <small>Pequenas portas de entrada, no seu ritmo.</small>
+          </span>
+          <span class="pea-mapa-status" data-status-etapa="3"></span>
+        </li>
+        <li>
+          <span class="pea-mapa-numero">4</span>
+          <span class="pea-mapa-texto">
+            <strong>Praticar, parte 2</strong>
+            <small>Práticas um pouco mais diretas, sempre opcionais.</small>
+          </span>
+          <span class="pea-mapa-status" data-status-etapa="4"></span>
+        </li>
+        <li>
+          <span class="pea-mapa-numero">5</span>
+          <span class="pea-mapa-texto">
+            <strong>Fechar</strong>
+            <small>Uma síntese do caminho percorrido.</small>
+          </span>
+          <span class="pea-mapa-status" data-status-etapa="5"></span>
+        </li>
+      </ol>
+      <p class="pea-nota">Você sempre pode voltar para esta página clicando em "Segurança Interna" no topo de qualquer etapa.</p>
       <div class="pea-navegacao">
         <button class="pea-btn pea-btn-voltar" data-acao="voltar">Voltar</button>
         <button class="pea-btn pea-btn-continuar" data-acao="continuar">Continuar</button>
@@ -273,8 +450,28 @@
     </div>
   </section>
 
-  <!-- Tela 2: Espaço para escrever -->
+  <!-- Tela 2: Liberdade e bem-estar digital -->
   <section class="pea-tela" data-tela="2">
+    <div class="pea-cartao">
+      <p class="pea-titulo">Este espaço é seu</p>
+      <p class="pea-texto">Você pode fechar esta página a qualquer momento. Nada se perde, e não existe um jeito certo de usar este programa.</p>
+      <ul class="pea-bemestar">
+        <li>Não há sequências para manter, nem lembretes cobrando frequência.</li>
+        <li>Nenhuma etapa é obrigatória. Pular também é uma escolha válida.</li>
+        <li>Seus dados ficam salvos apenas neste dispositivo, e só você tem acesso a eles.</li>
+      </ul>
+      <p class="pea-texto">Se quiser, você também pode apagar tudo o que já foi salvo até agora.</p>
+      <button class="pea-btn pea-btn-apagar" data-acao="apagar-dados">Apagar meus dados</button>
+      <p class="pea-confirmacao-apagar" id="pea-confirmacao-apagar">Pronto. Os dados salvos neste dispositivo foram apagados.</p>
+      <div class="pea-navegacao">
+        <button class="pea-btn pea-btn-voltar" data-acao="voltar">Voltar</button>
+        <button class="pea-btn pea-btn-continuar" data-acao="continuar">Continuar</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tela 3: Espaço para escrever -->
+  <section class="pea-tela" data-tela="3">
     <div class="pea-cartao">
       <p class="pea-titulo">Antes de começar</p>
       <p class="pea-texto">Se quiser, reserve um instante para responder, só para você.</p>
@@ -288,8 +485,8 @@
     </div>
   </section>
 
-  <!-- Tela 3: Chamada final -->
-  <section class="pea-tela" data-tela="3">
+  <!-- Tela 4: Chamada final -->
+  <section class="pea-tela" data-tela="4">
     <div class="pea-cartao">
       <p class="pea-titulo" id="pea-titulo-final">Pronto para começar</p>
       <p class="pea-texto" id="pea-texto-final">Você pode começar agora, no seu próprio ritmo.</p>
@@ -307,7 +504,7 @@
   'use strict';
 
   var CHAVE_PROGRESSO = 'progresso_seguranca-interna';
-  var TOTAL_TELAS = 4;
+  var TOTAL_TELAS = 5;
 
   var telas = Array.prototype.slice.call(document.querySelectorAll('.pea-tela'));
   var pontos = Array.prototype.slice.call(document.querySelectorAll('.pea-ponto'));
@@ -369,6 +566,23 @@
     document.getElementById('pea-btn-final').textContent = destino.rotuloBotao;
   }
 
+  function popularMapaEtapas() {
+    var existente = lerEstado();
+    var etapaAtual = existente.programaConcluido ? 6 : (existente.etapaAtual || 0);
+    document.querySelectorAll('[data-status-etapa]').forEach(function (span) {
+      var numero = parseInt(span.getAttribute('data-status-etapa'), 10);
+      span.className = 'pea-mapa-status';
+      span.textContent = '';
+      if (existente.programaConcluido || numero < etapaAtual) {
+        span.classList.add('pea-status-concluida');
+        span.textContent = 'concluída';
+      } else if (numero === etapaAtual) {
+        span.classList.add('pea-status-atual');
+        span.textContent = 'você está aqui';
+      }
+    });
+  }
+
   function renderizar() {
     telas.forEach(function (tela, indice) {
       tela.classList.toggle('pea-visivel', indice === telaAtual);
@@ -425,6 +639,19 @@
     });
   });
 
+  document.querySelectorAll('[data-acao="apagar-dados"]').forEach(function (botao) {
+    botao.addEventListener('click', function () {
+      var confirmado = window.confirm('Isso apaga todo o progresso e o que você escreveu neste dispositivo. Não é possível desfazer. Quer apagar mesmo assim?');
+      if (!confirmado) { return; }
+      localStorage.removeItem(CHAVE_PROGRESSO);
+      if (campoMotivo) { campoMotivo.value = ''; }
+      popularMapaEtapas();
+      var confirmacao = document.getElementById('pea-confirmacao-apagar');
+      if (confirmacao) { confirmacao.classList.add('pea-visivel-inline'); }
+      dispararRedimensionamento();
+    });
+  });
+
   function restaurarMotivoSalvo() {
     var existente = lerEstado();
     if (existente.respostas && existente.respostas.motivoInicial && campoMotivo) {
@@ -443,6 +670,7 @@
   resizeObserver.observe(document.body);
 
   restaurarMotivoSalvo();
+  popularMapaEtapas();
   renderizar();
   dispararRedimensionamento();
 })();

@@ -40,14 +40,22 @@
   }
 
   .pea-marca {
+    display: block;
     text-align: center;
     font-family: 'Playfair Display', serif;
     font-size: 15px;
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--pea-musgo);
+    text-decoration: none;
     margin-bottom: 28px;
     opacity: 0.85;
+    transition: opacity 0.15s ease;
+  }
+
+  .pea-marca:hover {
+    opacity: 1;
+    text-decoration: underline;
   }
 
   .pea-progresso {
@@ -229,7 +237,7 @@
 
 <div class="pea-app">
 
-  <div class="pea-marca">Segurança Interna</div>
+  <a href="index.html" class="pea-marca">Segurança Interna</a>
 
   <div class="pea-progresso" id="pea-progresso">
     <span class="pea-ponto" data-indice="0"></span>
