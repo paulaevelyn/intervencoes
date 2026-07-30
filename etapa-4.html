@@ -499,8 +499,7 @@
     salvarProgresso(0, PROXIMA_ETAPA);
     console.log('etapa concluída: seguranca-interna, etapa ' + ETAPA_ATUAL);
     // TODO: integração com Apps Script ao concluir etapa
-    telaAtual = TOTAL_TELAS - 1;
-    renderizar();
+    window.location.href = 'etapa-' + PROXIMA_ETAPA + '.html';
   }
 
   document.querySelectorAll('[data-acao="continuar"]').forEach(function (botao) {
