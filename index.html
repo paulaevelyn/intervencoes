@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Segurança Interna: Etapa 1</title>
+<title>Segurança Interna</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
@@ -104,15 +104,6 @@
     line-height: 1.3;
   }
 
-  .pea-subtitulo {
-    font-size: 14px;
-    color: var(--pea-musgo);
-    font-weight: 700;
-    letter-spacing: 0.03em;
-    text-transform: uppercase;
-    margin: 0 0 20px;
-  }
-
   .pea-texto {
     font-size: 17px;
     color: var(--pea-grafite);
@@ -123,37 +114,36 @@
     margin-bottom: 0;
   }
 
-  .pea-exemplos {
-    background: var(--pea-areia);
-    border-left: 3px solid var(--pea-musgo);
-    border-radius: 8px;
-    padding: 16px 20px;
-    margin: 22px 0;
-  }
-
-  .pea-exemplos p {
-    font-size: 16px;
-    margin: 0 0 10px;
-    color: var(--pea-grafite);
-  }
-
-  .pea-exemplos p:last-child {
-    margin-bottom: 0;
-  }
-
-  .pea-pergunta {
-    font-size: 17px;
-    font-style: italic;
-    color: var(--pea-musgo);
-    margin: 24px 0 0;
-    padding-top: 20px;
-    border-top: 1px solid rgba(94, 125, 115, 0.2);
-  }
-
   .pea-nota {
     font-size: 14px;
     color: rgba(46, 46, 46, 0.55);
     margin: 12px 0 0;
+  }
+
+  .pea-campo-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--pea-musgo);
+    margin: 20px 0 8px;
+  }
+
+  .pea-campo-texto {
+    width: 100%;
+    min-height: 84px;
+    resize: vertical;
+    border: 1.5px solid rgba(94, 125, 115, 0.35);
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-family: 'Lato', Arial, sans-serif;
+    font-size: 16px;
+    color: var(--pea-grafite);
+    background: var(--pea-areia);
+  }
+
+  .pea-campo-texto:focus {
+    outline: none;
+    border-color: var(--pea-musgo);
   }
 
   .pea-navegacao {
@@ -204,6 +194,24 @@
     flex: 1;
   }
 
+  .pea-link-discreto {
+    display: block;
+    text-align: center;
+    background: none;
+    border: none;
+    color: var(--pea-musgo);
+    font-family: 'Lato', Arial, sans-serif;
+    font-size: 15px;
+    text-decoration: underline;
+    cursor: pointer;
+    margin: 18px auto 0;
+    padding: 4px;
+  }
+
+  .pea-link-discreto:hover {
+    color: var(--pea-grafite);
+  }
+
   @media (max-width: 480px) {
     .pea-app {
       padding: 28px 16px 44px;
@@ -215,7 +223,7 @@
     .pea-titulo {
       font-size: 22px;
     }
-    .pea-texto, .pea-pergunta {
+    .pea-texto {
       font-size: 16px;
     }
     .pea-btn {
@@ -236,36 +244,28 @@
     <span class="pea-ponto" data-indice="1"></span>
     <span class="pea-ponto" data-indice="2"></span>
     <span class="pea-ponto" data-indice="3"></span>
-    <span class="pea-ponto" data-indice="4"></span>
   </div>
 
-  <!-- Tela 0: Abertura -->
+  <!-- Tela 0: Boas-vindas -->
   <section class="pea-tela" data-tela="0">
     <div class="pea-cartao">
-      <p class="pea-titulo">Antes de saber o que vai acontecer</p>
-      <p class="pea-texto">Imagine que você está esperando uma resposta importante. Um resultado, uma mensagem, uma decisão que não depende só de você.</p>
-      <p class="pea-texto">Nesse intervalo, antes de saber como vai ser, alguma coisa se move por dentro. Talvez um aperto no peito. Talvez a mente comece a girar em busca de alguma certeza para se agarrar. Talvez você já saiba, quase no automático, o que costuma fazer nessas horas para se sentir um pouco mais seguro.</p>
-      <p class="pea-texto">Esta etapa não pede que você entenda nada disso ainda. Pede só que você entre.</p>
+      <p class="pea-titulo">Você chegou a este espaço</p>
+      <p class="pea-texto">Segurança Interna é um programa para ajudar você a diferenciar duas formas de buscar segurança: uma que depende de fora, e outra que pode ser construída por dentro.</p>
+      <p class="pea-texto">Não existe pressa aqui. Cada etapa pode ser feita no seu tempo, e você pode voltar quantas vezes quiser.</p>
       <div class="pea-navegacao">
         <span class="pea-espacador"></span>
         <button class="pea-btn pea-btn-continuar" data-acao="continuar">Continuar</button>
       </div>
+      <button class="pea-link-discreto" data-acao="pular-apresentacao">Pular a apresentação e começar agora</button>
     </div>
   </section>
 
-  <!-- Tela 1: Mapeamento - validação externa -->
+  <!-- Tela 1: Como funciona -->
   <section class="pea-tela" data-tela="1">
     <div class="pea-cartao">
-      <p class="pea-subtitulo">Onde você busca segurança hoje</p>
-      <p class="pea-titulo">A aprovação de quem está por perto</p>
-      <p class="pea-texto">Existe uma forma bastante comum de buscar segurança: sentir que está tudo bem porque alguém de fora confirmou isso.</p>
-      <div class="pea-exemplos">
-        <p>Reler uma mensagem várias vezes tentando entender o tom de quem escreveu.</p>
-        <p>Perguntar a opinião de outras pessoas antes de se sentir seguro em relação a uma escolha que já era sua.</p>
-      </div>
-      <p class="pea-texto">Esse padrão tem uma lógica própria. Quando alguém de fora valida, o corpo relaxa por um instante.</p>
-      <p class="pea-pergunta">Isso é algo que você reconhece em você, mesmo que só de vez em quando?</p>
-      <p class="pea-nota">Não é preciso responder nada agora. Só perceber já é suficiente.</p>
+      <p class="pea-titulo">Um caminho em cinco partes</p>
+      <p class="pea-texto">O programa tem cinco etapas curtas. Primeiro você mapeia como busca segurança hoje, depois olha para a diferença entre segurança externa e interna, e nas etapas seguintes experimenta pequenas práticas, no seu próprio ritmo, até um fechamento.</p>
+      <p class="pea-texto">Nenhuma etapa exige respostas certas. Você pode pular qualquer exercício, e sempre pode voltar.</p>
       <div class="pea-navegacao">
         <button class="pea-btn pea-btn-voltar" data-acao="voltar">Voltar</button>
         <button class="pea-btn pea-btn-continuar" data-acao="continuar">Continuar</button>
@@ -273,56 +273,29 @@
     </div>
   </section>
 
-  <!-- Tela 2: Mapeamento - controle -->
+  <!-- Tela 2: Espaço para escrever -->
   <section class="pea-tela" data-tela="2">
     <div class="pea-cartao">
-      <p class="pea-subtitulo">Onde você busca segurança hoje</p>
-      <p class="pea-titulo">O controle sobre o que pode acontecer</p>
-      <p class="pea-texto">Outra forma comum de buscar segurança é tentar prever ou dirigir o que vai acontecer, incluindo como as pessoas ao redor vão se comportar.</p>
-      <div class="pea-exemplos">
-        <p>Planejar cada detalhe antes de sair de casa, com um plano alternativo para o que pode dar errado.</p>
-        <p>Sentir dificuldade em delegar uma tarefa porque só se sente tranquilo fazendo do seu próprio jeito.</p>
-      </div>
-      <p class="pea-texto">A lógica por trás é parecida com a anterior. Se é possível prever o resultado, a incerteza diminui um pouco.</p>
-      <p class="pea-pergunta">Isso é algo que você reconhece em você, mesmo que só de vez em quando?</p>
-      <p class="pea-nota">Não é preciso responder nada agora. Só perceber já é suficiente.</p>
+      <p class="pea-titulo">Antes de começar</p>
+      <p class="pea-texto">Se quiser, reserve um instante para responder, só para você.</p>
+      <label class="pea-campo-label" for="pea-campo-motivo">O que te trouxe até aqui hoje? (opcional)</label>
+      <textarea class="pea-campo-texto" id="pea-campo-motivo" placeholder="Se quiser, escreva aqui"></textarea>
+      <p class="pea-nota">Isso é opcional e fica salvo apenas neste dispositivo. Ninguém mais vê.</p>
       <div class="pea-navegacao">
         <button class="pea-btn pea-btn-voltar" data-acao="voltar">Voltar</button>
-        <button class="pea-btn pea-btn-continuar" data-acao="continuar">Continuar</button>
+        <button class="pea-btn pea-btn-continuar" data-acao="continuar-motivo">Continuar</button>
       </div>
     </div>
   </section>
 
-  <!-- Tela 3: Mapeamento - evitação -->
+  <!-- Tela 3: Chamada final -->
   <section class="pea-tela" data-tela="3">
     <div class="pea-cartao">
-      <p class="pea-subtitulo">Onde você busca segurança hoje</p>
-      <p class="pea-titulo">A distância do que incomoda</p>
-      <p class="pea-texto">Existe ainda uma terceira forma: buscar segurança evitando aquilo que poderia gerar desconforto, como uma conversa difícil ou uma situação em que as emoções ficariam mais expostas.</p>
-      <div class="pea-exemplos">
-        <p>Adiar por semanas uma conversa que parece necessária.</p>
-        <p>Preencher a agenda de tarefas de um jeito que não sobra espaço para sentir algo incômodo.</p>
-      </div>
-      <p class="pea-texto">Evitar também é uma forma de buscar segurança. Se a aproximação com o que dói não acontece, talvez a dor também não apareça.</p>
-      <p class="pea-pergunta">Isso é algo que você reconhece em você, mesmo que só de vez em quando?</p>
-      <p class="pea-nota">Não é preciso responder nada agora. Só perceber já é suficiente.</p>
+      <p class="pea-titulo" id="pea-titulo-final">Pronto para começar</p>
+      <p class="pea-texto" id="pea-texto-final">Você pode começar agora, no seu próprio ritmo.</p>
       <div class="pea-navegacao">
         <button class="pea-btn pea-btn-voltar" data-acao="voltar">Voltar</button>
-        <button class="pea-btn pea-btn-continuar" data-acao="continuar">Continuar</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- Tela 4: Transição / Fechamento -->
-  <section class="pea-tela" data-tela="4">
-    <div class="pea-cartao">
-      <p class="pea-titulo">Você acabou de olhar para três caminhos</p>
-      <p class="pea-texto">A aprovação de outras pessoas, o controle das situações e a distância do desconforto. Três formas comuns de buscar segurança, cada uma com sua própria lógica.</p>
-      <p class="pea-texto">Nenhuma delas é um erro. Em algum momento, cada uma ajudou você a atravessar alguma coisa.</p>
-      <p class="pea-texto">O que vem a seguir é entender melhor como esses caminhos se formaram e o que mais pode existir além deles. Por enquanto, ter olhado já é o suficiente.</p>
-      <div class="pea-navegacao">
-        <button class="pea-btn pea-btn-voltar" data-acao="voltar">Voltar</button>
-        <button class="pea-btn pea-btn-continuar" data-acao="concluir">Concluir esta etapa</button>
+        <button class="pea-btn pea-btn-continuar" id="pea-btn-final" data-acao="ir">Começar</button>
       </div>
     </div>
   </section>
@@ -334,35 +307,66 @@
   'use strict';
 
   var CHAVE_PROGRESSO = 'progresso_seguranca-interna';
-  var TOTAL_TELAS = 5;
+  var TOTAL_TELAS = 4;
 
   var telas = Array.prototype.slice.call(document.querySelectorAll('.pea-tela'));
   var pontos = Array.prototype.slice.call(document.querySelectorAll('.pea-ponto'));
   var telaAtual = 0;
 
-  function carregarProgresso() {
+  function lerEstado() {
     try {
-      var salvo = JSON.parse(localStorage.getItem(CHAVE_PROGRESSO));
-      if (salvo && salvo.etapaAtual === 1 && typeof salvo.telaAtual === 'number') {
-        return Math.min(Math.max(salvo.telaAtual, 0), TOTAL_TELAS - 1);
-      }
+      return JSON.parse(localStorage.getItem(CHAVE_PROGRESSO)) || {};
     } catch (erro) {
-      // progresso ausente ou inválido, começa do início
+      return {};
     }
-    return 0;
   }
 
-  function salvarProgresso(indiceTela, etapa) {
-    var estado = { etapaAtual: etapa, telaAtual: indiceTela, respostas: {} };
-    try {
-      var existente = JSON.parse(localStorage.getItem(CHAVE_PROGRESSO));
-      if (existente && existente.respostas) {
-        estado.respostas = existente.respostas;
-      }
-    } catch (erro) {
-      // sem estado anterior aproveitável
+  function salvarMotivo(texto) {
+    var existente = lerEstado();
+    var respostas = existente.respostas || {};
+    respostas.motivoInicial = texto;
+    var estado = {
+      etapaAtual: existente.etapaAtual,
+      telaAtual: existente.telaAtual || 0,
+      respostas: respostas
+    };
+    if (existente.programaConcluido) {
+      estado.programaConcluido = existente.programaConcluido;
     }
     localStorage.setItem(CHAVE_PROGRESSO, JSON.stringify(estado));
+  }
+
+  function obterDestino() {
+    var existente = lerEstado();
+    if (existente.programaConcluido) {
+      return {
+        titulo: 'Você já percorreu este caminho',
+        texto: 'Se quiser, pode revisitar o programa inteiro, ou qualquer etapa específica, quando fizer sentido.',
+        rotuloBotao: 'Revisitar a Etapa 1',
+        arquivo: 'etapa-1.html'
+      };
+    }
+    if (existente.etapaAtual && existente.etapaAtual >= 1 && existente.etapaAtual <= 5) {
+      return {
+        titulo: 'Bom te ver de novo',
+        texto: 'Você já começou este caminho. Pode continuar exatamente de onde parou.',
+        rotuloBotao: 'Continuar de onde parei',
+        arquivo: 'etapa-' + existente.etapaAtual + '.html'
+      };
+    }
+    return {
+      titulo: 'Pronto para começar',
+      texto: 'Você pode começar agora, no seu próprio ritmo.',
+      rotuloBotao: 'Começar',
+      arquivo: 'etapa-1.html'
+    };
+  }
+
+  function aplicarDestinoNaTelaFinal() {
+    var destino = obterDestino();
+    document.getElementById('pea-titulo-final').textContent = destino.titulo;
+    document.getElementById('pea-texto-final').textContent = destino.texto;
+    document.getElementById('pea-btn-final').textContent = destino.rotuloBotao;
   }
 
   function renderizar() {
@@ -373,21 +377,16 @@
       ponto.classList.toggle('pea-ativo', indice === telaAtual);
       ponto.classList.toggle('pea-concluido', indice < telaAtual);
     });
+    if (telaAtual === TOTAL_TELAS - 1) {
+      aplicarDestinoNaTelaFinal();
+    }
     dispararRedimensionamento();
   }
 
   function irPara(indice) {
     telaAtual = Math.min(Math.max(indice, 0), TOTAL_TELAS - 1);
-    salvarProgresso(telaAtual, 1);
     renderizar();
     window.scrollTo(0, 0);
-  }
-
-  function concluirEtapa() {
-    salvarProgresso(0, 2);
-    console.log('etapa concluída: seguranca-interna, etapa 1');
-    // TODO: integração com Apps Script ao concluir etapa
-    window.location.href = 'etapa-2.html';
   }
 
   document.querySelectorAll('[data-acao="continuar"]').forEach(function (botao) {
@@ -402,9 +401,36 @@
     });
   });
 
-  document.querySelectorAll('[data-acao="concluir"]').forEach(function (botao) {
-    botao.addEventListener('click', concluirEtapa);
+  var campoMotivo = document.getElementById('pea-campo-motivo');
+
+  document.querySelectorAll('[data-acao="continuar-motivo"]').forEach(function (botao) {
+    botao.addEventListener('click', function () {
+      var valor = campoMotivo.value.trim();
+      if (valor) {
+        salvarMotivo(valor);
+      }
+      irPara(telaAtual + 1);
+    });
   });
+
+  document.querySelectorAll('[data-acao="pular-apresentacao"]').forEach(function (botao) {
+    botao.addEventListener('click', function () {
+      window.location.href = obterDestino().arquivo;
+    });
+  });
+
+  document.querySelectorAll('[data-acao="ir"]').forEach(function (botao) {
+    botao.addEventListener('click', function () {
+      window.location.href = obterDestino().arquivo;
+    });
+  });
+
+  function restaurarMotivoSalvo() {
+    var existente = lerEstado();
+    if (existente.respostas && existente.respostas.motivoInicial && campoMotivo) {
+      campoMotivo.value = existente.respostas.motivoInicial;
+    }
+  }
 
   function dispararRedimensionamento() {
     var altura = document.body.scrollHeight;
@@ -416,7 +442,7 @@
   });
   resizeObserver.observe(document.body);
 
-  telaAtual = carregarProgresso();
+  restaurarMotivoSalvo();
   renderizar();
   dispararRedimensionamento();
 })();
