@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Intervenções · Psicoterapia e Afins</title>
+<meta name="description" content="Intervenções psicoeducativas interativas da Psicoterapia e Afins: Farol, Floresça, Segurança Interna e Matiz.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --coral:#D96C63; --coral-d:#B85550; --coral-xl:#FAF0EF;
+  --mint:#5E7D73; --mint-d:#3D5A52; --mint-l:#DDEAE2; --mint-xl:#F0F6F3;
+  --lav:#8B7FB8; --lav-l:#EEE9FB;
+  --amber:#C47D2A; --amber-l:#FBF0DF;
+  --sand:#F7F3EF; --white:#FFFFFF;
+  --graphite:#3F434B; --muted:#6B7280; --light:#A0ADB8;
+  --border:rgba(63,67,75,.09);
+  --shadow:0 2px 16px rgba(63,67,75,.07);
+  --shadow-md:0 6px 28px rgba(63,67,75,.12);
+  --r:18px; --rs:12px;
+  --font:'Nunito Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --pg:16px; --gap:14px;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --sand:#1F2326; --white:#2A2F33; --graphite:#ECE8E2; --muted:#B3B9BF; --light:#7C858D;
+    --border:rgba(255,255,255,.10); --shadow:0 2px 16px rgba(0,0,0,.35); --shadow-md:0 6px 28px rgba(0,0,0,.5);
+    --coral-xl:#3A2927; --mint-xl:#25302C; --mint-l:#2F4039; --amber-l:#3A2F1F; --lav-l:#2E2A3F;
+    --mint:#8FB3A6; --mint-d:#A9C9BD; --coral:#E88A82; --coral-d:#F0A39C;
+  }
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:var(--font);background:var(--sand);color:var(--graphite);line-height:1.55;min-height:100vh}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:960px;margin:0 auto;padding:0 var(--pg)}
+header{padding:40px 0 8px;text-align:center}
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--coral)}
+h1{font-size:clamp(28px,6vw,40px);font-weight:800;line-height:1.15;margin:10px 0 12px;color:var(--mint-d)}
+.lead{max-width:560px;margin:0 auto;color:var(--muted);font-size:16px}
+.grid{display:grid;gap:var(--gap);grid-template-columns:1fr;padding:28px 0 12px}
+@media(min-width:680px){.grid{grid-template-columns:1fr 1fr;gap:18px}}
+.card{display:flex;flex-direction:column;background:var(--white);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow);padding:22px;transition:transform .18s,box-shadow .18s;border-top:4px solid var(--accent)}
+.card:hover,.card:focus-visible{transform:translateY(-3px);box-shadow:var(--shadow-md);outline:none}
+.card:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.logo{width:56px;height:56px;border-radius:var(--rs);background:var(--tint);display:grid;place-items:center;margin-bottom:14px;overflow:hidden}
+.logo img,.logo svg{width:40px;height:40px;object-fit:contain}
+.card h2{font-size:21px;font-weight:800;color:var(--accent-d)}
+.tag{font-size:13px;font-weight:700;color:var(--accent-d);margin:2px 0 10px}
+.card p{font-size:15px;color:var(--muted);flex:1}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0 16px}
+.chip{font-size:12px;font-weight:700;padding:4px 10px;border-radius:99px;background:var(--tint);color:var(--accent-d)}
+.go{font-size:14px;font-weight:800;color:var(--accent-d)}
+.go::after{content:" →"}
+.c-farol{--accent:#5E7D73;--accent-d:var(--mint-d);--tint:var(--mint-l)}
+.c-floresca{--accent:#C47D2A;--accent-d:#A5651D;--tint:var(--amber-l)}
+.c-seg{--accent:#D96C63;--accent-d:var(--coral-d);--tint:var(--coral-xl)}
+.c-matiz{--accent:#4F6D7A;--accent-d:#38505B;--tint:#E3ECEF}
+.note{margin:18px 0 0;padding:14px 16px;background:var(--lav-l);border-radius:var(--rs);font-size:13.5px;color:var(--muted);text-align:center}
+footer{text-align:center;padding:32px 0 44px;font-size:12.5px;color:var(--light)}
+footer a{color:var(--mint);font-weight:700}
+footer a:hover{text-decoration:underline}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Psicoterapia e Afins</div>
+    <h1>Intervenções interativas</h1>
+    <p class="lead">Programas psicoeducativos para fazer no seu ritmo, direto no celular ou no computador. Escolha por onde começar.</p>
+  </header>
+
+  <main class="grid">
+    <a class="card c-farol" href="farol/">
+      <div class="logo"><img src="farol/assets/farol-icon.svg" alt=""></div>
+      <h2>Farol</h2>
+      <div class="tag">Para quem se preocupa demais</div>
+      <p>Oito módulos para entender e mudar a relação com as preocupações, com técnicas de TCC, ACT, mindfulness e compaixão.</p>
+      <div class="chips"><span class="chip">8 módulos</span><span class="chip">Ansiedade (TAG)</span><span class="chip">Diário</span></div>
+      <span class="go">Abrir o Farol</span>
+    </a>
+
+    <a class="card c-floresca" href="floresca/">
+      <div class="logo"><img src="floresca/assets/floresca-icon.svg" alt=""></div>
+      <h2>Floresça</h2>
+      <div class="tag">Cultivando emoções positivas</div>
+      <p>Oito módulos baseados em psicologia positiva e compaixão, mais um laboratório de experimentos para testar crenças que bloqueiam o prazer.</p>
+      <div class="chips"><span class="chip">8 módulos</span><span class="chip">Laboratório</span><span class="chip">Diário</span></div>
+      <span class="go">Abrir o Floresça</span>
+    </a>
+
+    <a class="card c-seg" href="seguranca-interna/">
+      <div class="logo">
+        <svg viewBox="0 0 48 48" fill="none" aria-hidden="true"><path d="M24 5 8 11v11c0 10 6.8 17.2 16 21 9.2-3.800 16-11 16-21V11L24 5Z" fill="#D96C63" opacity=".18" stroke="#D96C63" stroke-width="2.500" stroke-linejoin="round"/><path d="M16.500 24.500 22 30l9.500-11" stroke="#B85550" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <h2>Segurança Interna</h2>
+      <div class="tag">Reconstruindo a sensação de segurança</div>
+      <p>Um percurso em cinco etapas para regular o corpo, organizar o que aconteceu e voltar a se sentir seguro por dentro.</p>
+      <div class="chips"><span class="chip">5 etapas</span><span class="chip">Trauma</span></div>
+      <span class="go">Abrir Segurança Interna</span>
+    </a>
+
+    <a class="card c-matiz" href="matiz/">
+      <div class="logo"><img src="matiz/assets/matiz-logo.svg" alt=""></div>
+      <h2>Matiz</h2>
+      <div class="tag">Cada sentimento tem seu tom</div>
+      <p>Um recurso para reconhecer e nomear as seis emoções básicas com precisão, pensado também para quem tem alexitimia ou é neurodivergente.</p>
+      <div class="chips"><span class="chip">Emoções básicas</span><span class="chip">Acessível</span></div>
+      <span class="go">Abrir o Matiz</span>
+    </a>
+  </main>
+
+  <div class="note">Estes recursos são psicoeducativos e não substituem o acompanhamento com um profissional de saúde mental.</div>
+
+  <footer>
+    <a href="https://www.psicoterapiaeafins.com.br" target="_blank" rel="noopener">psicoterapiaeafins.com.br</a>
+    ·
+    <a href="https://www.instagram.com/psicoterapiaeafins" target="_blank" rel="noopener">@psicoterapiaeafins</a>
+    <br>© <span id="ano"></span> Psicoterapia e Afins · Todos os direitos reservados
+  </footer>
+</div>
+<script>document.getElementById('ano').textContent=new Date().getFullYear();</script>
+</body>
+</html>
