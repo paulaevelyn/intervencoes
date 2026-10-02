@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Matiz">
+  <circle cx="32" cy="32" r="30" fill="#EDE7DC"/>
+  <path d="M16 26 Q16 15 27 15 H39 Q48 15 48 23 Q48 31 39 31 H26 L17 40 V31 Q16 30 16 26 Z" fill="#4F6D7A"/>
+  <circle cx="26" cy="22" r="6" fill="#C97B4A" opacity="0.85"/>
+  <circle cx="34" cy="20" r="5" fill="#B98A1D" opacity="0.85"/>
+  <circle cx="31" cy="27" r="5.5" fill="#3D7A4E" opacity="0.85"/>
+</svg>
