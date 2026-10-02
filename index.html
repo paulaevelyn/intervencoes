@@ -47,6 +47,9 @@ h1{font-size:clamp(28px,6vw,40px);font-weight:800;line-height:1.15;margin:10px 0
 .card:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .logo{width:56px;height:56px;border-radius:var(--rs);background:var(--tint);display:grid;place-items:center;margin-bottom:14px;overflow:hidden}
 .logo img,.logo svg{width:40px;height:40px;object-fit:contain}
+.logo.wide{width:100%;height:120px;margin-bottom:16px}
+.logo.wide img{width:auto;max-width:90%;height:100%;max-height:104px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .card h2{font-size:21px;font-weight:800;color:var(--accent-d)}
 .tag{font-size:13px;font-weight:700;color:var(--accent-d);margin:2px 0 10px}
 .card p{font-size:15px;color:var(--muted);flex:1}
@@ -74,8 +77,8 @@ footer a:hover{text-decoration:underline}
 
   <main class="grid">
     <a class="card c-farol" href="farol/">
-      <div class="logo"><img src="farol/assets/farol-icon.svg" alt=""></div>
-      <h2>Farol</h2>
+      <div class="logo wide"><img src="farol/assets/farol-logo.svg" alt="Logo do Farol"></div>
+      <h2 class="sr">Farol</h2>
       <div class="tag">Para quem se preocupa demais</div>
       <p>Oito módulos para entender e mudar a relação com as preocupações, com técnicas de TCC, ACT, mindfulness e compaixão.</p>
       <div class="chips"><span class="chip">8 módulos</span><span class="chip">Ansiedade (TAG)</span><span class="chip">Diário</span></div>
@@ -83,8 +86,8 @@ footer a:hover{text-decoration:underline}
     </a>
 
     <a class="card c-floresca" href="floresca/">
-      <div class="logo"><img src="floresca/assets/floresca-icon.svg" alt=""></div>
-      <h2>Floresça</h2>
+      <div class="logo wide"><img src="floresca/assets/floresca-logo.svg" alt="Logo do Floresça"></div>
+      <h2 class="sr">Floresça</h2>
       <div class="tag">Cultivando emoções positivas</div>
       <p>Oito módulos baseados em psicologia positiva e compaixão, mais um laboratório de experimentos para testar crenças que bloqueiam o prazer.</p>
       <div class="chips"><span class="chip">8 módulos</span><span class="chip">Laboratório</span><span class="chip">Diário</span></div>
