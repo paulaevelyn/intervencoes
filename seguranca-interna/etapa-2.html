@@ -424,7 +424,7 @@
     telaAtual = Math.min(Math.max(indice, 0), TOTAL_TELAS - 1);
     salvarProgresso(telaAtual, ETAPA_ATUAL);
     renderizar();
-    window.scrollTo(0, 0);
+    irParaTopo();
   }
 
   function concluirEtapa() {
@@ -473,6 +473,15 @@
         }
       });
     }
+  }
+
+  // Dentro de um iframe sem barra de rolagem, window.scrollTo nao tem efeito:
+  // quem rola e a pagina que hospeda. Alem de rolar localmente (para quando a
+  // pagina e aberta direto, fora do iframe), avisamos a pagina de fora para que
+  // ela traga o topo da ferramenta de volta a vista.
+  function irParaTopo() {
+    window.scrollTo(0, 0);
+    window.parent.postMessage({ type: 'scrollTop' }, '*');
   }
 
   function dispararRedimensionamento() {
