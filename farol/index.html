@@ -18,8 +18,12 @@
 
 <title>Farol — Navegando as Preocupações</title>
 <link rel="stylesheet" href="style.css">
+<!-- LOGIN: estilos e bloqueio do app até a sessão ser verificada -->
+<link rel="stylesheet" href="../auth/auth.css">
+<script>document.documentElement.classList.add("pea-auth-carregando");</script>
 </head>
 <body>
+<div id="pea-auth-aviso">carregando…</div>
 
 <!-- SPLASH SCREEN -->
 <div id="splash">
@@ -544,5 +548,7 @@
 <div id="toast"></div>
 </div>
 <script src="app.js"></script>
+<!-- LOGIN: camada compartilhada (../auth/). Contas só por convite. -->
+<script type="module" src="../auth/auth.js" data-app="farol" data-storage-keys="np_v4" data-nome="Farol" data-logo="assets/farol-logo.svg"></script>
 </body>
 </html>
