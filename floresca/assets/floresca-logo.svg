@@ -1,0 +1,16 @@
+<svg width="320" height="88" viewBox="0 0 320 88" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Flor (logo original) -->
+  <g transform="translate(6,8) scale(0.72)">
+    <ellipse cx="50" cy="22.5" rx="6" ry="11" fill="#F9B15C"/>
+    <ellipse cx="30.5" cy="30.5" rx="6" ry="10.5" fill="#F9B15C" transform="rotate(-45 30.5 30.5)"/>
+    <ellipse cx="69.5" cy="30.5" rx="6" ry="10.5" fill="#F9B15C" transform="rotate(45 69.5 30.5)"/>
+    <ellipse cx="21.5" cy="49" rx="11" ry="6" fill="#F9B15C"/>
+    <ellipse cx="78.5" cy="49" rx="11" ry="6" fill="#F9B15C"/>
+    <circle cx="50" cy="49" r="11.5" fill="#1C6B52"/>
+    <path d="M50 60 L50 90" stroke="#1C6B52" stroke-width="7.5" stroke-linecap="round"/>
+    <path d="M49 79 C36 80 22 74 17 61 C34 56 46 64 49 75 Z" fill="#1C6B52"/>
+    <path d="M51 79 C64 80 78 74 83 61 C66 56 54 64 51 75 Z" fill="#1C6B52"/>
+  </g>
+  <!-- Wordmark -->
+  <text x="86" y="60" font-family="Nunito Sans, Quicksand, -apple-system, sans-serif" font-size="42" font-weight="800" letter-spacing="-1" fill="#123A2C">Floresça</text>
+</svg>
