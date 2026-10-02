@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Segurança Interna: Etapa 2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --pea-coral: #D96C63;
+    --pea-musgo: #5E7D73;
+    --pea-areia: #F5F0E8;
+    --pea-grafite: #2E2E2E;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  body {
+    background: var(--pea-areia);
+    color: var(--pea-grafite);
+    font-family: 'Lato', Arial, sans-serif;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .pea-app {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 40px 24px 56px;
+    min-height: 100vh;
+  }
+
+  .pea-marca {
+    display: block;
+    text-align: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--pea-musgo);
+    text-decoration: none;
+    margin-bottom: 28px;
+    opacity: 0.85;
+    transition: opacity 0.15s ease;
+  }
+
+  .pea-marca:hover {
+    opacity: 1;
+    text-decoration: underline;
+  }
+
+  .pea-progresso {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 36px;
+  }
+
+  .pea-ponto {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: rgba(94, 125, 115, 0.25);
+    transition: background 0.3s ease, transform 0.3s ease;
+  }
+
+  .pea-ponto.pea-ativo {
+    background: var(--pea-coral);
+    transform: scale(1.2);
+  }
+
+  .pea-ponto.pea-concluido {
+    background: var(--pea-musgo);
+  }
+
+  .pea-tela {
+    display: none;
+    animation: pea-surgir 0.5s ease;
+  }
+
+  .pea-tela.pea-visivel {
+    display: block;
+  }
+
+  @keyframes pea-surgir {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .pea-cartao {
+    background: #FFFFFF;
+    border-radius: 18px;
+    padding: 40px 32px;
+    box-shadow: 0 2px 18px rgba(46, 46, 46, 0.06);
+  }
+
+  .pea-titulo {
+    font-family: 'Playfair Display', serif;
+    font-weight: 600;
+    font-size: 26px;
+    color: var(--pea-grafite);
+    margin: 0 0 6px;
+    line-height: 1.3;
+  }
+
+  .pea-subtitulo {
+    font-size: 14px;
+    color: var(--pea-musgo);
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    margin: 0 0 20px;
+  }
+
+  .pea-texto {
+    font-size: 17px;
+    color: var(--pea-grafite);
+    margin: 0 0 18px;
+  }
+
+  .pea-texto:last-of-type {
+    margin-bottom: 0;
+  }
+
+  .pea-exemplos {
+    background: var(--pea-areia);
+    border-left: 3px solid var(--pea-musgo);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 22px 0;
+  }
+
+  .pea-exemplos p {
+    font-size: 16px;
+    margin: 0 0 10px;
+    color: var(--pea-grafite);
+  }
+
+  .pea-exemplos p:last-child {
+    margin-bottom: 0;
+  }
+
+  .pea-exemplos strong {
+    color: var(--pea-musgo);
+  }
+
+  .pea-nota {
+    font-size: 14px;
+    color: rgba(46, 46, 46, 0.55);
+    margin: 12px 0 0;
+  }
+
+  .pea-pergunta {
+    font-size: 17px;
+    font-style: italic;
+    color: var(--pea-musgo);
+    margin: 24px 0 0;
+    padding-top: 20px;
+    border-top: 1px solid rgba(94, 125, 115, 0.2);
+  }
+
+  .pea-escolhas {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 22px 0 0;
+  }
+
+  .pea-escolha {
+    text-align: left;
+    background: var(--pea-areia);
+    border: 2px solid transparent;
+    border-radius: 12px;
+    padding: 16px 18px;
+    font-family: 'Lato', Arial, sans-serif;
+    font-size: 16px;
+    color: var(--pea-grafite);
+    cursor: pointer;
+    transition: border-color 0.2s ease, background 0.2s ease;
+  }
+
+  .pea-escolha:hover {
+    background: #EFE7D8;
+  }
+
+  .pea-escolha.pea-selecionada {
+    border-color: var(--pea-musgo);
+    background: #EFE7D8;
+  }
+
+  .pea-navegacao {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 14px;
+    margin-top: 32px;
+  }
+
+  .pea-btn {
+    font-family: 'Lato', Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    border: none;
+    border-radius: 30px;
+    padding: 14px 30px;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease, opacity 0.15s ease;
+  }
+
+  .pea-btn:active {
+    transform: scale(0.97);
+  }
+
+  .pea-btn-continuar {
+    background: var(--pea-coral);
+    color: #FFFFFF;
+    margin-left: auto;
+    box-shadow: 0 4px 14px rgba(217, 108, 99, 0.3);
+  }
+
+  .pea-btn-continuar:hover {
+    background: #C65B52;
+  }
+
+  .pea-btn-continuar:disabled {
+    background: rgba(217, 108, 99, 0.4);
+    box-shadow: none;
+    cursor: not-allowed;
+  }
+
+  .pea-btn-voltar {
+    background: transparent;
+    color: var(--pea-musgo);
+    padding: 14px 10px;
+  }
+
+  .pea-btn-voltar:hover {
+    color: var(--pea-grafite);
+  }
+
+  .pea-espacador {
+    flex: 1;
+  }
+
+  @media (max-width: 480px) {
+    .pea-app {
+      padding: 28px 16px 44px;
+    }
+    .pea-cartao {
+      padding: 30px 22px;
+      border-radius: 14px;
+    }
+    .pea-titulo {
+      font-size: 22px;
+    }
+    .pea-texto, .pea-pergunta {
+      font-size: 16px;
+    }
+    .pea-btn {
+      padding: 13px 24px;
+      font-size: 15px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="pea-app">
+
+  <a href="index.html" class="pea-marca">Segurança Interna</a>
+
+  <div class="pea-progresso" id="pea-progresso">
+    <span class="pea-ponto" data-indice="0"></span>
+    <span class="pea-ponto" data-indice="1"></span>
+    <span class="pea-ponto" data-indice="2"></span>
+    <span class="pea-ponto" data-indice="3"></span>
+    <span class="pea-ponto" data-indice="4"></span>
+  </div>
+
+  <!-- Tela 0: Diferenciação A -->
+  <section class="pea-tela" data-tela="0">
+    <div class="pea-cartao">
+      <p class="pea-titulo">Duas fontes de segurança</p>
+      <p class="pea-texto">Existem, de um jeito bem simples, duas fontes possíveis de segurança.</p>
+      <p class="pea-texto">Uma vem de fora: uma pessoa concordando com você, uma situação sob controle, um conflito que não chegou a acontecer. Outra vem de dentro: a sensação de que você consegue se sustentar mesmo quando a aprovação não vem, quando a situação foge do previsto, quando o desconforto aparece.</p>
+      <div class="pea-exemplos">
+        <p><strong>Segurança externa:</strong> sentir alívio quando alguém confirma que a escolha foi certa.</p>
+        <p><strong>Segurança interna:</strong> seguir com a escolha mesmo sem essa confirmação, porque existe confiança no próprio critério.</p>
+      </div>
+      <p class="pea-texto">As duas são reais. A diferença é que a primeira depende de algo fora do seu alcance. A segunda não.</p>
+      <div class="pea-navegacao">
+        <span class="pea-espacador"></span>
+        <button class="pea-btn pea-btn-continuar" data-acao="continuar">Continuar</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tela 1: Diferenciação B -->
+  <section class="pea-tela" data-tela="1">
+    <div class="pea-cartao">
+      <p class="pea-titulo">Uma capacidade, não uma característica</p>
+      <p class="pea-texto">Segurança interna não é um traço que uma pessoa tem e outra não tem. É mais parecido com uma capacidade, do tipo que se constrói aos poucos, com uso.</p>
+      <p class="pea-texto">Ninguém nasce com ela pronta. Ela se forma na repetição de pequenos momentos em que o corpo aprende que consegue atravessar alguma coisa sem precisar de uma garantia vinda de fora.</p>
+      <p class="pea-texto">Isso significa que, se hoje ela parece distante, isso não diz nada sobre quem você é. Diz só que essa capacidade ainda está em construção, como qualquer outra.</p>
+      <div class="pea-navegacao">
+        <button class="pea-btn pea-btn-voltar" data-acao="voltar">Voltar</button>
+        <button class="pea-btn pea-btn-continuar" data-acao="continuar">Continuar</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tela 2: Consentimento emocional A -->
+  <section class="pea-tela" data-tela="2">
+    <div class="pea-cartao">
+      <p class="pea-titulo">Se isso for desconfortável</p>
+      <p class="pea-texto">Buscar uma segurança que vem de dentro pode ser estranho, especialmente para quem, em algum momento da vida, não teve isso disponível como opção.</p>
+      <p class="pea-texto">Se esse convite parecer distante, ou até gerar um certo desconforto, faz sentido. Isso não significa que você está fazendo algo errado.</p>
+      <p class="pea-texto">Faz mais sentido pensar assim: o corpo aprendeu, em algum momento, que a segurança vinha de fora. Agora está sendo convidado a aprender outra coisa. Aprender algo novo raramente é confortável logo de início.</p>
+      <div class="pea-navegacao">
+        <button class="pea-btn pea-btn-voltar" data-acao="voltar">Voltar</button>
+        <button class="pea-btn pea-btn-continuar" data-acao="continuar">Continuar</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tela 3: Consentimento emocional B + bifurcação -->
+  <section class="pea-tela" data-tela="3">
+    <div class="pea-cartao">
+      <p class="pea-titulo">Se existir uma parte desconfiada</p>
+      <p class="pea-texto">Talvez, enquanto lê isso, uma parte sua esteja desconfiada. Talvez ela pense algo como "isso não vai funcionar" ou "isso não é para mim".</p>
+      <p class="pea-texto">Se for esse o caso, essa parte provavelmente aprendeu a desconfiar por um bom motivo. Não é preciso convencê-la de nada agora. Só notar que ela está aí já é o suficiente.</p>
+      <p class="pea-pergunta">Como você diria que está hoje, em relação a continuar?</p>
+      <div class="pea-escolhas" id="pea-escolhas">
+        <button class="pea-escolha" data-valor="desconfianca">Hoje eu sinto mais desconfiança</button>
+        <button class="pea-escolha" data-valor="tentar">Hoje eu consigo tentar</button>
+      </div>
+      <p class="pea-nota">Não existe resposta certa aqui. As duas seguem para o mesmo lugar.</p>
+      <div class="pea-navegacao">
+        <button class="pea-btn pea-btn-voltar" data-acao="voltar">Voltar</button>
+        <button class="pea-btn pea-btn-continuar" data-acao="continuar" id="pea-btn-continuar-3" disabled>Continuar</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tela 4: Transição / Fechamento -->
+  <section class="pea-tela" data-tela="4">
+    <div class="pea-cartao">
+      <p class="pea-titulo">Você chegou até aqui</p>
+      <p class="pea-texto">Você olhou para duas fontes possíveis de segurança e para o que pode surgir quando esse assunto se aproxima.</p>
+      <p class="pea-texto">A partir daqui, o programa começa a oferecer pequenas práticas. Nada precisa ser feito de uma vez. Cada passo pode ser dado no seu próprio tempo.</p>
+      <div class="pea-navegacao">
+        <button class="pea-btn pea-btn-voltar" data-acao="voltar">Voltar</button>
+        <button class="pea-btn pea-btn-continuar" data-acao="concluir">Concluir esta etapa</button>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  var CHAVE_PROGRESSO = 'progresso_seguranca-interna';
+  var ETAPA_ATUAL = 2;
+  var PROXIMA_ETAPA = 3;
+  var TOTAL_TELAS = 5;
+
+  var telas = Array.prototype.slice.call(document.querySelectorAll('.pea-tela'));
+  var pontos = Array.prototype.slice.call(document.querySelectorAll('.pea-ponto'));
+  var telaAtual = 0;
+
+  function lerEstado() {
+    try {
+      return JSON.parse(localStorage.getItem(CHAVE_PROGRESSO)) || {};
+    } catch (erro) {
+      return {};
+    }
+  }
+
+  function carregarProgresso() {
+    var salvo = lerEstado();
+    if (salvo && salvo.etapaAtual === ETAPA_ATUAL && typeof salvo.telaAtual === 'number') {
+      return Math.min(Math.max(salvo.telaAtual, 0), TOTAL_TELAS - 1);
+    }
+    return 0;
+  }
+
+  function salvarProgresso(indiceTela, etapa, novasRespostas) {
+    var existente = lerEstado();
+    var respostas = existente.respostas || {};
+    if (novasRespostas) {
+      for (var chave in novasRespostas) {
+        if (Object.prototype.hasOwnProperty.call(novasRespostas, chave)) {
+          respostas[chave] = novasRespostas[chave];
+        }
+      }
+    }
+    var estado = { etapaAtual: etapa, telaAtual: indiceTela, respostas: respostas };
+    localStorage.setItem(CHAVE_PROGRESSO, JSON.stringify(estado));
+  }
+
+  function renderizar() {
+    telas.forEach(function (tela, indice) {
+      tela.classList.toggle('pea-visivel', indice === telaAtual);
+    });
+    pontos.forEach(function (ponto, indice) {
+      ponto.classList.toggle('pea-ativo', indice === telaAtual);
+      ponto.classList.toggle('pea-concluido', indice < telaAtual);
+    });
+    dispararRedimensionamento();
+  }
+
+  function irPara(indice) {
+    telaAtual = Math.min(Math.max(indice, 0), TOTAL_TELAS - 1);
+    salvarProgresso(telaAtual, ETAPA_ATUAL);
+    renderizar();
+    window.scrollTo(0, 0);
+  }
+
+  function concluirEtapa() {
+    salvarProgresso(0, PROXIMA_ETAPA);
+    console.log('etapa concluída: seguranca-interna, etapa ' + ETAPA_ATUAL);
+    // TODO: integração com Apps Script ao concluir etapa
+    window.location.href = 'etapa-' + PROXIMA_ETAPA + '.html';
+  }
+
+  document.querySelectorAll('[data-acao="continuar"]').forEach(function (botao) {
+    botao.addEventListener('click', function () {
+      irPara(telaAtual + 1);
+    });
+  });
+
+  document.querySelectorAll('[data-acao="voltar"]').forEach(function (botao) {
+    botao.addEventListener('click', function () {
+      irPara(telaAtual - 1);
+    });
+  });
+
+  document.querySelectorAll('[data-acao="concluir"]').forEach(function (botao) {
+    botao.addEventListener('click', concluirEtapa);
+  });
+
+  var botoesEscolha = Array.prototype.slice.call(document.querySelectorAll('.pea-escolha'));
+  var btnContinuar3 = document.getElementById('pea-btn-continuar-3');
+
+  botoesEscolha.forEach(function (botao) {
+    botao.addEventListener('click', function () {
+      botoesEscolha.forEach(function (b) { b.classList.remove('pea-selecionada'); });
+      botao.classList.add('pea-selecionada');
+      btnContinuar3.disabled = false;
+      salvarProgresso(telaAtual, ETAPA_ATUAL, { posturaEtapa2: botao.getAttribute('data-valor') });
+    });
+  });
+
+  function restaurarSelecaoEscolha() {
+    var existente = lerEstado();
+    var valorSalvo = existente.respostas && existente.respostas.posturaEtapa2;
+    if (valorSalvo) {
+      botoesEscolha.forEach(function (botao) {
+        if (botao.getAttribute('data-valor') === valorSalvo) {
+          botao.classList.add('pea-selecionada');
+          btnContinuar3.disabled = false;
+        }
+      });
+    }
+  }
+
+  function dispararRedimensionamento() {
+    var altura = document.body.scrollHeight;
+    window.parent.postMessage({ type: 'resize', height: altura }, '*');
+  }
+
+  var resizeObserver = new ResizeObserver(function () {
+    dispararRedimensionamento();
+  });
+  resizeObserver.observe(document.body);
+
+  restaurarSelecaoEscolha();
+  telaAtual = carregarProgresso();
+  renderizar();
+  dispararRedimensionamento();
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Segurança Interna</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --pea-coral: #D96C63;
+    --pea-musgo: #5E7D73;
+    --pea-areia: #F5F0E8;
+    --pea-grafite: #2E2E2E;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  body {
+    background: var(--pea-areia);
+    color: var(--pea-grafite);
+    font-family: 'Lato', Arial, sans-serif;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .pea-app {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 40px 24px 56px;
+    min-height: 100vh;
+  }
+
+  .pea-marca {
+    display: block;
+    text-align: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--pea-musgo);
+    margin-bottom: 28px;
+    opacity: 0.85;
+  }
+
+  .pea-progresso {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 36px;
+  }
+
+  .pea-ponto {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: rgba(94, 125, 115, 0.25);
+    transition: background 0.3s ease, transform 0.3s ease;
+  }
+
+  .pea-ponto.pea-ativo {
+    background: var(--pea-coral);
+    transform: scale(1.2);
+  }
+
+  .pea-ponto.pea-concluido {
+    background: var(--pea-musgo);
+  }
+
+  .pea-tela {
+    display: none;
+    animation: pea-surgir 0.5s ease;
+  }
+
+  .pea-tela.pea-visivel {
+    display: block;
+  }
+
+  @keyframes pea-surgir {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .pea-cartao {
+    background: #FFFFFF;
+    border-radius: 18px;
+    padding: 40px 32px;
+    box-shadow: 0 2px 18px rgba(46, 46, 46, 0.06);
+  }
+
+  .pea-titulo {
+    font-family: 'Playfair Display', serif;
+    font-weight: 600;
+    font-size: 26px;
+    color: var(--pea-grafite);
+    margin: 0 0 6px;
+    line-height: 1.3;
+  }
+
+  .pea-texto {
+    font-size: 17px;
+    color: var(--pea-grafite);
+    margin: 0 0 18px;
+  }
+
+  .pea-texto:last-of-type {
+    margin-bottom: 0;
+  }
+
+  .pea-nota {
+    font-size: 14px;
+    color: rgba(46, 46, 46, 0.55);
+    margin: 12px 0 0;
+  }
+
+  .pea-mapa {
+    list-style: none;
+    margin: 22px 0;
+    padding: 0;
+  }
+
+  .pea-mapa li {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(94, 125, 115, 0.18);
+  }
+
+  .pea-mapa li:last-child {
+    border-bottom: none;
+  }
+
+  .pea-mapa-numero {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--pea-musgo);
+    color: #FFFFFF;
+    font-family: 'Playfair Display', serif;
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2px;
+  }
+
+  .pea-mapa-texto {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .pea-mapa-texto strong {
+    display: block;
+    font-size: 16px;
+    color: var(--pea-grafite);
+  }
+
+  .pea-mapa-texto small {
+    display: block;
+    font-size: 14px;
+    color: rgba(46, 46, 46, 0.65);
+    margin-top: 2px;
+  }
+
+  .pea-mapa-status {
+    flex-shrink: 0;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    padding: 4px 10px;
+    border-radius: 12px;
+    white-space: nowrap;
+    align-self: center;
+  }
+
+  .pea-mapa-status.pea-status-concluida {
+    background: rgba(94, 125, 115, 0.15);
+    color: var(--pea-musgo);
+  }
+
+  .pea-mapa-status.pea-status-atual {
+    background: rgba(217, 108, 99, 0.15);
+    color: var(--pea-coral);
+  }
+
+  .pea-bemestar {
+    list-style: none;
+    margin: 20px 0;
+    padding: 0;
+  }
+
+  .pea-bemestar li {
+    position: relative;
+    padding-left: 20px;
+    margin-bottom: 10px;
+    font-size: 16px;
+    color: var(--pea-grafite);
+  }
+
+  .pea-bemestar li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 9px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--pea-musgo);
+  }
+
+  .pea-bemestar li:last-child {
+    margin-bottom: 0;
+  }
+
+  .pea-campo-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--pea-musgo);
+    margin: 20px 0 8px;
+  }
+
+  .pea-campo-texto {
+    width: 100%;
+    min-height: 84px;
+    resize: vertical;
+    border: 1.5px solid rgba(94, 125, 115, 0.35);
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-family: 'Lato', Arial, sans-serif;
+    font-size: 16px;
+    color: var(--pea-grafite);
+    background: var(--pea-areia);
+  }
+
+  .pea-campo-texto:focus {
+    outline: none;
+    border-color: var(--pea-musgo);
+  }
+
+  .pea-navegacao {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 14px;
+    margin-top: 32px;
+  }
+
+  .pea-btn {
+    font-family: 'Lato', Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    border: none;
+    border-radius: 30px;
+    padding: 14px 30px;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+  }
+
+  .pea-btn:active {
+    transform: scale(0.97);
+  }
+
+  .pea-btn-continuar {
+    background: var(--pea-coral);
+    color: #FFFFFF;
+    margin-left: auto;
+    box-shadow: 0 4px 14px rgba(217, 108, 99, 0.3);
+  }
+
+  .pea-btn-continuar:hover {
+    background: #C65B52;
+  }
+
+  .pea-btn-voltar {
+    background: transparent;
+    color: var(--pea-musgo);
+    padding: 14px 10px;
+  }
+
+  .pea-btn-voltar:hover {
+    color: var(--pea-grafite);
+  }
+
+  .pea-btn-apagar {
+    background: transparent;
+    border: 1.5px solid rgba(217, 108, 99, 0.4);
+    color: var(--pea-coral);
+    padding: 12px 20px;
+    font-size: 15px;
+  }
+
+  .pea-btn-apagar:hover {
+    background: rgba(217, 108, 99, 0.08);
+    border-color: var(--pea-coral);
+  }
+
+  .pea-confirmacao-apagar {
+    display: none;
+    font-size: 14px;
+    color: var(--pea-musgo);
+    margin-top: 12px;
+  }
+
+  .pea-confirmacao-apagar.pea-visivel-inline {
+    display: block;
+  }
+
+  .pea-espacador {
+    flex: 1;
+  }
+
+  .pea-link-discreto {
+    display: block;
+    text-align: center;
+    background: none;
+    border: none;
+    color: var(--pea-musgo);
+    font-family: 'Lato', Arial, sans-serif;
+    font-size: 15px;
+    text-decoration: underline;
+    cursor: pointer;
+    margin: 18px auto 0;
+    padding: 4px;
+  }
+
+  .pea-link-discreto:hover {
+    color: var(--pea-grafite);
+  }
+
+  @media (max-width: 480px) {
+    .pea-app {
+      padding: 28px 16px 44px;
+    }
+    .pea-cartao {
+      padding: 30px 22px;
+      border-radius: 14px;
+    }
+    .pea-titulo {
+      font-size: 22px;
+    }
+    .pea-texto {
+      font-size: 16px;
+    }
+    .pea-btn {
+      padding: 13px 24px;
+      font-size: 15px;
+    }
+    .pea-mapa li {
+      flex-wrap: wrap;
+    }
+    .pea-mapa-status {
+      margin-left: 42px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="pea-app">
+
+  <div class="pea-marca">Segurança Interna</div>
+
+  <div class="pea-progresso" id="pea-progresso">
+    <span class="pea-ponto" data-indice="0"></span>
+    <span class="pea-ponto" data-indice="1"></span>
+    <span class="pea-ponto" data-indice="2"></span>
+    <span class="pea-ponto" data-indice="3"></span>
+    <span class="pea-ponto" data-indice="4"></span>
+  </div>
+
+  <!-- Tela 0: Boas-vindas -->
+  <section class="pea-tela" data-tela="0">
+    <div class="pea-cartao">
+      <p class="pea-titulo">Você chegou a este espaço</p>
+      <p class="pea-texto">Segurança Interna é um programa para ajudar você a diferenciar duas formas de buscar segurança: uma que depende de fora, e outra que pode ser construída por dentro.</p>
+      <p class="pea-texto">Não existe pressa aqui. Cada etapa pode ser feita no seu tempo, e você pode voltar quantas vezes quiser.</p>
+      <div class="pea-navegacao">
+        <span class="pea-espacador"></span>
+        <button class="pea-btn pea-btn-continuar" data-acao="continuar">Continuar</button>
+      </div>
+      <button class="pea-link-discreto" data-acao="pular-apresentacao">Pular a apresentação e começar agora</button>
+    </div>
+  </section>
+
+  <!-- Tela 1: Mapa das cinco etapas -->
+  <section class="pea-tela" data-tela="1">
+    <div class="pea-cartao">
+      <p class="pea-titulo">Um caminho em cinco partes</p>
+      <p class="pea-texto">Você pode ver abaixo o que cada etapa traz. Nenhuma delas exige respostas certas, e você pode pular qualquer exercício.</p>
+      <ol class="pea-mapa">
+        <li>
+          <span class="pea-mapa-numero">1</span>
+          <span class="pea-mapa-texto">
+            <strong>Mapear</strong>
+            <small>Reconhecer onde você busca segurança hoje.</small>
+          </span>
+          <span class="pea-mapa-status" data-status-etapa="1"></span>
+        </li>
+        <li>
+          <span class="pea-mapa-numero">2</span>
+          <span class="pea-mapa-texto">
+            <strong>Diferenciar</strong>
+            <small>Segurança que vem de fora e segurança que se constrói por dentro.</small>
+          </span>
+          <span class="pea-mapa-status" data-status-etapa="2"></span>
+        </li>
+        <li>
+          <span class="pea-mapa-numero">3</span>
+          <span class="pea-mapa-texto">
+            <strong>Praticar, parte 1</strong>
+            <small>Pequenas portas de entrada, no seu ritmo.</small>
+          </span>
+          <span class="pea-mapa-status" data-status-etapa="3"></span>
+        </li>
+        <li>
+          <span class="pea-mapa-numero">4</span>
+          <span class="pea-mapa-texto">
+            <strong>Praticar, parte 2</strong>
+            <small>Práticas um pouco mais diretas, sempre opcionais.</small>
+          </span>
+          <span class="pea-mapa-status" data-status-etapa="4"></span>
+        </li>
+        <li>
+          <span class="pea-mapa-numero">5</span>
+          <span class="pea-mapa-texto">
+            <strong>Fechar</strong>
+            <small>Uma síntese do caminho percorrido.</small>
+          </span>
+          <span class="pea-mapa-status" data-status-etapa="5"></span>
+        </li>
+      </ol>
+      <p class="pea-nota">Você sempre pode voltar para esta página clicando em "Segurança Interna" no topo de qualquer etapa.</p>
+      <div class="pea-navegacao">
+        <button class="pea-btn pea-btn-voltar" data-acao="voltar">Voltar</button>
+        <button class="pea-btn pea-btn-continuar" data-acao="continuar">Continuar</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tela 2: Liberdade e bem-estar digital -->
+  <section class="pea-tela" data-tela="2">
+    <div class="pea-cartao">
+      <p class="pea-titulo">Este espaço é seu</p>
+      <p class="pea-texto">Você pode fechar esta página a qualquer momento. Nada se perde, e não existe um jeito certo de usar este programa.</p>
+      <ul class="pea-bemestar">
+        <li>Não há sequências para manter, nem lembretes cobrando frequência.</li>
+        <li>Nenhuma etapa é obrigatória. Pular também é uma escolha válida.</li>
+        <li>Seus dados ficam salvos apenas neste dispositivo, e só você tem acesso a eles.</li>
+      </ul>
+      <p class="pea-texto">Se quiser, você também pode apagar tudo o que já foi salvo até agora.</p>
+      <button class="pea-btn pea-btn-apagar" data-acao="apagar-dados">Apagar meus dados</button>
+      <p class="pea-confirmacao-apagar" id="pea-confirmacao-apagar">Pronto. Os dados salvos neste dispositivo foram apagados.</p>
+      <div class="pea-navegacao">
+        <button class="pea-btn pea-btn-voltar" data-acao="voltar">Voltar</button>
+        <button class="pea-btn pea-btn-continuar" data-acao="continuar">Continuar</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tela 3: Espaço para escrever -->
+  <section class="pea-tela" data-tela="3">
+    <div class="pea-cartao">
+      <p class="pea-titulo">Antes de começar</p>
+      <p class="pea-texto">Se quiser, reserve um instante para responder, só para você.</p>
+      <label class="pea-campo-label" for="pea-campo-motivo">O que te trouxe até aqui hoje? (opcional)</label>
+      <textarea class="pea-campo-texto" id="pea-campo-motivo" placeholder="Se quiser, escreva aqui"></textarea>
+      <p class="pea-nota">Isso é opcional e fica salvo apenas neste dispositivo. Ninguém mais vê.</p>
+      <div class="pea-navegacao">
+        <button class="pea-btn pea-btn-voltar" data-acao="voltar">Voltar</button>
+        <button class="pea-btn pea-btn-continuar" data-acao="continuar-motivo">Continuar</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tela 4: Chamada final -->
+  <section class="pea-tela" data-tela="4">
+    <div class="pea-cartao">
+      <p class="pea-titulo" id="pea-titulo-final">Pronto para começar</p>
+      <p class="pea-texto" id="pea-texto-final">Você pode começar agora, no seu próprio ritmo.</p>
+      <div class="pea-navegacao">
+        <button class="pea-btn pea-btn-voltar" data-acao="voltar">Voltar</button>
+        <button class="pea-btn pea-btn-continuar" id="pea-btn-final" data-acao="ir">Começar</button>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  var CHAVE_PROGRESSO = 'progresso_seguranca-interna';
+  var TOTAL_TELAS = 5;
+
+  var telas = Array.prototype.slice.call(document.querySelectorAll('.pea-tela'));
+  var pontos = Array.prototype.slice.call(document.querySelectorAll('.pea-ponto'));
+  var telaAtual = 0;
+
+  function lerEstado() {
+    try {
+      return JSON.parse(localStorage.getItem(CHAVE_PROGRESSO)) || {};
+    } catch (erro) {
+      return {};
+    }
+  }
+
+  function salvarMotivo(texto) {
+    var existente = lerEstado();
+    var respostas = existente.respostas || {};
+    respostas.motivoInicial = texto;
+    var estado = {
+      etapaAtual: existente.etapaAtual,
+      telaAtual: existente.telaAtual || 0,
+      respostas: respostas
+    };
+    if (existente.programaConcluido) {
+      estado.programaConcluido = existente.programaConcluido;
+    }
+    localStorage.setItem(CHAVE_PROGRESSO, JSON.stringify(estado));
+  }
+
+  function obterDestino() {
+    var existente = lerEstado();
+    if (existente.programaConcluido) {
+      return {
+        titulo: 'Você já percorreu este caminho',
+        texto: 'Se quiser, pode revisitar o programa inteiro, ou qualquer etapa específica, quando fizer sentido.',
+        rotuloBotao: 'Revisitar a Etapa 1',
+        arquivo: 'etapa-1.html'
+      };
+    }
+    if (existente.etapaAtual && existente.etapaAtual >= 1 && existente.etapaAtual <= 5) {
+      return {
+        titulo: 'Bom te ver de novo',
+        texto: 'Você já começou este caminho. Pode continuar exatamente de onde parou.',
+        rotuloBotao: 'Continuar de onde parei',
+        arquivo: 'etapa-' + existente.etapaAtual + '.html'
+      };
+    }
+    return {
+      titulo: 'Pronto para começar',
+      texto: 'Você pode começar agora, no seu próprio ritmo.',
+      rotuloBotao: 'Começar',
+      arquivo: 'etapa-1.html'
+    };
+  }
+
+  function aplicarDestinoNaTelaFinal() {
+    var destino = obterDestino();
+    document.getElementById('pea-titulo-final').textContent = destino.titulo;
+    document.getElementById('pea-texto-final').textContent = destino.texto;
+    document.getElementById('pea-btn-final').textContent = destino.rotuloBotao;
+  }
+
+  function popularMapaEtapas() {
+    var existente = lerEstado();
+    var etapaAtual = existente.programaConcluido ? 6 : (existente.etapaAtual || 0);
+    document.querySelectorAll('[data-status-etapa]').forEach(function (span) {
+      var numero = parseInt(span.getAttribute('data-status-etapa'), 10);
+      span.className = 'pea-mapa-status';
+      span.textContent = '';
+      if (existente.programaConcluido || numero < etapaAtual) {
+        span.classList.add('pea-status-concluida');
+        span.textContent = 'concluída';
+      } else if (numero === etapaAtual) {
+        span.classList.add('pea-status-atual');
+        span.textContent = 'você está aqui';
+      }
+    });
+  }
+
+  function renderizar() {
+    telas.forEach(function (tela, indice) {
+      tela.classList.toggle('pea-visivel', indice === telaAtual);
+    });
+    pontos.forEach(function (ponto, indice) {
+      ponto.classList.toggle('pea-ativo', indice === telaAtual);
+      ponto.classList.toggle('pea-concluido', indice < telaAtual);
+    });
+    if (telaAtual === TOTAL_TELAS - 1) {
+      aplicarDestinoNaTelaFinal();
+    }
+    dispararRedimensionamento();
+  }
+
+  function irPara(indice) {
+    telaAtual = Math.min(Math.max(indice, 0), TOTAL_TELAS - 1);
+    renderizar();
+    window.scrollTo(0, 0);
+  }
+
+  document.querySelectorAll('[data-acao="continuar"]').forEach(function (botao) {
+    botao.addEventListener('click', function () {
+      irPara(telaAtual + 1);
+    });
+  });
+
+  document.querySelectorAll('[data-acao="voltar"]').forEach(function (botao) {
+    botao.addEventListener('click', function () {
+      irPara(telaAtual - 1);
+    });
+  });
+
+  var campoMotivo = document.getElementById('pea-campo-motivo');
+
+  document.querySelectorAll('[data-acao="continuar-motivo"]').forEach(function (botao) {
+    botao.addEventListener('click', function () {
+      var valor = campoMotivo.value.trim();
+      if (valor) {
+        salvarMotivo(valor);
+      }
+      irPara(telaAtual + 1);
+    });
+  });
+
+  document.querySelectorAll('[data-acao="pular-apresentacao"]').forEach(function (botao) {
+    botao.addEventListener('click', function () {
+      window.location.href = obterDestino().arquivo;
+    });
+  });
+
+  document.querySelectorAll('[data-acao="ir"]').forEach(function (botao) {
+    botao.addEventListener('click', function () {
+      window.location.href = obterDestino().arquivo;
+    });
+  });
+
+  document.querySelectorAll('[data-acao="apagar-dados"]').forEach(function (botao) {
+    botao.addEventListener('click', function () {
+      var confirmado = window.confirm('Isso apaga todo o progresso e o que você escreveu neste dispositivo. Não é possível desfazer. Quer apagar mesmo assim?');
+      if (!confirmado) { return; }
+      localStorage.removeItem(CHAVE_PROGRESSO);
+      if (campoMotivo) { campoMotivo.value = ''; }
+      popularMapaEtapas();
+      var confirmacao = document.getElementById('pea-confirmacao-apagar');
+      if (confirmacao) { confirmacao.classList.add('pea-visivel-inline'); }
+      dispararRedimensionamento();
+    });
+  });
+
+  function restaurarMotivoSalvo() {
+    var existente = lerEstado();
+    if (existente.respostas && existente.respostas.motivoInicial && campoMotivo) {
+      campoMotivo.value = existente.respostas.motivoInicial;
+    }
+  }
+
+  function dispararRedimensionamento() {
+    var altura = document.body.scrollHeight;
+    window.parent.postMessage({ type: 'resize', height: altura }, '*');
+  }
+
+  var resizeObserver = new ResizeObserver(function () {
+    dispararRedimensionamento();
+  });
+  resizeObserver.observe(document.body);
+
+  restaurarMotivoSalvo();
+  popularMapaEtapas();
+  renderizar();
+  dispararRedimensionamento();
+})();
+</script>
+
+</body>
+</html>

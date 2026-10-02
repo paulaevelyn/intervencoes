@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Segurança Interna: Etapa 5</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --pea-coral: #D96C63;
+    --pea-musgo: #5E7D73;
+    --pea-areia: #F5F0E8;
+    --pea-grafite: #2E2E2E;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  body {
+    background: var(--pea-areia);
+    color: var(--pea-grafite);
+    font-family: 'Lato', Arial, sans-serif;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .pea-app {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 40px 24px 56px;
+    min-height: 100vh;
+  }
+
+  .pea-marca {
+    display: block;
+    text-align: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--pea-musgo);
+    text-decoration: none;
+    margin-bottom: 28px;
+    opacity: 0.85;
+    transition: opacity 0.15s ease;
+  }
+
+  .pea-marca:hover {
+    opacity: 1;
+    text-decoration: underline;
+  }
+
+  .pea-progresso {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 36px;
+  }
+
+  .pea-ponto {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: rgba(94, 125, 115, 0.25);
+    transition: background 0.3s ease, transform 0.3s ease;
+  }
+
+  .pea-ponto.pea-ativo {
+    background: var(--pea-coral);
+    transform: scale(1.2);
+  }
+
+  .pea-ponto.pea-concluido {
+    background: var(--pea-musgo);
+  }
+
+  .pea-tela {
+    display: none;
+    animation: pea-surgir 0.5s ease;
+  }
+
+  .pea-tela.pea-visivel {
+    display: block;
+  }
+
+  @keyframes pea-surgir {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .pea-cartao {
+    background: #FFFFFF;
+    border-radius: 18px;
+    padding: 40px 32px;
+    box-shadow: 0 2px 18px rgba(46, 46, 46, 0.06);
+  }
+
+  .pea-titulo {
+    font-family: 'Playfair Display', serif;
+    font-weight: 600;
+    font-size: 26px;
+    color: var(--pea-grafite);
+    margin: 0 0 6px;
+    line-height: 1.3;
+  }
+
+  .pea-texto {
+    font-size: 17px;
+    color: var(--pea-grafite);
+    margin: 0 0 18px;
+  }
+
+  .pea-texto:last-of-type {
+    margin-bottom: 0;
+  }
+
+  .pea-texto-sutil {
+    font-size: 15px;
+    color: rgba(46, 46, 46, 0.65);
+    margin: 22px 0 0;
+    padding-top: 20px;
+    border-top: 1px solid rgba(94, 125, 115, 0.2);
+  }
+
+  .pea-recursos {
+    list-style: none;
+    margin: 24px 0;
+    padding: 0;
+  }
+
+  .pea-recursos li {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(94, 125, 115, 0.18);
+  }
+
+  .pea-recursos li:last-child {
+    border-bottom: none;
+  }
+
+  .pea-recurso-nome {
+    font-weight: 700;
+    color: var(--pea-musgo);
+    font-size: 16px;
+    white-space: nowrap;
+  }
+
+  .pea-recurso-placeholder {
+    font-style: italic;
+    color: rgba(46, 46, 46, 0.5);
+    font-size: 15px;
+    text-align: right;
+  }
+
+  .pea-navegacao {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 14px;
+    margin-top: 32px;
+  }
+
+  .pea-btn {
+    font-family: 'Lato', Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    border: none;
+    border-radius: 30px;
+    padding: 14px 30px;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+  }
+
+  .pea-btn:active {
+    transform: scale(0.97);
+  }
+
+  .pea-btn-continuar {
+    background: var(--pea-coral);
+    color: #FFFFFF;
+    margin-left: auto;
+    box-shadow: 0 4px 14px rgba(217, 108, 99, 0.3);
+  }
+
+  .pea-btn-continuar:hover {
+    background: #C65B52;
+  }
+
+  .pea-btn-voltar {
+    background: transparent;
+    color: var(--pea-musgo);
+    padding: 14px 10px;
+  }
+
+  .pea-btn-voltar:hover {
+    color: var(--pea-grafite);
+  }
+
+  .pea-espacador {
+    flex: 1;
+  }
+
+  @media (max-width: 480px) {
+    .pea-app {
+      padding: 28px 16px 44px;
+    }
+    .pea-cartao {
+      padding: 30px 22px;
+      border-radius: 14px;
+    }
+    .pea-titulo {
+      font-size: 22px;
+    }
+    .pea-texto {
+      font-size: 16px;
+    }
+    .pea-btn {
+      padding: 13px 24px;
+      font-size: 15px;
+    }
+    .pea-recursos li {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+    }
+    .pea-recurso-placeholder {
+      text-align: left;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="pea-app">
+
+  <a href="index.html" class="pea-marca">Segurança Interna</a>
+
+  <div class="pea-progresso" id="pea-progresso">
+    <span class="pea-ponto" data-indice="0"></span>
+    <span class="pea-ponto" data-indice="1"></span>
+    <span class="pea-ponto" data-indice="2"></span>
+  </div>
+
+  <!-- Tela 0: Síntese pessoal -->
+  <section class="pea-tela" data-tela="0">
+    <div class="pea-cartao">
+      <p class="pea-titulo">O caminho até aqui</p>
+      <p class="pea-texto">Ao longo deste programa, você reconheceu padrões que usa para buscar segurança, olhou para a diferença entre uma segurança que vem de fora e uma que se constrói por dentro, e praticou pequenas pausas, no seu próprio ritmo.</p>
+      <p class="pea-texto" id="pea-linha-frase" style="display: none;">Você também chegou a escrever, com suas próprias palavras, uma frase para os momentos difíceis.</p>
+      <p class="pea-texto">Nada disso precisou acontecer de um jeito certo. O que importa é que houve caminho percorrido.</p>
+      <div class="pea-navegacao">
+        <span class="pea-espacador"></span>
+        <button class="pea-btn pea-btn-continuar" data-acao="continuar">Continuar</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tela 1: Encerramento -->
+  <section class="pea-tela" data-tela="1">
+    <div class="pea-cartao">
+      <p class="pea-titulo">Uma construção contínua</p>
+      <p class="pea-texto">Segurança interna não é um destino fixo. É algo que se constrói aos poucos, com repetição e tempo. Este programa pode ser revisitado quantas vezes fizer sentido, do início ou de qualquer etapa.</p>
+      <p class="pea-texto-sutil">Vale lembrar que este é um espaço de apoio. Ele não substitui um acompanhamento terapêutico individual, especialmente se o que apareceu ao longo do caminho parecer maior do que este espaço consegue sustentar sozinho.</p>
+      <div class="pea-navegacao">
+        <button class="pea-btn pea-btn-voltar" data-acao="voltar">Voltar</button>
+        <button class="pea-btn pea-btn-continuar" data-acao="continuar">Continuar</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tela 2: Recursos finais -->
+  <section class="pea-tela" data-tela="2">
+    <div class="pea-cartao">
+      <p class="pea-titulo">Se quiser continuar por perto</p>
+      <p class="pea-texto">Alguns espaços onde este trabalho continua:</p>
+      <ul class="pea-recursos">
+        <li>
+          <span class="pea-recurso-nome">Blog</span>
+          <span class="pea-recurso-placeholder">[inserir link do blog]</span>
+        </li>
+        <li>
+          <span class="pea-recurso-nome">Newsletter</span>
+          <span class="pea-recurso-placeholder">[inserir link de inscrição]</span>
+        </li>
+        <li>
+          <span class="pea-recurso-nome">Instagram</span>
+          <span class="pea-recurso-placeholder">[inserir @ ou link do Instagram]</span>
+        </li>
+      </ul>
+      <p class="pea-texto">Isso é um convite, não uma obrigação.</p>
+      <div class="pea-navegacao">
+        <button class="pea-btn pea-btn-voltar" data-acao="voltar">Voltar</button>
+        <button class="pea-btn pea-btn-continuar" data-acao="concluir">Concluir programa</button>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  var CHAVE_PROGRESSO = 'progresso_seguranca-interna';
+  var ETAPA_ATUAL = 5;
+  var TOTAL_TELAS = 3;
+
+  var telas = Array.prototype.slice.call(document.querySelectorAll('.pea-tela'));
+  var pontos = Array.prototype.slice.call(document.querySelectorAll('.pea-ponto'));
+  var telaAtual = 0;
+
+  function lerEstado() {
+    try {
+      return JSON.parse(localStorage.getItem(CHAVE_PROGRESSO)) || {};
+    } catch (erro) {
+      return {};
+    }
+  }
+
+  function carregarProgresso() {
+    var salvo = lerEstado();
+    if (salvo && salvo.etapaAtual === ETAPA_ATUAL && typeof salvo.telaAtual === 'number') {
+      return Math.min(Math.max(salvo.telaAtual, 0), TOTAL_TELAS - 1);
+    }
+    return 0;
+  }
+
+  function salvarProgresso(indiceTela, etapa, extra) {
+    var existente = lerEstado();
+    var estado = { etapaAtual: etapa, telaAtual: indiceTela, respostas: existente.respostas || {} };
+    if (existente.programaConcluido) {
+      estado.programaConcluido = existente.programaConcluido;
+    }
+    if (extra) {
+      for (var chave in extra) {
+        if (Object.prototype.hasOwnProperty.call(extra, chave)) {
+          estado[chave] = extra[chave];
+        }
+      }
+    }
+    localStorage.setItem(CHAVE_PROGRESSO, JSON.stringify(estado));
+  }
+
+  function mostrarLinhaFrasePersonalizada() {
+    var existente = lerEstado();
+    var linha = document.getElementById('pea-linha-frase');
+    if (linha && existente.respostas && existente.respostas.fraseAcolhimento) {
+      linha.style.display = 'block';
+    }
+  }
+
+  function renderizar() {
+    telas.forEach(function (tela, indice) {
+      tela.classList.toggle('pea-visivel', indice === telaAtual);
+    });
+    pontos.forEach(function (ponto, indice) {
+      ponto.classList.toggle('pea-ativo', indice === telaAtual);
+      ponto.classList.toggle('pea-concluido', indice < telaAtual);
+    });
+    dispararRedimensionamento();
+  }
+
+  function irPara(indice) {
+    telaAtual = Math.min(Math.max(indice, 0), TOTAL_TELAS - 1);
+    salvarProgresso(telaAtual, ETAPA_ATUAL);
+    renderizar();
+    window.scrollTo(0, 0);
+  }
+
+  function concluirPrograma() {
+    salvarProgresso(TOTAL_TELAS - 1, ETAPA_ATUAL, { programaConcluido: true });
+    console.log('programa concluído: seguranca-interna');
+    // TODO: integração com Apps Script ao concluir o programa
+    telaAtual = TOTAL_TELAS - 1;
+    renderizar();
+  }
+
+  document.querySelectorAll('[data-acao="continuar"]').forEach(function (botao) {
+    botao.addEventListener('click', function () {
+      irPara(telaAtual + 1);
+    });
+  });
+
+  document.querySelectorAll('[data-acao="voltar"]').forEach(function (botao) {
+    botao.addEventListener('click', function () {
+      irPara(telaAtual - 1);
+    });
+  });
+
+  document.querySelectorAll('[data-acao="concluir"]').forEach(function (botao) {
+    botao.addEventListener('click', concluirPrograma);
+  });
+
+  function dispararRedimensionamento() {
+    var altura = document.body.scrollHeight;
+    window.parent.postMessage({ type: 'resize', height: altura }, '*');
+  }
+
+  var resizeObserver = new ResizeObserver(function () {
+    dispararRedimensionamento();
+  });
+  resizeObserver.observe(document.body);
+
+  mostrarLinhaFrasePersonalizada();
+  telaAtual = carregarProgresso();
+  renderizar();
+  dispararRedimensionamento();
+})();
+</script>
+
+</body>
+</html>
