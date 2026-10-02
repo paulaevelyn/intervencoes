@@ -7,7 +7,7 @@
 <meta name="description" content="Intervenções psicoeducativas interativas da Psicoterapia e Afins: Farol, Floresça, Segurança Interna e Matiz.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600&family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root {
   --coral:#D96C63; --coral-d:#B85550; --coral-xl:#FAF0EF;
@@ -49,6 +49,9 @@ h1{font-size:clamp(28px,6vw,40px);font-weight:800;line-height:1.15;margin:10px 0
 .logo img,.logo svg{width:40px;height:40px;object-fit:contain}
 .logo.wide{width:100%;height:120px;margin-bottom:16px}
 .logo.wide img{width:auto;max-width:90%;height:100%;max-height:104px}
+.logo.lockup{gap:12px}
+.logo.lockup img{width:56px;height:56px;max-width:none}
+.logo.lockup span{font-family:"Fraunces",Georgia,serif;font-weight:600;font-size:2rem;color:var(--accent-d)}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .card h2{font-size:21px;font-weight:800;color:var(--accent-d)}
 .tag{font-size:13px;font-weight:700;color:var(--accent-d);margin:2px 0 10px}
@@ -106,8 +109,8 @@ footer a:hover{text-decoration:underline}
     </a>
 
     <a class="card c-matiz" href="matiz/">
-      <div class="logo"><img src="matiz/assets/matiz-logo.svg" alt=""></div>
-      <h2>Matiz</h2>
+      <div class="logo wide lockup"><img src="matiz/assets/matiz-logo.svg" alt=""><span>Matiz</span></div>
+      <h2 class="sr">Matiz</h2>
       <div class="tag">Cada sentimento tem seu tom</div>
       <p>Um recurso para reconhecer e nomear as seis emoções básicas com precisão, pensado também para quem tem alexitimia ou é neurodivergente.</p>
       <div class="chips"><span class="chip">Emoções básicas</span><span class="chip">Acessível</span></div>
