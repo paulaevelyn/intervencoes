@@ -1,0 +1,55 @@
+<svg viewBox="0 0 400 360" xmlns="http://www.w3.org/2000/svg" style="background:#F7F4EF">
+
+  <!-- Raios de luz -->
+  <g opacity="0.18">
+    <line x1="200" y1="110" x2="80"  y2="30"  stroke="#E8A87C" stroke-width="18" stroke-linecap="round"/>
+    <line x1="200" y1="110" x2="110" y2="20"  stroke="#E8A87C" stroke-width="14" stroke-linecap="round"/>
+    <line x1="200" y1="110" x2="148" y2="14"  stroke="#E8A87C" stroke-width="10" stroke-linecap="round"/>
+    <line x1="200" y1="110" x2="200" y2="10"  stroke="#E8A87C" stroke-width="16" stroke-linecap="round"/>
+    <line x1="200" y1="110" x2="252" y2="14"  stroke="#E8A87C" stroke-width="10" stroke-linecap="round"/>
+    <line x1="200" y1="110" x2="290" y2="20"  stroke="#E8A87C" stroke-width="14" stroke-linecap="round"/>
+    <line x1="200" y1="110" x2="320" y2="30"  stroke="#E8A87C" stroke-width="18" stroke-linecap="round"/>
+  </g>
+
+  <!-- Torre — base -->
+  <path d="M172 295 L162 182 L238 182 L228 295 Z" fill="#3D5A52"/>
+  <!-- Torre — seção superior -->
+  <path d="M162 182 L154 130 L246 130 L238 182 Z" fill="#4A6E65"/>
+
+  <!-- Listras horizontais na torre -->
+  <rect x="174" y="198" width="52" height="8"  rx="4" fill="#A8C5BE" opacity="0.45"/>
+  <rect x="176" y="222" width="48" height="8"  rx="4" fill="#A8C5BE" opacity="0.45"/>
+  <rect x="179" y="246" width="42" height="8"  rx="4" fill="#A8C5BE" opacity="0.45"/>
+  <rect x="182" y="270" width="36" height="8"  rx="4" fill="#A8C5BE" opacity="0.45"/>
+
+  <!-- Plataforma / varanda -->
+  <rect x="146" y="124" width="108" height="9" rx="4" fill="#D96C63"/>
+  <!-- Corrimão -->
+  <rect x="146" y="106" width="4"   height="22" rx="2" fill="#D96C63"/>
+  <rect x="250" y="106" width="4"   height="22" rx="2" fill="#D96C63"/>
+  <line x1="146" y1="106" x2="254" y2="106" stroke="#D96C63" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- Cúpula da lanterna -->
+  <ellipse cx="200" cy="100" rx="30" ry="28" fill="#3D5A52"/>
+  <!-- Vidro iluminado -->
+  <ellipse cx="200" cy="100" rx="22" ry="20" fill="#F5C842" opacity="0.90"/>
+  <!-- Reflexo -->
+  <ellipse cx="192" cy="93" rx="7"  ry="5"  fill="white" opacity="0.32" transform="rotate(-20 192 93)"/>
+  <!-- Capelo superior -->
+  <ellipse cx="200" cy="74" rx="17" ry="6"  fill="#3D5A52"/>
+  <!-- Haste -->
+  <rect x="196" y="57" width="8" height="20" rx="4" fill="#C0584E"/>
+  <!-- Ponto de luz no topo -->
+  <circle cx="200" cy="55" r="6" fill="#F5C842"/>
+
+  <!-- Penhasco / base rochosa -->
+  <path d="M138 295 Q168 282 200 286 Q232 282 262 295 L272 316 L128 316 Z" fill="#5E7D73"/>
+  <path d="M120 316 Q160 302 200 306 Q240 302 280 316 L288 334 L112 334 Z" fill="#4A6E65"/>
+
+  <!-- Ondas -->
+  <path d="M55 350 Q90 338 125 350 Q160 362 195 350 Q230 338 265 350 Q300 362 335 350 Q355 344 375 350"
+        stroke="#5E7D73" stroke-width="4" fill="none" stroke-linecap="round" opacity="0.65"/>
+  <path d="M45 358 Q85 346 125 358 Q165 370 205 358 Q245 346 285 358 Q320 368 360 358"
+        stroke="#A8C5BE" stroke-width="3" fill="none" stroke-linecap="round" opacity="0.45"/>
+
+</svg>

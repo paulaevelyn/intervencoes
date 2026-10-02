@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Farol — Dashboard de Investigação</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --coral:#D96C63;--coral-d:#B85550;--coral-xl:#FAF0EF;
+  --mint:#5E7D73;--mint-d:#3D5A52;--mint-xl:#F0F6F3;--mint-l:#DDEAE2;
+  --lav:#8B7FB8;--lav-l:#EEE9FB;
+  --amber:#C47D2A;--amber-l:#FBF0DF;
+  --sand:#F7F3EF;--white:#FFFFFF;
+  --graphite:#3F434B;--muted:#6B7280;--light:#A0ADB8;
+  --border:rgba(63,67,75,.09);--shadow:0 2px 16px rgba(63,67,75,.07);
+  --r:18px;--rs:12px;
+  --font:'Nunito Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif
+}
+body{font-family:var(--font);background:var(--sand);color:var(--graphite);min-height:100vh}
+a{color:var(--mint);text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* ── Header ── */
+.dash-header{
+  background:linear-gradient(140deg,var(--mint-d),#1E3830);
+  padding:32px 40px 28px;color:white
+}
+.dash-header-inner{max-width:1140px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.dash-logo{display:flex;align-items:center;gap:12px}
+.dash-logo-text h1{font-size:20px;font-weight:800;margin-bottom:2px}
+.dash-logo-text p{font-size:12px;opacity:.75}
+.dash-header-actions{display:flex;gap:10px;flex-wrap:wrap}
+.dash-btn{
+  padding:9px 18px;border-radius:20px;font-size:13px;font-weight:700;
+  cursor:pointer;border:none;font-family:var(--font);transition:opacity .15s
+}
+.dash-btn:hover{opacity:.85}
+.dash-btn.primary{background:var(--coral);color:white}
+.dash-btn.ghost{background:rgba(255,255,255,.15);color:white;border:1.5px solid rgba(255,255,255,.3)}
+
+/* ── Body ── */
+.dash-body{max-width:1140px;margin:0 auto;padding:28px 24px 60px}
+
+/* ── Section ── */
+.dash-section{margin-bottom:36px}
+.dash-section-title{
+  font-size:12px;font-weight:800;text-transform:uppercase;
+  letter-spacing:.08em;color:var(--muted);margin-bottom:14px;
+  display:flex;align-items:center;gap:8px
+}
+.dash-section-title::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* ── Grid ── */
+.dash-grid{display:grid;gap:16px}
+.dash-grid.c2{grid-template-columns:1fr 1fr}
+.dash-grid.c3{grid-template-columns:1fr 1fr 1fr}
+.dash-grid.c4{grid-template-columns:repeat(4,1fr)}
+@media(max-width:900px){.dash-grid.c4{grid-template-columns:1fr 1fr}.dash-grid.c3{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.dash-grid.c2,.dash-grid.c3,.dash-grid.c4{grid-template-columns:1fr}}
+
+/* ── Card ── */
+.dash-card{
+  background:var(--white);border-radius:var(--r);
+  padding:20px 22px;box-shadow:var(--shadow)
+}
+.dash-card-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:14px}
+
+/* ── KPI ── */
+.kpi-val{font-size:36px;font-weight:800;line-height:1;margin-bottom:5px}
+.kpi-lbl{font-size:12px;color:var(--muted)}
+
+/* ── Bar chart ── */
+.bar-chart{display:flex;align-items:flex-end;gap:10px;height:140px;margin-bottom:8px}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px}
+.bar-val{font-size:11px;font-weight:800;color:var(--muted)}
+.bar{width:100%;border-radius:6px 6px 0 0;min-height:4px;transition:height .4s}
+.bar-lbl{font-size:10px;color:var(--light);font-weight:600;text-align:center;line-height:1.3}
+
+/* ── Comparison bar ── */
+.cmp-row{display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--border)}
+.cmp-row:last-child{border-bottom:none}
+.cmp-lbl{flex:1;font-size:13px;font-weight:600}
+.cmp-bars{flex:2;display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.cmp-bar-wrap{display:flex;align-items:center;gap:6px}
+.cmp-bar-bg{flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden}
+.cmp-bar-fill{height:100%;border-radius:4px;transition:width .5s}
+.cmp-score{font-size:12px;font-weight:800;min-width:22px;text-align:right}
+.cmp-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px}
+.cmp-better{background:var(--mint-xl);color:var(--mint-d)}
+.cmp-worse{background:var(--coral-xl);color:var(--coral-d)}
+.cmp-same{background:#F0EDE8;color:#6B7280}
+
+/* ── Heatmap ── */
+.heatmap{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:8px}
+.hm-cell{
+  aspect-ratio:1;border-radius:4px;background:var(--border);
+  cursor:default;position:relative
+}
+.hm-cell.lv1{background:var(--mint-l)}
+.hm-cell.lv2{background:var(--mint)}
+.hm-cell.lv3{background:var(--mint-d)}
+.hm-day-label{font-size:9px;color:var(--light);text-align:center;margin-bottom:3px;font-weight:700}
+.hm-legend{display:flex;align-items:center;gap:6px;margin-top:8px;font-size:11px;color:var(--muted)}
+.hm-swatch{width:12px;height:12px;border-radius:3px}
+
+/* ── Line chart ── */
+.line-chart-wrap{overflow:hidden;border-radius:8px}
+
+/* ── Radar chart (MCQ-30 subscales) ── */
+.radar-wrap{display:flex;justify-content:center;margin:8px 0}
+
+/* ── Module progress ── */
+.mod-prog-row{display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid var(--border)}
+.mod-prog-row:last-child{border-bottom:none}
+.mod-prog-emoji{font-size:22px;flex-shrink:0}
+.mod-prog-info{flex:1;min-width:0}
+.mod-prog-name{font-size:13px;font-weight:700;margin-bottom:4px}
+.mod-prog-bar{height:6px;background:var(--border);border-radius:3px;overflow:hidden}
+.mod-prog-fill{height:100%;border-radius:3px;background:var(--mint)}
+.mod-prog-pct{font-size:12px;font-weight:800;color:var(--muted);min-width:36px;text-align:right}
+.mod-done-badge{font-size:10px;padding:2px 8px;border-radius:10px;background:var(--mint-xl);color:var(--mint-d);font-weight:700;margin-left:6px}
+
+/* ── Empty state ── */
+.dash-empty{text-align:center;padding:48px 20px;color:var(--muted)}
+.dash-empty-i{font-size:40px;margin-bottom:12px}
+.dash-empty h3{font-size:15px;font-weight:800;margin-bottom:6px;color:var(--graphite)}
+.dash-empty p{font-size:13px;line-height:1.6}
+
+/* ── Alert ── */
+.dash-alert{
+  background:var(--amber-l);border:1px solid rgba(196,125,42,.2);
+  border-radius:var(--rs);padding:14px 18px;margin-bottom:24px;
+  font-size:13px;color:#5A3A0A;line-height:1.6;border-left:3px solid var(--amber)
+}
+
+/* ── Footer ── */
+.dash-footer{
+  border-top:1px solid var(--border);padding:20px 24px;margin-top:40px;
+  text-align:center;font-size:11px;color:var(--light);line-height:1.8
+}
+.dash-footer a{color:var(--mint);font-weight:700}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="dash-header">
+  <div class="dash-header-inner">
+    <div class="dash-logo">
+      <svg width="32" height="38" viewBox="0 0 52 62" fill="none">
+        <circle cx="26" cy="10" r="9.5" fill="rgba(255,255,255,.9)"/>
+        <path d="M2 29Q26 13 50 29" stroke="rgba(255,255,255,.7)" stroke-width="4.8" stroke-linecap="round"/>
+        <path d="M8 40Q26 25 44 40" stroke="rgba(255,255,255,.7)" stroke-width="4.8" stroke-linecap="round"/>
+        <path d="M15 51Q26 38 37 51" stroke="rgba(255,255,255,.7)" stroke-width="4.8" stroke-linecap="round"/>
+        <circle cx="26" cy="57.5" r="6" fill="rgba(255,255,255,.7)"/>
+      </svg>
+      <div class="dash-logo-text">
+        <h1>Farol — Dashboard</h1>
+        <p>Psicoterapia e Afins · Análise de dados psicoeducativos</p>
+      </div>
+    </div>
+    <div class="dash-header-actions">
+      <button class="dash-btn ghost" onclick="window.open('index.html','_self')">← Voltar ao app</button>
+      <button class="dash-btn primary" onclick="exportReport()">📥 Exportar relatório</button>
+    </div>
+  </div>
+</div>
+
+<!-- BODY -->
+<div class="dash-body">
+
+  <div id="no-data-alert" class="dash-alert" style="display:none">
+    ⚠️ <strong>Dados insuficientes:</strong> Complete o pré-teste e alguns módulos ou registros no diário para visualizar o dashboard completo.
+  </div>
+
+  <!-- KPIs -->
+  <div class="dash-section">
+    <div class="dash-section-title">Resumo geral</div>
+    <div class="dash-grid c4">
+      <div class="dash-card"><div class="dash-card-title">Dias de uso</div><div class="kpi-val" id="kpi-days">—</div><div class="kpi-lbl">desde o início</div></div>
+      <div class="dash-card"><div class="dash-card-title">Registros no diário</div><div class="kpi-val" id="kpi-entries" style="color:var(--coral)">—</div><div class="kpi-lbl">episódios registados</div></div>
+      <div class="dash-card"><div class="dash-card-title">Módulos concluídos</div><div class="kpi-val" id="kpi-mods" style="color:var(--mint)">—</div><div class="kpi-lbl">de 8 módulos</div></div>
+      <div class="dash-card"><div class="dash-card-title">XP acumulado</div><div class="kpi-val" id="kpi-xp" style="color:var(--lav)">—</div><div class="kpi-lbl">pontos de experiência</div></div>
+    </div>
+  </div>
+
+  <!-- GAD-7 Pre vs Post -->
+  <div class="dash-section">
+    <div class="dash-section-title">GAD-7 — Ansiedade (pré vs. pós)</div>
+    <div class="dash-grid c2">
+      <div class="dash-card" id="gad7-bar-card">
+        <div class="dash-card-title">Pontuação GAD-7 (0–21)</div>
+        <div id="gad7-bar-wrap"></div>
+      </div>
+      <div class="dash-card">
+        <div class="dash-card-title">Interpretação</div>
+        <div id="gad7-interp"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MCQ-30 Pre vs Post -->
+  <div class="dash-section">
+    <div class="dash-section-title">MCQ-30 — Crenças sobre preocupação (pré vs. pós)</div>
+    <div class="dash-card">
+      <div class="dash-card-title">Subescalas — pontuação máx. por subescala: 24</div>
+      <div id="mcq30-cmp"></div>
+    </div>
+  </div>
+
+  <!-- Diary timeline -->
+  <div class="dash-section">
+    <div class="dash-section-title">Diário — Intensidade ao longo do tempo</div>
+    <div class="dash-grid c2">
+      <div class="dash-card">
+        <div class="dash-card-title">Intensidade média (semanal)</div>
+        <svg id="line-chart" viewBox="0 0 400 120" style="width:100%;display:block;overflow:visible"></svg>
+        <div id="line-empty" style="display:none" class="dash-empty"><div class="dash-empty-i">📈</div><p>Registre pelo menos 2 episódios em dias diferentes.</p></div>
+      </div>
+      <div class="dash-card">
+        <div class="dash-card-title">Calendário de prática</div>
+        <div id="heatmap-labels" style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:2px"></div>
+        <div id="heatmap" class="heatmap"></div>
+        <div class="hm-legend">
+          <span>Sem registro</span>
+          <div class="hm-swatch" style="background:var(--mint-l)"></div>
+          <div class="hm-swatch" style="background:var(--mint)"></div>
+          <div class="hm-swatch" style="background:var(--mint-d)"></div>
+          <span>3+ registros</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modules progress -->
+  <div class="dash-section">
+    <div class="dash-section-title">Progresso nos módulos</div>
+    <div class="dash-card" id="mod-prog-card"></div>
+  </div>
+
+  <!-- Strategies usage -->
+  <div class="dash-section">
+    <div class="dash-section-title">Estratégias mais utilizadas</div>
+    <div class="dash-card">
+      <div id="strats-chart"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="dash-footer">
+  <strong>© 2025 Psicoterapia e Afins · Todos os direitos reservados</strong><br>
+  Dashboard de investigação — dados armazenados localmente neste dispositivo.<br>
+  <a href="https://www.psicoterapiaeafins.com.br" target="_blank">psicoterapiaeafins.com.br</a>
+  &nbsp;·&nbsp;
+  <a href="https://www.instagram.com/psicoterapiaeafins" target="_blank" style="color:var(--coral-d)">@psicoterapiaeafins</a>
+</div>
+
+<script>
+/* ─── Load data from localStorage ─── */
+const SK = 'np_v4';
+let D = null;
+try { D = JSON.parse(localStorage.getItem(SK)||'null'); } catch(e){}
+if(!D){ D = { xp:0, badges:[], entries:[], moduleProgress:{}, pretest:null, posttest:null, analytics:{ sessions:[], moduleEvents:[], diaryEvents:[] } }; }
+
+const MODULES_META = [
+  {id:'m1',emoji:'🧠',title:'Entendendo as Preocupações'},
+  {id:'m2',emoji:'🔎',title:'Identificando Padrões'},
+  {id:'m3',emoji:'💭',title:'Metacognição'},
+  {id:'m4',emoji:'⏰',title:'Worry Time'},
+  {id:'m5',emoji:'🌬️',title:'Regulação Nervosa'},
+  {id:'m6',emoji:'🔧',title:'Reestruturação Cognitiva'},
+  {id:'m7',emoji:'🌊',title:'Desfusão — ACT'},
+  {id:'m8',emoji:'💚',title:'Autocompaixão — TFC'},
+];
+const MCQ_SUBS = { pr:'Crenças positivas', nc:'Incontrolabilidade', cw:'Conf. cognitiva', nb:'Controle de pens.', wf:'Autoconsciência' };
+
+/* ─── Helpers ─── */
+const today = () => { const d=new Date(); return d.getFullYear()+'-'+(d.getMonth()+1+'').padStart(2,'0')+'-'+(d.getDate()+'').padStart(2,'0'); };
+const esc = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+function hasData(){
+  return D.entries.length > 0 || D.pretest || MODULES_META.some(m=>D.moduleProgress[m.id]?.done);
+}
+
+/* ─── KPIs ─── */
+function renderKPIs(){
+  const sorted = [...D.entries].sort((a,b)=>a.ts-b.ts);
+  const days = sorted.length ? Math.max(1,Math.round((Date.now()-sorted[0].ts)/864e5)+1) : 0;
+  const doneMods = MODULES_META.filter(m=>D.moduleProgress[m.id]?.done).length;
+  document.getElementById('kpi-days').textContent    = days || '—';
+  document.getElementById('kpi-entries').textContent = D.entries.length || '—';
+  document.getElementById('kpi-mods').textContent    = doneMods+'/8';
+  document.getElementById('kpi-xp').textContent      = D.xp || '—';
+}
+
+/* ─── GAD-7 ─── */
+function renderGAD7(){
+  const pre  = D.pretest?.gad7;
+  const post = D.posttest?.gad7;
+  const el = document.getElementById('gad7-bar-wrap');
+  const interp = document.getElementById('gad7-interp');
+
+  if(!pre){ el.innerHTML='<div class="dash-empty"><div class="dash-empty-i">📋</div><p>Pré-teste não realizado.</p></div>'; interp.innerHTML=''; return; }
+
+  const maxH = 120;
+  const preH  = Math.round(pre.score/21*maxH);
+  const postH = post ? Math.round(post.score/21*maxH) : 0;
+  const delta = post ? post.score - pre.score : null;
+
+  el.innerHTML = `<div class="bar-chart" style="height:${maxH}px;align-items:flex-end">
+    <div class="bar-col">
+      <div class="bar-val">${pre.score}</div>
+      <div class="bar" style="height:${preH}px;background:var(--coral);"></div>
+      <div class="bar-lbl">Pré-teste<br>${pre.date}</div>
+    </div>
+    ${post?`<div class="bar-col">
+      <div class="bar-val">${post.score}</div>
+      <div class="bar" style="height:${postH}px;background:${delta<=0?'var(--mint)':'var(--coral-d)'}"></div>
+      <div class="bar-lbl">Pós-teste<br>${post.date}</div>
+    </div>`:'<div class="bar-col"><div style="height:100%;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--light);text-align:center">Pós-teste<br>pendente</div></div>'}
+  </div>`;
+
+  const lvl = (s) => s<=4?{lbl:'Leve',c:'var(--mint-d)'}:s<=9?{lbl:'Moderado',c:'var(--lav)'}:{lbl:'Elevado',c:'var(--coral-d)'};
+  const preLv = lvl(pre.score), postLv = post?lvl(post.score):null;
+  interp.innerHTML = `
+    <div style="margin-bottom:16px">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;color:var(--muted);margin-bottom:6px">Pré-teste (${pre.date})</div>
+      <span style="font-size:20px;font-weight:800;color:${preLv.c}">${pre.score}/21 — ${preLv.lbl}</span>
+    </div>
+    ${post?`<div style="margin-bottom:16px">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;color:var(--muted);margin-bottom:6px">Pós-teste (${post.date})</div>
+      <span style="font-size:20px;font-weight:800;color:${postLv.c}">${post.score}/21 — ${postLv.lbl}</span>
+    </div>
+    <div style="background:${delta<0?'var(--mint-xl)':delta>0?'var(--coral-xl)':'#F0EDE8'};border-radius:10px;padding:12px 16px">
+      <div style="font-size:13px;font-weight:800;color:${delta<0?'var(--mint-d)':delta>0?'var(--coral-d)':'var(--muted)'}">
+        ${delta<0?'▼ Melhoria de '+Math.abs(delta)+' pontos':delta>0?'▲ Aumento de '+delta+' pontos':'— Sem variação'}
+      </div>
+      <div style="font-size:12px;color:var(--muted);margin-top:4px">Uma redução ≥ 5 pontos é clinicamente significativa (Jacobson & Truax, 1991).</div>
+    </div>` : '<div style="font-size:13px;color:var(--muted)">Complete mais 3 módulos ou 5 registros no diário para desbloquear o pós-teste.</div>'}
+  `;
+}
+
+/* ─── MCQ-30 ─── */
+function renderMCQ30(){
+  const el = document.getElementById('mcq30-cmp');
+  const pre  = D.pretest?.mcq30?.scores;
+  const post = D.posttest?.mcq30?.scores;
+  if(!pre){ el.innerHTML='<div class="dash-empty"><div class="dash-empty-i">🧠</div><p>Pré-teste não realizado.</p></div>'; return; }
+
+  const subs = Object.keys(MCQ_SUBS);
+  const rows = subs.map(s=>{
+    const pV = pre[s]||0, poV = post?(post[s]||0):null;
+    const max = 24;
+    const delta = poV!==null?poV-pV:null;
+    // For CW (cognitive confidence), higher = better
+    const isCW = s==='cw';
+    const improved = delta!==null?(isCW?delta>0:delta<0):null;
+    const badge = delta===null?'':(delta===0?'<span class="cmp-badge cmp-same">sem mudança</span>':improved?'<span class="cmp-badge cmp-better">↓ melhoria</span>':'<span class="cmp-badge cmp-worse">↑ atenção</span>');
+
+    return `<div class="cmp-row">
+      <span class="cmp-lbl">${MCQ_SUBS[s]}</span>
+      <div class="cmp-bars">
+        <div class="cmp-bar-wrap">
+          <span style="font-size:10px;color:var(--muted);min-width:30px">Pré</span>
+          <div class="cmp-bar-bg"><div class="cmp-bar-fill" style="width:${Math.round(pV/max*100)}%;background:var(--coral-l)"></div></div>
+          <span class="cmp-score" style="color:var(--coral-d)">${pV}</span>
+        </div>
+        ${poV!==null?`<div class="cmp-bar-wrap">
+          <span style="font-size:10px;color:var(--muted);min-width:30px">Pós</span>
+          <div class="cmp-bar-bg"><div class="cmp-bar-fill" style="width:${Math.round(poV/max*100)}%;background:${improved?'var(--mint)':'var(--coral)'}"></div></div>
+          <span class="cmp-score" style="color:${improved?'var(--mint-d)':'var(--coral-d)'}">${poV}</span>
+        </div>`:'<div style="font-size:11px;color:var(--light);display:flex;align-items:center">pendente</div>'}
+      </div>
+      <div style="min-width:90px;text-align:right">${badge}</div>
+    </div>`;
+  }).join('');
+  el.innerHTML = rows;
+}
+
+/* ─── Line chart (diary intensity) ─── */
+function renderLineChart(){
+  const el = document.getElementById('line-chart');
+  const empty = document.getElementById('line-empty');
+  if(D.entries.length < 2){ el.style.display='none'; empty.style.display=''; return; }
+  el.style.display=''; empty.style.display='none';
+
+  // group by week
+  const sorted = [...D.entries].sort((a,b)=>a.ts-b.ts);
+  const weeks = {};
+  sorted.forEach(e=>{
+    const d = new Date(e.ts);
+    const yr = d.getFullYear(), wk = Math.floor((d-new Date(yr,0,1))/864e5/7);
+    const key = yr+'-'+wk;
+    (weeks[key]||(weeks[key]=[])).push(e.after);
+  });
+  const labels = Object.keys(weeks).sort();
+  if(labels.length < 2){ el.style.display='none'; empty.style.display=''; return; }
+
+  const avgs = labels.map(k=>{ const a=weeks[k]; return a.reduce((s,v)=>s+v,0)/a.length; });
+  const W=400, H=120, pad={t:10,b:30,l:20,r:20};
+  const xStep = (W-pad.l-pad.r)/(labels.length-1);
+  const yScale = v => H-pad.b - (v-1)/4*(H-pad.t-pad.b);
+
+  const pts = avgs.map((v,i)=>[(pad.l+i*xStep).toFixed(1),yScale(v).toFixed(1)]);
+  const pathD = pts.map((p,i)=>(i===0?'M':'L')+p.join(',')).join(' ');
+  const areaD = pathD+` L${pts[pts.length-1][0]},${H-pad.b} L${pts[0][0]},${H-pad.b} Z`;
+
+  // y-axis labels 1-5
+  const yLines = [1,2,3,4,5].map(v=>{
+    const y = yScale(v).toFixed(1);
+    return `<line x1="${pad.l-4}" y1="${y}" x2="${W-pad.r}" y2="${y}" stroke="rgba(160,173,184,.25)" stroke-width="1"/>
+    <text x="${pad.l-6}" y="${parseFloat(y)+3}" text-anchor="end" font-size="9" fill="#A0ADB8">${v}</text>`;
+  }).join('');
+
+  el.innerHTML = `
+    <defs>
+      <linearGradient id="lineGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="var(--coral)" stop-opacity=".3"/>
+        <stop offset="100%" stop-color="var(--coral)" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+    ${yLines}
+    <path d="${areaD}" fill="url(#lineGrad)"/>
+    <path d="${pathD}" fill="none" stroke="var(--coral)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+    ${pts.map((p,i)=>`<circle cx="${p[0]}" cy="${p[1]}" r="3.5" fill="var(--coral)"/>
+      <text x="${p[0]}" y="${parseFloat(p[1])-8}" text-anchor="middle" font-size="9" font-weight="700" fill="var(--coral-d)">${avgs[i].toFixed(1)}</text>`).join('')}
+    <line x1="${pad.l}" y1="${H-pad.b}" x2="${W-pad.r}" y2="${H-pad.b}" stroke="var(--border)" stroke-width="1"/>
+  `;
+}
+
+/* ─── Heatmap ─── */
+function renderHeatmap(){
+  const el  = document.getElementById('heatmap');
+  const lbl = document.getElementById('heatmap-labels');
+  const days = 56; // 8 weeks
+  const counts = {};
+  D.entries.forEach(e=>{ counts[e.date]=(counts[e.date]||0)+1; });
+
+  const DIAS_C = ['D','S','T','Q','Q','S','S'];
+  lbl.innerHTML = DIAS_C.map(d=>`<div class="hm-day-label">${d}</div>`).join('');
+
+  let html = '';
+  for(let i=days-1;i>=0;i--){
+    const d = new Date(); d.setDate(d.getDate()-i);
+    const key = d.getFullYear()+'-'+(d.getMonth()+1+'').padStart(2,'0')+'-'+(d.getDate()+'').padStart(2,'0');
+    const c = counts[key]||0;
+    const lv = c===0?'':(c===1?'lv1':c===2?'lv2':'lv3');
+    const dstr = d.toLocaleDateString('pt-BR',{day:'2-digit',month:'short'});
+    html += `<div class="hm-cell ${lv}" title="${dstr}: ${c} registro${c!==1?'s':''}"></div>`;
+  }
+  el.innerHTML = html;
+}
+
+/* ─── Modules progress ─── */
+function renderModules(){
+  const el = document.getElementById('mod-prog-card');
+  if(!Object.keys(D.moduleProgress).length){ el.innerHTML='<div class="dash-empty"><div class="dash-empty-i">🗺️</div><p>Nenhum módulo iniciado.</p></div>'; return; }
+  el.innerHTML = '<div class="dash-card-title">Progresso nos módulos</div>' +
+    MODULES_META.map(m=>{
+      const mp = D.moduleProgress[m.id];
+      if(!mp) return `<div class="mod-prog-row"><div class="mod-prog-emoji">${m.emoji}</div><div class="mod-prog-info"><div class="mod-prog-name">${m.title}</div></div><div class="mod-prog-pct" style="color:var(--light)">0%</div></div>`;
+      const totalSteps = mp.steps?.length||0;
+      const doneSteps  = mp.steps?.filter(Boolean).length||0;
+      const pct = mp.done ? 100 : (totalSteps?Math.round(doneSteps/totalSteps*100):0);
+      return `<div class="mod-prog-row">
+        <div class="mod-prog-emoji">${m.emoji}</div>
+        <div class="mod-prog-info">
+          <div class="mod-prog-name">${m.title}${mp.done?'<span class="mod-done-badge">✓ Concluído</span>':''}</div>
+          <div class="mod-prog-bar"><div class="mod-prog-fill" style="width:${pct}%"></div></div>
+        </div>
+        <div class="mod-prog-pct">${pct}%</div>
+      </div>`;
+    }).join('');
+}
+
+/* ─── Strategies ─── */
+function renderStrategies(){
+  const el = document.getElementById('strats-chart');
+  if(!D.entries.length){ el.innerHTML='<div class="dash-empty"><div class="dash-empty-i">🛠️</div><p>Sem registros no diário ainda.</p></div>'; return; }
+  const c={};
+  D.entries.flatMap(e=>e.strategies||[]).forEach(s=>{ c[s]=(c[s]||0)+1; });
+  const sorted=Object.entries(c).sort((a,b)=>b[1]-a[1]).slice(0,8);
+  if(!sorted.length){ el.innerHTML='<div style="font-size:13px;color:var(--muted)">Nenhuma estratégia registada ainda.</div>'; return; }
+  const max=sorted[0][1];
+  el.innerHTML='<div class="dash-card-title">Top estratégias de regulação</div>'+
+    sorted.map(([name,count])=>`
+    <div style="display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid var(--border)">
+      <span style="flex:1;font-size:13px;font-weight:600">${esc(name)}</span>
+      <div style="flex:2;background:var(--border);border-radius:4px;height:8px;overflow:hidden">
+        <div style="height:100%;width:${Math.round(count/max*100)}%;background:var(--mint);border-radius:4px"></div>
+      </div>
+      <span style="font-size:12px;font-weight:800;color:var(--mint-d);min-width:26px;text-align:right">${count}×</span>
+    </div>`).join('');
+}
+
+/* ─── Export report ─── */
+function exportReport(){
+  // Simple print
+  window.print();
+}
+
+/* ─── Init ─── */
+if(!hasData()){
+  document.getElementById('no-data-alert').style.display='';
+}
+renderKPIs();
+renderGAD7();
+renderMCQ30();
+renderLineChart();
+renderHeatmap();
+renderModules();
+renderStrategies();
+</script>
+
+</body>
+</html>

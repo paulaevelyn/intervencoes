@@ -1,0 +1,26 @@
+{
+  "name": "Farol — Navegando as Preocupações",
+  "short_name": "Farol",
+  "description": "Intervenção psicoeducativa para preocupações excessivas — Psicoterapia e Afins",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#3D5A52",
+  "background_color": "#F7F3EF",
+  "lang": "pt-BR",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
