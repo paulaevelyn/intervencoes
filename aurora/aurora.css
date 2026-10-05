@@ -1,0 +1,99 @@
+/* aurora.css — o que é específico do Aurora, sobre o design system herdado (style.css + extra.css,
+   os mesmos do Farol e do Floresça). Usa só os tokens da marca: --mint, --coral, --amber, --lav, --sand… */
+
+/* Onboarding: lista curta de itens */
+.ob-list{display:flex;flex-direction:column;gap:10px;margin:6px 0 14px;text-align:left}
+.ob-li{display:flex;gap:12px;align-items:flex-start;font-size:15px;line-height:1.45}
+.ob-li-ic{font-size:1.35rem;line-height:1.2;flex:none}
+
+/* Caixa de apoio de crise (sempre acessível, tom acolhedor e não alarmista) */
+.crisis-box{background:var(--amber-l);border:1.5px solid color-mix(in srgb,var(--amber) 55%,transparent);border-radius:var(--r);padding:14px 16px;font-size:14px;line-height:1.5;color:var(--graphite)}
+.crisis-box a{color:var(--coral-d);font-weight:800}
+.crisis-title{font-weight:800;margin-bottom:4px}
+.quick-card.crisis-card{background:var(--amber-l);border:1.5px solid color-mix(in srgb,var(--amber) 45%,transparent)}
+
+/* Humor: cinco rostos grandes (alvo de toque confortável) */
+.mood-row{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:6px 0 4px}
+.mood-btn{display:flex;flex-direction:column;align-items:center;gap:4px;padding:12px 2px;border:1.5px solid var(--border);border-radius:var(--r);background:var(--white);cursor:pointer;font-family:var(--font);color:var(--graphite);transition:transform .15s,background .15s,border-color .15s}
+.mood-btn .mo-e{font-size:1.9rem;line-height:1}
+.mood-btn .mo-l{font-size:10.5px;font-weight:700;color:var(--muted);text-align:center;line-height:1.2}
+.mood-btn:active{transform:scale(.96)}
+.mood-btn[aria-checked=true]{background:var(--mint-xl);border-color:var(--mint);box-shadow:var(--shadow)}
+.mood-btn[aria-checked=true] .mo-l{color:var(--mint-d)}
+.mood-btn:focus-visible{outline:3px solid var(--mint);outline-offset:2px}
+.mood-caption{min-height:20px;text-align:center;font-size:13px;color:var(--muted);margin-top:4px}
+
+/* Um passo pequeno (sugestão do dia) */
+.step-card{background:var(--mint-xl);border:1.5px solid var(--mint-l);border-radius:var(--r);padding:16px;margin:0 16px 12px}
+.step-card .st-lbl{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--mint-d);margin-bottom:6px}
+.step-card .st-t{font-size:16px;font-weight:800;line-height:1.35}
+.step-card .st-m{font-size:12.5px;color:var(--muted);margin:3px 0 12px}
+.step-card .btn{margin:0}
+
+/* Atividades */
+.a-count{font-size:12.5px;color:var(--muted);padding:6px 16px 10px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.act{display:flex;gap:12px;align-items:flex-start;margin:0 16px 10px;padding:14px;background:var(--white);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow)}
+.act.done{background:var(--mint-xl);border-color:var(--mint-l)}
+.act-ck{flex:none;width:30px;height:30px;border-radius:50%;border:2px solid var(--light);background:transparent;display:grid;place-items:center;cursor:pointer;color:#fff;font-size:15px;padding:0}
+.act.done .act-ck{background:var(--mint);border-color:var(--mint)}
+.act-ck:focus-visible,.act-plus:focus-visible,.act-why:focus-visible{outline:3px solid var(--mint);outline-offset:2px}
+.act-body{flex:1;min-width:0}
+.act-t{font-size:14.5px;font-weight:700;line-height:1.35}
+.act.done .act-t{text-decoration:line-through;color:var(--light)}
+.act-meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:5px;font-size:11.5px;color:var(--muted)}
+.act-cat{padding:2px 9px;border-radius:99px;background:var(--mint-l);color:var(--mint-d);font-weight:700}
+.act-plus{flex:none;border:1.5px solid var(--border);background:var(--white);border-radius:99px;padding:6px 11px;font:700 12px var(--font);color:var(--mint-d);cursor:pointer}
+.act-plus.on{background:var(--mint-d);border-color:var(--mint-d);color:#fff}
+.act-why{background:none;border:0;padding:6px 0 0;font:700 12px var(--font);color:var(--muted);cursor:pointer;text-decoration:underline}
+.act-ev{margin-top:8px;padding:10px 12px;background:var(--sand);border-radius:var(--rs);font-size:12.5px;line-height:1.5;color:var(--graphite)}
+.act-empty{text-align:center;color:var(--muted);font-size:14px;padding:22px 16px}
+
+/* Exercícios (Sentir) e artigos (Aprender): cartões que abrem */
+.acc{margin:0 16px 10px;background:var(--white);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden}
+.acc-h{display:flex;gap:12px;align-items:center;width:100%;padding:14px 16px;background:none;border:0;text-align:left;font-family:var(--font);color:var(--graphite);cursor:pointer}
+.acc-h:focus-visible{outline:3px solid var(--mint);outline-offset:-3px}
+.acc-e{font-size:1.6rem;flex:none}
+.acc-tt{flex:1;min-width:0}
+.acc-t{font-size:15px;font-weight:800}
+.acc-s{font-size:12px;color:var(--muted);margin-top:1px}
+.acc-ar{flex:none;color:var(--light);font-size:1.1rem;transition:transform .2s}
+.acc.open .acc-ar{transform:rotate(180deg)}
+.acc-b{display:none;padding:0 16px 16px;border-top:1px solid var(--border)}
+.acc.open .acc-b{display:block}
+.acc-theory{margin:12px 0;padding:10px 12px;background:var(--sand);border-radius:var(--rs);font-size:12.5px;line-height:1.55;color:var(--muted)}
+.acc-sec{margin-top:12px}
+.acc-sec h4{font-size:13.5px;font-weight:800;margin:0 0 3px;color:var(--mint-d)}
+.acc-sec p{font-size:13.5px;line-height:1.55;margin:0;color:var(--graphite)}
+.acc.crisis{background:var(--amber-l);border-color:color-mix(in srgb,var(--amber) 45%,transparent)}
+.ex-steps{display:flex;flex-direction:column;gap:9px;margin-top:6px}
+.ex-step{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;line-height:1.5}
+.ex-n{flex:none;width:22px;height:22px;border-radius:50%;background:var(--mint-l);color:var(--mint-d);display:grid;place-items:center;font-size:11.5px;font-weight:800}
+.ex-guide{background:var(--mint-xl);border-radius:var(--r);padding:16px;margin-top:10px;text-align:center}
+.ex-prog{display:flex;gap:4px;justify-content:center;margin:6px 0 12px}
+.ex-prog span{height:6px;width:18px;border-radius:99px;background:var(--border)}
+.ex-prog span.on{background:var(--mint)}
+.ex-cur{font-size:16px;font-weight:700;line-height:1.5;margin-bottom:14px}
+.ex-done{text-align:center;padding:14px 0 2px}
+
+/* Diário: histórico */
+.d-day{margin:0 16px 8px;padding:12px 14px;background:var(--white);border:1px solid var(--border);border-radius:var(--r);display:flex;gap:12px;align-items:flex-start;cursor:pointer;width:calc(100% - 32px);text-align:left;font-family:var(--font);color:var(--graphite)}
+.d-day:focus-visible{outline:3px solid var(--mint);outline-offset:2px}
+.d-day.sel{border-color:var(--mint);background:var(--mint-xl)}
+.d-day .dd-e{font-size:1.5rem;flex:none;line-height:1.1;min-width:1.6rem}
+.d-day .dd-t{font-size:13px;font-weight:800}
+.d-day .dd-s{font-size:12px;color:var(--muted);margin-top:1px}
+.d-pager{display:flex;justify-content:space-between;gap:8px;margin:4px 16px 14px}
+.d-pager .btn{margin:0;width:auto;padding:8px 14px;font-size:13px}
+.g-field{display:flex;gap:8px;align-items:center;margin-bottom:8px}
+.g-field span{flex:none;width:20px;font-weight:800;color:var(--mint-d)}
+.g-field input,.d-note{width:100%;padding:12px 14px;font:inherit;color:inherit;background:var(--white);border:1.5px solid var(--border);border-radius:var(--rs)}
+.d-note{min-height:84px;resize:vertical}
+.g-field input:focus,.d-note:focus{outline:3px solid color-mix(in srgb,var(--mint) 40%,transparent);border-color:var(--mint)}
+.g-saved{padding:8px 0;border-top:1px dashed var(--border);font-size:14px;line-height:1.5}
+
+/* Autoavaliação (PHQ-9) */
+.as-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:16px;box-shadow:var(--shadow);margin-bottom:12px}
+.as-big{font-size:1.7rem;font-weight:800;color:var(--mint-d)}
+.as-note{font-size:13px;color:var(--muted);line-height:1.5}
+.as-func label{display:block;border:1.5px solid var(--border);border-radius:var(--rs);padding:12px 14px;margin-bottom:8px;cursor:pointer;background:var(--white)}
+.as-func input{margin-right:8px}

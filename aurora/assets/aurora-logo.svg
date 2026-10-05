@@ -1,0 +1,13 @@
+<svg width="320" height="88" viewBox="0 0 320 88" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Ícone do sol nascendo (mesmo desenho do aurora-icon.svg) + wordmark -->
+  <g transform="translate(4,4) scale(0.80)">
+    <g stroke="#F9B15C" stroke-width="5" stroke-linecap="round">
+      <line x1="50" y1="14" x2="50" y2="26"/><line x1="20" y1="28" x2="28" y2="37"/><line x1="80" y1="28" x2="72" y2="37"/>
+      <line x1="9" y1="52" x2="21" y2="52"/><line x1="91" y1="52" x2="79" y2="52"/>
+    </g>
+    <path d="M26 66a24 24 0 0 1 48 0Z" fill="#F6C56F" stroke="#E0A63F" stroke-width="3" stroke-linejoin="round"/>
+    <path d="M10 68h80" stroke="#3D5A52" stroke-width="5" stroke-linecap="round"/>
+    <path d="M24 80h52" stroke="#5E7D73" stroke-width="4" stroke-linecap="round" opacity=".7"/>
+  </g>
+  <text x="96" y="58" font-family="Nunito Sans, Quicksand, -apple-system, sans-serif" font-size="42" font-weight="800" letter-spacing="-1" fill="#123A2C">Aurora</text>
+</svg>
