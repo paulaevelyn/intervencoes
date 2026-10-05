@@ -38,6 +38,26 @@ const APP = eu.dataset.app;
 const NOME = eu.dataset.nome || APP;
 const LOGO = eu.dataset.logo || '';
 const TEM_PESQUISA = eu.dataset.pesquisa !== 'nao';
+
+// Bem-estar digital e design compassivo (barra de progresso da tela, painel "Cuidado digital", pausa, menos
+// movimento): camada compartilhada em ../shared/bemestar.*, carregada aqui para chegar a TODOS os apps de
+// uma vez. Se falhar ao carregar, o app segue funcionando normalmente.
+(function carregarBemEstar() {
+  try {
+    const base = new URL('../shared/', import.meta.url);
+    const css = document.createElement('link'); css.rel = 'stylesheet'; css.href = new URL('bemestar.css', base).href;
+    document.head.appendChild(css);
+    const js = document.createElement('script'); js.src = new URL('bemestar.js', base).href; js.defer = true;
+    document.head.appendChild(js);
+  } catch (e) { console.warn('[auth] bem-estar digital indisponível', e); }
+})();
+function botaoAjustes() {
+  return novo('button', {
+    class: 'pea-auth-conta-btn', type: 'button', texto: '⚙', title: 'Cuidado digital e ajustes',
+    'aria-label': 'Cuidado digital e ajustes (movimento, barra de progresso, pausas, ajuda em crise)',
+    onclick: function () { if (window.PeaBemEstar) window.PeaBemEstar.abrir(); }
+  });
+}
 const CHAVES = (eu.dataset.storageKeys || '').split(',').map(function (s) { return s.trim(); }).filter(Boolean);
 
 // Cadastro aberto ao público. Mantenha false até ter: SMTP próprio (o e-mail
@@ -137,8 +157,8 @@ function entrarSemConta() {
       mostrarTelaAcesso('entrar');
     }
   });
-  const aviso = novo('span', { class: 'pea-auth-conta-btn', texto: 'sem conta · só neste aparelho', title: 'Seus registros ficam apenas neste aparelho. Ninguém os vê.' });
-  document.body.appendChild(novo('div', { class: 'pea-auth-barra' }, aviso, entrar));
+  const aviso = novo('span', { class: 'pea-auth-conta-btn', texto: (window.innerWidth < 480 ? 'sem conta' : 'sem conta · só neste aparelho'), title: 'Seus registros ficam apenas neste aparelho. Ninguém os vê.' });
+  document.body.appendChild(novo('div', { class: 'pea-auth-barra' }, botaoAjustes(), aviso, entrar));
 }
 
 // ── Entrar / recuperar ──────────────────────────────────────────────
@@ -569,7 +589,7 @@ function montarBotaoConta(falhou) {
     class: 'pea-auth-conta-btn', type: 'button', texto: 'Sair', 'aria-label': 'Sair da conta',
     onclick: function () { sairDaConta(sairVisivel); }
   });
-  document.body.appendChild(novo('div', { class: 'pea-auth-barra' }, botaoConta, sairVisivel));
+  document.body.appendChild(novo('div', { class: 'pea-auth-barra' }, botaoAjustes(), botaoConta, sairVisivel));
   if (falhou) marcarEstado('erro', '⚠ sem sincronizar'); else marcarEstado('ok', '👤 conta');
 }
 
@@ -605,8 +625,8 @@ function emIframe() {
 function abrirEmIframe() {
   liberarApp();
   const abrir = novo('a', { class: 'pea-auth-conta-btn', href: location.href, target: '_blank', rel: 'noopener', texto: 'Entrar em página própria', style: 'text-decoration:none' });
-  const aviso = novo('span', { class: 'pea-auth-conta-btn', texto: 'sem conta · só neste aparelho' });
-  document.body.appendChild(novo('div', { class: 'pea-auth-barra' }, aviso, abrir));
+  const aviso = novo('span', { class: 'pea-auth-conta-btn', texto: (window.innerWidth < 480 ? 'sem conta' : 'sem conta · só neste aparelho'), title: 'Seus registros ficam apenas neste aparelho. Ninguém os vê.' });
+  document.body.appendChild(novo('div', { class: 'pea-auth-barra' }, botaoAjustes(), aviso, abrir));
 }
 
 async function iniciar() {

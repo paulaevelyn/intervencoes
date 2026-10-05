@@ -9,6 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../shared/farol-painel.css">
+<link rel="stylesheet" href="../shared/bemestar.css">
 <style>
 :root{--coral:#D96C63;--coral-d:#B85550;--mint:#5E7D73;--mint-d:#3D5A52;--mint-l:#DDEAE2;--mint-xl:#F0F6F3;
   --sand:#F7F3EF;--white:#FFFFFF;--graphite:#3F434B;--muted:#6B7280;--light:#A0ADB8;--border:rgba(63,67,75,.10);
@@ -191,6 +192,7 @@ const { data: { session } } = await sb.auth.getSession();
 if (!session) mostrar('v-login');
 </script>
 <script src="../shared/farol-painel.js"></script>
+<script src="../shared/bemestar.js" defer></script>
 <script src="../shared/floresca-painel.js"></script>
 <script src="../shared/matiz-painel.js"></script>
 <script src="../shared/seguranca-painel.js"></script>

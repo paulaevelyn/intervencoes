@@ -78,3 +78,9 @@ span.pea-auth-conta-btn { cursor: default; }
 .pea-auth-cartao-compart { border: 1.5px solid var(--a-borda); border-radius: 14px; padding: 14px; margin-bottom: 14px; }
 .pea-auth-cartao-compart .pea-auth-titulo { font-size: 16px; }
 .pea-auth-lista-acessos { font-size: 12.5px; color: var(--a-fraco); margin-top: 10px; display: flex; flex-direction: column; gap: 3px; }
+
+/* Telas estreitas: a barra do topo ocupa menos espaço e não cobre títulos */
+@media (max-width: 480px) {
+  .pea-auth-barra { gap: 4px; }
+  .pea-auth-conta-btn { padding: 7px 10px; font-size: 11.5px; }
+}

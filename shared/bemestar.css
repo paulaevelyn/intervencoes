@@ -1,0 +1,58 @@
+/* bemestar.css — bem-estar digital e design compassivo, camada compartilhada por todos os apps.
+   Carregada por auth/auth.js (que todos os apps já incluem). Ver shared/PRINCIPIOS.md. */
+
+/* ── Rolagem visível e sem surpresas ─────────────────────────────────── */
+html { scrollbar-width: thin; scrollbar-color: color-mix(in srgb, var(--mint, var(--primary, #5E7D73)) 70%, transparent) transparent; }
+.scr, main, body { scrollbar-width: thin; scrollbar-color: color-mix(in srgb, var(--mint, var(--primary, #5E7D73)) 70%, transparent) transparent; }
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: color-mix(in srgb, var(--mint, var(--primary, #5E7D73)) 65%, transparent); border-radius: 8px; border: 2px solid transparent; background-clip: padding-box; }
+::-webkit-scrollbar-thumb:hover { background: var(--mint-d, var(--primary-d, #3D5A52)); background-clip: padding-box; }
+
+/* Barra de progresso da tela: mostra o quanto da tela já foi percorrido (celulares escondem a barra nativa) */
+#pea-prog { position: fixed; top: 0; left: 0; right: 0; height: 5px; z-index: 9400; pointer-events: none; background: transparent; opacity: 0; transition: opacity .2s; }
+#pea-prog.on { opacity: 1; }
+#pea-prog > i { display: block; height: 100%; width: 0; background: var(--mint-d, var(--primary-d, #3D5A52)); border-radius: 0 6px 6px 0; transition: width .12s linear; }
+
+/* Voltar ao topo: aparece só depois de rolar um pouco */
+#pea-topo { position: fixed; right: 12px; bottom: calc(86px + env(safe-area-inset-bottom, 0px)); z-index: 9300; display: none;
+  min-width: 44px; min-height: 44px; padding: 0 12px; border-radius: 99px; cursor: pointer; font: 700 12.5px/1 var(--font, 'Nunito Sans', system-ui, sans-serif);
+  color: var(--mint-d, var(--primary-d, #3D5A52)); background: rgba(255,255,255,.94); border: 1px solid rgba(63,67,75,.18); box-shadow: 0 2px 10px rgba(0,0,0,.12); }
+#pea-topo.on { display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+#pea-topo:focus-visible { outline: 3px solid var(--mint, var(--primary, #5E7D73)); outline-offset: 2px; }
+
+/* ── Painel "Cuidado digital" e pausa ────────────────────────────────── */
+#pea-bem-ov { position: fixed; inset: 0; z-index: 99990; display: none; align-items: flex-end; justify-content: center; background: rgba(31,35,38,.45); padding: 0; }
+#pea-bem-ov.on { display: flex; }
+.pea-bem-cx { width: 100%; max-width: 480px; max-height: 88vh; overflow-y: auto; background: var(--white, #fff); color: var(--graphite, #3F434B);
+  border-radius: 22px 22px 0 0; padding: 22px 20px calc(22px + env(safe-area-inset-bottom, 0px)); font: 400 15px/1.55 var(--font, 'Nunito Sans', system-ui, sans-serif); }
+.pea-bem-cx h2 { font-size: 1.15rem; font-weight: 800; margin: 0 0 6px; color: var(--mint-d, var(--primary-d, #3D5A52)); }
+.pea-bem-cx p { margin: 0 0 12px; }
+.pea-bem-cx ul { margin: 0 0 14px; padding-left: 20px; }
+.pea-bem-cx li { margin-bottom: 6px; font-size: 14px; }
+.pea-bem-linha { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 0; border-top: 1px solid rgba(63,67,75,.12); font-size: 14.5px; }
+.pea-bem-linha small { display: block; color: var(--muted, #6B7280); font-size: 12.5px; }
+.pea-bem-linha input[type=checkbox] { width: 22px; height: 22px; flex: none; accent-color: var(--mint-d, #3D5A52); }
+.pea-bem-ajuda { background: #FFF4E5; border: 1.5px solid #F0B866; border-radius: 14px; padding: 12px 14px; margin: 12px 0; font-size: 14px; color: #4A3410; }
+.pea-bem-ajuda a { color: inherit; font-weight: 800; }
+.pea-bem-btn { width: 100%; min-height: 46px; margin-top: 10px; padding: 12px 18px; border: 0; border-radius: 12px; cursor: pointer; font: 800 15px var(--font, system-ui); background: var(--mint-d, var(--primary-d, #3D5A52)); color: #fff; }
+.pea-bem-btn.sec { background: transparent; color: var(--mint-d, var(--primary-d, #3D5A52)); border: 1.5px solid rgba(63,67,75,.2); }
+.pea-bem-btn:focus-visible { outline: 3px solid var(--mint, var(--primary, #5E7D73)); outline-offset: 2px; }
+
+/* Convite de pausa: discreto, sem bloquear nada */
+#pea-pausa { position: fixed; left: 12px; right: 12px; bottom: calc(86px + env(safe-area-inset-bottom, 0px)); z-index: 9350; display: none; max-width: 440px; margin: 0 auto;
+  background: var(--white, #fff); color: var(--graphite, #3F434B); border: 1px solid rgba(63,67,75,.15); border-radius: 18px; padding: 14px 16px; box-shadow: 0 6px 24px rgba(0,0,0,.18);
+  font: 400 14px/1.5 var(--font, 'Nunito Sans', system-ui, sans-serif); }
+#pea-pausa.on { display: block; }
+#pea-pausa strong { display: block; margin-bottom: 2px; }
+#pea-pausa .pea-bem-btn { margin-top: 8px; min-height: 42px; font-size: 14px; }
+.pea-resp { width: 120px; height: 120px; margin: 14px auto; border-radius: 50%; background: radial-gradient(circle, color-mix(in srgb, var(--mint, #5E7D73) 55%, white), color-mix(in srgb, var(--mint, #5E7D73) 20%, white)); animation: pea-resp 8s ease-in-out infinite; }
+@keyframes pea-resp { 0%,100% { transform: scale(.7); } 50% { transform: scale(1.05); } }
+
+/* ── Menos movimento: segue o sistema e pode ser ligado nos Ajustes ──── */
+@media (prefers-reduced-motion: reduce) {
+  html:not(.pea-mov-ok) *, html:not(.pea-mov-ok) *::before, html:not(.pea-mov-ok) *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+}
+html.pea-calmo *, html.pea-calmo *::before, html.pea-calmo *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+html.pea-calmo .pea-resp { animation: none; transform: scale(.9); }
+@media (prefers-reduced-motion: reduce) { html:not(.pea-mov-ok) .pea-resp { animation: none; transform: scale(.9); } }
