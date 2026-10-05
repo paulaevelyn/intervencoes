@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Segurança Interna · Diário de segurança</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../auth/auth.css">
+<script>document.documentElement.classList.add("pea-auth-carregando");</script>
+<style>
+:root{--white:#FFFFFF;--graphite:#2E2E2E;--muted:#6B7280;--border:rgba(46,46,46,.15);--mint:#5E7D73;--mint-d:#3D5A52;--mint-l:#DDEAE2;--font:'Nunito Sans',system-ui,sans-serif}
+@media (prefers-color-scheme:dark){:root{--white:#2A2F33;--graphite:#ECE8E2;--muted:#B3B9BF;--border:rgba(255,255,255,.18);--mint:#8FB3A6;--mint-d:#A9C9BD;--mint-l:#2F4039}}
+*{box-sizing:border-box}
+body{margin:0;background:#F5F0E8;color:var(--graphite);font-family:var(--font);line-height:1.55}
+@media (prefers-color-scheme:dark){body{background:#1F2326}}
+.wrap{max-width:640px;margin:0 auto;padding:20px 16px 56px}
+h1{font-size:1.5rem;font-weight:800;color:var(--mint-d);margin:6px 0 4px}
+h2{font-size:1rem;font-weight:800;color:var(--mint-d);margin:26px 0 8px}
+a.volta{display:inline-block;margin-bottom:8px;color:var(--mint-d);font-weight:700;text-decoration:none}
+.nota{font-size:14px;color:var(--muted);margin:0 0 14px}
+.card{background:var(--white);border:1px solid var(--border);border-radius:18px;padding:18px}
+.campo{margin-bottom:20px}
+.rotulo{display:block;font-size:14px;font-weight:800;margin-bottom:4px}
+.dica{font-size:12.5px;color:var(--muted);margin-bottom:8px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font:700 13.5px var(--font);padding:9px 14px;border-radius:99px;border:1.5px solid var(--border);background:transparent;color:inherit;cursor:pointer}
+.chip[aria-pressed=true]{background:var(--mint-d);border-color:var(--mint-d);color:#fff}
+.escala{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.escala label{position:relative;cursor:pointer}
+.escala input{position:absolute;opacity:0;inset:0;width:100%;height:100%;margin:0;cursor:pointer}
+.escala span{display:block;text-align:center;padding:12px 0;border:1.5px solid var(--border);border-radius:12px;font-weight:800}
+.escala input:checked+span{background:var(--mint-d);border-color:var(--mint-d);color:#fff}
+.escala input:focus-visible+span,.chip:focus-visible{outline:3px solid var(--mint);outline-offset:2px}
+.pontas{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-top:4px}
+textarea{width:100%;min-height:84px;padding:12px;font:inherit;color:inherit;background:transparent;border:1.5px solid var(--border);border-radius:12px;resize:vertical}
+.btn{padding:13px 22px;font:800 15px var(--font);border:0;border-radius:12px;cursor:pointer;background:var(--mint-d);color:#fff}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.sec{background:transparent;color:var(--mint-d);border:1.5px solid var(--border);padding:7px 12px;font-size:12.5px}
+.aviso{margin-top:12px;padding:10px 12px;border-radius:10px;background:var(--mint-l);color:var(--mint-d);font-size:14px}
+.item{border-left:3px solid var(--mint);padding:2px 0 2px 12px;margin-bottom:14px}
+.item-topo{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:12.5px;color:var(--muted)}
+.item-topo strong{color:var(--graphite)}
+.tag{padding:2px 8px;border-radius:99px;background:var(--mint-l);color:var(--mint-d);font-weight:700}
+.item p{margin:4px 0 0;font-size:14.5px;white-space:pre-wrap;overflow-wrap:anywhere}
+</style>
+</head>
+<body>
+<div id="pea-auth-aviso">carregando…</div>
+<div class="wrap">
+  <a class="volta" href="./">← Voltar ao programa</a>
+  <h1>Diário de segurança</h1>
+  <p class="nota">Um registro curto, quando fizer sentido, sobre onde você sentiu segurança. Não é para ser todos os dias nem do jeito certo. Fica só com você, a menos que você compartilhe em "Minha conta".</p>
+
+  <div class="card">
+    <div class="campo">
+      <span class="rotulo" id="l-nivel">Quanta segurança você sentiu?</span>
+      <div class="escala" role="radiogroup" aria-labelledby="l-nivel" id="nivel"></div>
+      <div class="pontas"><span>muito pouca</span><span>muita</span></div>
+    </div>
+    <div class="campo">
+      <span class="rotulo">Onde você sentiu essa segurança?</span>
+      <div class="dica">No corpo ou na situação. Escolha quantas quiser.</div>
+      <div class="chips" id="onde"></div>
+    </div>
+    <div class="campo">
+      <span class="rotulo">O que ajudou?</span>
+      <div class="chips" id="ajudou"></div>
+    </div>
+    <div class="campo">
+      <label class="rotulo" for="nota">Se quiser, escreva um pouco <span style="font-weight:600;color:var(--muted)">(opcional)</span></label>
+      <textarea id="nota" maxlength="300" placeholder="Algo que você queira lembrar deste momento…"></textarea>
+    </div>
+    <button class="btn" id="salvar" type="button" disabled>Salvar registro</button>
+    <div class="aviso" id="aviso" hidden role="status"></div>
+  </div>
+
+  <h2>Seus registros</h2>
+  <div id="lista"></div>
+</div>
+<script>
+(function () {
+  var CHAVE = 'seguranca_diario_v1';
+  var ONDE = ['Peito', 'Respiração', 'Barriga', 'Ombros e pescoço', 'Mãos', 'Corpo inteiro', 'Com alguém de confiança', 'A sós', 'Em casa', 'Na natureza', 'Num lugar conhecido', 'Com um animal'];
+  var AJUDOU = ['Respirar com calma', 'Contato com alguém', 'Movimento', 'Água ou comida', 'Silêncio', 'Música', 'Gentileza comigo', 'Rotina', 'Ficar num lugar seguro', 'Nada em particular'];
+  var MES = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
+  var nivel = null, onde = {}, ajudou = {};
+
+  function ler() { try { var v = JSON.parse(localStorage.getItem(CHAVE)); return Array.isArray(v) ? v : []; } catch (e) { return []; } }
+  function gravar(lista) { try { localStorage.setItem(CHAVE, JSON.stringify(lista)); return true; } catch (e) { return false; } }
+  function el(tag, cls, txt) { var e = document.createElement(tag); if (cls) e.className = cls; if (txt) e.textContent = txt; return e; }
+  function hoje() { var d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+  function rot(d) { var x = new Date(d + 'T12:00:00'); return x.getDate() + ' ' + MES[x.getMonth()] + ' ' + x.getFullYear(); }
+
+  var salvar = document.getElementById('salvar');
+  function atualizar() { salvar.disabled = nivel === null; }
+
+  // escala 1–5
+  var nv = document.getElementById('nivel');
+  for (var i = 1; i <= 5; i++) (function (v) {
+    var l = el('label'), inp = el('input'); inp.type = 'radio'; inp.name = 'nivel'; inp.value = v;
+    inp.addEventListener('change', function () { nivel = v; atualizar(); });
+    l.appendChild(inp); l.appendChild(el('span', '', String(v))); nv.appendChild(l);
+  })(i);
+
+  function chips(raiz, itens, estado) {
+    itens.forEach(function (t) {
+      var b = el('button', 'chip', t); b.type = 'button'; b.setAttribute('aria-pressed', 'false');
+      b.addEventListener('click', function () { var on = b.getAttribute('aria-pressed') !== 'true'; b.setAttribute('aria-pressed', String(on)); if (on) estado[t] = 1; else delete estado[t]; });
+      raiz.appendChild(b);
+    });
+  }
+  chips(document.getElementById('onde'), ONDE, onde);
+  chips(document.getElementById('ajudou'), AJUDOU, ajudou);
+
+  function desenhar() {
+    var lista = ler().slice().sort(function (a, b) { return b.ts - a.ts; });
+    var raiz = document.getElementById('lista'); raiz.textContent = '';
+    if (!lista.length) { raiz.appendChild(el('p', 'nota', 'Ainda não há registros. Quando quiser, faça o primeiro acima.')); return; }
+    lista.slice(0, 30).forEach(function (r) {
+      var item = el('div', 'item'), topo = el('div', 'item-topo');
+      topo.appendChild(el('strong', '', rot(r.date)));
+      topo.appendChild(el('span', 'tag', 'segurança ' + r.nivel + ' de 5'));
+      var apagar = el('button', 'btn sec', 'apagar'); apagar.type = 'button'; apagar.setAttribute('aria-label', 'Apagar este registro');
+      apagar.addEventListener('click', function () { if (!confirm('Apagar este registro?')) return; gravar(ler().filter(function (x) { return x.id !== r.id; })); desenhar(); });
+      topo.appendChild(apagar); item.appendChild(topo);
+      var partes = [];
+      if (r.onde && r.onde.length) partes.push('Onde: ' + r.onde.join(', '));
+      if (r.ajudou && r.ajudou.length) partes.push('Ajudou: ' + r.ajudou.join(', '));
+      if (partes.length) item.appendChild(el('p', '', partes.join('\n')));
+      if (r.nota) item.appendChild(el('p', '', r.nota));
+      raiz.appendChild(item);
+    });
+  }
+
+  salvar.addEventListener('click', function () {
+    var lista = ler();
+    lista.push({ id: String(Date.now()), ts: Date.now(), date: hoje(), nivel: nivel, onde: Object.keys(onde), ajudou: Object.keys(ajudou), nota: document.getElementById('nota').value.trim() });
+    var ok = gravar(lista), aviso = document.getElementById('aviso');
+    aviso.textContent = ok ? 'Registro salvo.' : 'Não consegui salvar neste aparelho (armazenamento indisponível).'; aviso.hidden = false;
+    if (!ok) return;
+    nivel = null;
+    Object.keys(onde).forEach(function (k) { delete onde[k]; });       // limpa no mesmo objeto, que os botões referenciam
+    Object.keys(ajudou).forEach(function (k) { delete ajudou[k]; });
+    document.querySelectorAll('input[name=nivel]').forEach(function (r) { r.checked = false; });
+    document.querySelectorAll('.chip').forEach(function (c) { c.setAttribute('aria-pressed', 'false'); });
+    document.getElementById('nota').value = ''; atualizar(); desenhar();
+  });
+
+  desenhar();
+})();
+</script>
+<script type="module" src="../auth/auth.js" data-app="seguranca-interna" data-storage-keys="progresso_seguranca-interna,seguranca_escalas_v1,seguranca_diario_v1,seguranca_ob_v1" data-nome="Segurança Interna" data-pesquisa="nao"></script>
+</body>
+</html>

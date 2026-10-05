@@ -26,7 +26,7 @@ a.volta{display:inline-block;margin-bottom:8px;color:var(--mint-d);font-weight:7
 <div class="wrap">
   <a class="volta" href="./">← Voltar ao programa</a>
   <h1>Meu painel</h1>
-  <p class="sub">Um retrato do seu caminho no programa. Isto fica só com você, a menos que você compartilhe em "Minha conta".</p>
+  <p class="sub">Um retrato do seu caminho no programa, sem notas nem pontos. Isto fica só com você, a menos que você compartilhe em "Minha conta". <a href="diario.html" style="color:inherit;font-weight:700">Abrir o diário de segurança</a></p>
   <div id="conteudo"></div>
 </div>
 <script src="../shared/farol-painel.js"></script>
@@ -36,10 +36,11 @@ a.volta{display:inline-block;margin-bottom:8px;color:var(--mint-d);font-weight:7
   var r; try { r = JSON.parse(localStorage.getItem('progresso_seguranca-interna')) || {}; } catch (e) { r = {}; }
   var resp = r.respostas || {};
   var esc; try { esc = JSON.parse(localStorage.getItem('seguranca_escalas_v1')) || null; } catch (e) { esc = null; }
-  var estado = { etapaAtual: r.etapaAtual, telaAtual: r.telaAtual, programaConcluido: r.programaConcluido, posturaEtapa2: resp.posturaEtapa2, respostas: resp, escalas: esc };
+  var dia; try { dia = JSON.parse(localStorage.getItem('seguranca_diario_v1')) || []; } catch (e) { dia = []; }
+  var estado = { etapaAtual: r.etapaAtual, telaAtual: r.telaAtual, programaConcluido: r.programaConcluido, posturaEtapa2: resp.posturaEtapa2, respostas: resp, escalas: esc, diario: dia };
   document.getElementById('conteudo').appendChild(SegurancaPainel.render(estado, { textos: true }));
 })();
 </script>
-<script type="module" src="../auth/auth.js" data-app="seguranca-interna" data-storage-keys="progresso_seguranca-interna,seguranca_escalas_v1" data-nome="Segurança Interna" data-pesquisa="nao"></script>
+<script type="module" src="../auth/auth.js" data-app="seguranca-interna" data-storage-keys="progresso_seguranca-interna,seguranca_escalas_v1,seguranca_diario_v1,seguranca_ob_v1" data-nome="Segurança Interna" data-pesquisa="nao"></script>
 </body>
 </html>

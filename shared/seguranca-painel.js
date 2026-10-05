@@ -27,8 +27,41 @@
       raiz.appendChild(ce);
     }
 
+    // Diário de segurança: registros curtos (nível 1–5, onde, o que ajudou); a nota só com permissão.
+    var dia = ((estado && estado.diario) || []).filter(function (d) { return d && d.date; })
+      .sort(function (a, b) { return (a.ts || 0) - (b.ts || 0); });
+    function anexarDiario() {
+      if (!dia.length) return;
+      var semanas = {}; dia.forEach(function (d) { semanas[U.segunda(d.date)] = 1; });
+      var mNivel = U.media(dia.map(function (d) { return d.nivel; }).filter(function (x) { return typeof x === 'number'; }));
+      raiz.appendChild(h('div', { class: 'fp-resumo' },
+        h('div', { class: 'fp-stat' }, h('strong', { texto: String(dia.length) }), h('span', { texto: 'registros no diário' })),
+        h('div', { class: 'fp-stat' }, h('strong', { texto: String(Object.keys(semanas).length) }), h('span', { texto: 'semanas com registro' })),
+        h('div', { class: 'fp-stat' }, h('strong', { texto: mNivel === null ? '—' : mNivel.toFixed(1) }), h('span', { texto: 'segurança média (1–5)' }))));
+      var cd1 = U.cartao('Registros por semana', 'Últimas 8 semanas'); cd1.appendChild(U.graficoSemanas(dia)); raiz.appendChild(cd1);
+      var gm = U.graficoMedia(dia, 'nivel', 'Segurança sentida por semana');
+      if (gm) { var cd2 = U.cartao('Segurança sentida', 'Média por semana. Quanto mais alto, mais segurança.'); cd2.appendChild(gm); raiz.appendChild(cd2); }
+      var onde = U.contar([].concat.apply([], dia.map(function (d) { return d.onde || []; })));
+      if (onde.length) { var cd3 = U.cartao('Onde a pessoa sentiu segurança'); cd3.appendChild(U.listaBarras(onde, dia.length)); raiz.appendChild(cd3); }
+      var aj = U.contar([].concat.apply([], dia.map(function (d) { return d.ajudou || []; })));
+      if (aj.length) { var cd4 = U.cartao('O que ajudou'); cd4.appendChild(U.listaBarras(aj, dia.length)); raiz.appendChild(cd4); }
+      var cd5 = U.cartao('Notas do diário', 'Registros mais recentes primeiro');
+      if (!opts.textos) cd5.appendChild(h('p', { class: 'fp-vazio', texto: 'As notas escritas não foram compartilhadas.' }));
+      else {
+        var comNota = dia.filter(function (d) { return d.nota; }).reverse().slice(0, 15);
+        if (!comNota.length) cd5.appendChild(h('p', { class: 'fp-vazio', texto: 'Nenhuma nota escrita.' }));
+        comNota.forEach(function (d) {
+          cd5.appendChild(h('div', { class: 'fp-item' },
+            h('div', { class: 'fp-item-topo' }, h('span', { class: 'fp-data', texto: U.rotuloData(d.date) }), h('span', { class: 'fp-tag', texto: 'segurança ' + d.nivel + ' de 5' })),
+            h('p', { class: 'fp-texto', texto: d.nota })));
+        });
+      }
+      raiz.appendChild(cd5);
+    }
+
     if (!estado || (!estado.etapaAtual && !estado.programaConcluido)) {
-      if (pre || pos) return raiz;
+      anexarDiario();
+      if (pre || pos || dia.length) return raiz;
       var v = U.cartao('Percurso'); v.appendChild(h('p', { class: 'fp-vazio', texto: 'A pessoa ainda não começou o programa.' }));
       raiz.appendChild(v); return raiz;
     }
@@ -52,6 +85,8 @@
       c2.appendChild(h('p', { class: 'fp-texto', texto: String(estado.posturaEtapa2) }));
       raiz.appendChild(c2);
     }
+
+    anexarDiario();
 
     var c3 = U.cartao('Respostas escritas');
     var r = estado.respostas;

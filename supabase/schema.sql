@@ -209,3 +209,7 @@ notify pgrst, 'reload schema';
 -- ── 9. Escala do Matiz (migração painel_matiz_escalas) ──
 -- projecao_matiz agora inclui 'escalas' (TAS-20: totais, subescalas DIF/DDF/EOT, respostas, data)
 -- a partir da chave matiz_escalas_v1. São números e fazem parte de "só números".
+
+-- ── 10. Diário de segurança (migração painel_seguranca_interna_diario) ──
+-- projecao_seguranca_interna inclui 'diario' (ts, date, nivel, onde, ajudou); a 'nota'
+-- (texto livre) só com permissão de textos.
