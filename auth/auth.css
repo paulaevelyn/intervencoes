@@ -55,7 +55,7 @@ html.pea-auth-carregando body > *:not(#pea-auth-tela):not(#pea-auth-aviso) { dis
 .pea-auth-rodape { margin-top: 18px; font-size: 12px; color: var(--a-fraco); text-align: center; }
 
 /* Botão flutuante "conta" — fica sobre o app, discreto */
-.pea-auth-barra { position: fixed; right: 12px; bottom: 12px; z-index: 9000; display: flex; gap: 6px; max-width: calc(100vw - 24px); }
+.pea-auth-barra { position: fixed; right: 12px; top: calc(8px + env(safe-area-inset-top, 0px)); z-index: 9000; display: flex; gap: 6px; max-width: calc(100vw - 24px); }
 .pea-auth-conta-btn {
   padding: 8px 14px; font: 700 12px/1 'Nunito Sans', system-ui, sans-serif; cursor: pointer;
   color: #3D5A52; background: rgba(255,255,255,.92); border: 1px solid rgba(63,67,75,.18);
