@@ -193,3 +193,10 @@ notify pgrst, 'reload schema';
 -- com os campos do Floresça (momentos, emoções, saboreio, experimentos).
 -- painel_dados passou a aceitar p_app = 'floresca' (chave floresca_v1) e a
 -- despachar para a projeção do app. Definição completa: ver migração aplicada.
+
+-- ── 7. Painel do Matiz e da Segurança Interna (migração painel_matiz_seguranca_interna) ──
+-- projecao_matiz(chaves, com_textos): recebe TODAS as chaves do app (várias) e monta
+--   {checkins, doseRecords, vocab}; contexto, plano e vocabulário só com permissão.
+-- projecao_seguranca_interna(estado, com_textos): etapa, tela, conclusão e postura;
+--   as respostas escritas só com permissão.
+-- painel_dados despacha por app: farol | floresca | matiz | seguranca-interna.

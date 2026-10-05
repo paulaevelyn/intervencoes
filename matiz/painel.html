@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Matiz · Meu painel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600&family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/farol-painel.css">
+<link rel="stylesheet" href="../auth/auth.css">
+<script>document.documentElement.classList.add("pea-auth-carregando");</script>
+<style>
+:root{--white:#FFFFFF;--graphite:#33312E;--muted:#6B6863;--border:#E5E0D8;--mint:#4F6D7A;--mint-d:#38505B;--mint-xl:#EEF3F5;--coral:#C97B4A;--font:'Nunito Sans',system-ui,sans-serif}
+@media (prefers-color-scheme:dark){:root{--white:#2A2F33;--graphite:#ECE8E2;--muted:#B3B9BF;--border:rgba(255,255,255,.12);--mint:#8FB3A6;--mint-d:#A9C9BD;--mint-xl:#25302C;--coral:#E0A07A}}
+body{margin:0;background:#F7F4EF;color:var(--graphite);font-family:var(--font);line-height:1.55}
+@media (prefers-color-scheme:dark){body{background:#1F2326}}
+.wrap{max-width:640px;margin:0 auto;padding:20px 16px 56px}
+h1{font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:1.7rem;color:var(--mint-d);margin:6px 0 4px}
+.sub{color:var(--muted);font-size:14px;margin:0 0 18px}
+a.volta{display:inline-block;margin-bottom:8px;color:var(--mint-d);font-weight:700;text-decoration:none}
+</style>
+</head>
+<body>
+<div id="pea-auth-aviso">carregando…</div>
+<div class="wrap">
+  <a class="volta" href="./">← Voltar ao Matiz</a>
+  <h1>Meu painel</h1>
+  <p class="sub">Um retrato dos seus check-ins. Isto fica só com você, a menos que você compartilhe em "Minha conta".</p>
+  <div id="conteudo"></div>
+</div>
+<script src="../shared/farol-painel.js"></script>
+<script src="../shared/matiz-painel.js"></script>
+<script>
+(function () {
+  function ler(k) { try { return JSON.parse(localStorage.getItem(k)); } catch (e) { return null; } }
+  var dose = ler('matiz_dose_v1') || {};
+  var estado = { checkins: ler('matiz_bodymap_v1') || [], doseRecords: dose.records || [], vocab: ler('matiz_vocab_v1') || {} };
+  document.getElementById('conteudo').appendChild(MatizPainel.render(estado, { textos: true }));
+})();
+</script>
+<script type="module" src="../auth/auth.js" data-app="matiz" data-storage-keys="matiz_prefs_v1,matiz_progress_v1,matiz_dose_v1,matiz_bodymap_v1,matiz_vocab_v1" data-nome="Matiz" data-logo="assets/matiz-logo.svg" data-pesquisa="nao"></script>
+</body>
+</html>

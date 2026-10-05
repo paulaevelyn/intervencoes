@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Segurança Interna · Meu painel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/farol-painel.css">
+<link rel="stylesheet" href="../auth/auth.css">
+<script>document.documentElement.classList.add("pea-auth-carregando");</script>
+<style>
+:root{--white:#FFFFFF;--graphite:#2E2E2E;--muted:#6B7280;--border:rgba(46,46,46,.12);--mint:#5E7D73;--mint-d:#3D5A52;--mint-xl:#F0F6F3;--coral:#D96C63;--font:'Nunito Sans',system-ui,sans-serif}
+@media (prefers-color-scheme:dark){:root{--white:#2A2F33;--graphite:#ECE8E2;--muted:#B3B9BF;--border:rgba(255,255,255,.12);--mint:#8FB3A6;--mint-d:#A9C9BD;--mint-xl:#25302C;--coral:#E88A82}}
+body{margin:0;background:#F5F0E8;color:var(--graphite);font-family:var(--font);line-height:1.55}
+@media (prefers-color-scheme:dark){body{background:#1F2326}}
+.wrap{max-width:640px;margin:0 auto;padding:20px 16px 56px}
+h1{font-size:1.5rem;font-weight:800;color:var(--mint-d);margin:6px 0 4px}
+.sub{color:var(--muted);font-size:14px;margin:0 0 18px}
+a.volta{display:inline-block;margin-bottom:8px;color:var(--mint-d);font-weight:700;text-decoration:none}
+</style>
+</head>
+<body>
+<div id="pea-auth-aviso">carregando…</div>
+<div class="wrap">
+  <a class="volta" href="./">← Voltar ao programa</a>
+  <h1>Meu painel</h1>
+  <p class="sub">Um retrato do seu caminho no programa. Isto fica só com você, a menos que você compartilhe em "Minha conta".</p>
+  <div id="conteudo"></div>
+</div>
+<script src="../shared/farol-painel.js"></script>
+<script src="../shared/seguranca-painel.js"></script>
+<script>
+(function () {
+  var r; try { r = JSON.parse(localStorage.getItem('progresso_seguranca-interna')) || {}; } catch (e) { r = {}; }
+  var resp = r.respostas || {};
+  var estado = { etapaAtual: r.etapaAtual, telaAtual: r.telaAtual, programaConcluido: r.programaConcluido, posturaEtapa2: resp.posturaEtapa2, respostas: resp };
+  document.getElementById('conteudo').appendChild(SegurancaPainel.render(estado, { textos: true }));
+})();
+</script>
+<script type="module" src="../auth/auth.js" data-app="seguranca-interna" data-storage-keys="progresso_seguranca-interna" data-nome="Segurança Interna" data-pesquisa="nao"></script>
+</body>
+</html>

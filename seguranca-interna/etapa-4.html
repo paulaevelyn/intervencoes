@@ -324,8 +324,12 @@
     }
   }
 </style>
+<!-- LOGIN: estilos e bloqueio do app até a sessão ser verificada -->
+<link rel="stylesheet" href="../auth/auth.css">
+<script>document.documentElement.classList.add("pea-auth-carregando");</script>
 </head>
 <body>
+<div id="pea-auth-aviso">carregando…</div>
 
 <div class="pea-app">
 
@@ -577,5 +581,7 @@
 })();
 </script>
 
+<!-- LOGIN: camada compartilhada (../auth/). Contas só por convite. -->
+<script type="module" src="../auth/auth.js" data-app="seguranca-interna" data-storage-keys="progresso_seguranca-interna" data-nome="Segurança Interna" data-pesquisa="nao"></script>
 </body>
 </html>

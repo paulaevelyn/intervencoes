@@ -37,6 +37,7 @@ const eu = document.querySelector('script[data-app]');
 const APP = eu.dataset.app;
 const NOME = eu.dataset.nome || APP;
 const LOGO = eu.dataset.logo || '';
+const TEM_PESQUISA = eu.dataset.pesquisa !== 'nao';
 const CHAVES = (eu.dataset.storageKeys || '').split(',').map(function (s) { return s.trim(); }).filter(Boolean);
 
 // Cadastro aberto ao público. Mantenha false até ter: SMTP próprio (o e-mail
@@ -282,7 +283,9 @@ function mostrarTelaConsentimento(u, aoConcordar) {
         novo('li', { texto: 'Onde: banco de dados no Supabase (' + REGIAO_SERVIDOR + '), protegido por senha e por regras que separam os dados de cada pessoa.' }),
         novo('li', { texto: 'Quem vê: só você, com a sua senha. Quem administra o serviço tem acesso técnico ao banco, como em qualquer serviço online, mas não lê o que você registra.' }),
         novo('li', { texto: 'Compartilhar com a sua profissional: só se você foi vinculada(o) por convite e só se você ligar isso, em "Minha conta". Começa desligado. Você escolhe entre compartilhar só números (escalas e gráficos) ou também os textos que escreve, e vê quando houve consulta.' }),
-        novo('li', { texto: 'Pesquisa: é um consentimento separado, dentro do app, e não depende desta conta.' }),
+        novo('li', { texto: TEM_PESQUISA
+          ? 'Pesquisa: é um consentimento separado, dentro do app, e não depende desta conta.'
+          : 'Pesquisa: este app não envia seus dados para nenhuma pesquisa.' }),
         novo('li', { texto: 'Por quanto tempo: até você apagar. Em "Minha conta" você baixa tudo ou apaga a conta na hora.' }),
         novo('li', { texto: 'Não acontece: venda, publicidade ou entrega a terceiros. É uma ferramenta psicoeducativa e não substitui o acompanhamento profissional.' }),
         novo('li', { texto: 'Dúvidas ou pedidos sobre seus dados: ' + CONTATO_PRIVACIDADE }))),
@@ -593,7 +596,21 @@ document.addEventListener('visibilitychange', function () {
 window.addEventListener('pagehide', function () { enviar(false); });
 
 // ════════════════════ 7. PARTIDA ════════════════════
+// Dentro de um iframe (por exemplo, embutido no WordPress) os navegadores
+// bloqueiam o armazenamento de terceiros e o login não se sustenta. Nesse caso
+// o app abre sem conta, com um aviso e um atalho para a página própria.
+function emIframe() {
+  try { return window.self !== window.top; } catch (e) { return true; }
+}
+function abrirEmIframe() {
+  liberarApp();
+  const abrir = novo('a', { class: 'pea-auth-conta-btn', href: location.href, target: '_blank', rel: 'noopener', texto: 'Entrar em página própria', style: 'text-decoration:none' });
+  const aviso = novo('span', { class: 'pea-auth-conta-btn', texto: 'sem conta · só neste aparelho' });
+  document.body.appendChild(novo('div', { class: 'pea-auth-barra' }, aviso, abrir));
+}
+
 async function iniciar() {
+  if (emIframe()) { abrirEmIframe(); return; }
   const { createClient } = await import(SUPABASE_LIB);
   sb = createClient(SUPABASE_URL, SUPABASE_KEY);
 

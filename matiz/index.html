@@ -17,8 +17,12 @@
     .accent-text-joy { color: #8A6512; } .accent-text-sad { color: #3B6EA5; } .accent-text-anger { color: #B23B32; }
     .accent-text-fear { color: #6A4A96; } .accent-text-disgust { color: #3D7A4E; } .accent-text-surprise { color: #C1701F; }
   </style>
+<!-- LOGIN: estilos e bloqueio do app até a sessão ser verificada -->
+<link rel="stylesheet" href="../auth/auth.css">
+<script>document.documentElement.classList.add("pea-auth-carregando");</script>
 </head>
 <body>
+<div id="pea-auth-aviso">carregando…</div>
 
 <nav class="nav">
   <div class="nav-brand">
@@ -28,6 +32,7 @@
   <div class="nav-actions">
     <button id="skip-btn" class="nav-btn hidden">Pular etapa</button>
     <button id="library-btn" class="nav-btn">📖 Biblioteca</button>
+    <a class="nav-btn" href="painel.html" style="text-decoration:none">📊 Meu painel</a>
     <button id="prefs-btn" class="nav-btn">⚙️ Preferências</button>
     <button id="data-btn" class="nav-btn">Meus dados</button>
     <button id="back-btn" class="nav-btn">← Voltar</button>
@@ -396,5 +401,7 @@
 <div class="overall-progress"><div id="overall-progress-bar" class="overall-progress-bar" style="width:0%"></div></div>
 
 <script src="app.js"></script>
+<!-- LOGIN: camada compartilhada (../auth/). Contas só por convite. -->
+<script type="module" src="../auth/auth.js" data-app="matiz" data-storage-keys="matiz_prefs_v1,matiz_progress_v1,matiz_dose_v1,matiz_bodymap_v1,matiz_vocab_v1" data-nome="Matiz" data-logo="assets/matiz-logo.svg" data-pesquisa="nao"></script>
 </body>
 </html>

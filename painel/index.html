@@ -131,7 +131,9 @@ async function abrirLista() {
 // Apps que já têm leitura no painel. Os demais entram quando forem integrados.
 const APPS = {
   farol: { nome: 'Farol', render: (d, o) => window.FarolPainel.render(d, o) },
-  floresca: { nome: 'Floresça', render: (d, o) => window.FlorescaPainel.render(d, o) }
+  floresca: { nome: 'Floresça', render: (d, o) => window.FlorescaPainel.render(d, o) },
+  matiz: { nome: 'Matiz', render: (d, o) => window.MatizPainel.render(d, o) },
+  'seguranca-interna': { nome: 'Segurança Interna', render: (d, o) => window.SegurancaPainel.render(d, o) }
 };
 
 async function abrirPaciente(p, appEscolhido) {
@@ -189,5 +191,7 @@ if (!session) mostrar('v-login');
 </script>
 <script src="../shared/farol-painel.js"></script>
 <script src="../shared/floresca-painel.js"></script>
+<script src="../shared/matiz-painel.js"></script>
+<script src="../shared/seguranca-painel.js"></script>
 </body>
 </html>
