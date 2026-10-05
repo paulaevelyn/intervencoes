@@ -200,3 +200,8 @@ notify pgrst, 'reload schema';
 -- projecao_seguranca_interna(estado, com_textos): etapa, tela, conclusão e postura;
 --   as respostas escritas só com permissão.
 -- painel_dados despacha por app: farol | floresca | matiz | seguranca-interna.
+
+-- ── 8. Escalas da Segurança Interna (migração painel_seguranca_interna_escalas) ──
+-- projecao_seguranca_interna(chaves, com_textos) passou a receber TODAS as chaves do app
+-- e inclui as escalas (EPLO: totais, data e respostas 1–5). Escalas são números e fazem
+-- parte de "só números". painel_dados chama a projeção com `chaves`.

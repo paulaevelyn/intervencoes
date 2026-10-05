@@ -1,0 +1,23 @@
+/* escala.css — estilos do módulo de escalas. Usa variáveis do app, com reservas. */
+.esc-form { --e-texto: var(--graphite, #2E2E2E); --e-fraco: var(--muted, #6B7280); --e-borda: var(--border, rgba(63,67,75,.15));
+  --e-acento: var(--mint-d, #3D5A52); --e-fundo: var(--white, #fff); color: var(--e-texto); font-family: var(--font, 'Nunito Sans', system-ui, sans-serif); }
+.esc-form * { box-sizing: border-box; }
+.esc-titulo { font-size: 1.25rem; font-weight: 800; color: var(--e-acento); margin: 0 0 8px; }
+.esc-instrucao { font-size: 14.5px; color: var(--e-fraco); margin: 0 0 12px; }
+.esc-ancoras { display: flex; justify-content: space-between; font-size: 12.5px; font-weight: 700; color: var(--e-acento); margin: 0 0 14px; }
+.esc-item { border: 0; padding: 0; margin: 0 0 18px; }
+.esc-item legend { font-size: 15px; font-weight: 700; margin-bottom: 8px; padding: 0; line-height: 1.45; }
+.esc-opcoes { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+.esc-op { display: block; position: relative; cursor: pointer; }
+.esc-op input { position: absolute; opacity: 0; inset: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
+.esc-op span { display: block; text-align: center; padding: 11px 0; border: 1.5px solid var(--e-borda); border-radius: 12px; font-weight: 800; background: var(--e-fundo); }
+.esc-op input:checked + span { background: var(--e-acento); border-color: var(--e-acento); color: #fff; }
+.esc-op input:focus-visible + span { outline: 3px solid var(--e-acento); outline-offset: 2px; }
+.esc-contador { font-size: 13px; color: var(--e-fraco); margin: 6px 0 12px; }
+.esc-acoes { display: flex; gap: 10px; flex-wrap: wrap; }
+.esc-btn { padding: 12px 20px; font: 800 15px var(--font, system-ui); border: 0; border-radius: 12px; cursor: pointer; background: var(--e-acento); color: #fff; }
+.esc-btn:disabled { opacity: .45; cursor: not-allowed; }
+.esc-sec { background: transparent; color: var(--e-acento); border: 1.5px solid var(--e-borda); }
+.esc-fonte { font-size: 12px; color: var(--e-fraco); margin-top: 18px; line-height: 1.5; }
+.esc-resultado { background: var(--e-fundo, #fff); border: 1px solid var(--e-borda); border-radius: 16px; padding: 16px; margin-top: 8px; }
+.esc-resultado strong { font-size: 1.6rem; color: var(--e-acento); }

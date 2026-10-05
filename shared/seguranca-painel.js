@@ -12,7 +12,23 @@
   function render(estado, opts) {
     opts = opts || {};
     var raiz = h('div', { class: 'fp' });
+    // Escala de segurança social (EPLO/SSPS): pré e pós, só números.
+    var esc = estado && estado.escalas, pre = esc && esc.pre && esc.pre.eplo, pos = esc && esc.pos && esc.pos.eplo;
+    if (!pre || typeof pre.total !== 'number') pre = null;   // a projeção devolve {} quando não há resposta
+    if (!pos || typeof pos.total !== 'number') pos = null;
+    if (pre || pos) {
+      var ce = U.cartao('Segurança social (EPLO)', 'Soma de 11 a 55. Mais alto = mais segurança e proximidade percebidas nas relações. Não é diagnóstico.');
+      if (pre) ce.appendChild(h('div', { class: 'fp-escala' }, h('span', { class: 'fp-nome', texto: 'Início' }), h('strong', { texto: pre.total + ' de ' + (pre.maximo || 55) })));
+      if (pos) ce.appendChild(h('div', { class: 'fp-escala' }, h('span', { class: 'fp-nome', texto: 'Depois' }), h('strong', { texto: pos.total + ' de ' + (pos.maximo || 55) })));
+      if (pre && pos) {
+        var d = pos.total - pre.total;
+        ce.appendChild(h('p', { class: 'fp-dica', texto: 'Diferença: ' + (d > 0 ? '+' : '') + d + ' ponto' + (Math.abs(d) === 1 ? '' : 's') + '.' }));
+      }
+      raiz.appendChild(ce);
+    }
+
     if (!estado || (!estado.etapaAtual && !estado.programaConcluido)) {
+      if (pre || pos) return raiz;
       var v = U.cartao('Percurso'); v.appendChild(h('p', { class: 'fp-vazio', texto: 'A pessoa ainda não começou o programa.' }));
       raiz.appendChild(v); return raiz;
     }

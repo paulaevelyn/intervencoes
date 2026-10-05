@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Segurança Interna · Questionário</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/escala.css">
+<link rel="stylesheet" href="../auth/auth.css">
+<script>document.documentElement.classList.add("pea-auth-carregando");</script>
+<style>
+:root{--white:#FFFFFF;--graphite:#2E2E2E;--muted:#6B7280;--border:rgba(46,46,46,.15);--mint:#5E7D73;--mint-d:#3D5A52;--font:'Nunito Sans',system-ui,sans-serif}
+@media (prefers-color-scheme:dark){:root{--white:#2A2F33;--graphite:#ECE8E2;--muted:#B3B9BF;--border:rgba(255,255,255,.18);--mint:#8FB3A6;--mint-d:#A9C9BD}}
+body{margin:0;background:#F5F0E8;color:var(--graphite);font-family:var(--font);line-height:1.55}
+@media (prefers-color-scheme:dark){body{background:#1F2326}}
+.wrap{max-width:640px;margin:0 auto;padding:20px 16px 56px}
+a.volta{display:inline-block;margin-bottom:10px;color:var(--mint-d);font-weight:700;text-decoration:none}
+.nota{font-size:14px;color:var(--muted)}
+.links{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.links a{padding:12px 20px;border-radius:12px;font-weight:800;text-decoration:none;background:var(--mint-d);color:#fff}
+.links a.sec{background:transparent;color:var(--mint-d);border:1.5px solid var(--border)}
+</style>
+</head>
+<body>
+<div id="pea-auth-aviso">carregando…</div>
+<div class="wrap">
+  <a class="volta" href="./">← Voltar ao programa</a>
+  <div id="area"></div>
+</div>
+<script src="../shared/escala.js"></script>
+<script src="../shared/escalas/eplo.js"></script>
+<script>
+(function () {
+  var CHAVE = 'seguranca_escalas_v1';
+  var momento = new URLSearchParams(location.search).get('momento') === 'pos' ? 'pos' : 'pre';
+  var area = document.getElementById('area');
+
+  function ler() { try { return JSON.parse(localStorage.getItem(CHAVE)) || {}; } catch (e) { return {}; } }
+  function gravar(estado) { try { localStorage.setItem(CHAVE, JSON.stringify(estado)); } catch (e) { /* sem armazenamento */ } }
+  function el(tag, cls, txt) { var e = document.createElement(tag); if (cls) e.className = cls; if (txt) e.textContent = txt; return e; }
+
+  function intro() {
+    area.textContent = '';
+    area.appendChild(el('h1', '', momento === 'pre' ? 'Antes de começar' : 'Depois do percurso'));
+    area.appendChild(el('p', 'nota', momento === 'pre'
+      ? 'Um questionário curto, de uns 2 minutos, sobre como você se sente com as outras pessoas. É opcional. Servirá para você comparar, mais adiante, como estava no início. Não é um teste nem um diagnóstico, e não há resposta certa.'
+      : 'Se quiser, responda de novo ao mesmo questionário, para comparar com o que você respondeu no início. É opcional, e não há resposta certa.'));
+    var form = el('div');
+    area.appendChild(form);
+    Escala.render(form, ESCALAS.eplo, {
+      onDone: function (res) {
+        var e = ler(); e[momento] = e[momento] || {}; e[momento].eplo = res; gravar(e);
+        resultado(res, e);
+      },
+      onSkip: function () { location.href = './'; }
+    });
+  }
+
+  function resultado(res, estado) {
+    area.textContent = '';
+    area.appendChild(el('h1', '', 'Resposta registrada'));
+    var caixa = el('div', 'esc-resultado');
+    caixa.appendChild(el('p', 'nota', 'Sua pontuação'));
+    var forte = el('strong', '', res.total + ' de ' + res.maximo);
+    caixa.appendChild(forte);
+    caixa.appendChild(el('p', 'nota', 'Pontuações mais altas indicam que você tem sentido mais segurança e proximidade nas suas relações. É só um retrato deste momento, não um diagnóstico, e muda com o tempo e com o contexto.'));
+    var pre = estado.pre && estado.pre.eplo;
+    if (momento === 'pos' && pre) {
+      var dif = res.total - pre.total;
+      caixa.appendChild(el('p', 'nota', 'No início você respondeu ' + pre.total + '. ' +
+        (dif > 0 ? 'Agora está ' + dif + (dif === 1 ? ' ponto' : ' pontos') + ' acima.' : dif < 0 ? 'Agora está ' + Math.abs(dif) + (Math.abs(dif) === 1 ? ' ponto' : ' pontos') + ' abaixo. Isso também faz parte do processo.' : 'Está igual.')));
+    }
+    area.appendChild(caixa);
+    var links = el('div', 'links');
+    var a1 = el('a', '', 'Continuar'); a1.href = './';
+    var a2 = el('a', 'sec', 'Meu painel'); a2.href = 'meu-painel.html';
+    links.appendChild(a1); links.appendChild(a2);
+    area.appendChild(links);
+  }
+
+  intro();
+})();
+</script>
+<script type="module" src="../auth/auth.js" data-app="seguranca-interna" data-storage-keys="progresso_seguranca-interna,seguranca_escalas_v1" data-nome="Segurança Interna" data-pesquisa="nao"></script>
+</body>
+</html>

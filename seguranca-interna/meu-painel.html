@@ -35,10 +35,11 @@ a.volta{display:inline-block;margin-bottom:8px;color:var(--mint-d);font-weight:7
 (function () {
   var r; try { r = JSON.parse(localStorage.getItem('progresso_seguranca-interna')) || {}; } catch (e) { r = {}; }
   var resp = r.respostas || {};
-  var estado = { etapaAtual: r.etapaAtual, telaAtual: r.telaAtual, programaConcluido: r.programaConcluido, posturaEtapa2: resp.posturaEtapa2, respostas: resp };
+  var esc; try { esc = JSON.parse(localStorage.getItem('seguranca_escalas_v1')) || null; } catch (e) { esc = null; }
+  var estado = { etapaAtual: r.etapaAtual, telaAtual: r.telaAtual, programaConcluido: r.programaConcluido, posturaEtapa2: resp.posturaEtapa2, respostas: resp, escalas: esc };
   document.getElementById('conteudo').appendChild(SegurancaPainel.render(estado, { textos: true }));
 })();
 </script>
-<script type="module" src="../auth/auth.js" data-app="seguranca-interna" data-storage-keys="progresso_seguranca-interna" data-nome="Segurança Interna" data-pesquisa="nao"></script>
+<script type="module" src="../auth/auth.js" data-app="seguranca-interna" data-storage-keys="progresso_seguranca-interna,seguranca_escalas_v1" data-nome="Segurança Interna" data-pesquisa="nao"></script>
 </body>
 </html>
