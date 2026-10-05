@@ -35,10 +35,26 @@ a.volta{display:inline-block;margin-bottom:8px;color:var(--mint-d);font-weight:7
 (function () {
   function ler(k) { try { return JSON.parse(localStorage.getItem(k)); } catch (e) { return null; } }
   var dose = ler('matiz_dose_v1') || {};
-  var estado = { checkins: ler('matiz_bodymap_v1') || [], doseRecords: dose.records || [], vocab: ler('matiz_vocab_v1') || {} };
+  var estado = { checkins: ler('matiz_bodymap_v1') || [], doseRecords: dose.records || [], vocab: ler('matiz_vocab_v1') || {}, escalas: ler('matiz_escalas_v1') };
   document.getElementById('conteudo').appendChild(MatizPainel.render(estado, { textos: true }));
 })();
+(function () {
+  var CHAVE_TEMPO = 8; // semanas sugeridas entre pré e pós
+  var e; try { e = JSON.parse(localStorage.getItem('matiz_escalas_v1')) || {}; } catch (x) { e = {}; }
+  var pre = e.pre && e.pre.tas20, pos = e.pos && e.pos.tas20;
+  var caixa = document.createElement('div'); caixa.style.cssText = 'margin-top:16px';
+  var p = document.createElement('p'); p.style.cssText = 'font-size:14px;color:var(--muted)';
+  var a = document.createElement('a'); a.style.cssText = 'display:inline-block;padding:12px 20px;border-radius:12px;font-weight:800;text-decoration:none;background:var(--mint-d);color:#fff';
+  if (!pre) { p.textContent = 'Questionário opcional sobre como você lida com as emoções (uns 5 minutos).'; a.textContent = 'Responder agora'; a.href = 'escala.html?momento=pre'; }
+  else {
+    var sem = (Date.now() - new Date(pre.data).getTime()) / (7 * 864e5);
+    if (sem >= CHAVE_TEMPO) { p.textContent = pos ? 'Você pode responder de novo quando quiser.' : 'Já faz um tempo desde o seu primeiro questionário. Se quiser, responda de novo para comparar.'; a.textContent = 'Responder de novo'; a.href = 'escala.html?momento=pos'; }
+    else { var quando = new Date(new Date(pre.data).getTime() + CHAVE_TEMPO * 7 * 864e5).toLocaleDateString('pt-BR'); p.textContent = 'Você poderá repetir o questionário a partir de ' + quando + ' (costuma-se esperar cerca de ' + CHAVE_TEMPO + ' semanas).'; a = null; }
+  }
+  caixa.appendChild(p); if (a) caixa.appendChild(a);
+  document.getElementById('conteudo').appendChild(caixa);
+})();
 </script>
-<script type="module" src="../auth/auth.js" data-app="matiz" data-storage-keys="matiz_prefs_v1,matiz_progress_v1,matiz_dose_v1,matiz_bodymap_v1,matiz_vocab_v1" data-nome="Matiz" data-logo="assets/matiz-logo.svg" data-pesquisa="nao"></script>
+<script type="module" src="../auth/auth.js" data-app="matiz" data-storage-keys="matiz_prefs_v1,matiz_progress_v1,matiz_dose_v1,matiz_bodymap_v1,matiz_vocab_v1,matiz_escalas_v1" data-nome="Matiz" data-logo="assets/matiz-logo.svg" data-pesquisa="nao"></script>
 </body>
 </html>

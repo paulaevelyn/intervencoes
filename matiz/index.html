@@ -49,6 +49,8 @@
       <h1>Matiz</h1>
       <p class="tagline">cada sentimento tem seu tom</p>
       <p class="lead">Um espaço para reconhecer o que você sente começando pelo corpo, não pela palavra. Marque uma sensação, veja famílias de emoção compatíveis e construa, sessão após sessão, um mapa pessoal — sem certo ou errado.</p>
+      <p id="matiz-escala-link" style="display:none;margin:0 0 18px;font-size:14px"><a href="escala.html?momento=pre" style="color:inherit;font-weight:700">Questionário opcional sobre como você lida com as emoções (5 min)</a></p>
+      <script>try{var _m=JSON.parse(localStorage.getItem("matiz_escalas_v1")||"{}");if(!(_m.pre&&_m.pre.tas20)){document.getElementById("matiz-escala-link").style.display="block";}}catch(x){document.getElementById("matiz-escala-link").style.display="block";}</script>
 
       <div id="resume-banner" class="card hidden" style="max-width:640px;margin:0 auto 20px;text-align:left">
         <p style="margin:0 0 12px"><strong>Você tem uma sessão em andamento.</strong> Sem problema nenhum ter pausado — quer continuar de onde parou ou começar de novo?</p>
@@ -402,6 +404,6 @@
 
 <script src="app.js"></script>
 <!-- LOGIN: camada compartilhada (../auth/). Contas só por convite. -->
-<script type="module" src="../auth/auth.js" data-app="matiz" data-storage-keys="matiz_prefs_v1,matiz_progress_v1,matiz_dose_v1,matiz_bodymap_v1,matiz_vocab_v1" data-nome="Matiz" data-logo="assets/matiz-logo.svg" data-pesquisa="nao"></script>
+<script type="module" src="../auth/auth.js" data-app="matiz" data-storage-keys="matiz_prefs_v1,matiz_progress_v1,matiz_dose_v1,matiz_bodymap_v1,matiz_vocab_v1,matiz_escalas_v1" data-nome="Matiz" data-logo="assets/matiz-logo.svg" data-pesquisa="nao"></script>
 </body>
 </html>

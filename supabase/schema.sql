@@ -205,3 +205,7 @@ notify pgrst, 'reload schema';
 -- projecao_seguranca_interna(chaves, com_textos) passou a receber TODAS as chaves do app
 -- e inclui as escalas (EPLO: totais, data e respostas 1–5). Escalas são números e fazem
 -- parte de "só números". painel_dados chama a projeção com `chaves`.
+
+-- ── 9. Escala do Matiz (migração painel_matiz_escalas) ──
+-- projecao_matiz agora inclui 'escalas' (TAS-20: totais, subescalas DIF/DDF/EOT, respostas, data)
+-- a partir da chave matiz_escalas_v1. São números e fazem parte de "só números".

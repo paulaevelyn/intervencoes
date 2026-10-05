@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Matiz · Questionário</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600&family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/escala.css">
+<link rel="stylesheet" href="../auth/auth.css">
+<script>document.documentElement.classList.add("pea-auth-carregando");</script>
+<style>
+:root{--white:#FFFFFF;--graphite:#33312E;--muted:#6B6863;--border:#E5E0D8;--mint:#4F6D7A;--mint-d:#38505B;--font:'Nunito Sans',system-ui,sans-serif}
+@media (prefers-color-scheme:dark){:root{--white:#2A2F33;--graphite:#ECE8E2;--muted:#B3B9BF;--border:rgba(255,255,255,.18);--mint:#8FB3A6;--mint-d:#A9C9BD}}
+body{margin:0;background:#F7F4EF;color:var(--graphite);font-family:var(--font);line-height:1.55}
+@media (prefers-color-scheme:dark){body{background:#1F2326}}
+.wrap{max-width:640px;margin:0 auto;padding:20px 16px 56px}
+h1{font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:1.6rem;color:var(--mint-d);margin:6px 0 8px}
+a.volta{display:inline-block;margin-bottom:10px;color:var(--mint-d);font-weight:700;text-decoration:none}
+.nota{font-size:14px;color:var(--muted)}
+.links{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.links a,.links button{padding:12px 20px;border-radius:12px;font:800 15px var(--font);text-decoration:none;background:var(--mint-d);color:#fff;border:0;cursor:pointer}
+.links .sec{background:transparent;color:var(--mint-d);border:1.5px solid var(--border)}
+.sub{display:flex;justify-content:space-between;font-size:14px;padding:4px 0}
+</style>
+</head>
+<body>
+<div id="pea-auth-aviso">carregando…</div>
+<div class="wrap">
+  <a class="volta" href="./">← Voltar ao Matiz</a>
+  <div id="area"></div>
+</div>
+<script src="../shared/escala.js"></script>
+<script src="../shared/escalas/tas20.js"></script>
+<script>
+(function () {
+  var CHAVE = 'matiz_escalas_v1';
+  var DEF = ESCALAS.tas20;
+  var momento = new URLSearchParams(location.search).get('momento') === 'pos' ? 'pos' : 'pre';
+  var area = document.getElementById('area');
+
+  function ler() { try { return JSON.parse(localStorage.getItem(CHAVE)) || {}; } catch (e) { return {}; } }
+  function gravar(estado) { try { localStorage.setItem(CHAVE, JSON.stringify(estado)); } catch (e) { /* sem armazenamento */ } }
+  function el(tag, cls, txt) { var e = document.createElement(tag); if (cls) e.className = cls; if (txt) e.textContent = txt; return e; }
+  function botao(txt, cls, fn) { var b = el('button', cls, txt); b.type = 'button'; b.addEventListener('click', fn); return b; }
+
+  function semanasDesdePre() {
+    var pre = ler().pre; if (!pre || !pre.tas20 || !pre.tas20.data) return null;
+    return (Date.now() - new Date(pre.tas20.data).getTime()) / (7 * 864e5);
+  }
+
+  function formulario() {
+    area.textContent = '';
+    area.appendChild(el('h1', '', momento === 'pre' ? 'Antes de começar' : 'Depois de um tempo'));
+    area.appendChild(el('p', 'nota', momento === 'pre'
+      ? 'Um questionário opcional, de uns 5 minutos, sobre como você costuma lidar com as emoções. Serve para você comparar, mais adiante. Não é um teste nem um diagnóstico, e não há resposta certa.'
+      : 'Se quiser, responda de novo ao mesmo questionário, para comparar com o do início. É opcional, e não há resposta certa.'));
+    var form = el('div'); area.appendChild(form);
+    Escala.render(form, DEF, {
+      onDone: function (res) { var e = ler(); e[momento] = e[momento] || {}; e[momento].tas20 = res; gravar(e); resultado(res, e); },
+      onSkip: function () { location.href = './'; }
+    });
+  }
+
+  function intro() {
+    var sem = momento === 'pos' ? semanasDesdePre() : null;
+    if (momento === 'pos' && sem === null) { location.replace('escala.html?momento=pre'); return; }
+    if (sem !== null && sem < DEF.reaplicacaoSemanas) {
+      area.textContent = '';
+      area.appendChild(el('h1', '', 'Ainda é cedo'));
+      area.appendChild(el('p', 'nota', 'Este questionário descreve um jeito de lidar com as emoções que costuma mudar devagar. Por isso, costuma-se esperar cerca de ' + DEF.reaplicacaoSemanas + ' semanas entre uma resposta e outra. ' + (sem < 1 ? 'Você respondeu há menos de uma semana.' : 'Você respondeu há ' + Math.floor(sem) + (Math.floor(sem) === 1 ? ' semana.' : ' semanas.'))));
+      var l = el('div', 'links');
+      var a = el('a', '', 'Voltar ao Matiz'); a.href = './';
+      l.appendChild(a); l.appendChild(botao('Responder mesmo assim', 'sec', formulario));
+      area.appendChild(l);
+      return;
+    }
+    formulario();
+  }
+
+  function resultado(res, estado) {
+    area.textContent = '';
+    area.appendChild(el('h1', '', 'Resposta registrada'));
+    var caixa = el('div', 'esc-resultado');
+    caixa.appendChild(el('p', 'nota', 'Sua pontuação total'));
+    caixa.appendChild(el('strong', '', res.total + ' de ' + res.maximo));
+    caixa.appendChild(el('p', 'nota', 'Pontuações mais altas indicam mais dificuldade em perceber e dizer o que se sente. É um retrato do seu jeito de lidar com as emoções, não um diagnóstico, e muda devagar. Muitas pessoas têm pontuações altas por motivos diferentes, e isso não diz nada sobre o seu valor.'));
+    if (res.subescalas) {
+      var nomes = { DIF: 'Identificar o que sente', DDF: 'Descrever o que sente', EOT: 'Foco no que é externo' };
+      Object.keys(res.subescalas).forEach(function (k) {
+        var linha = el('div', 'sub'); linha.appendChild(el('span', '', nomes[k] || k)); linha.appendChild(el('strong', '', String(res.subescalas[k]))); caixa.appendChild(linha);
+      });
+    }
+    var pre = estado.pre && estado.pre.tas20;
+    if (momento === 'pos' && pre) {
+      var d = res.total - pre.total;
+      caixa.appendChild(el('p', 'nota', 'No início você respondeu ' + pre.total + '. ' + (d === 0 ? 'Agora está igual.' : (d < 0 ? 'Agora está ' + Math.abs(d) + ' pontos abaixo.' : 'Agora está ' + d + ' pontos acima.'))));
+    }
+    area.appendChild(caixa);
+    var links = el('div', 'links');
+    var a1 = el('a', '', 'Continuar'); a1.href = './';
+    var a2 = el('a', 'sec', 'Meu painel'); a2.href = 'painel.html';
+    links.appendChild(a1); links.appendChild(a2);
+    area.appendChild(links);
+  }
+
+  intro();
+})();
+</script>
+<script type="module" src="../auth/auth.js" data-app="matiz" data-storage-keys="matiz_prefs_v1,matiz_progress_v1,matiz_dose_v1,matiz_bodymap_v1,matiz_vocab_v1,matiz_escalas_v1" data-nome="Matiz" data-logo="assets/matiz-logo.svg" data-pesquisa="nao"></script>
+</body>
+</html>

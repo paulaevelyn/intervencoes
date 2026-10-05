@@ -20,7 +20,25 @@
       .map(function (c) { var o = {}; for (var k in c) o[k] = c[k]; o.date = dataLocal(c.ts); return o; })
       .sort(function (a, b) { return a.ts - b.ts; });
 
+    // Escala de alexitimia (TAS-20): totais e subescalas, sem rótulo para a própria pessoa.
+    var esc = estado && estado.escalas, pre = esc && esc.pre && esc.pre.tas20, pos = esc && esc.pos && esc.pos.tas20;
+    if (!pre || typeof pre.total !== 'number') pre = null;   // a projeção devolve {} quando não há resposta
+    if (!pos || typeof pos.total !== 'number') pos = null;
+    if (pre || pos) {
+      var ce = U.cartao('Como lida com as emoções (TAS-20)', 'Soma de 20 a 100. Mais alto = mais dificuldade em perceber e dizer o que se sente. Medida de traço, não é diagnóstico.');
+      var linha = function (nome, r) {
+        var sub = r.subescalas ? '  (identificar ' + r.subescalas.DIF + ' · descrever ' + r.subescalas.DDF + ' · externo ' + r.subescalas.EOT + ')' : '';
+        return h('div', { class: 'fp-escala' }, h('span', { class: 'fp-nome', texto: nome }), h('strong', { texto: r.total + ' de ' + (r.maximo || 100) + sub }));
+      };
+      if (pre) ce.appendChild(linha('Início', pre));
+      if (pos) ce.appendChild(linha('Depois', pos));
+      if (pre && pos) { var d = pos.total - pre.total; ce.appendChild(h('p', { class: 'fp-dica', texto: 'Diferença: ' + (d > 0 ? '+' : '') + d + ' ponto' + (Math.abs(d) === 1 ? '' : 's') + '.' })); }
+      if (opts.profissional) ce.appendChild(h('p', { class: 'fp-dica', texto: 'Faixas da literatura internacional (sem padrão brasileiro estabelecido): até 51 · 52 a 60 · 61 ou mais. Interpretar junto da entrevista clínica; pontuação alta pode aparecer em trauma, somatização e TEA.' }));
+      raiz.appendChild(ce);
+    }
+
     if (!cs.length) {
+      if (pre || pos) return raiz;
       var v = U.cartao('Check-ins'); v.appendChild(h('p', { class: 'fp-vazio', texto: 'Ainda não há check-ins registrados.' }));
       raiz.appendChild(v); return raiz;
     }

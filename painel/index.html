@@ -132,7 +132,7 @@ async function abrirLista() {
 const APPS = {
   farol: { nome: 'Farol', render: (d, o) => window.FarolPainel.render(d, o) },
   floresca: { nome: 'Floresça', render: (d, o) => window.FlorescaPainel.render(d, o) },
-  matiz: { nome: 'Matiz', render: (d, o) => window.MatizPainel.render(d, o) },
+  matiz: { nome: 'Matiz', render: (d, o) => window.MatizPainel.render(d, Object.assign({ profissional: true }, o)) },
   'seguranca-interna': { nome: 'Segurança Interna', render: (d, o) => window.SegurancaPainel.render(d, o) }
 };
 

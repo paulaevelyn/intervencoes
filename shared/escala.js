@@ -31,7 +31,20 @@
       soma += inv.indexOf(i + 1) >= 0 ? (max + 1 - v) : v;
       n++;
     });
-    return { total: soma, media: n ? soma / n : null, n: n };
+    // Subescalas (opcional): soma dos itens de cada fator, já com a inversão aplicada.
+    var subs = null;
+    if (def.subescalas) {
+      subs = {};
+      Object.keys(def.subescalas).forEach(function (nome) {
+        var s = 0;
+        def.subescalas[nome].forEach(function (num) {
+          var v = respostas[num - 1];
+          if (typeof v === 'number') s += inv.indexOf(num) >= 0 ? (max + 1 - v) : v;
+        });
+        subs[nome] = s;
+      });
+    }
+    return { total: soma, media: n ? soma / n : null, n: n, subescalas: subs };
   }
 
   function render(raiz, def, opts) {
@@ -50,8 +63,13 @@
     var form = h('form', { class: 'esc-form', novalidate: 'novalidate' });
     form.appendChild(h('h2', { class: 'esc-titulo', texto: def.nome }));
     form.appendChild(h('p', { class: 'esc-instrucao', texto: def.instrucao }));
-    form.appendChild(h('p', { class: 'esc-ancoras' },
-      h('span', { texto: '1 = ' + def.ancoras[1] }), h('span', { texto: def.opcoes + ' = ' + def.ancoras[def.opcoes] })));
+    if (def.rotulos) {
+      // todos os rótulos das opções, numa linha de legenda
+      form.appendChild(h('p', { class: 'esc-legenda', texto: def.rotulos.map(function (r, i) { return (i + 1) + ' = ' + r; }).join(' · ') }));
+    } else {
+      form.appendChild(h('p', { class: 'esc-ancoras' },
+        h('span', { texto: '1 = ' + def.ancoras[1] }), h('span', { texto: def.opcoes + ' = ' + def.ancoras[def.opcoes] })));
+    }
 
     def.itens.forEach(function (texto, i) {
       var grupo = h('fieldset', { class: 'esc-item' }, h('legend', { texto: (i + 1) + '. ' + texto }));
@@ -83,7 +101,7 @@
       if (respostas.some(function (x) { return x === null; })) return;
       var p = pontuar(def, respostas);
       if (opts.onDone) opts.onDone({
-        id: def.id, versao: def.versao, respostas: respostas.slice(), total: p.total, media: p.media,
+        id: def.id, versao: def.versao, respostas: respostas.slice(), total: p.total, media: p.media, subescalas: p.subescalas,
         maximo: def.itens.length * def.opcoes, minimo: def.itens.length, data: new Date().toISOString()
       });
     });
