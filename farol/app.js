@@ -2023,8 +2023,11 @@ async function syncToResearch({ silent=false, requirePretest=true }={}){
       demographics:  D.demographics,
       pretest:       D.pretest,
       posttest:      D.posttest || null,
-      entries:       D.entries,
-      doseRecords:   D.doseRecords,
+      // Pesquisa: só campos estruturados. O texto livre (o que preocupou, a nota
+      // da dose) fica no aparelho e na conta da pessoa, nunca na planilha: pode
+      // conter nomes e situações que identificam quem escreveu.
+      entries:       D.entries.map(({worry, ...resto}) => resto),
+      doseRecords:   D.doseRecords.map(({text, ...resto}) => resto),
       moduleFeedback: D.moduleFeedback,
       notificationLog: D.notificationLog,
       userProfile:   D.userProfile,

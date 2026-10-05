@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Painel · Psicoterapia e Afins</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/farol-painel.css">
+<style>
+:root{--coral:#D96C63;--coral-d:#B85550;--mint:#5E7D73;--mint-d:#3D5A52;--mint-l:#DDEAE2;--mint-xl:#F0F6F3;
+  --sand:#F7F3EF;--white:#FFFFFF;--graphite:#3F434B;--muted:#6B7280;--light:#A0ADB8;--border:rgba(63,67,75,.10);
+  --shadow:0 2px 16px rgba(63,67,75,.07);--font:'Nunito Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
+@media (prefers-color-scheme:dark){:root{--sand:#1F2326;--white:#2A2F33;--graphite:#ECE8E2;--muted:#B3B9BF;--light:#7C858D;
+  --border:rgba(255,255,255,.12);--mint:#8FB3A6;--mint-d:#A9C9BD;--mint-l:#2F4039;--mint-xl:#25302C;--coral:#E88A82;--coral-d:#F0A39C}}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font);background:var(--sand);color:var(--graphite);line-height:1.55;min-height:100vh}
+[hidden]{display:none!important}
+.wrap{max-width:760px;margin:0 auto;padding:0 16px 48px}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:22px 0 14px}
+.marca{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--coral)}
+h1{font-size:24px;font-weight:800;color:var(--mint-d)}
+h2{font-size:16px;font-weight:800;color:var(--mint-d);margin:22px 0 10px}
+.card{background:var(--white);border:1px solid var(--border);border-radius:18px;box-shadow:var(--shadow);padding:18px}
+.campo{margin-bottom:14px}.campo label{display:block;font-size:13px;font-weight:700;margin-bottom:5px}
+input[type=email],input[type=password]{width:100%;padding:12px 14px;font:inherit;color:inherit;background:transparent;border:1.5px solid var(--border);border-radius:12px}
+input:focus{outline:3px solid color-mix(in srgb,var(--mint) 40%,transparent);border-color:var(--mint)}
+button{font:700 14px var(--font);cursor:pointer;border-radius:12px;padding:11px 16px;border:0}
+.p{background:var(--mint-d);color:#fff}.s{background:transparent;color:var(--mint-d);border:1.5px solid var(--border)}
+button:disabled{opacity:.5;cursor:not-allowed}
+.recado{margin-top:12px;padding:10px 12px;border-radius:10px;font-size:14px}
+.recado.erro{background:rgba(217,108,99,.14);color:var(--coral-d)}.recado.ok{background:var(--mint-xl);color:var(--mint-d)}
+.login{max-width:400px;margin:12vh auto 0}
+.pac{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.pac+.pac{margin-top:10px}
+.pac-info{min-width:0}.pac-email{font-weight:800;overflow-wrap:anywhere}
+.pac-meta{font-size:12.5px;color:var(--muted)}
+.selo{display:inline-block;font-size:11.5px;font-weight:800;padding:2px 9px;border-radius:99px;margin-right:6px}
+.selo.on{background:var(--mint-l);color:var(--mint-d)}.selo.off{background:var(--border);color:var(--muted)}
+.linha{display:flex;gap:8px}.linha input{flex:1}
+.nota{font-size:13px;color:var(--muted);margin-top:8px}
+.voltar{margin-bottom:12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div><div class="marca">Psicoterapia e Afins</div><h1>Painel</h1></div>
+    <button class="s" id="sair" hidden>Sair</button>
+  </header>
+
+  <!-- Entrar -->
+  <section id="v-login" class="login card" hidden>
+    <h2 style="margin-top:0">Entrar</h2>
+    <p class="nota" style="margin:0 0 14px">Acesso da profissional. Use o e-mail e a senha da sua conta.</p>
+    <form id="f-login">
+      <div class="campo"><label for="email">E-mail</label><input id="email" type="email" autocomplete="email" required></div>
+      <div class="campo"><label for="senha">Senha</label><input id="senha" type="password" autocomplete="current-password" required></div>
+      <button class="p" type="submit" style="width:100%">Entrar</button>
+      <div class="recado erro" id="r-login" hidden></div>
+    </form>
+  </section>
+
+  <!-- Lista de pacientes -->
+  <section id="v-lista" hidden>
+    <h2>Pacientes</h2>
+    <div id="lista"></div>
+    <h2>Vincular um paciente</h2>
+    <div class="card">
+      <form id="f-vincular" class="linha">
+        <input id="v-email" type="email" placeholder="e-mail da conta do paciente" required aria-label="E-mail do paciente">
+        <button class="p" type="submit">Vincular</button>
+      </form>
+      <p class="nota">A pessoa precisa já ter conta (convide-a pelo painel do Supabase). Depois de vinculada, ela decide o que compartilha. Você só vê o que ela liberar.</p>
+      <div class="recado" id="r-vincular" hidden></div>
+    </div>
+  </section>
+
+  <!-- Um paciente -->
+  <section id="v-paciente" hidden>
+    <button class="s voltar" id="voltar">← Pacientes</button>
+    <div class="card" style="margin-bottom:12px"><div class="pac-email" id="p-email"></div><div class="pac-meta" id="p-meta"></div></div>
+    <div id="p-conteudo"></div>
+  </section>
+</div>
+
+<script type="module">
+const SUPABASE_URL = 'https://qhjdhlrmmopgucseprkb.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_gaCdnOB0LUazCo57jU1tSQ_sZjyXBDw';
+const { createClient } = await import('https://esm.sh/@supabase/supabase-js@2.45.4');
+const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+const $ = (id) => document.getElementById(id);
+const el = (tag, props, ...filhos) => { const e = document.createElement(tag); Object.entries(props || {}).forEach(([k, v]) => { if (k === 'class') e.className = v; else if (k === 'texto') e.textContent = v; else e.setAttribute(k, v); }); filhos.filter(Boolean).forEach((f) => e.appendChild(f)); return e; };
+const mostrar = (id) => ['v-login', 'v-lista', 'v-paciente'].forEach((v) => { $(v).hidden = v !== id; });
+const recado = (id, txt, tipo) => { const r = $(id); r.textContent = txt; r.className = 'recado ' + (tipo || 'erro'); r.hidden = false; };
+const erroTxt = (e) => {
+  const m = (e && e.message || '').toLowerCase();
+  if (m.includes('invalid login')) return 'E-mail ou senha incorretos.';
+  if (m.includes('sem permissão') || m.includes('permission denied')) return 'Esta conta não tem acesso de profissional.';
+  if (m.includes('nenhuma conta')) return 'Nenhuma conta com esse e-mail. Convide a pessoa pelo Supabase primeiro.';
+  if (m.includes('failed to fetch')) return 'Sem conexão com o servidor.';
+  return 'Não deu certo: ' + (e && e.message ? e.message : 'erro desconhecido');
+};
+const dataBr = (iso) => iso ? new Date(iso).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' }) : '—';
+
+async function abrirLista() {
+  mostrar('v-lista');
+  const { data, error } = await sb.rpc('painel_pacientes');
+  const lista = $('lista'); lista.textContent = '';
+  if (error) {
+    if ((error.message || '').toLowerCase().includes('sem permissão')) { await sb.auth.signOut(); mostrar('v-login'); recado('r-login', 'Esta conta não tem acesso de profissional.'); return; }
+    lista.appendChild(el('p', { class: 'nota', texto: erroTxt(error) })); return;
+  }
+  if (!data.length) { lista.appendChild(el('p', { class: 'nota', texto: 'Nenhum paciente vinculado ainda.' })); return; }
+  data.forEach((p) => {
+    const selos = el('div', {},
+      el('span', { class: 'selo ' + (p.compartilha_numeros ? 'on' : 'off'), texto: p.compartilha_numeros ? 'números compartilhados' : 'nada compartilhado' }),
+      p.compartilha_textos ? el('span', { class: 'selo on', texto: 'com textos' }) : null);
+    const ver = el('button', { class: 'p', type: 'button', texto: 'Ver' });
+    ver.disabled = !p.compartilha_numeros;
+    ver.addEventListener('click', () => abrirPaciente(p));
+    lista.appendChild(el('div', { class: 'card pac' },
+      el('div', { class: 'pac-info' }, el('div', { class: 'pac-email', texto: p.email }), selos,
+        el('div', { class: 'pac-meta', texto: p.compartilha_numeros ? 'Última atividade: ' + dataBr(p.ultima_atividade) : 'Vinculado em ' + dataBr(p.vinculado_em) })),
+      ver));
+  });
+}
+
+async function abrirPaciente(p) {
+  mostrar('v-paciente');
+  $('p-email').textContent = p.email;
+  $('p-meta').textContent = (p.compartilha_textos ? 'Compartilha números e textos' : 'Compartilha só números') + ' · Farol';
+  const cont = $('p-conteudo'); cont.textContent = 'Carregando…';
+  const { data, error } = await sb.rpc('painel_dados', { p_paciente: p.paciente_id, p_app: 'farol' });
+  cont.textContent = '';
+  if (error) { cont.appendChild(el('p', { class: 'nota', texto: erroTxt(error) })); return; }
+  if (!data) { cont.appendChild(el('p', { class: 'nota', texto: 'Esta pessoa ainda não tem dados do Farol na conta.' })); return; }
+  cont.appendChild(window.FarolPainel.render(data, { textos: p.compartilha_textos }));
+}
+
+$('voltar').addEventListener('click', abrirLista);
+$('sair').addEventListener('click', () => sb.auth.signOut());
+
+$('f-login').addEventListener('submit', async (ev) => {
+  ev.preventDefault(); $('r-login').hidden = true;
+  const { error } = await sb.auth.signInWithPassword({ email: $('email').value.trim(), password: $('senha').value });
+  if (error) recado('r-login', erroTxt(error));
+});
+
+$('f-vincular').addEventListener('submit', async (ev) => {
+  ev.preventDefault(); $('r-vincular').hidden = true;
+  const { error } = await sb.rpc('painel_vincular', { p_email: $('v-email').value });
+  if (error) { recado('r-vincular', erroTxt(error)); return; }
+  $('v-email').value = '';
+  recado('r-vincular', 'Vinculado. A pessoa verá o convite em "Minha conta" e decide o que compartilha.', 'ok');
+  abrirLista();
+});
+
+sb.auth.onAuthStateChange((evento, sessao) => {
+  setTimeout(() => {
+    $('sair').hidden = !sessao;
+    if (sessao) abrirLista(); else mostrar('v-login');
+  }, 0);
+});
+const { data: { session } } = await sb.auth.getSession();
+if (!session) mostrar('v-login');
+</script>
+<script src="../shared/farol-painel.js"></script>
+</body>
+</html>
