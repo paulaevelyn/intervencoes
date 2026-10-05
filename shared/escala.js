@@ -24,11 +24,12 @@
   // Soma dos itens (com inversão, se a escala tiver itens invertidos).
   function pontuar(def, respostas) {
     var inv = (def.pontuacao && def.pontuacao.invertidos) || [];
-    var max = def.opcoes;
+    var v0 = def.valorMin == null ? 1 : def.valorMin;          // 1 (padrão) ou 0
+    var inverter = function (v) { return 2 * v0 + def.opcoes - 1 - v; };   // espelha dentro de [v0, v0+opcoes-1]
     var soma = 0, n = 0;
     respostas.forEach(function (v, i) {
       if (typeof v !== 'number') return;
-      soma += inv.indexOf(i + 1) >= 0 ? (max + 1 - v) : v;
+      soma += inv.indexOf(i + 1) >= 0 ? inverter(v) : v;
       n++;
     });
     // Subescalas (opcional): soma dos itens de cada fator, já com a inversão aplicada.
@@ -39,7 +40,7 @@
         var s = 0;
         def.subescalas[nome].forEach(function (num) {
           var v = respostas[num - 1];
-          if (typeof v === 'number') s += inv.indexOf(num) >= 0 ? (max + 1 - v) : v;
+          if (typeof v === 'number') s += inv.indexOf(num) >= 0 ? inverter(v) : v;
         });
         subs[nome] = s;
       });
@@ -63,18 +64,21 @@
     var form = h('form', { class: 'esc-form', novalidate: 'novalidate' });
     form.appendChild(h('h2', { class: 'esc-titulo', texto: def.nome }));
     form.appendChild(h('p', { class: 'esc-instrucao', texto: def.instrucao }));
-    if (def.rotulos) {
+    var v0 = def.valorMin == null ? 1 : def.valorMin, vN = v0 + def.opcoes - 1;
+    if (def.legenda) {
+      form.appendChild(h('p', { class: 'esc-legenda', texto: def.legenda }));
+    } else if (def.rotulos) {
       // todos os rótulos das opções, numa linha de legenda
-      form.appendChild(h('p', { class: 'esc-legenda', texto: def.rotulos.map(function (r, i) { return (i + 1) + ' = ' + r; }).join(' · ') }));
+      form.appendChild(h('p', { class: 'esc-legenda', texto: def.rotulos.map(function (r, i) { return (v0 + i) + ' = ' + r; }).join(' · ') }));
     } else {
       form.appendChild(h('p', { class: 'esc-ancoras' },
-        h('span', { texto: '1 = ' + def.ancoras[1] }), h('span', { texto: def.opcoes + ' = ' + def.ancoras[def.opcoes] })));
+        h('span', { texto: v0 + ' = ' + def.ancoras[v0] }), h('span', { texto: vN + ' = ' + def.ancoras[vN] })));
     }
 
     def.itens.forEach(function (texto, i) {
       var grupo = h('fieldset', { class: 'esc-item' }, h('legend', { texto: (i + 1) + '. ' + texto }));
       var linha = h('div', { class: 'esc-opcoes' });
-      for (var v = 1; v <= def.opcoes; v++) {
+      for (var v = v0; v <= vN; v++) {
         (function (valor) {
           var id = 'esc-' + def.id + '-' + i + '-' + valor;
           var inp = h('input', { type: 'radio', name: 'esc-' + def.id + '-' + i, id: id, value: String(valor) });
@@ -102,7 +106,9 @@
       var p = pontuar(def, respostas);
       if (opts.onDone) opts.onDone({
         id: def.id, versao: def.versao, respostas: respostas.slice(), total: p.total, media: p.media, subescalas: p.subescalas,
-        maximo: def.itens.length * def.opcoes, minimo: def.itens.length, data: new Date().toISOString()
+        maximo: def.itens.length * vN, minimo: def.itens.length * v0,
+        subescalasMax: def.subescalas ? Object.keys(def.subescalas).reduce(function (o, k) { o[k] = def.subescalas[k].length * vN; return o; }, {}) : null,
+        data: new Date().toISOString()
       });
     });
 

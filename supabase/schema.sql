@@ -213,3 +213,7 @@ notify pgrst, 'reload schema';
 -- ── 10. Diário de segurança (migração painel_seguranca_interna_diario) ──
 -- projecao_seguranca_interna inclui 'diario' (ts, date, nivel, onde, ajudou); a 'nota'
 -- (texto livre) só com permissão de textos.
+
+-- ── 11. TPAS na Segurança Interna (migração painel_seguranca_interna_tpas) ──
+-- projecao_seguranca_interna inclui escalas.{pre,pos}.tpas: subescalas (ATIVO/RELAXADO/SEGURO),
+-- subescalasMax, data e respostas (0–4). São números e fazem parte de "só números".

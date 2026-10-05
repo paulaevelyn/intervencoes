@@ -18,9 +18,13 @@ body{margin:0;background:#F5F0E8;color:var(--graphite);font-family:var(--font);l
 .wrap{max-width:640px;margin:0 auto;padding:20px 16px 56px}
 a.volta{display:inline-block;margin-bottom:10px;color:var(--mint-d);font-weight:700;text-decoration:none}
 .nota{font-size:14px;color:var(--muted)}
+.etapa{font-size:12.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--mint-d);margin-bottom:6px}
 .links{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
 .links a{padding:12px 20px;border-radius:12px;font-weight:800;text-decoration:none;background:var(--mint-d);color:#fff}
 .links a.sec{background:transparent;color:var(--mint-d);border:1.5px solid var(--border)}
+.sub{display:flex;justify-content:space-between;gap:8px;font-size:14px;padding:4px 0}
+.bloco{margin-bottom:18px}
+.bloco h2{font-size:1.05rem;margin:0 0 6px;color:var(--mint-d)}
 </style>
 </head>
 <body>
@@ -30,49 +34,75 @@ a.volta{display:inline-block;margin-bottom:10px;color:var(--mint-d);font-weight:
   <div id="area"></div>
 </div>
 <script src="../shared/escala.js"></script>
+<script src="../shared/escalas/tpas.js"></script>
 <script src="../shared/escalas/eplo.js"></script>
 <script>
 (function () {
   var CHAVE = 'seguranca_escalas_v1';
+  var SEQ = [ESCALAS.tpas, ESCALAS.eplo];                 // duas partes curtas, em sequência
   var momento = new URLSearchParams(location.search).get('momento') === 'pos' ? 'pos' : 'pre';
   var area = document.getElementById('area');
+  var NOMES_TPAS = { ATIVO: 'Animado/a e cheio/a de energia', RELAXADO: 'Relaxado/a e calmo/a', SEGURO: 'Seguro/a e caloroso/a' };
 
   function ler() { try { return JSON.parse(localStorage.getItem(CHAVE)) || {}; } catch (e) { return {}; } }
   function gravar(estado) { try { localStorage.setItem(CHAVE, JSON.stringify(estado)); } catch (e) { /* sem armazenamento */ } }
   function el(tag, cls, txt) { var e = document.createElement(tag); if (cls) e.className = cls; if (txt) e.textContent = txt; return e; }
 
-  function intro() {
+  function parte(i) {
+    var def = SEQ[i];
     area.textContent = '';
-    area.appendChild(el('h1', '', momento === 'pre' ? 'Antes de começar' : 'Depois do percurso'));
-    area.appendChild(el('p', 'nota', momento === 'pre'
-      ? 'Um questionário curto, de uns 2 minutos, sobre como você se sente com as outras pessoas. É opcional. Servirá para você comparar, mais adiante, como estava no início. Não é um teste nem um diagnóstico, e não há resposta certa.'
-      : 'Se quiser, responda de novo ao mesmo questionário, para comparar com o que você respondeu no início. É opcional, e não há resposta certa.'));
-    var form = el('div');
-    area.appendChild(form);
-    Escala.render(form, ESCALAS.eplo, {
+    if (i === 0) {
+      area.appendChild(el('h1', '', momento === 'pre' ? 'Antes de começar' : 'Depois do percurso'));
+      area.appendChild(el('p', 'nota', momento === 'pre'
+        ? 'Dois questionários curtos, de uns 4 minutos no total, sobre como você costuma se sentir e como se sente com as outras pessoas. São opcionais. Servem para você comparar, mais adiante, como estava no início. Não são testes nem diagnóstico, e não há resposta certa.'
+        : 'Se quiser, responda de novo aos mesmos dois questionários, para comparar com o que você respondeu no início. São opcionais, e não há resposta certa.'));
+    }
+    area.appendChild(el('div', 'etapa', 'Parte ' + (i + 1) + ' de ' + SEQ.length));
+    var form = el('div'); area.appendChild(form);
+    Escala.render(form, def, {
       onDone: function (res) {
-        var e = ler(); e[momento] = e[momento] || {}; e[momento].eplo = res; gravar(e);
-        resultado(res, e);
+        var e = ler(); e[momento] = e[momento] || {}; e[momento][def.id] = res; gravar(e);
+        if (i + 1 < SEQ.length) { window.scrollTo(0, 0); parte(i + 1); } else resultado(e);
       },
       onSkip: function () { location.href = './'; }
     });
   }
 
-  function resultado(res, estado) {
+  function resultado(estado) {
     area.textContent = '';
     area.appendChild(el('h1', '', 'Resposta registrada'));
-    var caixa = el('div', 'esc-resultado');
-    caixa.appendChild(el('p', 'nota', 'Sua pontuação'));
-    var forte = el('strong', '', res.total + ' de ' + res.maximo);
-    caixa.appendChild(forte);
-    caixa.appendChild(el('p', 'nota', 'Pontuações mais altas indicam que você tem sentido mais segurança e proximidade nas suas relações. É só um retrato deste momento, não um diagnóstico, e muda com o tempo e com o contexto.'));
-    var pre = estado.pre && estado.pre.eplo;
-    if (momento === 'pos' && pre) {
-      var dif = res.total - pre.total;
-      caixa.appendChild(el('p', 'nota', 'No início você respondeu ' + pre.total + '. ' +
-        (dif > 0 ? 'Agora está ' + dif + (dif === 1 ? ' ponto' : ' pontos') + ' acima.' : dif < 0 ? 'Agora está ' + Math.abs(dif) + (Math.abs(dif) === 1 ? ' ponto' : ' pontos') + ' abaixo. Isso também faz parte do processo.' : 'Está igual.')));
+    var atual = estado[momento] || {}, antes = estado.pre || {};
+
+    var t = atual.tpas;
+    if (t) {
+      var b1 = el('div', 'esc-resultado bloco');
+      b1.appendChild(el('h2', '', 'Como você costuma se sentir'));
+      b1.appendChild(el('p', 'nota', 'Quanto cada tipo de sentimento é característico de você (de 0 até o máximo de cada grupo). Não há número certo.'));
+      ['SEGURO', 'RELAXADO', 'ATIVO'].forEach(function (k) {
+        var linha = el('div', 'sub');
+        linha.appendChild(el('span', '', NOMES_TPAS[k]));
+        var txt = t.subescalas[k] + ' de ' + t.subescalasMax[k];
+        if (momento === 'pos' && antes.tpas && antes.tpas.subescalas) txt += '  (início: ' + antes.tpas.subescalas[k] + ')';
+        linha.appendChild(el('strong', '', txt));
+        b1.appendChild(linha);
+      });
+      area.appendChild(b1);
     }
-    area.appendChild(caixa);
+
+    var e = atual.eplo;
+    if (e) {
+      var b2 = el('div', 'esc-resultado bloco');
+      b2.appendChild(el('h2', '', 'Como você se sente com as outras pessoas'));
+      b2.appendChild(el('strong', '', e.total + ' de ' + e.maximo));
+      b2.appendChild(el('p', 'nota', 'Pontuações mais altas indicam que você tem sentido mais segurança e proximidade nas suas relações. É só um retrato deste momento, não um diagnóstico, e muda com o tempo e com o contexto.'));
+      if (momento === 'pos' && antes.eplo) {
+        var d = e.total - antes.eplo.total;
+        b2.appendChild(el('p', 'nota', 'No início você respondeu ' + antes.eplo.total + '. ' + (d === 0 ? 'Agora está igual.' : d > 0 ? 'Agora está ' + d + (d === 1 ? ' ponto acima.' : ' pontos acima.') : 'Agora está ' + Math.abs(d) + (Math.abs(d) === 1 ? ' ponto abaixo' : ' pontos abaixo') + '. Isso também faz parte do processo.')));
+      }
+      area.appendChild(b2);
+    }
+
+    area.appendChild(el('p', 'nota', 'O primeiro questionário é uma tradução própria, ainda sem validação científica: use os números para acompanhar a si mesmo/a, e não para comparar com outras pessoas.'));
     var links = el('div', 'links');
     var a1 = el('a', '', 'Continuar'); a1.href = './';
     var a2 = el('a', 'sec', 'Meu painel'); a2.href = 'meu-painel.html';
@@ -80,7 +110,7 @@ a.volta{display:inline-block;margin-bottom:10px;color:var(--mint-d);font-weight:
     area.appendChild(links);
   }
 
-  intro();
+  parte(0);
 })();
 </script>
 <script type="module" src="../auth/auth.js" data-app="seguranca-interna" data-storage-keys="progresso_seguranca-interna,seguranca_escalas_v1,seguranca_diario_v1,seguranca_ob_v1" data-nome="Segurança Interna" data-pesquisa="nao"></script>

@@ -59,9 +59,26 @@
       raiz.appendChild(cd5);
     }
 
+    // TPAS (tradução própria, não validada): 3 subescalas (seguro/caloroso, relaxado, ativado). Só números.
+    var tp = esc && esc.pre && esc.pre.tpas, tq = esc && esc.pos && esc.pos.tpas;
+    if (!tp || !tp.subescalas || typeof tp.subescalas.SEGURO !== 'number') tp = null;
+    if (!tq || !tq.subescalas || typeof tq.subescalas.SEGURO !== 'number') tq = null;
+    if (tp || tq) {
+      var NOMES = { SEGURO: 'Seguro/a e caloroso/a', RELAXADO: 'Relaxado/a e calmo/a', ATIVO: 'Animado/a e cheio/a de energia' };
+      var MAXS = { SEGURO: 16, RELAXADO: 24, ATIVO: 32 };
+      var ct = U.cartao('Tipos de afeto positivo (TPAS)', 'Quanto cada tipo é característico da pessoa. Tradução própria, ainda sem validação: usar para acompanhar a própria pessoa, não para comparar com normas.');
+      ['SEGURO', 'RELAXADO', 'ATIVO'].forEach(function (k) {
+        var partes = [];
+        if (tp) partes.push('início ' + tp.subescalas[k]);
+        if (tq) partes.push('depois ' + tq.subescalas[k]);
+        ct.appendChild(h('div', { class: 'fp-escala' }, h('span', { class: 'fp-nome', texto: NOMES[k] + ' (0–' + MAXS[k] + ')' }), h('strong', { texto: partes.join(' → ') })));
+      });
+      raiz.appendChild(ct);
+    }
+
     if (!estado || (!estado.etapaAtual && !estado.programaConcluido)) {
       anexarDiario();
-      if (pre || pos || dia.length) return raiz;
+      if (pre || pos || tp || tq || dia.length) return raiz;
       var v = U.cartao('Percurso'); v.appendChild(h('p', { class: 'fp-vazio', texto: 'A pessoa ainda não começou o programa.' }));
       raiz.appendChild(v); return raiz;
     }
