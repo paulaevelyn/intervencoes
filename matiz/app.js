@@ -1229,6 +1229,8 @@ document.addEventListener('DOMContentLoaded', function () {
       deltaHtml = '<p class="science-note">Sua autopercepção mudou em ' + (d1 >= 0 ? '+' + d1 : d1) + ' ponto(s) na questão 1 e ' + (d2 >= 0 ? '+' + d2 : d2) + ' ponto(s) na questão 2, comparado ao início. Isso não é um diagnóstico — é só um retrato de como você se percebeu hoje.</p>';
     }
     el.resultDelta.innerHTML = deltaHtml;
+    // Progresso (calculado dos registros): mostra o nível e o XP depois do check-in.
+    if (window.MatizProgresso) MatizProgresso.resumo(document.getElementById('matiz-xp-resultado'));
     showScreen('result');
   }
 

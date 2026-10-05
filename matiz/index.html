@@ -19,6 +19,8 @@
   </style>
 <!-- LOGIN: estilos e bloqueio do app até a sessão ser verificada -->
 <link rel="stylesheet" href="../auth/auth.css">
+<link rel="stylesheet" href="../shared/matiz-progresso.css">
+<script src="../shared/matiz-progresso.js"></script>
 <script>document.documentElement.classList.add("pea-auth-carregando");</script>
 </head>
 <body>
@@ -51,6 +53,9 @@
       <p class="lead">Um espaço para reconhecer o que você sente começando pelo corpo, não pela palavra. Marque uma sensação, veja famílias de emoção compatíveis e construa, sessão após sessão, um mapa pessoal — sem certo ou errado.</p>
       <p id="matiz-escala-link" style="display:none;margin:0 0 18px;font-size:14px"><a href="escala.html?momento=pre" style="color:inherit;font-weight:700">Questionário opcional sobre como você lida com as emoções (5 min)</a></p>
       <script>try{var _m=JSON.parse(localStorage.getItem("matiz_escalas_v1")||"{}");if(!(_m.pre&&_m.pre.tas20)){document.getElementById("matiz-escala-link").style.display="block";}}catch(x){document.getElementById("matiz-escala-link").style.display="block";}</script>
+      <p id="matiz-nivel" style="display:none;margin:0 0 14px;font-size:13px;font-weight:800"><a href="painel.html" style="color:inherit;text-decoration:none" id="matiz-nivel-txt"></a></p>
+      <script>try{var _p=MatizProgresso.calcular(MatizProgresso.estadoLocal());if(_p.xp>0){MatizProgresso.resumo(document.getElementById("matiz-nivel-txt"));document.getElementById("matiz-nivel").style.display="block";}}catch(x){}</script>
+      <details style="max-width:640px;margin:0 auto 18px;text-align:left;font-size:13.5px"><summary style="cursor:pointer;font-weight:700">Como seus dados são tratados</summary><ul style="margin:8px 0 0;padding-left:20px"><li>Sem conta: tudo fica só neste aparelho. Ninguém vê.</li><li>Com conta (por convite): seu progresso fica guardado nela, e só você vê, a menos que escolha compartilhar com a sua profissional em "Minha conta".</li><li>O Matiz não envia seus dados para nenhuma pesquisa. Os pontos e as medalhas só medem o quanto você usou o app.</li></ul></details>
 
       <div id="resume-banner" class="card hidden" style="max-width:640px;margin:0 auto 20px;text-align:left">
         <p style="margin:0 0 12px"><strong>Você tem uma sessão em andamento.</strong> Sem problema nenhum ter pausado — quer continuar de onde parou ou começar de novo?</p>
@@ -329,6 +334,7 @@
       <h2>Você concluiu o Matiz 🌿</h2>
     </div>
     <div class="card" style="max-width:640px;margin:0 auto">
+      <p id="matiz-xp-resultado" class="science-note" style="font-weight:800"></p>
       <div id="result-delta"></div>
       <p>Agora você tem mais uma peça no seu mapa pessoal. Pode fechar esta página quando quiser — tudo já está salvo neste dispositivo.</p>
 

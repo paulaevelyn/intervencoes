@@ -9,6 +9,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600&family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../shared/farol-painel.css">
 <link rel="stylesheet" href="../auth/auth.css">
+<link rel="stylesheet" href="../shared/matiz-progresso.css">
+<script src="../shared/matiz-progresso.js"></script>
 <script>document.documentElement.classList.add("pea-auth-carregando");</script>
 <style>
 :root{--white:#FFFFFF;--graphite:#33312E;--muted:#6B6863;--border:#E5E0D8;--mint:#4F6D7A;--mint-d:#38505B;--mint-xl:#EEF3F5;--coral:#C97B4A;--font:'Nunito Sans',system-ui,sans-serif}
@@ -36,7 +38,9 @@ a.volta{display:inline-block;margin-bottom:8px;color:var(--mint-d);font-weight:7
   function ler(k) { try { return JSON.parse(localStorage.getItem(k)); } catch (e) { return null; } }
   var dose = ler('matiz_dose_v1') || {};
   var estado = { checkins: ler('matiz_bodymap_v1') || [], doseRecords: dose.records || [], vocab: ler('matiz_vocab_v1') || {}, escalas: ler('matiz_escalas_v1') };
-  document.getElementById('conteudo').appendChild(MatizPainel.render(estado, { textos: true }));
+  var cont = document.getElementById('conteudo');
+  if (window.MatizProgresso) { cont.appendChild(MatizProgresso.render(estado)); var esp = document.createElement('div'); esp.style.height = '12px'; cont.appendChild(esp); }
+  cont.appendChild(MatizPainel.render(estado, { textos: true }));
 })();
 (function () {
   var CHAVE_TEMPO = 8; // semanas sugeridas entre pré e pós

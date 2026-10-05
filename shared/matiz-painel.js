@@ -64,24 +64,35 @@
     var modo = U.contar(cs.map(function (c) { return c.entryMode; }).filter(Boolean));
     if (modo.length) { var c5 = U.cartao('Como começou o check-in'); c5.appendChild(U.listaBarras(modo, cs.length)); raiz.appendChild(c5); }
 
-    var c6 = U.cartao('Contexto e planos', 'Registros mais recentes primeiro');
+    var c6 = U.cartao('Linha do tempo dos check-ins', 'Registros mais recentes primeiro');
     if (!opts.textos) {
       c6.appendChild(h('p', { class: 'fp-vazio', texto: 'Os textos (contexto, planos e vocabulário) não foram compartilhados.' }));
     } else {
       var lista = h('div', { class: 'fp-tempo' });
-      cs.slice().reverse().slice(0, 15).forEach(function (c) {
-        var ctx = c.context || {};
-        var item = h('div', { class: 'fp-item' },
-          h('div', { class: 'fp-item-topo' },
-            h('span', { class: 'fp-data', texto: U.rotuloData(c.date) }),
-            c.chosenFamily ? h('span', { class: 'fp-tag', texto: c.chosenFamily }) : null,
-            c.sensationLabel ? h('span', { class: 'fp-depois', texto: c.sensationLabel }) : null));
-        var linhas = [ctx.situation, ctx.note].filter(function (x) { return typeof x === 'string' && x; });
-        if (linhas.length) item.appendChild(h('p', { class: 'fp-texto', texto: linhas.join(' · ') }));
-        if (c.ifThenPlan) item.appendChild(h('p', { class: 'fp-texto', texto: 'Plano: ' + c.ifThenPlan }));
-        lista.appendChild(item);
-      });
+      var recentes = cs.slice().reverse();
+      var mostrar = function (n) {
+        lista.textContent = '';
+        recentes.slice(0, n).forEach(function (c) {
+          var ctx = c.context || {};
+          var item = h('div', { class: 'fp-item' },
+            h('div', { class: 'fp-item-topo' },
+              h('span', { class: 'fp-data', texto: U.rotuloData(c.date) }),
+              c.chosenFamily ? h('span', { class: 'fp-tag', texto: c.chosenFamily }) : null,
+              c.sensationLabel ? h('span', { class: 'fp-depois', texto: c.sensationLabel }) : null,
+              c.intensityLabel ? h('span', { class: 'fp-depois', texto: c.intensityLabel }) : null));
+          var linhas = [ctx.situation, ctx.note].filter(function (x) { return typeof x === 'string' && x; });
+          if (linhas.length) item.appendChild(h('p', { class: 'fp-texto', texto: linhas.join(' · ') }));
+          if (c.ifThenPlan) item.appendChild(h('p', { class: 'fp-texto', texto: 'Plano: ' + c.ifThenPlan }));
+          lista.appendChild(item);
+        });
+      };
+      mostrar(10);
       c6.appendChild(lista);
+      if (recentes.length > 10) {
+        var btn = h('button', { class: 'fp-mais', type: 'button', texto: 'Mostrar todos (' + recentes.length + ')' }), aberto = false;
+        btn.addEventListener('click', function () { aberto = !aberto; mostrar(aberto ? recentes.length : 10); btn.textContent = aberto ? 'Mostrar menos' : 'Mostrar todos (' + recentes.length + ')'; });
+        c6.appendChild(btn);
+      }
       var vocab = estado.vocab && typeof estado.vocab === 'object' ? Object.keys(estado.vocab) : [];
       if (vocab.length) {
         var cv = U.cartao('Vocabulário pessoal', 'Palavra que a pessoa associa a cada emoção');
