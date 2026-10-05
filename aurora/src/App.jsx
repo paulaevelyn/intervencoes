@@ -7,7 +7,11 @@ import Journal from './pages/Journal'
 import Learn from './pages/Learn'
 
 export default function App() {
-  const [tab, setTab] = useState('home')
+  // ?tab=learn (etc.) abre direto numa aba; usado pelos links das páginas de apoio.
+  const [tab, setTab] = useState(() => {
+    const t = new URLSearchParams(window.location.search).get('tab')
+    return ['home', 'activation', 'emotions', 'journal', 'learn'].includes(t) ? t : 'home'
+  })
 
   function renderPage() {
     switch (tab) {

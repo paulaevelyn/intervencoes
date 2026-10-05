@@ -11,6 +11,7 @@ import {
   getLast7DaysMood,
   logActivity,
   unlogActivity,
+  load,
 } from '../utils/storage'
 import { getActivityById, CATEGORY_COLORS, CATEGORIES } from '../utils/activities'
 
@@ -102,6 +103,33 @@ export default function Home({ onNavigate }) {
       <div className="pt-10 pb-4">
         <p className="text-sage-600 font-medium text-sm">{timeGreet}</p>
         <h1 className="text-2xl font-bold text-gray-800 mt-0.5">Aurora</h1>
+      </div>
+
+      {/* Primeira vez: convite para a introdução (some depois que ela for vista) */}
+      {!load('ob') && (
+        <a
+          href={`${import.meta.env.BASE_URL}bem-vindo.html`}
+          className="block mb-4 rounded-2xl bg-sage-50 border border-sage-200 px-4 py-3 text-sm font-semibold text-sage-700"
+        >
+          Primeira vez aqui? Veja como o Aurora funciona (1 min) →
+        </a>
+      )}
+
+      {/* Atalhos: painel, questionário e introdução (páginas estáticas em public/) */}
+      <div className="flex flex-wrap gap-2 mb-5">
+        {[
+          ['📊 Meu painel', 'meu-painel.html'],
+          ['📋 Questionário', 'escala.html?momento=pre'],
+          ['ℹ️ Como funciona', 'bem-vindo.html'],
+        ].map(([rotulo, arquivo]) => (
+          <a
+            key={arquivo}
+            href={`${import.meta.env.BASE_URL}${arquivo}`}
+            className="text-xs font-semibold px-3 py-2 rounded-full bg-white border border-gray-200 text-sage-700 shadow-sm"
+          >
+            {rotulo}
+          </a>
+        ))}
       </div>
 
       {/* Streak Cards */}

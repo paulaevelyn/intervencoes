@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Aurora · Meu painel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script>
+  var B = /\/aurora\/public\//.test(location.pathname) ? '../../' : '../';
+  document.documentElement.classList.add('pea-auth-carregando');
+  document.write('<link rel="stylesheet" href="' + B + 'shared/farol-painel.css"><link rel="stylesheet" href="' + B + 'auth/auth.css">');
+</script>
+<style>
+:root{--white:#FFFFFF;--graphite:#2F3A2F;--muted:#667266;--border:rgba(47,58,47,.14);--mint:#4d844d;--mint-d:#3A6B3A;--mint-xl:#EAF2E6;--coral:#D9822B;--font:'Nunito Sans',system-ui,sans-serif}
+@media (prefers-color-scheme:dark){:root{--white:#232B25;--graphite:#E8EFE8;--muted:#A9B5A9;--border:rgba(255,255,255,.14);--mint:#8CC08C;--mint-d:#A6D2A6;--mint-xl:#2A382C;--coral:#E8A559}}
+body{margin:0;background:#F6F8F4;color:var(--graphite);font-family:var(--font);line-height:1.55}
+@media (prefers-color-scheme:dark){body{background:#1B211C}}
+.wrap{max-width:640px;margin:0 auto;padding:20px 16px 56px}
+h1{font-size:1.5rem;font-weight:800;color:var(--mint-d);margin:6px 0 4px}
+.sub{color:var(--muted);font-size:14px;margin:0 0 18px}
+a.volta{display:inline-block;margin-bottom:8px;color:var(--mint-d);font-weight:700;text-decoration:none}
+.acoes{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 16px}
+.acoes a{padding:10px 16px;border-radius:12px;font-weight:800;font-size:14px;text-decoration:none;background:var(--mint-d);color:#fff}
+.acoes a.sec{background:transparent;color:var(--mint-d);border:1.5px solid var(--border)}
+</style>
+</head>
+<body>
+<div id="pea-auth-aviso">carregando…</div>
+<div class="wrap">
+  <a class="volta" id="volta" href="./">← Voltar ao Aurora</a>
+  <h1>Meu painel</h1>
+  <p class="sub">Um retrato do seu humor e das suas atividades. Isto fica só com você, a menos que você compartilhe em "Minha conta".</p>
+  <div class="acoes" id="acoes"></div>
+  <div id="conteudo"></div>
+</div>
+<script>
+  document.getElementById('volta').href = /\/aurora\/public\//.test(location.pathname) ? '../' : './';
+  ['shared/farol-painel.js', 'shared/aurora-painel.js'].forEach(function (f) { document.write('<script src="' + B + f + '"><\/script>'); });
+</script>
+<script>
+(function () {
+  var P = 'depressao_app_';
+  function ler(k) { try { return JSON.parse(localStorage.getItem(P + k)); } catch (e) { return null; } }
+  function paraLista(obj, mapa) { return Object.keys(obj || {}).sort().map(function (d) { return mapa(d, obj[d]); }); }
+
+  var estado = {
+    humor: paraLista(ler('mood_history'), function (d, v) { return { date: d, rating: v && v.rating, ts: v && v.timestamp, note: v && v.note }; }),
+    feitas: paraLista(ler('activities_log'), function (d, ids) { return { date: d, ids: ids }; }),
+    agendadas: paraLista(ler('scheduled'), function (d, ids) { return { date: d, ids: ids }; }),
+    gratidao: paraLista(ler('gratitude'), function (d, v) { return { date: d, n: v && v.items ? v.items.length : 0, ts: v && v.timestamp, items: v && v.items }; }),
+    escalas: ler('escalas')
+  };
+
+  // Atalhos: questionário (PHQ-9) e introdução
+  var acoes = document.getElementById('acoes');
+  var e = estado.escalas || {};
+  function a(txt, href, cls) { var x = document.createElement('a'); x.textContent = txt; x.href = href; if (cls) x.className = cls; acoes.appendChild(x); }
+  if (!(e.pre && e.pre.phq9)) a('Responder o questionário (3 min)', 'escala.html?momento=pre');
+  else a('Responder de novo o questionário', 'escala.html?momento=pos', 'sec');
+  a('Como o Aurora funciona', 'bem-vindo.html', 'sec');
+
+  document.getElementById('conteudo').appendChild(AuroraPainel.render(estado, { textos: true }));
+})();
+</script>
+<script>
+  (function () {
+    var js = document.createElement('script');
+    js.type = 'module'; js.src = new URL(B + 'auth/auth.js', location.href).href;
+    js.dataset.app = 'aurora'; js.dataset.nome = 'Aurora'; js.dataset.pesquisa = 'nao';
+    js.dataset.storageKeys = 'depressao_app_mood_history,depressao_app_activities_log,depressao_app_scheduled,depressao_app_gratitude,depressao_app_escalas,depressao_app_ob';
+    document.body.appendChild(js);
+  })();
+</script>
+</body>
+</html>

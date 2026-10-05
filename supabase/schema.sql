@@ -217,3 +217,9 @@ notify pgrst, 'reload schema';
 -- ── 11. TPAS na Segurança Interna (migração painel_seguranca_interna_tpas) ──
 -- projecao_seguranca_interna inclui escalas.{pre,pos}.tpas: subescalas (ATIVO/RELAXADO/SEGURO),
 -- subescalasMax, data e respostas (0–4). São números e fazem parte de "só números".
+
+-- ── 12. Aurora (migração painel_aurora) ──
+-- app_dados aceita app = 'aurora'. projecao_aurora(chaves, com_textos) recebe as chaves
+-- depressao_app_* e devolve humor (nota só com permissão), atividades feitas/agendadas (ids),
+-- gratidão (só a contagem; itens só com permissão) e escalas (PHQ-9: total, item9, funcional,
+-- respostas). painel_dados despacha 'aurora'.
