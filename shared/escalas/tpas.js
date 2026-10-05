@@ -20,6 +20,8 @@
    (e não "contente", que lembra alegria); "Eager" → "Cheio/a de vontade" (evitei "ansioso/a");
    "Peaceful" → "Em paz"; "Lively" → "Animado/a"; "Excited" → "Empolgado/a". Há uma versão
    portuguesa (Portugal) de Pinto-Gouveia, Dinis & Matos (2008), não publicada, que não foi consultada.
+   REVISÃO: as escolhas de palavras acima foram APROVADAS por Paula em 2026-10-05. Isso é uma
+   aprovação editorial da profissional, e NÃO uma validação psicométrica.
    Para uso em pesquisa: tradução reversa, revisão por especialistas e validação são necessárias.
    Direitos: © Gilbert, 2008 — confirmar com o autor/Compassionate Mind Foundation as condições de uso.
 

@@ -17,9 +17,11 @@
       ETA-20 (Balbinotti & Wiethaeuper, 2013) descreve respostas de "completamente falso" a
       "completamente verdadeiro", diferentes das de concordância usadas aqui. Confirmar com os
       autores/artigo de 2005 e ajustar itens e rótulos, se necessário.
-   2. ITEM 5: a página não o inverte, mas na TAS-20 original (Bagby et al., 1994) os itens
-      invertidos são 4, 5, 10, 18 e 19. Aqui vale a regra da literatura. Se a versão brasileira
-      disser outra coisa, ajustar APENAS a lista `invertidos` abaixo.
+   2. ITEM 5: a página de plataforma não o inverte, mas na TAS-20 original (Bagby et al., 1994) os
+      itens invertidos são 4, 5, 10, 18 e 19. Aqui vale a regra da literatura, e Paula CONFIRMOU
+      (2026-10-05) a inversão dos itens 4, 5, 10, 18 e 19. (Confirmação da profissional; o artigo
+      brasileiro consultado não traz as inversões.) Se um dia a versão oficial disser outra coisa,
+      ajustar APENAS a lista `invertidos` abaixo.
    3. Pontos de corte (≤51 sem alexitimia · 52–60 possível · ≥61 alexitimia) são os da
       literatura internacional; o app NÃO rotula o paciente (rótulo só no painel da profissional).
 
