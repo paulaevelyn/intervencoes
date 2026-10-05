@@ -187,3 +187,9 @@ insert into public.profissionais (user_id, nome)
   select id, 'Paula' from auth.users where lower(email) = 'srta.paulaevelyn@gmail.com';
 
 notify pgrst, 'reload schema';
+
+-- ── 6. Painel do Floresça (migração painel_floresca) ───────────────────
+-- projecao_floresca(estado, com_textos): mesma regra de lista branca do Farol,
+-- com os campos do Floresça (momentos, emoções, saboreio, experimentos).
+-- painel_dados passou a aceitar p_app = 'floresca' (chave floresca_v1) e a
+-- despachar para a projeção do app. Definição completa: ver migração aplicada.

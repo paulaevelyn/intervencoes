@@ -128,16 +128,36 @@ async function abrirLista() {
   });
 }
 
-async function abrirPaciente(p) {
+// Apps que já têm leitura no painel. Os demais entram quando forem integrados.
+const APPS = {
+  farol: { nome: 'Farol', render: (d, o) => window.FarolPainel.render(d, o) },
+  floresca: { nome: 'Floresça', render: (d, o) => window.FlorescaPainel.render(d, o) }
+};
+
+async function abrirPaciente(p, appEscolhido) {
   mostrar('v-paciente');
   $('p-email').textContent = p.email;
-  $('p-meta').textContent = (p.compartilha_textos ? 'Compartilha números e textos' : 'Compartilha só números') + ' · Farol';
-  const cont = $('p-conteudo'); cont.textContent = 'Carregando…';
-  const { data, error } = await sb.rpc('painel_dados', { p_paciente: p.paciente_id, p_app: 'farol' });
-  cont.textContent = '';
-  if (error) { cont.appendChild(el('p', { class: 'nota', texto: erroTxt(error) })); return; }
-  if (!data) { cont.appendChild(el('p', { class: 'nota', texto: 'Esta pessoa ainda não tem dados do Farol na conta.' })); return; }
-  cont.appendChild(window.FarolPainel.render(data, { textos: p.compartilha_textos }));
+  $('p-meta').textContent = p.compartilha_textos ? 'Compartilha números e textos' : 'Compartilha só números';
+  const cont = $('p-conteudo'); cont.textContent = '';
+  const apps = (p.apps || []).filter((a) => APPS[a]);
+  if (!apps.length) { cont.appendChild(el('p', { class: 'nota', texto: 'Esta pessoa ainda não tem dados de nenhum app na conta.' })); return; }
+  const app = appEscolhido && apps.includes(appEscolhido) ? appEscolhido : apps[0];
+
+  const abas = el('div', { class: 'linha', style: 'margin-bottom:12px;flex-wrap:wrap' });
+  apps.forEach((a) => {
+    const b = el('button', { class: a === app ? 'p' : 's', type: 'button', texto: APPS[a].nome });
+    b.addEventListener('click', () => abrirPaciente(p, a));
+    abas.appendChild(b);
+  });
+  cont.appendChild(abas);
+
+  const area = el('div', { texto: 'Carregando…' });
+  cont.appendChild(area);
+  const { data, error } = await sb.rpc('painel_dados', { p_paciente: p.paciente_id, p_app: app });
+  area.textContent = '';
+  if (error) { area.appendChild(el('p', { class: 'nota', texto: erroTxt(error) })); return; }
+  if (!data) { area.appendChild(el('p', { class: 'nota', texto: 'Esta pessoa ainda não tem dados do ' + APPS[app].nome + ' na conta.' })); return; }
+  area.appendChild(APPS[app].render(data, { textos: p.compartilha_textos }));
 }
 
 $('voltar').addEventListener('click', abrirLista);
@@ -168,5 +188,6 @@ const { data: { session } } = await sb.auth.getSession();
 if (!session) mostrar('v-login');
 </script>
 <script src="../shared/farol-painel.js"></script>
+<script src="../shared/floresca-painel.js"></script>
 </body>
 </html>

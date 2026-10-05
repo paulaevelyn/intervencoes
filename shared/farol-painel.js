@@ -195,5 +195,28 @@
     return raiz;
   }
 
-  global.FarolPainel = { render: render };
+  // Média semanal de um campo numérico 1–5 (reaproveitado pelo painel do Floresça).
+  function graficoMedia(entries, campo, rotulo) {
+    var porSemana = {};
+    entries.forEach(function (e) { if (typeof e[campo] === 'number') { var s = segunda(e.date); (porSemana[s] = porSemana[s] || []).push(e[campo]); } });
+    var chaves = Object.keys(porSemana).sort().slice(-8);
+    if (chaves.length < 2) return null;
+    var W = 320, H = 100, pad = 20, pts = chaves.map(function (k, i) {
+      var m = media(porSemana[k]);
+      return { x: pad + i * ((W - 2 * pad) / (chaves.length - 1)), y: 12 + ((5 - m) / 4) * 56, k: k };
+    });
+    var s = svg('svg', { viewBox: '0 0 ' + W + ' ' + H, class: 'fp-svg', role: 'img', 'aria-label': rotulo });
+    s.appendChild(svg('polyline', { points: pts.map(function (p) { return p.x + ',' + p.y; }).join(' '), class: 'fp-linha', fill: 'none' }));
+    pts.forEach(function (p) {
+      s.appendChild(svg('circle', { cx: p.x, cy: p.y, r: 4, class: 'fp-ponto' }));
+      var r = svg('text', { x: p.x, y: 90, 'text-anchor': 'middle', class: 'fp-eixo' }); r.textContent = rotuloSemana(p.k); s.appendChild(r);
+    });
+    return s;
+  }
+
+  global.FarolPainel = {
+    render: render,
+    util: { h: h, svg: svg, segunda: segunda, rotuloData: rotuloData, contar: contar, media: media,
+            cartao: cartao, graficoSemanas: graficoSemanas, graficoMedia: graficoMedia, listaBarras: listaBarras }
+  };
 })(window);

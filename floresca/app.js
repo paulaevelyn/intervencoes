@@ -892,10 +892,7 @@ function obSelect(el,v){
 }
 function obSkip(){ obDone(); }
 function obConsentToggle(cb){
-  const btn=document.getElementById('ob-btn5');
-  if(!btn) return;
-  btn.disabled = !cb.checked;
-  btn.style.opacity = cb.checked ? '1' : '';
+  // Participar da pesquisa é opcional: o botão "Continuar" nunca fica travado.
   D.consentGiven = cb.checked;
 }
 function demoPick(field, value, el){
@@ -922,8 +919,7 @@ function obFinish(){
 }
 function obDone(){
   D.obDone=true;
-  D.consentGiven=true;
-  if(!D.consentDate) D.consentDate = new Date().toISOString();
+  if(D.consentGiven && !D.consentDate) D.consentDate = new Date().toISOString();
   save();
   trackAppEvent('onboarding_complete');
   document.getElementById('onboard').classList.add('hide');
@@ -2013,6 +2009,8 @@ function renderProgress(){
       ${repHTML}
     </div>
     ${insights.map(i=>`<div class="insight-c ${i.c}"><div class="insight-t">${i.t}</div><div class="insight-b">${i.b}</div></div>`).join('')}
+    <div class="sdiv">Seus registros</div>
+    <div id="p-registros" style="margin:0 16px 12px"></div>
     <div class="sdiv">Conquistas</div>
     <div class="card"><div class="badge-shelf">${badgesHTML}</div></div>
     <div class="sdiv">Exportar</div>
@@ -2021,6 +2019,9 @@ function renderProgress(){
     ${BRAND_FOOTER_HTML}`;
 
   renderMiniChart('p-chart','p-chart-e');
+  // Leitura dos momentos e experimentos (componente compartilhado com o painel)
+  const pr=document.getElementById('p-registros');
+  if(pr && window.FlorescaPainel) pr.appendChild(FlorescaPainel.render(D,{textos:true}));
 }
 
 /* ══════════════════════════════════
@@ -2197,6 +2198,11 @@ function dl(name,content,type){ const a=document.createElement('a'); a.href=URL.
    SINCRONIZAÇÃO COM GOOGLE SHEETS
    ══════════════════════════════════ */
 async function syncToResearch({ silent=false, requirePretest=true }={}){
+  // Nada vai para a pesquisa sem o aceite da pessoa (em qualquer ponto do app).
+  if(!D.consentGiven){
+    if(!silent) toast('Você não está participando da pesquisa. Ative em Dados.');
+    return;
+  }
   if(!RESEARCH_ENDPOINT){
     if(!silent) toast('⚙️ URL de pesquisa não configurado em app.js');
     return;
@@ -2217,9 +2223,12 @@ async function syncToResearch({ silent=false, requirePretest=true }={}){
       onboardingPath: D.userProfile ? D.userProfile.onboardingPath : null,
       pretest:       D.pretest,
       posttest:      D.posttest || null,
-      entries:       D.entries,
-      experiments:   D.experiments,
-      doseRecords:   D.doseRecords,
+      // Pesquisa: só campos estruturados. O texto livre (o momento, as notas dos
+      // experimentos, a nota da dose) fica no aparelho e na conta da pessoa:
+      // pode conter nomes e situações que identificam quem escreveu.
+      entries:       D.entries.map(({moment, ...resto}) => resto),
+      experiments:   D.experiments.map(({predictNote, noticed, ...resto}) => resto),
+      doseRecords:   D.doseRecords.map(({text, ...resto}) => resto),
       moduleFeedback: D.moduleFeedback,
       xp:            D.xp,
       analytics:     D.analytics,
@@ -2252,9 +2261,31 @@ async function syncToResearch({ silent=false, requirePretest=true }={}){
   if(!silent && btn){ btn.textContent='🔬 Enviar'; btn.style.opacity='1'; btn.onclick=()=>syncToResearch(); }
 }
 
+function researchJoin(){
+  D.consentGiven = true;
+  if(!D.consentDate) D.consentDate = new Date().toISOString();
+  save(); renderDadosSync();
+  toast('Obrigada por participar!');
+  syncToResearch({ silent:true, requirePretest:false });
+}
+function researchStop(){
+  if(!confirm('Parar de participar da pesquisa? Nada mais será enviado. O que já foi enviado não identifica você diretamente e continua nos resultados.')) return;
+  D.consentGiven = false;
+  save(); renderDadosSync();
+  toast('Você parou de participar. Nada mais será enviado.');
+}
 function renderDadosSync(){
   const desc = document.getElementById('sync-desc');
   if(!desc) return;
+  const btn = document.getElementById('sync-btn'), stop = document.getElementById('research-stop');
+  if(!D.consentGiven){
+    desc.textContent = 'Você não está participando. O app funciona igual; se quiser, pode participar a qualquer momento.';
+    if(btn){ btn.textContent = 'Participar'; btn.onclick = researchJoin; }
+    if(stop) stop.style.display = 'none';
+    return;
+  }
+  if(btn){ btn.textContent = '🔬 Enviar'; btn.onclick = ()=>syncToResearch(); }
+  if(stop) stop.style.display = '';
   if(!RESEARCH_ENDPOINT){
     desc.textContent = 'Endpoint não configurado (ver app.js)';
     return;
@@ -2281,13 +2312,13 @@ function openModal(id){
 }
 function closeModal(e){ if(!e||e.target===document.getElementById('modal-ov')) document.getElementById('modal-ov').classList.remove('on'); }
 function deleteAll(){
-  const pid=D.participantId, cd=D.consentDate, ls=D.lastSync;
+  const pid=D.participantId, cd=D.consentDate, ls=D.lastSync, cg=!!D.consentGiven;
   D={
     xp:0, badges:[], obDone:true, obLevel:D.obLevel,
     moduleProgress:{}, entries:[], experiments:[], assessment:null,
     nickname:D.nickname, demographics:D.demographics,
     reminders:D.reminders||{enabled:false,hour:20},
-    consentGiven:true, consentDate:cd,
+    consentGiven:cg, consentDate:cd,
     participantId:pid, lastSync:ls,
     pretest:null, posttest:null, posttestRemindAfter:null,
     analytics:{sessions:[],moduleEvents:[],diaryEvents:[],labEvents:[]},
