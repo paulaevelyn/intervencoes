@@ -7,9 +7,32 @@
     <meta name="description" content="App baseado em evidências científicas para apoio na depressão: ativação comportamental, emoções positivas e diário de humor." />
     <meta name="theme-color" content="#4d844d" />
     <title>Aurora — Bem-estar e Saúde Mental</title>
+
+    <!-- LOGIN: o app fica escondido até a sessão ser verificada (regra repetida aqui para não
+         piscar enquanto o CSS da camada de login ainda não chegou). -->
+    <style>html.pea-auth-carregando body > *:not(#pea-auth-tela):not(#pea-auth-aviso){display:none!important}</style>
+    <script>document.documentElement.classList.add("pea-auth-carregando");</script>
   </head>
   <body>
+    <div id="pea-auth-aviso" style="position:fixed;inset:0;display:grid;place-items:center;font:600 15px system-ui,sans-serif;color:#6B7280;background:#F7F3EF">carregando…</div>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+
+    <!-- LOGIN: camada compartilhada (../auth/). Injetada em tempo de execução, porque o Vite
+         não deve tentar empacotar arquivos que ficam fora desta pasta. Contas só por convite. -->
+    <script>
+      (function () {
+        var css = document.createElement('link');
+        css.rel = 'stylesheet'; css.href = new URL('../auth/auth.css', location.href).href;
+        document.head.appendChild(css);
+        var js = document.createElement('script');
+        js.type = 'module'; js.src = new URL('../auth/auth.js', location.href).href;
+        js.dataset.app = 'aurora';
+        js.dataset.nome = 'Aurora';
+        js.dataset.pesquisa = 'nao';
+        js.dataset.storageKeys = 'depressao_app_mood_history,depressao_app_activities_log,depressao_app_scheduled,depressao_app_gratitude,depressao_app_escalas,depressao_app_ob';
+        document.body.appendChild(js);
+      })();
+    </script>
   </body>
 </html>
