@@ -1807,6 +1807,8 @@ function renderProgress(){
       <div id="p-chart-e" style="display:none;font-size:13px;color:var(--muted);text-align:center;padding:10px 0">Sem dados suficientes.</div>
     </div>
     ${insights.map(i=>`<div class="insight-c ${i.c}"><div class="insight-t">${i.t}</div><div class="insight-b">${i.b}</div></div>`).join('')}
+    <div class="sdiv">Seus registros de preocupação</div>
+    <div id="p-worries" style="margin:0 16px 12px"></div>
     <div class="sdiv">Conquistas</div>
     <div class="card"><div class="badge-shelf">${badgesHTML}</div></div>
     <div class="sdiv">Exportar</div>
@@ -1815,6 +1817,9 @@ function renderProgress(){
     ${BRAND_FOOTER_HTML}`;
 
   renderMiniChart('p-chart','p-chart-e');
+  // Leitura dos registros de preocupação (componente compartilhado com o painel)
+  const pw=document.getElementById('p-worries');
+  if(pw && window.FarolPainel) pw.appendChild(FarolPainel.render(D,{textos:true}));
 }
 
 /* ══════════════════════════════════

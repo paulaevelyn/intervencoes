@@ -73,3 +73,8 @@ html.pea-auth-carregando body > *:not(#pea-auth-tela):not(#pea-auth-aviso) { dis
 span.pea-auth-conta-btn { cursor: default; }
 
 #pea-auth-tela [hidden] { display: none !important; }
+
+/* Compartilhamento em "Minha conta" */
+.pea-auth-cartao-compart { border: 1.5px solid var(--a-borda); border-radius: 14px; padding: 14px; margin-bottom: 14px; }
+.pea-auth-cartao-compart .pea-auth-titulo { font-size: 16px; }
+.pea-auth-lista-acessos { font-size: 12.5px; color: var(--a-fraco); margin-top: 10px; display: flex; flex-direction: column; gap: 3px; }

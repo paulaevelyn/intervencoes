@@ -1,7 +1,7 @@
 /* Farol — Service Worker
    Offline-first para assets, network-first para HTML.
    Incrementar CACHE_VERSION a cada deploy para forçar atualização. */
-const CACHE_VERSION = 'farol-v6';
+const CACHE_VERSION = 'farol-v7';
 const CORE = [
   './',
   './index.html',
@@ -31,8 +31,9 @@ self.addEventListener('activate', e => {
 self.addEventListener('fetch', e => {
   const req = e.request;
   if (req.method !== 'GET') return;
-  // Camada de login compartilhada: sempre da rede (correções chegam na hora)
-  if (new URL(req.url).pathname.includes('/auth/')) return;
+  // Camada de login e componentes compartilhados: sempre da rede (correções chegam na hora)
+  const caminho = new URL(req.url).pathname;
+  if (caminho.includes('/auth/') || caminho.includes('/shared/')) return;
 
   // HTML: tenta rede primeiro (apanha atualizações), cache como fallback offline
   if (req.mode === 'navigate' || req.headers.get('accept')?.includes('text/html')) {

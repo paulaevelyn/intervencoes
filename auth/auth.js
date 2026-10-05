@@ -31,7 +31,7 @@ const CONTATO_PRIVACIDADE = 'contato@psicoterapiaeafins.com.br';
 const REGIAO_SERVIDOR = 'São Paulo, Brasil';
 // Mude esta data sempre que o texto do aviso mudar: quem já tinha concordado
 // verá o aviso de novo, e o registro mostra com qual versão cada pessoa concordou.
-const AVISO_VERSAO = '2026-10-02';
+const AVISO_VERSAO = '2026-10-05';
 
 const eu = document.querySelector('script[data-app]');
 const APP = eu.dataset.app;
@@ -280,7 +280,9 @@ function mostrarTelaConsentimento(u, aoConcordar) {
       novo('ul', {},
         novo('li', { texto: 'O quê: seu e-mail e tudo o que você preencher no app (respostas, diário, progresso).' }),
         novo('li', { texto: 'Onde: banco de dados no Supabase (' + REGIAO_SERVIDOR + '), protegido por senha e por regras que separam os dados de cada pessoa.' }),
-        novo('li', { texto: 'Quem vê: você, com a sua senha. Quem administra o serviço tem acesso técnico ao banco, como em qualquer serviço online.' }),
+        novo('li', { texto: 'Quem vê: só você, com a sua senha. Quem administra o serviço tem acesso técnico ao banco, como em qualquer serviço online, mas não lê o que você registra.' }),
+        novo('li', { texto: 'Compartilhar com a sua profissional: só se você foi vinculada(o) por convite e só se você ligar isso, em "Minha conta". Começa desligado. Você escolhe entre compartilhar só números (escalas e gráficos) ou também os textos que escreve, e vê quando houve consulta.' }),
+        novo('li', { texto: 'Pesquisa: é um consentimento separado, dentro do app, e não depende desta conta.' }),
         novo('li', { texto: 'Por quanto tempo: até você apagar. Em "Minha conta" você baixa tudo ou apaga a conta na hora.' }),
         novo('li', { texto: 'Não acontece: venda, publicidade ou entrega a terceiros. É uma ferramenta psicoeducativa e não substitui o acompanhamento profissional.' }),
         novo('li', { texto: 'Dúvidas ou pedidos sobre seus dados: ' + CONTATO_PRIVACIDADE }))),
@@ -303,8 +305,9 @@ function mostrarPainelConta() {
   if (overlay) { fecharOverlay(); return; }
   const recado = novo('div', { class: 'pea-auth-recado', hidden: true });
   const area = novo('div', {});
+  const areaCompart = novo('div', { class: 'pea-auth-compart' });
 
-  const baixar = novo('button', { class: 'pea-auth-btn sec', type: 'button', texto: 'Baixar meus dados' });
+  const baixar =novo('button', { class: 'pea-auth-btn sec', type: 'button', texto: 'Baixar meus dados' });
   const apagar = novo('button', { class: 'pea-auth-btn perigo', type: 'button', texto: 'Apagar minha conta' });
   const sairBtn = novo('button', { class: 'pea-auth-btn sec', type: 'button', texto: 'Sair' });
   const fechar = novo('button', { class: 'pea-auth-link', type: 'button', texto: 'Voltar ao app' });
@@ -312,6 +315,7 @@ function mostrarPainelConta() {
   const cartao = novo('div', { class: 'pea-auth-cartao' },
     novo('h1', { class: 'pea-auth-titulo', texto: 'Minha conta' }),
     novo('p', { class: 'pea-auth-texto', texto: usuario.email }),
+    areaCompart,
     novo('div', { class: 'pea-auth-campo' }, baixar),
     novo('div', { class: 'pea-auth-campo' }, sairBtn),
     novo('div', { class: 'pea-auth-campo' }, apagar),
@@ -351,6 +355,67 @@ function mostrarPainelConta() {
   });
 
   abrirOverlay(cartao, false);
+  carregarCompartilhamento(areaCompart);
+}
+
+// ── Compartilhar com a profissional (só existe para quem tem vínculo) ────
+// O público geral nunca vê isto: sem vínculo, a conta é só da pessoa.
+async function carregarCompartilhamento(caixa) {
+  const r = await sb.from('vinculos')
+    .select('id, compartilha_numeros, compartilha_textos, profissionais(nome)');
+  if (r.error || !r.data || !r.data.length) {
+    caixa.appendChild(novo('p', { class: 'pea-auth-texto', texto: 'Sua conta é só sua: ninguém vê o que você registra.' }));
+    return;
+  }
+  r.data.forEach(function (v) {
+    const nome = (v.profissionais && v.profissionais.nome) || 'sua profissional';
+    const recado = novo('div', { class: 'pea-auth-recado', hidden: true });
+    const cNum = novo('input', { type: 'checkbox', id: 'pea-c-num-' + v.id });
+    const cTxt = novo('input', { type: 'checkbox', id: 'pea-c-txt-' + v.id });
+    cNum.checked = v.compartilha_numeros;
+    cTxt.checked = v.compartilha_textos;
+    cTxt.disabled = !v.compartilha_numeros;
+
+    async function salvar() {
+      const numeros = cNum.checked;
+      const textos = numeros && cTxt.checked;
+      cTxt.disabled = !numeros;
+      if (!numeros) cTxt.checked = false;
+      const u = await sb.from('vinculos').update({ compartilha_numeros: numeros, compartilha_textos: textos }).eq('id', v.id);
+      if (u.error) recadoEm(recado, 'Não consegui salvar: ' + traduzirErro(u.error));
+      else recadoEm(recado, numeros ? 'Salvo. ' + nome + ' vê só o que você marcou.' : 'Salvo. Nada está sendo compartilhado.', 'ok');
+    }
+    cNum.addEventListener('change', salvar);
+    cTxt.addEventListener('change', salvar);
+
+    const quem = novo('div', { class: 'pea-auth-lista-acessos' });
+    sb.from('acessos_painel').select('app, com_textos, quando').eq('paciente_id', usuario.id)
+      .order('quando', { ascending: false }).limit(5).then(function (a) {
+        if (a.error || !a.data || !a.data.length) { quem.textContent = nome + ' ainda não consultou seus dados.'; return; }
+        quem.appendChild(novo('strong', { texto: 'Últimas consultas de ' + nome + ':' }));
+        a.data.forEach(function (x) {
+          quem.appendChild(novo('div', { texto: new Date(x.quando).toLocaleString('pt-BR') + (x.com_textos ? ' · com textos' : ' · só números') }));
+        });
+      });
+
+    const encerrar = novo('button', { class: 'pea-auth-link', type: 'button', texto: 'Encerrar o vínculo com ' + nome });
+    encerrar.addEventListener('click', async function () {
+      if (!confirm('Encerrar o vínculo? ' + nome + ' deixa de ver seus dados. Você pode ser vinculada(o) de novo por um novo convite.')) return;
+      const d = await sb.from('vinculos').delete().eq('id', v.id);
+      if (d.error) { recadoEm(recado, 'Não consegui encerrar: ' + traduzirErro(d.error)); return; }
+      caixa.textContent = '';
+      caixa.appendChild(novo('p', { class: 'pea-auth-texto', texto: 'Vínculo encerrado. Sua conta é só sua.' }));
+    });
+
+    caixa.appendChild(novo('div', { class: 'pea-auth-cartao-compart' },
+      novo('h2', { class: 'pea-auth-titulo', texto: 'Compartilhar com ' + nome }),
+      novo('p', { class: 'pea-auth-texto', texto: 'Você está vinculada(o) a ' + nome + '. ' + nome + ' só vê o que você marcar abaixo, e você pode mudar ou desligar quando quiser. Por padrão, nada é compartilhado.' }),
+      novo('div', { class: 'pea-auth-consent' }, cNum,
+        novo('label', { for: cNum.id, texto: 'Compartilhar meus números: escalas, gráficos e uso do app.' })),
+      novo('div', { class: 'pea-auth-consent' }, cTxt,
+        novo('label', { for: cTxt.id, texto: 'Compartilhar também os textos que escrevo (por exemplo, as preocupações).' })),
+      recado, quem, encerrar));
+  });
 }
 
 // ════════════════════ 5. SINCRONIZAÇÃO ════════════════════

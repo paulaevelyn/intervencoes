@@ -1,0 +1,41 @@
+/* farol-painel.css — estilos do componente FarolPainel (app e painel).
+   Usa as variáveis do design system da marca, com valores de reserva. */
+.fp { --fp-card: var(--white, #fff); --fp-texto: var(--graphite, #3F434B); --fp-fraco: var(--muted, #6B7280);
+  --fp-borda: var(--border, rgba(63,67,75,.10)); --fp-musgo: var(--mint, #5E7D73); --fp-musgo-d: var(--mint-d, #3D5A52);
+  --fp-coral: var(--coral, #D96C63); --fp-areia: var(--mint-xl, #F0F6F3);
+  display: flex; flex-direction: column; gap: 12px; color: var(--fp-texto); font-family: var(--font, 'Nunito Sans', system-ui, sans-serif); }
+@media (prefers-color-scheme: dark) {
+  .fp { --fp-card: var(--white, #2A2F33); --fp-texto: var(--graphite, #ECE8E2); --fp-fraco: var(--muted, #B3B9BF);
+    --fp-borda: var(--border, rgba(255,255,255,.12)); --fp-musgo: var(--mint, #8FB3A6); --fp-musgo-d: var(--mint-d, #A9C9BD); --fp-areia: var(--mint-xl, #25302C); }
+}
+.fp * { box-sizing: border-box; }
+.fp-card { background: var(--fp-card); border: 1px solid var(--fp-borda); border-radius: 18px; padding: 16px; }
+.fp-lbl { font-size: 12px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--fp-musgo-d); margin-bottom: 4px; }
+.fp-dica { font-size: 12.5px; color: var(--fp-fraco); margin-bottom: 8px; }
+.fp-vazio { font-size: 14px; color: var(--fp-fraco); margin: 6px 0 0; }
+.fp-resumo { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.fp-stat { background: var(--fp-areia); border-radius: 14px; padding: 12px 8px; text-align: center; }
+.fp-stat strong { display: block; font-size: 22px; font-weight: 800; color: var(--fp-musgo-d); }
+.fp-stat span { font-size: 11.5px; color: var(--fp-fraco); line-height: 1.25; display: block; }
+.fp-svg { width: 100%; height: auto; display: block; }
+.fp-barra { fill: var(--fp-musgo); }
+.fp-barra-vazia { fill: var(--fp-borda); }
+.fp-num { font: 800 11px var(--font, system-ui); fill: var(--fp-texto); }
+.fp-eixo { font: 600 9px var(--font, system-ui); fill: var(--fp-fraco); }
+.fp-linha { stroke: var(--fp-coral); stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round; }
+.fp-ponto { fill: var(--fp-coral); }
+.fp-barras { display: flex; flex-direction: column; gap: 8px; margin-top: 6px; }
+.fp-linha-b { display: grid; grid-template-columns: minmax(90px, 40%) 1fr 22px; gap: 8px; align-items: center; font-size: 13px; }
+.fp-trilho { height: 8px; background: var(--fp-borda); border-radius: 99px; overflow: hidden; display: block; }
+.fp-preenche { height: 100%; background: var(--fp-musgo); border-radius: 99px; display: block; }
+.fp-val { text-align: right; font-weight: 800; color: var(--fp-musgo-d); }
+.fp-escala { display: flex; justify-content: space-between; gap: 8px; font-size: 14px; padding: 4px 0; }
+.fp-tempo { display: flex; flex-direction: column; gap: 10px; margin-top: 8px; }
+.fp-item { border-left: 3px solid var(--fp-musgo); padding: 2px 0 2px 12px; }
+.fp-item-topo { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 12px; color: var(--fp-fraco); }
+.fp-data { font-weight: 800; }
+.fp-tag { padding: 2px 8px; border-radius: 99px; background: var(--fp-areia); color: var(--fp-musgo-d); font-weight: 700; }
+.fp-tag-n { background: rgba(217,108,99,.14); color: var(--fp-coral); }
+.fp-texto { margin: 4px 0 0; font-size: 14.5px; line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere; }
+.fp-mais { margin-top: 12px; background: none; border: 1.5px solid var(--fp-borda); border-radius: 12px; padding: 10px 14px;
+  font: 700 13px var(--font, system-ui); color: var(--fp-musgo-d); cursor: pointer; width: 100%; }
