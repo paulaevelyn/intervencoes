@@ -143,6 +143,7 @@
   </div>
 
   <div id="h-step"></div>
+  <div id="h-tasks"></div>
 
   <div class="stats">
     <div class="stat"><div class="stat-n" style="color:var(--mint)" id="hs-days">0</div><div class="stat-l">dias com registro</div></div>
@@ -200,6 +201,13 @@
 <div class="scr" id="scr-activate">
   <div class="hdr"><h1>Ativar</h1><p>Pequenos passos, no seu ritmo.</p></div>
   <div class="insight-c"><div class="insight-t">Como funciona?</div><div class="insight-b">A depressão nos afasta das atividades. Isso piora o humor, que nos afasta mais ainda. Quebrar esse ciclo com ações <strong>pequenas e consistentes</strong> é o caminho de volta. Baseado em Martell, Addis &amp; Jacobson (2001).</div></div>
+  <div class="sdiv">Ferramentas</div>
+  <div class="quick-grid">
+    <div class="quick-card" onclick="goTo('tasks')"><div class="quick-icon">🪜</div><div class="quick-title">Tarefa em passos</div><div class="quick-sub">Dividir o que está pesado</div></div>
+    <div class="quick-card" onclick="goTo('trap')"><div class="quick-icon">🔎</div><div class="quick-title">Entender um padrão</div><div class="quick-sub">Gatilho, resposta, saída</div></div>
+    <div class="quick-card" onclick="goTo('values')"><div class="quick-icon">🧭</div><div class="quick-title">Meus valores</div><div class="quick-sub">O que importa para mim</div></div>
+  </div>
+  <div class="sdiv">Atividades</div>
   <div class="chips" id="a-filters" style="padding:0 16px"></div>
   <div class="a-count" id="a-count"></div>
   <div id="a-list"></div>
@@ -218,6 +226,24 @@
   <div class="hdr"><h1>Sentir</h1><p>Exercícios curtos de emoções positivas.</p></div>
   <div class="insight-c"><div class="insight-t">Por que isso é ciência?</div><div class="insight-b">Emoções positivas <strong>ampliam a nossa atenção</strong> e <strong>constroem recursos</strong> (cognitivos, sociais e físicos) que protegem contra a depressão no longo prazo. Não se trata de "pensar positivo", e sim de praticar estados emocionais como uma habilidade (Fredrickson).</div></div>
   <div id="f-list"></div>
+</div>
+
+<!-- TAREFA EM PASSOS (tarefa graduada) -->
+<div class="scr" id="scr-tasks">
+  <div class="hdr"><h1>Tarefa em passos</h1><p>Quando algo parece grande demais, divida.</p></div>
+  <div id="t-wrap" style="padding:0 16px"></div>
+</div>
+
+<!-- ENTENDER UM PADRÃO (TRAP / TRAC) -->
+<div class="scr" id="scr-trap">
+  <div class="hdr"><h1>Entender um padrão</h1><p>O que aconteceu, o que você fez e o que dá para tentar.</p></div>
+  <div id="tr-wrap" style="padding:0 16px"></div>
+</div>
+
+<!-- MEUS VALORES -->
+<div class="scr" id="scr-values">
+  <div class="hdr"><h1>Meus valores</h1><p>O que importa para você, e o quanto você tem vivido isso.</p></div>
+  <div id="v-wrap" style="padding:0 16px"></div>
 </div>
 
 <!-- APRENDER -->
@@ -257,6 +283,21 @@
     <div class="set-row" onclick="exportJSON()"><div><div class="set-lbl">⬇️ Baixar tudo (JSON)</div><div class="set-desc">Humor, atividades, diário e questionários</div></div><span class="set-arr">›</span></div>
     <div class="set-row" onclick="exportCSV()"><div><div class="set-lbl">📄 Baixar o humor e as atividades (CSV)</div><div class="set-desc">Para abrir em planilha ou levar para uma consulta</div></div><span class="set-arr">›</span></div>
     <div class="set-row" onclick="openModal('del')"><div><div class="set-lbl" style="color:var(--coral)">🗑️ Apagar os dados deste aparelho</div><div class="set-desc">Se você usa uma conta, apague-a em "Minha conta" (botão no topo)</div></div><span class="set-arr">›</span></div>
+  </div>
+
+  <div class="sdiv">Lembretes</div>
+  <div class="set-group">
+    <div class="set-row" onclick="showNotifModal()"><div><div class="set-lbl">💡 Como funcionam os lembretes</div><div class="set-desc">1 por dia, no máximo, e só se você ainda não tiver registrado nada no dia</div></div><span class="set-arr">›</span></div>
+    <div class="set-row" style="cursor:default">
+      <div style="flex:1"><div class="set-lbl">🔔 Lembrete diário</div><div class="set-desc">Uma notificação gentil, sem cobrança. Vale só neste aparelho.</div></div>
+      <label class="switch"><input type="checkbox" id="rem-toggle" onchange="toggleReminders(this)" aria-label="Lembrete diário"><span class="switch-track"></span></label>
+    </div>
+    <div class="set-row" id="rem-hour-row" style="cursor:default;display:none">
+      <div style="flex:1"><div class="set-lbl">Horário</div><div class="set-desc">Escolha um momento do seu dia</div></div>
+      <select id="rem-hour" class="demo-input" style="width:auto;padding:8px 12px" onchange="setReminderHour(this)" aria-label="Horário do lembrete">
+        <option value="8">08:00</option><option value="10">10:00</option><option value="12">12:00</option><option value="16">16:00</option><option value="18">18:00</option><option value="20" selected>20:00</option>
+      </select>
+    </div>
   </div>
 
   <div class="sdiv">Atalho</div>
@@ -327,6 +368,6 @@
 <script src="app.js"></script>
 
 <!-- LOGIN: camada compartilhada (../auth/). Contas só por convite. -->
-<script type="module" src="../auth/auth.js" data-app="aurora" data-nome="Aurora" data-logo="assets/aurora-logo.svg" data-pesquisa="nao" data-storage-keys="depressao_app_mood_history,depressao_app_activities_log,depressao_app_scheduled,depressao_app_gratitude,depressao_app_escalas,depressao_app_ob"></script>
+<script type="module" src="../auth/auth.js" data-app="aurora" data-nome="Aurora" data-logo="assets/aurora-logo.svg" data-pesquisa="nao" data-storage-keys="depressao_app_mood_history,depressao_app_activities_log,depressao_app_scheduled,depressao_app_gratitude,depressao_app_escalas,depressao_app_ob,depressao_app_ratings,depressao_app_valores,depressao_app_trap,depressao_app_tarefas"></script>
 </body>
 </html>

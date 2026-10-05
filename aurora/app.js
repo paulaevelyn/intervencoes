@@ -22,7 +22,11 @@ const K = {
   sched: 'depressao_app_scheduled',        // { 'AAAA-MM-DD': [idsProgramados] }
   grat:  'depressao_app_gratitude',        // { 'AAAA-MM-DD': { items:[3 textos], timestamp } }
   esc:   'depressao_app_escalas',          // { pre:{phq9:{…}}, pos:{phq9:{…}} }
-  ob:    'depressao_app_ob'                // { feito:true, data }
+  ob:    'depressao_app_ob',               // { feito:true, data }
+  rate:  'depressao_app_ratings',          // { 'AAAA-MM-DD': { idAtividade: { p, m, ts } } }  prazer e domínio, 0–10
+  val:   'depressao_app_valores',          // { atualizado, dominios: { id: { imp, cons, texto } } }
+  trap:  'depressao_app_trap',             // [ { id, ts, date, gatilho, resposta, evitacao, custo, alternativa, atividade } ]
+  task:  'depressao_app_tarefas'           // [ { id, ts, date, titulo, passos:[{t,feito}], concluida } ]
 };
 const MOODS = [
   { v: 1, e: '😞', l: 'Muito baixo' }, { v: 2, e: '😔', l: 'Baixo' }, { v: 3, e: '😐', l: 'Neutro' },
@@ -90,7 +94,7 @@ function daysWithRecord() {
 }
 
 /* ── Navegação ───────────────────────────────────────────────────────── */
-const SCREENS = ['home', 'activate', 'diary', 'feel', 'learn', 'progress', 'assess', 'dados'];
+const SCREENS = ['home', 'activate', 'diary', 'feel', 'learn', 'progress', 'assess', 'dados', 'tasks', 'trap', 'values'];
 function goTo(s) {
   SCREENS.forEach(id => { $('scr-' + id)?.classList.remove('on'); $('nb-' + id)?.classList.remove('on'); });
   const scr = $('scr-' + s); if (!scr) return;
@@ -104,6 +108,10 @@ function goTo(s) {
   if (s === 'learn') renderLearn();
   if (s === 'progress') renderProgress();
   if (s === 'assess') renderAssess();
+  if (s === 'tasks') renderTasks();
+  if (s === 'trap') { _tr = null; renderTrap(); }
+  if (s === 'values') { _vDraft = null; renderValues(); }
+  if (s === 'dados') renderReminderUI();
 }
 
 /* ── Toast e modal ───────────────────────────────────────────────────── */
@@ -150,7 +158,7 @@ function renderHome() {
   $('hs-done').textContent = Object.keys(log).reduce((a, d) => a + (log[d] || []).length, 0);
   $('hs-today').textContent = (sched[t] || []).length;
 
-  renderNudge(); renderStep(); renderToday(); renderMoodChart();
+  renderNudge(); renderStep(); renderTasksHome(); renderToday(); renderMoodChart();
   const e = getEsc(), p = e.pos && e.pos.phq9 || e.pre && e.pre.phq9;
   $('h-assess-sub').textContent = p ? 'Já respondida · ver' : 'PHQ-9 · opcional, 3 min';
 }
@@ -160,9 +168,11 @@ function renderNudge() {
   const el = $('h-nudge'), dias = [...daysWithRecord()].sort();
   if (!dias.length) { el.innerHTML = ''; return; }
   const ult = new Date(dias[dias.length - 1] + 'T12:00:00'), gap = Math.floor((Date.now() - ult.getTime()) / 864e5);
-  el.innerHTML = gap >= 3
-    ? `<div class="insight-c l"><div class="insight-t">Que bom ver você de novo</div><div class="insight-b">Pausas acontecem, principalmente em fases difíceis. Não é preciso recuperar nada: um passo pequeno hoje já basta.</div></div>`
-    : '';
+  const lem = getLem();
+  if (gap >= 3) el.innerHTML = `<div class="insight-c l"><div class="insight-t">Que bom ver você de novo</div><div class="insight-b">Pausas acontecem, principalmente em fases difíceis. Não é preciso recuperar nada: um passo pequeno hoje já basta.</div></div>`;
+  else if (dias.length >= 3 && !lem.enabled && !lem.visto && 'Notification' in window && Notification.permission === 'default')
+    el.innerHTML = `<div class="insight-c"><div class="insight-t">Quer um lembrete gentil?</div><div class="insight-b">Uma notificação por dia, no horário que você escolher, e só se você ainda não tiver registrado nada. Sem cobrança.</div><div style="display:flex;gap:8px;margin-top:10px"><button class="btn" style="margin:0" onclick="showNotifModal()">Ver como funciona</button><button class="btn ghost" style="margin:0" onclick="dismissRemNudge()">Agora não</button></div></div>`;
+  else el.innerHTML = '';
 }
 
 // Um passo pequeno por dia: reduz a decisão (e o peso) de escolher entre dezenas de atividades.
@@ -192,13 +202,13 @@ function renderToday() {
   }
   el.innerHTML = ids.map(id => actRow(id, done.indexOf(id) >= 0, 'homeDone')).join('');
 }
-function homeDone(id) { const f = toggleDone(id); if (f) toast('Feito. Isso conta!'); renderHome(); }
+function homeDone(id) { const f = toggleDone(id); if (f) { toast('Feito. Isso conta!'); renderHome(); askRating(id); } else renderHome(); }
 
 function actRow(id, isDone, fn) {
   const a = activityById(id); if (!a) return '';
   const c = CATEGORIES[a.category];
   return `<div class="act${isDone ? ' done' : ''}"><button class="act-ck" aria-label="${isDone ? 'Desmarcar' : 'Marcar como feito'}: ${esc(a.label)}" onclick="${fn}('${id}')">${isDone ? '✓' : ''}</button>
-    <div class="act-body"><div class="act-t">${esc(a.label)}</div><div class="act-meta"><span class="act-cat">${c.emoji} ${esc(c.label)}</span><span>${esc(a.duration)}</span></div></div></div>`;
+    <div class="act-body"><div class="act-t">${esc(a.label)}</div><div class="act-meta"><span class="act-cat">${c.emoji} ${esc(c.label)}</span><span>${esc(a.duration)}</span></div>${ratingLinkHTML(id, isDone)}</div></div>`;
 }
 
 function renderMoodChart() {
@@ -230,7 +240,7 @@ function renderActivate() {
       <button class="act-ck" aria-label="${isDone ? 'Desmarcar' : 'Marcar como feito'}: ${esc(a.label)}" onclick="actDone('${a.id}')">${isDone ? '✓' : ''}</button>
       <div class="act-body"><div class="act-t">${esc(a.label)}</div>
         <div class="act-meta"><span class="act-cat">${c.emoji} ${esc(c.label)}</span><span>${esc(a.duration)}</span></div>
-        <button class="act-why" aria-expanded="${open}" onclick="toggleWhy('${a.id}')">Por que funciona?</button>
+        <button class="act-why" aria-expanded="${open}" onclick="toggleWhy('${a.id}')">Por que funciona?</button>${isDone ? '<br>' + ratingLinkHTML(a.id, true) : ''}
         ${open ? `<div class="act-ev">${esc(a.evidence)}</div>` : ''}</div>
       <button class="act-plus${isSched ? ' on' : ''}" aria-pressed="${isSched}" onclick="actSched('${a.id}')">${isSched ? 'Na lista' : '+ Hoje'}</button></div>`;
   }).join('') : '<div class="act-empty">Nenhuma atividade na sua lista de hoje ainda.</div>';
@@ -239,7 +249,7 @@ function setFilter(k) { _aFilter = k; renderActivate(); }
 function toggleOnlyToday() { _aOnlyToday = !_aOnlyToday; renderActivate(); }
 function toggleWhy(id) { if (_aOpen.has(id)) _aOpen.delete(id); else _aOpen.add(id); renderActivate(); }
 function actSched(id) { toggleSched(id); renderActivate(); }
-function actDone(id) { const f = toggleDone(id); if (f) toast('Feito. Isso conta!'); renderActivate(); }
+function actDone(id) { const f = toggleDone(id); if (f) { toast('Feito. Isso conta!'); renderActivate(); askRating(id); } else renderActivate(); }
 
 /* ═══════════════ REGISTRAR (humor + 3 coisas boas) ═══════════════ */
 let _dDate = null, _dPage = 0, _dRating;   // _dRating undefined = ainda não carregado do armazenamento
@@ -332,7 +342,11 @@ function estadoPainel() {
     feitas: lista(getLog(), (d, ids) => ({ date: d, ids: ids })),
     agendadas: lista(getSched(), (d, ids) => ({ date: d, ids: ids })),
     gratidao: lista(getGrat(), (d, v) => ({ date: d, n: v && v.items ? v.items.length : 0, ts: v && v.timestamp, items: v && v.items })),
-    escalas: getEsc()
+    escalas: getEsc(),
+    prazerDominio: Object.keys(getRate()).sort().reduce((a, d) => a.concat(Object.keys(getRate()[d]).map(id => ({ date: d, id: id, p: getRate()[d][id].p, m: getRate()[d][id].m }))), []),
+    valores: DOMINIOS.filter(d => (getVal().dominios || {})[d.id]).map(d => { const x = getVal().dominios[d.id]; return { id: d.id, imp: x.imp, cons: x.cons, texto: x.texto }; }),
+    trap: getTrap().map(t => ({ date: t.date, atividade: t.atividade, gatilho: t.gatilho, resposta: t.resposta, evitacao: t.evitacao, custo: t.custo, alternativa: t.alternativa })),
+    tarefas: getTasks().map(t => ({ date: t.date, concluida: !!t.concluida, total: t.passos.length, feitos: t.passos.filter(p => p.feito).length, titulo: t.titulo, passos: t.passos.map(p => p.t) }))
   };
 }
 function renderProgress() {
@@ -405,7 +419,7 @@ function baixar(nome, tipo, texto) {
   a.href = url; a.download = nome; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 function exportJSON() {
-  baixar('aurora-meus-dados.json', 'application/json', JSON.stringify({ exportado_em: new Date().toISOString(), humor: getMood(), atividades_feitas: getLog(), atividades_programadas: getSched(), gratidao: getGrat(), questionarios: getEsc() }, null, 2));
+  baixar('aurora-meus-dados.json', 'application/json', JSON.stringify({ exportado_em: new Date().toISOString(), humor: getMood(), atividades_feitas: getLog(), atividades_programadas: getSched(), gratidao: getGrat(), questionarios: getEsc(), prazer_e_dominio: getRate(), valores: getVal(), padroes_trap_trac: getTrap(), tarefas_em_passos: getTasks() }, null, 2));
   toast('Arquivo baixado.');
 }
 function exportCSV() {
@@ -424,7 +438,7 @@ function openModal(id) {
   }
 }
 function deleteAll() {
-  [K.mood, K.log, K.sched, K.grat, K.esc].forEach(k => { try { localStorage.removeItem(k); } catch (e) { /* ok */ } });
+  [K.mood, K.log, K.sched, K.grat, K.esc, K.rate, K.val, K.trap, K.task].forEach(k => { try { localStorage.removeItem(k); } catch (e) { /* ok */ } });
   closeModal(); toast('Dados apagados deste aparelho.'); goTo('home');
 }
 let _installPrompt = null;
@@ -448,6 +462,279 @@ function obDone() {
   $('onboard').classList.add('hide'); goTo('home');
 }
 
+/* ═══════════════ PRAZER E DOMÍNIO (monitoramento de atividade) ═══════════════
+   Na ativação comportamental, anotar o prazer e o domínio (sensação de realização) de cada atividade
+   ajuda a ver o que vale repetir. Sempre opcional: o modal pode ser pulado. */
+const getRate = () => rd(K.rate, {});
+function rateOf(id, date) { const r = getRate()[date || today()]; return r && r[id] ? r[id] : null; }
+function ratingLinkHTML(id, isDone) {
+  if (!isDone) return '';
+  const r = rateOf(id);
+  return `<button class="act-why" onclick="askRating('${id}')">${r ? `Prazer ${r.p} · Domínio ${r.m} (editar)` : 'Anotar prazer e domínio'}</button>`;
+}
+function rerender() {
+  const on = document.querySelector('.scr.on'); if (!on) return;
+  const s = on.id.replace('scr-', '');
+  ({ home: renderHome, activate: renderActivate, diary: renderDiary, progress: renderProgress })[s]?.();
+}
+function askRating(id) {
+  const a = activityById(id); if (!a) return;
+  const cur = rateOf(id), tocados = { p: !!cur, m: !!cur };
+  window._rt = { id, tocados };
+  const slider = (k, nome, dica, v) => `<div class="rt-field"><label for="rt-${k}"><strong>${nome}</strong> — ${dica}: <span id="rt-${k}v" class="rt-v">${cur ? v : '–'}</span>/10</label>
+    <input type="range" id="rt-${k}" min="0" max="10" value="${v}" aria-valuetext="${cur ? v : 'ainda não escolhido'}" oninput="rtTouch('${k}',this.value)"></div>`;
+  showModal('Como foi?',
+    `<p style="text-align:left;margin-bottom:12px;font-weight:700">${esc(a.label)}</p>
+     ${slider('p', 'Prazer', 'o quanto você gostou', cur ? cur.p : 5)}${slider('m', 'Domínio', 'o quanto sentiu que realizou algo', cur ? cur.m : 5)}
+     <p class="as-note" style="text-align:left;margin-top:8px">0 = nada · 10 = muito. Não há resposta certa. Notar isso ajuda a ver o que vale repetir.</p>`,
+    `<button class="btn" id="rt-ok" ${cur ? '' : 'disabled'} onclick="saveRating()">Salvar</button><button class="btn ghost" onclick="closeModal()">Pular</button>`);
+}
+function rtTouch(k, v) {
+  window._rt.tocados[k] = true; $('rt-' + k + 'v').textContent = v;
+  if (window._rt.tocados.p && window._rt.tocados.m) $('rt-ok').disabled = false;
+}
+function saveRating() {
+  const t = window._rt; if (!t) return;
+  const r = getRate(), d = today(); r[d] = r[d] || {};
+  r[d][t.id] = { p: parseInt($('rt-p').value, 10), m: parseInt($('rt-m').value, 10), ts: Date.now() };
+  wr(K.rate, r); closeModal(); toast('Anotado.'); rerender();
+}
+
+/* ═══════════════ TAREFA EM PASSOS (tarefa graduada) ═══════════════
+   Divide algo que parece grande demais em passos pequenos, o primeiro bem fácil. */
+const getTasks = () => rd(K.task, []);
+let _tDraft = null;
+function renderTasks() {
+  const el = $('t-wrap'), lista = getTasks();
+  let h = `<div class="insight-c"><div class="insight-t">Por que dividir?</div><div class="insight-b">Quando uma tarefa parece enorme, é comum nem começar. Dividida em passos de poucos minutos, ela fica possível. O primeiro passo pode ser <strong>muito</strong> pequeno (2 minutos).</div></div>`;
+  if (_tDraft) {
+    h += `<div class="card"><div class="card-lbl">Nova tarefa</div>
+      <label class="form-lbl" for="t-titulo">O que está pesado?</label>
+      <input class="d-note" style="min-height:0" type="text" id="t-titulo" maxlength="80" value="${esc(_tDraft.titulo)}" placeholder="Ex.: tomar banho, responder e-mails, arrumar o quarto">
+      <div class="form-lbl" style="margin-top:14px">Passos (do mais fácil ao mais difícil)</div>
+      ${_tDraft.passos.map((p, i) => `<div class="g-field"><span>${i + 1}.</span><input type="text" id="t-p${i}" maxlength="100" value="${esc(p)}" placeholder="${i === 0 ? 'Um primeiro passo bem pequeno' : 'Próximo passo'}" aria-label="Passo ${i + 1}"></div>`).join('')}
+      <button class="btn ghost" style="margin:0 0 10px" onclick="tAddStep()" ${_tDraft.passos.length >= 8 ? 'disabled' : ''}>+ Adicionar passo</button>
+      <div class="as-note" style="margin-bottom:10px"><strong>Exemplo — tomar banho:</strong> 1. Pegar a toalha. 2. Ligar o chuveiro. 3. Entrar e lavar só o rosto. 4. Lavar o resto, no seu tempo.</div>
+      <button class="btn" onclick="tSave()">Salvar tarefa</button><button class="btn ghost" style="margin-top:8px" onclick="tCancel()">Cancelar</button></div>`;
+  } else {
+    h += `<button class="btn" onclick="tNew()">+ Nova tarefa</button>`;
+  }
+  const ativas = lista.filter(t => !t.concluida), feitas = lista.filter(t => t.concluida);
+  const card = t => `<div class="card"><div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start"><div class="card-lbl" style="margin:0">${esc(t.titulo)}</div><button class="act-why" style="padding:0" onclick="tDelete('${t.id}')">apagar</button></div>
+    <div class="as-note" style="margin:4px 0 8px">${t.passos.filter(p => p.feito).length} de ${t.passos.length} passos</div>
+    ${t.passos.map((p, i) => `<div class="act${p.feito ? ' done' : ''}" style="margin:0 0 8px"><button class="act-ck" aria-label="${p.feito ? 'Desmarcar' : 'Marcar como feito'} o passo ${i + 1}" onclick="tToggle('${t.id}',${i})">${p.feito ? '✓' : ''}</button><div class="act-body"><div class="act-t">${esc(p.t)}</div></div></div>`).join('')}</div>`;
+  if (ativas.length) h += `<div class="sdiv" style="margin:16px 0 8px">Em andamento</div>` + ativas.map(card).join('');
+  if (feitas.length) h += `<div class="sdiv" style="margin:16px 0 8px">Concluídas</div>` + feitas.map(card).join('');
+  if (!lista.length && !_tDraft) h += `<div class="act-empty">Nenhuma tarefa ainda. Quando algo parecer grande demais, comece por aqui.</div>`;
+  el.innerHTML = h;
+}
+function tReadDraft() {
+  if (!_tDraft) return;
+  const t = $('t-titulo'); if (t) _tDraft.titulo = t.value;
+  _tDraft.passos = _tDraft.passos.map((_, i) => { const x = $('t-p' + i); return x ? x.value : ''; });
+}
+function tNew() { _tDraft = { titulo: '', passos: ['', '', ''] }; renderTasks(); }
+function tCancel() { _tDraft = null; renderTasks(); }
+function tAddStep() { tReadDraft(); _tDraft.passos.push(''); renderTasks(); }
+function tSave() {
+  tReadDraft();
+  const titulo = _tDraft.titulo.trim(), passos = _tDraft.passos.map(p => p.trim()).filter(Boolean);
+  if (!titulo) { toast('Dê um nome para a tarefa.'); return; }
+  if (passos.length < 2) { toast('Escreva pelo menos 2 passos.'); return; }
+  const l = getTasks(); l.unshift({ id: String(Date.now()), ts: Date.now(), date: today(), titulo, passos: passos.map(t => ({ t, feito: false })), concluida: false });
+  wr(K.task, l); _tDraft = null; toast('Tarefa salva.'); renderTasks();
+}
+function tToggle(id, i) {
+  const l = getTasks(), t = l.find(x => x.id === id); if (!t) return;
+  t.passos[i].feito = !t.passos[i].feito;
+  const era = t.concluida; t.concluida = t.passos.every(p => p.feito);
+  wr(K.task, l);
+  if (t.concluida && !era) toast('Você concluiu uma tarefa. Passo a passo, deu certo.'); else if (t.passos[i].feito) toast('Passo feito. Isso conta!');
+  rerender(); if ($('scr-tasks').classList.contains('on')) renderTasks();
+}
+function tDelete(id) { if (!confirm('Apagar esta tarefa?')) return; wr(K.task, getTasks().filter(t => t.id !== id)); renderTasks(); }
+function renderTasksHome() {
+  const el = $('h-tasks'), ativas = getTasks().filter(t => !t.concluida).slice(0, 2);
+  if (!ativas.length) { el.innerHTML = ''; return; }
+  el.innerHTML = ativas.map(t => {
+    const i = t.passos.findIndex(p => !p.feito);
+    return `<div class="step-card" style="background:var(--amber-l);border-color:color-mix(in srgb,var(--amber) 35%,transparent)"><div class="st-lbl" style="color:var(--amber)">Tarefa em passos</div><div class="st-t">${esc(t.titulo)}</div>
+      <div class="st-m">Próximo passo (${i + 1} de ${t.passos.length}): ${esc(t.passos[i].t)}</div><button class="btn" onclick="tToggle('${t.id}',${i})">Fiz este passo</button></div>`;
+  }).join('');
+}
+
+/* ═══════════════ ENTENDER UM PADRÃO (TRAP / TRAC) ═══════════════
+   TRAP = Gatilho (Trigger) → Resposta (Response) → Padrão de evitação (Avoidance Pattern).
+   TRAC = o mesmo, trocando a evitação por uma Alternativa de enfrentamento (Coping). */
+const getTrap = () => rd(K.trap, []);
+let _tr = null;
+const TR_PASSOS = [
+  { campo: 'gatilho', titulo: '1 · O gatilho', pergunta: 'O que aconteceu, ou o que você percebeu, pouco antes de se sentir pior?', dica: 'Uma situação, uma mensagem, um pensamento, uma lembrança, uma hora do dia…', ph: 'Ex.: acordei sem vontade de nada e vi a lista de coisas por fazer' },
+  { campo: 'resposta', titulo: '2 · A resposta', pergunta: 'Como você se sentiu, e o que passou pela sua cabeça?', dica: 'Emoções, sensações no corpo e pensamentos. Sem se julgar.', ph: 'Ex.: pesado, cansado; pensei "não vou dar conta"' },
+  { campo: 'evitacao', titulo: '3 · O padrão de evitação', pergunta: 'O que você fez (ou deixou de fazer) em seguida, para se aliviar?', dica: 'Evitar é humano e costuma aliviar na hora. Aqui a ideia é só notar o padrão.', ph: 'Ex.: voltei para a cama e fiquei no celular', extra: { campo: 'custo', rotulo: 'E o que isso custou depois? (opcional)', ph: 'Ex.: o dia passou e eu me senti pior comigo' } },
+  { campo: 'alternativa', titulo: '4 · Uma saída diferente (TRAC)', pergunta: 'O que você poderia tentar de diferente da próxima vez, mesmo que seja bem pequeno?', dica: 'Não precisa resolver tudo. Um passo de poucos minutos já muda o padrão.', ph: 'Ex.: levantar, abrir a janela e tomar um café antes de olhar a lista', atividade: true }
+];
+function renderTrap() {
+  const el = $('tr-wrap'), lista = getTrap();
+  if (_tr) {
+    const p = TR_PASSOS[_tr.passo];
+    el.innerHTML = `<div class="card"><div class="as-note">Passo ${_tr.passo + 1} de ${TR_PASSOS.length}</div><div class="ex-prog">${TR_PASSOS.map((_, i) => `<span class="${i <= _tr.passo ? 'on' : ''}"></span>`).join('')}</div>
+      <div class="card-lbl">${esc(p.titulo)}</div><div style="font-size:15.5px;font-weight:700;line-height:1.45;margin-bottom:4px">${esc(p.pergunta)}</div><div class="as-note" style="margin-bottom:10px">${esc(p.dica)}</div>
+      <textarea class="d-note" id="tr-f" maxlength="400" placeholder="${esc(p.ph)}" aria-label="${esc(p.pergunta)}">${esc(_tr[p.campo])}</textarea>
+      ${p.extra ? `<label class="form-lbl" for="tr-x" style="margin-top:12px">${esc(p.extra.rotulo)}</label><textarea class="d-note" id="tr-x" maxlength="300" placeholder="${esc(p.extra.ph)}">${esc(_tr[p.extra.campo])}</textarea>` : ''}
+      ${p.atividade ? `<label class="form-lbl" for="tr-a" style="margin-top:12px">Quer ligar isso a uma atividade da lista? (opcional)</label><select id="tr-a" class="demo-input" style="width:100%"><option value="">Nenhuma por ora</option>${ACTIVITIES.map(a => `<option value="${a.id}" ${_tr.atividade === a.id ? 'selected' : ''}>${esc(a.label)}</option>`).join('')}</select>` : ''}
+      <button class="btn" style="margin-top:12px" onclick="trNext()">${_tr.passo < TR_PASSOS.length - 1 ? 'Continuar' : 'Salvar'}</button>
+      ${_tr.passo > 0 ? '<button class="btn ghost" style="margin-top:8px" onclick="trBack()">Voltar</button>' : ''}<button class="btn ghost" style="margin-top:8px" onclick="trCancel()">Cancelar</button></div>`;
+    return;
+  }
+  let h = `<div class="insight-c"><div class="insight-t">Para que serve?</div><div class="insight-b">Muitas vezes a gente evita o que pesa, e isso alivia na hora, mas pode manter o desânimo. Olhar para <strong>o gatilho</strong>, <strong>a resposta</strong> e <strong>o que fazemos em seguida</strong> (TRAP) ajuda a ver o padrão, e escolher uma <strong>saída diferente</strong> (TRAC). Você não está errado/a por evitar: é só um padrão que dá para notar.</div></div>
+    <button class="btn" onclick="trNew()">Analisar um momento</button>`;
+  if (!lista.length) h += `<div class="act-empty">Nenhuma análise ainda.</div>`;
+  h += lista.map(t => `<div class="card"><div style="display:flex;justify-content:space-between;gap:8px"><div class="as-note">${esc(fmtDay(t.date))}</div><button class="act-why" style="padding:0" onclick="trDelete('${t.id}')">apagar</button></div>
+    <div class="acc-sec"><h4>Gatilho</h4><p>${esc(t.gatilho)}</p></div><div class="acc-sec"><h4>Resposta</h4><p>${esc(t.resposta)}</p></div>
+    <div class="acc-sec"><h4>Padrão de evitação</h4><p>${esc(t.evitacao)}${t.custo ? '<br><span class="as-note">Custo: ' + esc(t.custo) + '</span>' : ''}</p></div>
+    <div class="acc-sec"><h4>Saída diferente</h4><p>${esc(t.alternativa)}${t.atividade && activityById(t.atividade) ? '<br><span class="as-note">Atividade: ' + esc(activityById(t.atividade).label) + '</span>' : ''}</p></div></div>`).join('');
+  el.innerHTML = h;
+}
+function trRead() {
+  const p = TR_PASSOS[_tr.passo], f = $('tr-f'); if (f) _tr[p.campo] = f.value.trim();
+  if (p.extra && $('tr-x')) _tr[p.extra.campo] = $('tr-x').value.trim();
+  if (p.atividade && $('tr-a')) _tr.atividade = $('tr-a').value;
+}
+function trNew() { _tr = { passo: 0, gatilho: '', resposta: '', evitacao: '', custo: '', alternativa: '', atividade: '' }; renderTrap(); window.scrollTo(0, 0); }
+function trCancel() { _tr = null; renderTrap(); }
+function trBack() { trRead(); _tr.passo--; renderTrap(); }
+function trNext() {
+  trRead(); const p = TR_PASSOS[_tr.passo];
+  if (!_tr[p.campo]) { toast('Escreva algo, mesmo que curto.'); return; }
+  if (_tr.passo < TR_PASSOS.length - 1) { _tr.passo++; renderTrap(); window.scrollTo(0, 0); return; }
+  const l = getTrap(); l.unshift({ id: String(Date.now()), ts: Date.now(), date: today(), gatilho: _tr.gatilho, resposta: _tr.resposta, evitacao: _tr.evitacao, custo: _tr.custo, alternativa: _tr.alternativa, atividade: _tr.atividade || null });
+  wr(K.trap, l); const at = _tr.atividade; _tr = null; toast('Análise salva. Notar o padrão já é um passo.');
+  if (at && (getSched()[today()] || []).indexOf(at) < 0) {
+    showModal('Programar para hoje?', `Você ligou a sua saída a "${esc(activityById(at).label)}". Quer colocar essa atividade na sua lista de hoje?`,
+      `<button class="btn" onclick="toggleSched('${at}');closeModal();toast('Adicionado à sua lista de hoje.');renderTrap()">Sim, programar</button><button class="btn ghost" onclick="closeModal()">Agora não</button>`);
+  }
+  renderTrap(); window.scrollTo(0, 0);
+}
+function trDelete(id) { if (!confirm('Apagar esta análise?')) return; wr(K.trap, getTrap().filter(t => t.id !== id)); renderTrap(); }
+
+/* ═══════════════ MEUS VALORES ═══════════════
+   Para a ativação comportamental, atividades que ecoam valores pessoais motivam mais do que atividades
+   "por obrigação". Aqui a pessoa dá, para cada área da vida, a importância e o quanto tem vivido isso. */
+const getVal = () => rd(K.val, { atualizado: null, dominios: {} });
+let _vDraft = null;
+function renderValues() {
+  const el = $('v-wrap'), sv = getVal();
+  if (!_vDraft) _vDraft = JSON.parse(JSON.stringify(sv.dominios || {}));
+  let h = `<div class="insight-c"><div class="insight-t">O que são valores?</div><div class="insight-b">Valores são direções que importam para você (como ser presente para a família, cuidar da saúde, aprender). Na depressão, a gente costuma se afastar deles sem perceber. Ver a distância entre <strong>o que importa</strong> e <strong>o que você tem vivido</strong> ajuda a escolher atividades com sentido. Não há certo ou errado, e isso muda com o tempo.</div></div>`;
+  h += DOMINIOS.map(d => {
+    const x = _vDraft[d.id] || {}, im = x.imp, co = x.cons;
+    const sl = (k, rot, v) => `<div class="rt-field"><label for="v-${d.id}-${k}">${rot}: <span class="rt-v" id="v-${d.id}-${k}v">${v == null ? '–' : v}</span>/10</label><input type="range" id="v-${d.id}-${k}" min="0" max="10" value="${v == null ? 5 : v}" oninput="vTouch('${d.id}','${k}',this.value)"></div>`;
+    return `<div class="card"><div class="card-lbl">${d.emoji} ${esc(d.titulo)}</div><div class="as-note" style="margin-bottom:8px">${esc(d.dica)}</div>
+      ${sl('imp', 'O quanto isso importa para mim', im)}${sl('cons', 'O quanto tenho vivido isso nas últimas semanas', co)}
+      <label class="form-lbl" for="v-${d.id}-t">O que isso significa para mim (opcional)</label>
+      <input class="d-note" style="min-height:0" type="text" id="v-${d.id}-t" maxlength="140" value="${esc(x.texto || '')}" oninput="vText('${d.id}',this.value)" placeholder="Em uma frase"></div>`;
+  }).join('');
+  h += `<button class="btn" onclick="vSave()">Salvar meus valores</button>`;
+  if (sv.atualizado) h += `<div class="as-note" style="margin-top:8px">Última atualização: ${esc(fmtDay(sv.atualizado.slice(0, 10)))}. Vale revisar de tempos em tempos.</div>` + valuesSummary(sv.dominios);
+  el.innerHTML = h;
+}
+function valuesSummary(dom) {
+  const itens = DOMINIOS.map(d => ({ d, x: dom[d.id] })).filter(o => o.x && o.x.imp != null && o.x.cons != null).map(o => ({ d: o.d, gap: o.x.imp - o.x.cons, x: o.x })).filter(o => o.gap >= 3).sort((a, b) => b.gap - a.gap).slice(0, 2);
+  if (!itens.length) return '';
+  return `<div class="sdiv" style="margin:16px 0 8px">Onde há mais distância</div>` + itens.map(o => `<div class="card"><div class="card-lbl">${o.d.emoji} ${esc(o.d.titulo)}</div><div class="as-note">Importa ${o.x.imp} · vivido ${o.x.cons}. Um passo pequeno nessa direção pode ajudar.</div><button class="btn ghost" style="margin-top:8px" onclick="vAtividades('${o.d.id}')">Ver atividades para isso</button></div>`).join('');
+}
+function vTouch(id, k, v) { _vDraft[id] = _vDraft[id] || {}; _vDraft[id][k] = parseInt(v, 10); $('v-' + id + '-' + k + 'v').textContent = v; }
+function vText(id, v) { _vDraft[id] = _vDraft[id] || {}; _vDraft[id].texto = v; }
+function vSave() {
+  const dom = {}; DOMINIOS.forEach(d => { const x = _vDraft[d.id]; if (x && (x.imp != null || x.cons != null || (x.texto && x.texto.trim()))) dom[d.id] = { imp: x.imp == null ? null : x.imp, cons: x.cons == null ? null : x.cons, texto: (x.texto || '').trim() }; });
+  if (!Object.keys(dom).length) { toast('Mexa em pelo menos uma área para salvar.'); return; }
+  wr(K.val, { atualizado: new Date().toISOString(), dominios: dom }); _vDraft = null; toast('Valores salvos.'); renderValues(); window.scrollTo(0, 0);
+}
+function vAtividades(id) { const d = DOMINIOS.find(x => x.id === id); _aFilter = d.cats[0]; _aOnlyToday = false; goTo('activate'); }
+
+/* ═══════════════ LEMBRETES (notificações locais) ═══════════════
+   Mesmo mecanismo do Farol e do Floresça: notificação local agendada enquanto o app está aberto ou em
+   segundo plano (PWA instalado funciona melhor). 1 por dia, no máximo, e só se a pessoa ainda não
+   registrou nada no dia. O texto é gentil e sem cobrança. A configuração fica só neste aparelho. */
+const LEM = 'depressao_app_lembrete';
+const getLem = () => rd(LEM, { enabled: false, hour: 20, visto: false });
+let _remTimer = null;
+const REMINDER_MSGS = [
+  '🌅 Que tal um passo pequeno hoje? Uma atividade de 5 minutos já conta.',
+  '💛 Como você está hoje? Registrar o humor leva 10 segundos.',
+  '🌿 Sem pressão: se hoje está pesado, só marcar o humor já é um bom começo.'
+];
+function praticouHoje() { return !!getMood()[today()] || (getLog()[today()] || []).length > 0; }
+function scheduleLocalReminder() {
+  if (_remTimer) clearTimeout(_remTimer);
+  const l = getLem();
+  if (!l.enabled || !('Notification' in window) || Notification.permission !== 'granted') return;
+  const now = new Date(), next = new Date(now); next.setHours(l.hour, 0, 0, 0);
+  if (next <= now) next.setDate(next.getDate() + 1);
+  _remTimer = setTimeout(fireReminder, next - now);
+}
+async function fireReminder() {
+  const l = getLem(); if (!l.enabled) return;
+  if (!praticouHoje()) {
+    const msg = REMINDER_MSGS[Math.floor(Math.random() * REMINDER_MSGS.length)];
+    try {
+      const reg = await navigator.serviceWorker?.getRegistration();
+      if (reg) reg.showNotification('Aurora', { body: msg, icon: 'icon-192.png', badge: 'icon-192.png', tag: 'aurora-daily' });
+      else new Notification('Aurora', { body: msg, icon: 'icon-192.png' });
+    } catch (e) { console.warn('[Aurora] notificação falhou:', e); }
+  }
+  scheduleLocalReminder();
+}
+function renderReminderUI() {
+  const l = getLem(), cb = $('rem-toggle'), sel = $('rem-hour'), row = $('rem-hour-row');
+  if (cb) cb.checked = !!l.enabled; if (sel) sel.value = String(l.hour); if (row) row.style.display = l.enabled ? '' : 'none';
+}
+async function toggleReminders(cb) {
+  const l = getLem();
+  if (cb.checked) {
+    if (!('Notification' in window)) { toast('Este navegador não suporta notificações.'); cb.checked = false; return; }
+    const perm = await Notification.requestPermission();
+    if (perm !== 'granted') { toast('Permissão negada. Ative nas configurações do navegador.'); cb.checked = false; return; }
+    l.enabled = true; wr(LEM, l); scheduleLocalReminder(); toast('🔔 Lembrete diário ativado.');
+  } else { l.enabled = false; wr(LEM, l); if (_remTimer) clearTimeout(_remTimer); toast('Lembrete desativado.'); }
+  renderReminderUI();
+}
+function setReminderHour(sel) { const l = getLem(); l.hour = parseInt(sel.value, 10); wr(LEM, l); scheduleLocalReminder(); toast('Lembrete às ' + pad(l.hour) + ':00.'); }
+function showNotifModal() {
+  const l = getLem(); l.visto = true; wr(LEM, l);
+  const ios = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  if (ios && !isInstalled()) {
+    showModal('📲 Primeiro, instale o app', '<p style="text-align:left">No iPhone, os lembretes só funcionam depois que o Aurora está instalado na tela de início. É uma regra da Apple.</p>',
+      '<button class="btn mint" onclick="closeModal();showInstallModal()">Ver como instalar</button><button class="btn ghost" onclick="closeModal();renderHome()">Agora não</button>'); return;
+  }
+  if (!('Notification' in window)) { toast('Este navegador não suporta notificações.'); return; }
+  if (Notification.permission === 'denied') {
+    showModal('🔕 Notificações bloqueadas', '<p style="text-align:left">Você bloqueou as notificações do Aurora antes. Para ativar, libere nas configurações do navegador (o cadeado ao lado do endereço, e depois "Notificações").</p>', '<button class="btn mint" onclick="closeModal()">Entendi</button>'); return;
+  }
+  showModal('🔔 Como funcionam os lembretes',
+    `<div style="text-align:left;font-size:13.5px;line-height:1.6">
+      <div style="margin-bottom:10px">🔔 <strong>1 lembrete por dia</strong>, no máximo, no horário que você escolher.</div>
+      <div style="margin-bottom:10px">🤫 <strong>Se você já registrou algo naquele dia</strong>, ele nem aparece.</div>
+      <div style="margin-bottom:10px">💛 O tom é gentil: sem cobrança, sem "você está falhando".</div>
+      <div style="margin-bottom:10px">📲 Funciona melhor com o app <strong>instalado</strong> na tela de início.</div>
+      <div style="margin-bottom:14px">🔕 Você desliga quando quiser, em Dados → Lembretes.</div>
+      <label for="notif-hour" style="font-size:12.5px;font-weight:700;color:var(--muted);display:block;margin-bottom:6px">Horário</label>
+      <select id="notif-hour" class="demo-input" style="width:auto;padding:8px 12px"><option value="8">08:00</option><option value="10">10:00</option><option value="12">12:00</option><option value="16">16:00</option><option value="18">18:00</option><option value="20" selected>20:00</option></select></div>`,
+    '<button class="btn mint" onclick="activateNotifFromModal()">Ativar lembrete 🔔</button><button class="btn ghost" onclick="closeModal();renderHome()">Agora não</button>');
+}
+async function activateNotifFromModal() {
+  const hour = parseInt($('notif-hour')?.value || '20', 10), perm = await Notification.requestPermission();
+  if (perm !== 'granted') { toast('Permissão negada. Você pode ativar depois em Dados → Lembretes.'); closeModal(); return; }
+  const l = getLem(); l.enabled = true; l.hour = hour; wr(LEM, l); scheduleLocalReminder(); closeModal(); toast('🔔 Lembrete ativado para as ' + pad(hour) + ':00.');
+  try {
+    const reg = await navigator.serviceWorker?.getRegistration(), msg = '🌅 Combinado! Todo dia às ' + pad(hour) + ':00 eu te lembro, só se você ainda não tiver passado por aqui.';
+    if (reg) reg.showNotification('Aurora', { body: msg, icon: 'icon-192.png', badge: 'icon-192.png', tag: 'aurora-welcome' }); else new Notification('Aurora', { body: msg, icon: 'icon-192.png' });
+  } catch (e) { /* ok */ }
+  renderReminderUI(); renderHome();
+}
+function dismissRemNudge() { const l = getLem(); l.visto = true; wr(LEM, l); renderHome(); }
+
 /* ── Service worker (offline) ── */
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(e => console.warn('[Aurora] SW:', e.message));
 
@@ -458,6 +745,7 @@ if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catc
 })();
 
 /* ═══════════════ INIT ═══════════════ */
+scheduleLocalReminder();
 (function () {
   const ob = rd(K.ob, null), temDados = daysWithRecord().size > 0;
   if (ob && ob.feito || temDados) { $('onboard').classList.add('hide'); goTo('home'); }   // quem já usava o Aurora não vê a introdução de novo

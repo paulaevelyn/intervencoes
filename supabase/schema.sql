@@ -223,3 +223,9 @@ notify pgrst, 'reload schema';
 -- depressao_app_* e devolve humor (nota só com permissão), atividades feitas/agendadas (ids),
 -- gratidão (só a contagem; itens só com permissão) e escalas (PHQ-9: total, item9, funcional,
 -- respostas). painel_dados despacha 'aurora'.
+
+-- ── 13. Aurora: ferramentas da ativação comportamental (migração painel_aurora_ba_extras) ──
+-- projecao_aurora inclui: prazerDominio (date, id, p, m: números), valores (id, imp, cons; 'texto' só com
+-- permissão), trap (date, atividade; gatilho/resposta/evitacao/custo/alternativa só com permissão) e
+-- tarefas (date, concluida, total, feitos; titulo e passos só com permissão). O lembrete diário
+-- (depressao_app_lembrete) é local do aparelho e NUNCA é sincronizado nem projetado.

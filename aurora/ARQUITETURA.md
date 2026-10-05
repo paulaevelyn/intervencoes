@@ -22,13 +22,13 @@ se explica ou ilustra → superficial.
 | Estado | `localStorage`, **chaves separadas** `depressao_app_*` | Exceção ao padrão `D`/`SK` único: as chaves são as do Aurora anterior, para quem já usava o app não perder nada |
 | Navegação | `SCREENS` + `goTo()` + uma `render*()` por tela | Telas: Hoje, Ativar, Registrar, Sentir, Aprender, Progresso, Autoavaliação, Dados |
 | Offline | `sw.js` (HTML network-first, assets cache-first). **Incrementar `CACHE_VERSION` a cada deploy** | `/auth/` e `/shared/` sempre da rede |
-| Login/sync | `../auth/auth.js` (conta por convite, "usar sem conta", sincronização), `data-storage-keys` lista as 6 chaves | Igual aos outros apps |
+| Login/sync | `../auth/auth.js` (conta por convite, "usar sem conta", sincronização), `data-storage-keys` lista as 10 chaves sincronizadas | Igual aos outros apps |
 | Painel | `../shared/aurora-painel.js` (leitura do paciente e da profissional) + projeção `projecao_aurora` no banco | Texto livre só com permissão do paciente |
 | Escala | `../shared/escala.js` + `../shared/escalas/phq9.js` | PHQ-9 oficial pt-BR |
 | Dados do app | `data.js` (atividades, exercícios, artigos) | Portado sem alteração de texto do app anterior |
 
 ### Chaves de dados
-`depressao_app_mood_history` · `depressao_app_activities_log` · `depressao_app_scheduled` · `depressao_app_gratitude` · `depressao_app_escalas` · `depressao_app_ob`
+`depressao_app_mood_history` · `depressao_app_activities_log` · `depressao_app_scheduled` · `depressao_app_gratitude` · `depressao_app_escalas` · `depressao_app_ob` · `depressao_app_ratings` · `depressao_app_valores` · `depressao_app_trap` · `depressao_app_tarefas` (sincronizadas) e `depressao_app_lembrete` (só neste aparelho)
 
 ---
 
@@ -67,6 +67,18 @@ se explica ou ilustra → superficial.
 2. Incrementar `CACHE_VERSION` em `sw.js`.
 3. `git commit` e `git push` (o GitHub Pages atualiza em cerca de 1 minuto). Quem já usou o app precisa recarregar a página duas vezes para o service worker trocar de versão.
 
+## Ferramentas clássicas da ativação comportamental (Martell, Addis & Jacobson)
+
+| Ferramenta | Superficial (adaptável) | Profundo (preservar) |
+|---|---|---|
+| **Prazer e domínio** (modal "Como foi?" ao marcar uma atividade como feita) | Textos, cores, escala visual | Duas notas de 0 a 10 por atividade: **prazer** (o quanto gostou) e **domínio** (o quanto sentiu que realizou algo). Sempre **opcional** (o modal pode ser pulado; só grava depois de mexer nos dois controles). Serve para a pessoa ver o que vale repetir. Chave `depressao_app_ratings`. |
+| **Tarefa em passos** (tarefa graduada) | Exemplo, rótulos | Dividir algo que parece grande em **passos de poucos minutos, o primeiro bem pequeno**, e marcar cada passo. O próximo passo aparece na tela inicial. Chave `depressao_app_tarefas`. |
+| **Entender um padrão** (TRAP / TRAC) | Perguntas-guia, exemplos | **Gatilho → Resposta → Padrão de evitação** (TRAP), e depois uma **saída diferente** (TRAC, alternativa de enfrentamento), opcionalmente ligada a uma atividade. Tom sem culpa: evitar alivia na hora; o objetivo é notar o padrão. Chave `depressao_app_trap`. |
+| **Meus valores** | As 9 áreas da vida, as frases, a ligação com as categorias de atividades (`DOMINIOS` em `data.js`) | Para cada área: **importância** e **quanto a pessoa tem vivido isso** (0 a 10); a **distância** entre as duas aponta onde agir, com atalho para atividades coerentes. Formulação própria, **não é escala validada**. Chave `depressao_app_valores`. |
+| **Lembrete diário** | Horários, textos das mensagens | No máximo 1 por dia, **só se a pessoa ainda não registrou nada no dia**, tom gentil e sem cobrança; permissão pedida só depois de uma explicação; configuração **só neste aparelho** (`depressao_app_lembrete`, que não é sincronizada). Mesmo mecanismo do Floresça: notificação local, que funciona melhor com o app instalado. |
+
+Painel (`../shared/aurora-painel.js` + `projecao_aurora`): prazer e domínio, valores, tarefas e TRAP/TRAC entram como **números** para a profissional; os textos (frases dos valores, análises, títulos e passos das tarefas) só com a permissão do paciente.
+
 ## Pendências conhecidas
-- Lembretes diários (notificações), como no Farol e no Floresça: não implementados.
-- Possíveis acréscimos de ativação comportamental: registro de **prazer e domínio** a cada atividade, **inventário de valores**, **análise TRAP/TRAC** (gatilho, resposta, evitação) e **tarefa graduada** em passos.
+- Os lembretes dependem de o navegador manter o app vivo: sem push de servidor, uma notificação local pode não disparar se o aparelho encerrar o aplicativo.
+- Possíveis próximos passos: registrar **atividades de dias futuros** (programar para amanhã), **monitoramento por horário** (agenda horária) e **revisão semanal** com a pessoa.

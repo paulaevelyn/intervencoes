@@ -348,3 +348,18 @@ const ARTICLES = [
     ],
   },
 ]
+
+// Áreas da vida para o inventário de valores (formulação própria, inspirada na ideia de "áreas, valores e
+// atividades" da ativação comportamental; NÃO é uma escala validada). `cats` liga cada área às categorias de
+// atividades, para sugerir passos coerentes com o que importa para a pessoa.
+const DOMINIOS = [
+  { id: 'familia',     emoji: '🏠', titulo: 'Família',                       dica: 'Os vínculos com a sua família e como você gostaria de estar neles.', cats: ['social'] },
+  { id: 'intimidade',  emoji: '💞', titulo: 'Relações próximas e amor',      dica: 'Parceria, intimidade e as pessoas mais próximas de você.',            cats: ['social'] },
+  { id: 'amizades',    emoji: '👥', titulo: 'Amizades e vida social',        dica: 'Estar com amigos, conhecer pessoas, pertencer a grupos.',             cats: ['social', 'prazer'] },
+  { id: 'trabalho',    emoji: '💼', titulo: 'Trabalho e estudos',            dica: 'O que você faz para contribuir, aprender e se sustentar.',            cats: ['conquista'] },
+  { id: 'crescimento', emoji: '🌱', titulo: 'Aprender e crescer',            dica: 'Desenvolver habilidades, curiosidade e novas experiências.',          cats: ['conquista', 'criatividade'] },
+  { id: 'lazer',       emoji: '🎈', titulo: 'Lazer e prazer',                dica: 'Diversão, descanso, hobbies e o que dá gosto de fazer.',              cats: ['prazer', 'criatividade'] },
+  { id: 'saude',       emoji: '💪', titulo: 'Saúde e corpo',                 dica: 'Movimento, sono, alimentação e cuidado com o corpo.',                 cats: ['corpo', 'cuidado'] },
+  { id: 'sentido',     emoji: '🕊️', titulo: 'Sentido, fé ou natureza',       dica: 'Aquilo que dá sentido: espiritualidade, natureza, algo maior.',       cats: ['natureza', 'cuidado'] },
+  { id: 'comunidade',  emoji: '🤝', titulo: 'Comunidade e causas',           dica: 'Contribuir com os outros, voluntariado, causas em que você acredita.', cats: ['social'] }
+];

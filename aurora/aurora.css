@@ -97,3 +97,10 @@
 .as-note{font-size:13px;color:var(--muted);line-height:1.5}
 .as-func label{display:block;border:1.5px solid var(--border);border-radius:var(--rs);padding:12px 14px;margin-bottom:8px;cursor:pointer;background:var(--white)}
 .as-func input{margin-right:8px}
+
+/* Prazer e domínio, valores: controles deslizantes de 0 a 10 */
+.rt-field{margin:10px 0;text-align:left}
+.rt-field label{display:block;font-size:13.5px;line-height:1.4;margin-bottom:6px}
+.rt-v{display:inline-block;min-width:1.2em;text-align:center;font-weight:800;color:var(--mint-d)}
+.rt-field input[type=range]{width:100%;accent-color:var(--mint-d);height:28px}
+.act-why{text-align:left}
