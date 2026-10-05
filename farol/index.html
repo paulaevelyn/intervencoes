@@ -205,23 +205,24 @@
   <div class="ob-slide" id="obs7">
     <div class="ob-top">
       <div class="ob-icon">📋</div>
-      <div class="ob-title">Só mais uma coisa.</div>
-      <div class="ob-body">Por exigência ética da pesquisa, precisamos do seu consentimento formal para usar os dados. É rápido.</div>
+      <div class="ob-title">Seus dados e a pesquisa.</div>
+      <div class="ob-body">Antes de começar, é importante você saber o que acontece com o que registra aqui.</div>
       <div class="consent-box">
         <div class="consent-items">
-          <div class="consent-item"><span class="consent-item-icon">🔒</span><span><strong>Privacidade garantida</strong> — os dados ficam neste dispositivo; só saem se você exportar voluntariamente.</span></div>
-          <div class="consent-item"><span class="consent-item-icon">🙈</span><span><strong>Totalmente anônimo</strong> — nenhum dado pessoal identificável é coletado.</span></div>
-          <div class="consent-item"><span class="consent-item-icon">🗑️</span><span><strong>Controle total</strong> — você pode apagar tudo a qualquer momento em "Dados".</span></div>
-          <div class="consent-item"><span class="consent-item-icon">🧪</span><span><strong>Objetivo</strong> — avaliar a eficácia de intervenções digitais em saúde mental.</span></div>
+          <div class="consent-item"><span class="consent-item-icon">🔒</span><span><strong>Seus registros são seus</strong> — ficam neste aparelho. Se você entrar com uma conta (opcional), ficam guardados nela, protegidos por senha, e só você os vê.</span></div>
+          <div class="consent-item"><span class="consent-item-icon">🧪</span><span><strong>Pesquisa (opcional)</strong> — se você aceitar, enviamos para uma planilha de pesquisa as suas respostas às escalas, o uso do app, os registros do diário <em>sem o texto que você escreve</em> e os dados de perfil que preencher (como idade, gênero, cidade e país). Não pedimos nome nem e-mail: usamos um código aleatório. Mesmo assim, o conjunto desses dados pode permitir reconhecer uma pessoa em casos raros.</span></div>
+          <div class="consent-item"><span class="consent-item-icon">🚪</span><span><strong>Você decide e pode mudar</strong> — o app funciona do mesmo jeito se você não participar. Para parar, use "Dados". O que já foi enviado não identifica você diretamente e continua nos resultados.</span></div>
+          <div class="consent-item"><span class="consent-item-icon">🗑️</span><span><strong>Apagar</strong> — você pode apagar seus registros do aparelho a qualquer momento em "Dados".</span></div>
+          <div class="consent-item"><span class="consent-item-icon">💬</span><span><strong>Não é atendimento</strong> — o Farol é um recurso psicoeducativo e não substitui o acompanhamento com um/a profissional.</span></div>
         </div>
         <label class="consent-check">
           <input type="checkbox" id="consent-cb" onchange="obConsentToggle(this)">
-          <span class="consent-check-lbl">Li, entendi e concordo com o uso anônimo dos meus dados para fins de pesquisa científica.</span>
+          <span class="consent-check-lbl">Aceito participar da pesquisa, nas condições acima. (Opcional: pode continuar sem marcar.)</span>
         </label>
       </div>
     </div>
     <div class="ob-dots"><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot on"></div><div class="ob-dot"></div></div>
-    <button class="btn" id="ob-btn5" disabled onclick="obNext(8)" style="opacity:.45">Continuar →</button>
+    <button class="btn" id="ob-btn5" onclick="obNext(8)">Continuar →</button>
   </div>
 
   <!-- 8: Perfil (nome + dados demográficos) -->
@@ -404,7 +405,10 @@
         <div class="set-lbl">🔬 Contribuir para a pesquisa</div>
         <div class="set-desc" id="sync-desc">A carregar…</div>
       </div>
-      <button id="sync-btn" class="btn" style="padding:7px 16px;font-size:13px;width:auto;flex-shrink:0" onclick="syncToResearch()">Enviar</button>
+      <div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0">
+        <button id="sync-btn" class="btn" style="padding:7px 16px;font-size:13px;width:auto" onclick="syncToResearch()">Enviar</button>
+        <button id="research-stop" class="btn ghost" style="padding:6px 16px;font-size:12px;width:auto;margin:0" onclick="researchStop()">Parar</button>
+      </div>
     </div>
   </div>
 
