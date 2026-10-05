@@ -22,7 +22,7 @@ se explica/ilustra → superficial (adaptar à vontade).
 | Elemento | Superficial (adaptável) | Profundo (preservar) |
 |---|---|---|
 | Metáfora do jardim | Canteiros, regar, semente→jardim. Pode virar qualquer metáfora de cultivo gradual | Comunicar que bem-estar é **prática incremental**, não estado fixo; normalizar pausas sem culpa |
-| Gamificação (XP, níveis, badges) | Nomes dos níveis, emojis, valores de XP | Reforço imediato de cada prática; progresso visível; celebração de conclusão (motivação — COM-B) |
+| Reconhecimento do progresso (etapas do jardim, marcas do caminho, dias com prática) | Nomes das etapas, emojis, pontos internos (só alimentam a barra; não aparecem como "+N XP") | Reforço informativo de cada prática; progresso visível sem sequência que quebra e sem recompensa contingente (SDT); "Por que isso?", "quando e onde" e pessoa de apoio opcionais (`shared/apoio.js`) |
 | Nudges da Home | Textos, emojis, ordem visual | Retorno após pausa SEM culpa (evitar efeito "estraguei tudo"); efeito Zeigarnik (módulo a meio); lembrar experimento aberto |
 | Planos "quando-então" | Frases específicas dos planos | Formato implementation intention (Gollwitzer, 1999): gatilho situacional + ação específica |
 | Registro de Momentos | Chips, emojis, textos do formulário | Registro escrito + nomeação da emoção + intensidade (dose recebida / estado) |

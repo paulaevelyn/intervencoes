@@ -55,6 +55,7 @@ let D = {
   moduleProgress: {},   // { m1: { steps: [true,false,...], done: false } }
   entries: [],          // diary
   doseRecords: [],      // dose praticada semanal { ts, date, weekStart, tags[], text }
+  plans: [],            // planos "quando-então" com quando e onde (opcional)
   doseSkipWeek: null,   // semana (segunda-feira) em que dispensou o prompt
   moduleFeedback: [],   // vocabulário do usuário { ts, date, moduleId, word }
   assessment: null,
@@ -95,6 +96,7 @@ function load(){
       if(!D.analytics.moduleEvents)D.analytics.moduleEvents=[];
       if(!D.analytics.diaryEvents) D.analytics.diaryEvents=[];
       if(!D.doseRecords) D.doseRecords=[];
+      if(!D.plans) D.plans=[];
       if(D.doseSkipWeek === undefined) D.doseSkipWeek = null;
       if(!D.moduleFeedback) D.moduleFeedback=[];
       if(D.userProfile === undefined) D.userProfile = null;
@@ -176,11 +178,11 @@ const DIAS_C= ['D','S','T','Q','Q','S','S'];
    XP / LEVEL SYSTEM
    ══════════════════════════════════ */
 const LEVELS = [
-  { n:1, name:'Curioso/a',    emoji:'🌱', min:0,   max:100  },
-  { n:2, name:'Explorador/a', emoji:'🔍', min:100, max:250  },
-  { n:3, name:'Praticante',   emoji:'🌿', min:250, max:430  },
-  { n:4, name:'Especialista', emoji:'⭐', min:430, max:595  },
-  { n:5, name:'Mestre/a',     emoji:'🏆', min:595, max:9999 },
+  { n:1, name:'Zarpando',     emoji:'⚓', min:0,   max:100  },
+  { n:2, name:'Mar aberto',   emoji:'🌊', min:100, max:250  },
+  { n:3, name:'Rota traçada', emoji:'🧭', min:250, max:430  },
+  { n:4, name:'Luz à vista',  emoji:'🏮', min:430, max:595  },
+  { n:5, name:'Porto seguro', emoji:'🏠', min:595, max:9999 },
 ];
 function getLevel(xp){ return LEVELS.slice().reverse().find(l => xp >= l.min) || LEVELS[0]; }
 function getLevelPct(xp){
@@ -190,7 +192,7 @@ function getLevelPct(xp){
 }
 function awardXP(amount, msg){
   D.xp += amount; save();
-  toast('+'+ amount +' XP — '+ msg);
+  toast('Registrado ✓ '+ msg +'. Isso conta.');
 }
 
 /* ══════════════════════════════════
@@ -205,33 +207,22 @@ const ALL_BADGES = [
   { id:'b_m6',   emoji:'🔧', name:'Reestruturador/a',  desc:'Completou o Módulo 6' },
   { id:'b_m7',   emoji:'🌊', name:'Desapegado/a',      desc:'Completou o Módulo 7' },
   { id:'b_m8',   emoji:'💚', name:'Compassivo/a',      desc:'Completou todos os módulos' },
-  { id:'b_str7', emoji:'🔥', name:'Consistente',       desc:'7 dias seguidos' },
+  { id:'b_str7', emoji:'🔥', name:'Voltando sempre',    desc:'7 dias com prática em 4 semanas' },
   { id:'b_d10',  emoji:'📔', name:'Diário Regular',    desc:'10+ registros no diário' },
-  { id:'b_xp',   emoji:'⭐', name:'Dedicado/a',        desc:'Atingiu 300 XP' },
+  { id:'b_xp',   emoji:'⭐', name:'Caminho andado',     desc:'Muitas práticas registradas' },
 ];
 function awardBadge(id){
   if(D.badges.includes(id)) return;
   D.badges.push(id); save();
   const b = ALL_BADGES.find(x => x.id===id);
-  if(b) toast('🏅 Conquista: '+b.name);
+  if(b) toast('🏅 Isso conta: '+b.name);
 }
 function checkBadges(){
   if(D.xp >= 300) awardBadge('b_xp');
   const entries = D.entries;
   if(entries.length >= 10) awardBadge('b_d10');
-  // streak
-  if(entries.length){
-    const dates = [...new Set(entries.map(e=>e.date))].sort().reverse();
-    let streak=0, t=today(), y=prevDay(1);
-    if(dates[0]===t||dates[0]===y){
-      streak=1;
-      for(let i=1;i<dates.length;i++){
-        const a=new Date(dates[i-1]+'T12:00'),b2=new Date(dates[i]+'T12:00');
-        if(Math.round((a-b2)/864e5)===1) streak++; else break;
-      }
-    }
-    if(streak>=7) awardBadge('b_str7');
-  }
+  // dias com prática nas últimas 4 semanas (sem ideia de "quebrar")
+  if(diasComPratica()>=7) awardBadge('b_str7');
 }
 
 /* ══════════════════════════════════
@@ -334,6 +325,7 @@ const MODULES = [
     levelTag:'Nível 1 — Fundamentos',
     title:'Entendendo as Preocupações',
     tagline:'Como o ciclo da preocupação funciona',
+    why:'Entender como a preocupação funciona tira o peso da culpa: ela é um mecanismo do cérebro, não uma falha sua. Com esse mapa, fica mais fácil escolher o que fazer depois.',
     xp:50, badgeId:'b_m1', unlockAfter:null,
     steps:[
       {
@@ -375,6 +367,7 @@ ${svgCycleWorry()}
     levelTag:'Nível 1 — Fundamentos',
     title:'Preocupação Útil vs. Inútil',
     tagline:'Nem toda preocupação é igual',
+    why:'Nem toda preocupação precisa ser combatida. Separar as que pedem ação das que só giram em círculo ajuda você a gastar energia onde ela rende.',
     xp:60, badgeId:'b_m2', unlockAfter:'m1',
     steps:[
       {
@@ -431,6 +424,7 @@ ${svgCycleWorry()}
     levelTag:'Nível 2 — Padrões Internos',
     title:'Metacognições: Crenças sobre o Pensar',
     tagline:'O verdadeiro motor da preocupação crônica',
+    why:'As crenças sobre o preocupar-se (“preciso me preocupar para me proteger”) podem manter a ansiedade. Olhar para elas com curiosidade devolve a você a escolha.',
     xp:70, badgeId:'b_m3', unlockAfter:'m2',
     steps:[
       {
@@ -475,6 +469,7 @@ ${svgCycleWorry()}
     levelTag:'Nível 2 — Padrões Internos',
     title:'Tempo de Preocupação',
     tagline:'Aprenda a adiar, não a suprimir',
+    why:'Adiar a preocupação, em vez de tentar suprimi-la, costuma diminuir o quanto ela invade o dia. Aqui você escolhe o seu horário e o seu jeito.',
     xp:65, badgeId:'b_m4', unlockAfter:'m3',
     steps:[
       {
@@ -517,6 +512,7 @@ ${svgCycleWorry()}
     levelTag:'Nível 3 — Regulação',
     title:'Regulação pelo Corpo',
     tagline:'Fisiologia que acalma a ansiedade',
+    why:'A ansiedade também mora no corpo. Respirar e ancorar nos sentidos são formas de avisar ao corpo que, agora, está seguro/a o bastante.',
     xp:80, badgeId:'b_m5', unlockAfter:'m4',
     steps:[
       {
@@ -555,6 +551,7 @@ ${svgANS()}`
     levelTag:'Nível 3 — Regulação',
     title:'Reestruturação Cognitiva',
     tagline:'Questionar pensamentos, não suprimi-los',
+    why:'Questionar um pensamento não é pensar positivo nem discutir consigo. É checar se ele é o único jeito de ver a situação.',
     xp:80, badgeId:'b_m6', unlockAfter:'m5',
     steps:[
       {
@@ -601,6 +598,7 @@ ${svgANS()}`
     levelTag:'Nível 4 — Transformação',
     title:'Desfusão e Aceitação (ACT)',
     tagline:'Mudar a relação com os pensamentos',
+    why:'Em vez de brigar com o pensamento, a desfusão ensina a observá-lo como pensamento. Assim ele pesa menos, e você volta ao que importa para você.',
     xp:90, badgeId:'b_m7', unlockAfter:'m6',
     steps:[
       {
@@ -642,6 +640,7 @@ ${svgANS()}`
     levelTag:'Nível 4 — Transformação',
     title:'Autocompaixão para a Ansiedade',
     tagline:'TFC/CFT — o sistema calmante em ação',
+    why:'Quem se preocupa muito costuma ser duro/a consigo. A compaixão ativa o sistema calmante do corpo e ajuda a atravessar a ansiedade com mais apoio interno.',
     xp:100, badgeId:'b_m8', unlockAfter:'m7',
     steps:[
       {
@@ -1151,7 +1150,7 @@ function showPosttestDelta(){
       ${subsRows}
     </div>
     <button class="btn mint" onclick="goTo('home')" style="margin-top:8px">Ver meu progresso completo</button>
-    <button class="btn ghost" onclick="goTo('progress')" style="margin-top:0">Ver conquistas</button>
+    <button class="btn ghost" onclick="goTo('progress')" style="margin-top:0">Ver meu caminho</button>
   </div>`;
 }
 
@@ -1169,23 +1168,21 @@ function renderHome(){
   renderDoseCard();
 
   // XP bar
-  const lv = getLevel(D.xp), pct = getLevelPct(D.xp), nextLv = LEVELS[lv.n] || lv;
+  const lv = getLevel(D.xp), pct = getLevelPct(D.xp);
   document.getElementById('h-xp').innerHTML =
     `<div class="xp-wrap">
       <div class="xp-head">
-        <span class="xp-level">${lv.emoji} Nível ${lv.n} — ${lv.name}</span>
-        <span class="xp-val">${D.xp} XP</span>
+        <span class="xp-level">${lv.emoji} Etapa da travessia: ${lv.name}</span>
       </div>
       <div class="xp-bar-bg"><div class="xp-bar" style="width:${pct}%"></div></div>
-      <div class="xp-label" style="margin-top:5px">${lv.n<5?'Para o próximo nível: '+(nextLv.min-D.xp)+' XP restantes':'🏆 Nível máximo atingido!'}</div>
+      <div class="xp-label" style="margin-top:5px">Um retrato do caminho já percorrido, no seu ritmo. Não é uma nota.</div>
     </div>`;
 
   // Stats
   const done = MODULES.filter(m=>D.moduleProgress[m.id]?.done).length;
-  const streak = calcStreak();
   document.getElementById('hs-mod').textContent = done+'/'+MODULES.length;
-  document.getElementById('hs-str').textContent = streak;
-  document.getElementById('hs-xp').textContent  = D.xp;
+  document.getElementById('hs-str').textContent = diasComPratica();
+  document.getElementById('hs-xp').textContent  = D.entries.length;
   document.getElementById('h-assess-sub').textContent = D.assessment?'Refazer avaliação':'GAD-7 · Conheça seu padrão';
 
   // Next module — segue o caminho recomendado
@@ -1202,12 +1199,10 @@ function renderHome(){
   rp.innerHTML = buildEntry([...D.entries].sort((a,b)=>b.ts-a.ts)[0]);
 }
 
-function calcStreak(){
-  if(!D.entries.length) return 0;
-  const dates=[...new Set(D.entries.map(e=>e.date))].sort().reverse();
-  let s=0,t=today(),y=prevDay(1);
-  if(dates[0]===t||dates[0]===y){ s=1; for(let i=1;i<dates.length;i++){ const a=new Date(dates[i-1]+'T12:00'),b=new Date(dates[i]+'T12:00'); if(Math.round((a-b)/864e5)===1)s++; else break; } }
-  return s;
+/* Dias com prática nas últimas 4 semanas — só soma; nunca "quebra" nem zera por faltar um dia. */
+function diasComPratica(){
+  const desde = prevDay(27);
+  return new Set(D.entries.filter(e=>e.date>=desde).map(e=>e.date)).size;
 }
 
 function renderMiniChart(svgId,emptyId){
@@ -1267,7 +1262,7 @@ function modCardHTML(m){
       <div class="mod-info">
         <div class="mod-level-tag">${m.tagline}</div>
         <div class="mod-title">${m.title}</div>
-        <div class="mod-xp">+${m.xp} XP · ${m.steps.length} etapas</div>
+        <div class="mod-xp">${m.steps.length} etapas</div>
         <div class="mod-prog-bar"><div class="mod-prog-fill" style="width:${pct}%"></div></div>
       </div>
       <div class="mod-status">${statusIcon}</div>
@@ -1324,6 +1319,15 @@ function openModule(id){
   renderModuleStep();
 }
 
+/* "Por que isso?" por tipo de exercício (mostrado recolhido; ver shared/apoio.js) */
+const STEP_WHY = {
+  quiz:     'Estas perguntas ajudam você a testar o que entendeu. Não há nota: errar também ensina.',
+  classify: 'Separar exemplos é um jeito de treinar o olhar com o que você acabou de ler. Não vale nota, é só prática.',
+  fill:     'Colocar em palavras organiza o que está difuso e deixa a ideia mais sua. O que você escreve aqui não é enviado a ninguém.',
+  breath:   'Respirar mais devagar manda ao corpo o sinal de que dá para desacelerar. Se incomodar, pare ou respire do seu jeito.',
+  guided:   'Praticar é como o aprendizado vira experiência, e não só informação. Vá no seu ritmo; pode parar quando quiser.'
+};
+
 function renderModuleStep(){
   const mod  = MODULES.find(m=>m.id===_curModId);
   const step = mod.steps[_curStep];
@@ -1375,6 +1379,13 @@ function renderModuleStep(){
     body = renderGuidedStep(step);
   }
 
+  // Autonomia e apoio (shared/apoio.js): "Por que isso?" no começo do módulo e por tipo de exercício; pessoa de apoio nas reflexões
+  if(window.PeaApoio){
+    if(_curStep===0 && mod.why) body += PeaApoio.porQue(mod.why);
+    if(step.type!=='info' && step.type!=='flipcard' && STEP_WHY[step.type]) body += PeaApoio.porQue(STEP_WHY[step.type]);
+    if(step.type==='fill') body += PeaApoio.apoio(mod.title);
+  }
+
   const isLast = _curStep === mod.steps.length - 1;
   const btnLabel = isLast ? 'Concluir módulo 🎉' : 'Continuar →';
   const btnId    = 'step-continue';
@@ -1385,7 +1396,7 @@ function renderModuleStep(){
       <button class="mod-hero-back" onclick="goTo('modules')">←</button>
       <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;opacity:.8;margin-bottom:6px;margin-top:24px">${mod.levelTag}</div>
       <div style="font-size:20px;font-weight:800;letter-spacing:-.3px;line-height:1.25;margin-bottom:10px">${mod.title}</div>
-      <div style="font-size:12px;font-weight:700;opacity:.85;background:rgba(255,255,255,.15);display:inline-block;padding:4px 10px;border-radius:20px">Etapa ${_curStep+1} de ${mod.steps.length} · +${mod.xp} XP ao concluir</div>
+      <div style="font-size:12px;font-weight:700;opacity:.85;background:rgba(255,255,255,.15);display:inline-block;padding:4px 10px;border-radius:20px">Etapa ${_curStep+1} de ${mod.steps.length}</div>
     </div>
     <div style="background:var(--sand);padding:8px 0 4px">${dots.length>1?`<div style="display:flex;align-items:center;justify-content:center;gap:6px;padding:4px 0">${dots}</div>`:''}</div>
     <div class="step-body" style="padding-bottom:8px">${body}</div>
@@ -1440,7 +1451,7 @@ function completeModule(){
 function showCelebrate(mod){
   document.getElementById('cel-emoji').textContent  = mod.emoji;
   document.getElementById('cel-title').textContent  = mod.title+' concluído!';
-  document.getElementById('cel-xp').textContent     = '+'+mod.xp+' XP conquistados';
+  document.getElementById('cel-xp').textContent     = 'Isso conta. Obrigado/a por cuidar de você.';
   document.getElementById('cel-sub').textContent    = 'Seu progresso foi salvo. Continue para o próximo módulo ou registre no diário!';
   const w = document.getElementById('cel-word'); if(w) w.value='';
   document.getElementById('celebrate-card').classList.add('show');
@@ -1758,7 +1769,6 @@ function renderProgress(){
   const el=document.getElementById('progress-content');
   const lv=getLevel(D.xp), pct=getLevelPct(D.xp);
   const doneMods=MODULES.filter(m=>D.moduleProgress[m.id]?.done);
-  const totalXP=MODULES.reduce((a,m)=>a+m.xp,0);
 
   // Badges
   const badgesHTML=ALL_BADGES.map(b=>{
@@ -1776,8 +1786,8 @@ function renderProgress(){
     D.entries.flatMap(e=>e.strategies).forEach(s=>{stratC[s]=(stratC[s]||0)+1;});
     const topS=Object.entries(stratC).sort((a,b)=>b[1]-a[1]).slice(0,3).map(s=>s[0]);
     if(topS.length) insights.push({c:'l',t:'🔧 Estratégias favoritas',b:`Ferramentas mais usadas: <strong>${topS.join(', ')}</strong>.`});
-    const streak=calcStreak();
-    if(streak>0) insights.push({c:'',t:'🔥 Sequência atual',b:`<strong>${streak} dia${streak!==1?'s':''}</strong> de prática consecutiva. Consistência cria mudança real.`});
+    const dp=diasComPratica();
+    if(dp>0) insights.push({c:'',t:'🗓️ Dias com prática',b:`<strong>${dp} dia${dp!==1?'s':''}</strong> com prática nas últimas 4 semanas. Cada dia conta, e os intervalos fazem parte do caminho.`});
   }
   // Dose praticada — semanas com prática vs. semanas desde o início
   const doseStart = D.consentDate ? weekStart(D.consentDate.slice(0,10)) : (D.doseRecords[0]?.weekStart || null);
@@ -1786,16 +1796,15 @@ function renderProgress(){
     const practicedWeeks = new Set(D.doseRecords.map(r=>r.weekStart)).size;
     insights.push({c:'l',t:'⚓ Dose praticada',b:`Semanas com prática registrada: <strong>${practicedWeeks} de ${totalWeeks}</strong> desde o início. A dose que importa é a praticada, não a recebida.`});
   }
-  insights.push({c:'s',t:'📚 Módulos concluídos',b:`<strong>${doneMods.length} de ${MODULES.length}</strong> módulos concluídos · <strong>${D.xp} de ${totalXP} XP</strong> totais conquistados.`});
+  insights.push({c:'s',t:'📚 Módulos concluídos',b:`<strong>${doneMods.length} de ${MODULES.length}</strong> módulos concluídos, no seu tempo.`});
 
   el.innerHTML=
     `<div class="xp-wrap" style="margin:0 16px 12px">
       <div class="xp-head">
-        <span class="xp-level">${lv.emoji} Nível ${lv.n} — ${lv.name}</span>
-        <span class="xp-val">${D.xp} XP</span>
+        <span class="xp-level">${lv.emoji} Etapa da travessia: ${lv.name}</span>
       </div>
       <div class="xp-bar-bg"><div class="xp-bar" style="width:${pct}%"></div></div>
-      <div class="xp-label" style="margin-top:5px">${lv.n<5?'Para o próximo nível: '+(LEVELS[lv.n].min-D.xp)+' XP restantes':'🏆 Nível máximo!'}</div>
+      <div class="xp-label" style="margin-top:5px">Um retrato do caminho já percorrido, no seu ritmo. Não é uma nota.</div>
     </div>
     <div class="card">
       <div class="card-lbl">Intensidade — 7 dias</div>
@@ -1805,7 +1814,7 @@ function renderProgress(){
     ${insights.map(i=>`<div class="insight-c ${i.c}"><div class="insight-t">${i.t}</div><div class="insight-b">${i.b}</div></div>`).join('')}
     <div class="sdiv">Seus registros de preocupação</div>
     <div id="p-worries" style="margin:0 16px 12px"></div>
-    <div class="sdiv">Conquistas</div>
+    <div class="sdiv">Marcas do caminho</div>
     <div class="card"><div class="badge-shelf">${badgesHTML}</div></div>
     <div class="sdiv">Exportar</div>
     <button class="btn ghost-mint" onclick="exportHTML()">Baixar relatório (HTML)</button>
@@ -1909,7 +1918,7 @@ table{width:100%;border-collapse:collapse;background:white;border-radius:12px;ov
   <div class="stat"><div class="stat-n">${days}d</div><div class="stat-l">período de uso</div></div>
   <div class="stat"><div class="stat-n">${pct}%</div><div class="stat-l">com melhoria após registro</div></div>
   <div class="stat"><div class="stat-n">${avg}</div><div class="stat-l">intensidade média (1-5)</div></div>
-  <div class="stat"><div class="stat-n">${D.xp}</div><div class="stat-l">XP · Nível ${lv.n} ${lv.name}</div></div>
+  <div class="stat"><div class="stat-n">${lv.emoji}</div><div class="stat-l">etapa da travessia: ${lv.name}</div></div>
   <div class="stat"><div class="stat-n">${doneMods.length}/${MODULES.length}</div><div class="stat-l">módulos concluídos</div></div>
 </div>
 ${doneMods.length?`<h2>Módulos concluídos</h2><div class="ins"><div class="ins-b">${doneMods.map(m=>`<span class="pill">${m}</span>`).join('')}</div></div>`:''}
@@ -2118,7 +2127,7 @@ function deleteAll(){
   const pid=D.participantId, cd=D.consentDate, ls=D.lastSync, cg=!!D.consentGiven;
   D={
     xp:0, badges:[], obDone:true, obLevel:D.obLevel,
-    moduleProgress:{}, entries:[], doseRecords:[], doseSkipWeek:null, moduleFeedback:[], assessment:null,
+    moduleProgress:{}, entries:[], doseRecords:[], plans:[], doseSkipWeek:null, moduleFeedback:[], assessment:null,
     nickname:D.nickname, demographics:D.demographics,
     reminders:D.reminders||{enabled:false,hour:20,hourTouched:false},
     notificationLog:[],
@@ -2147,7 +2156,7 @@ function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg
 function renderNudge(){
   const el = document.getElementById('h-nudge');
   if(!el) return;
-  const streak = calcStreak();
+  const dp = diasComPratica();
   const lastEntry = D.entries.length ? [...D.entries].sort((a,b)=>b.ts-a.ts)[0] : null;
   const daysSince = lastEntry ? Math.floor((Date.now()-lastEntry.ts)/864e5) : null;
   const halfMod = MODULES.find(m=>{ const mp=D.moduleProgress[m.id]; return mp && !mp.done && mp.steps?.some(Boolean); });
@@ -2201,12 +2210,12 @@ function renderNudge(){
       <button class="nudge-btn" onclick="openModule('${halfMod.id}')">Continuar</button>
     </div>`;
   }
-  // 3. Streak ativo — reforço do progresso (sem pressão)
-  else if(streak >= 2){
+  // 3. Dias com prática — reconhecimento informativo (sem sequência, sem pressão)
+  else if(dp >= 2){
     html = `<div class="nudge amber">
-      <div class="nudge-icon">🔥</div>
-      <div class="nudge-body"><strong>${streak} dias seguidos de prática.</strong>
-      A constância — não a perfeição — é o que treina o cérebro.</div>
+      <div class="nudge-icon">🗓️</div>
+      <div class="nudge-body"><strong>${dp} dias com prática nas últimas 4 semanas.</strong>
+      Voltar, no seu ritmo, é o que treina o cérebro. Os intervalos fazem parte.</div>
     </div>`;
   }
   el.innerHTML = html;
@@ -2220,15 +2229,29 @@ const IFTHEN_PLANS = [
   'Quando o corpo ficar tenso, vou <strong>soltar os ombros e desacelerar a expiração</strong>.',
   'Quando eu me pegar ruminando, vou <strong>nomear: "isto é só um pensamento"</strong> e voltar ao presente.',
 ];
+let _planAtual = '';
+/* Guarda o plano com "quando e onde" (opcional) só neste aparelho; COM-B: oportunidade e pista no ambiente */
+function combinarPlano(){
+  const qo = window.PeaApoio ? PeaApoio.lerQuandoOnde('plano') : { quando:'', onde:'', frase:'' };
+  if(qo.frase){
+    D.plans.push({ ts:Date.now(), plano:_planAtual.replace(/<[^>]+>/g,''), quando:qo.quando, onde:qo.onde });
+    save();
+    toast('Plano guardado. '+qo.frase);
+  }
+  closeModal();
+}
 function maybeShowIfThen(){
   // mostra a cada 3 registos para não saturar
   if(D.entries.length % 3 !== 1) return;
   const plan = IFTHEN_PLANS[Math.floor(Math.random()*IFTHEN_PLANS.length)];
+  _planAtual = plan;
   document.getElementById('modal-title').textContent = '🌱 Um plano para amanhã';
   document.getElementById('modal-body').innerHTML =
-    plan + '<br><br><span style="font-size:12px;color:var(--light)">Planos "quando-então" duplicam a chance de agir no momento certo (Gollwitzer, 1999).</span>';
+    plan + '<br><br><span style="font-size:12px;color:var(--light)">Planos "quando-então" duplicam a chance de agir no momento certo (Gollwitzer, 1999). Se este não combina com você, é só fechar.</span>'
+    + (window.PeaApoio ? PeaApoio.quandoOnde('plano') : '');
   document.getElementById('modal-actions').innerHTML =
-    '<button class="btn mint" onclick="closeModal()">Combinado 🤝</button>';
+    '<button class="btn mint" onclick="combinarPlano()">Combinado 🤝</button>'
+    + '<button class="btn ghost" onclick="closeModal()">Agora não</button>';
   document.getElementById('modal-ov').classList.add('on');
 }
 

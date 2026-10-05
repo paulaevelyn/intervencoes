@@ -138,9 +138,10 @@ mantenha a função de narrativa unificadora e de externalização gentil do pro
 - **Superficial:** nomes das "paradas", textos das justificativas.
 - **Profunda:** regras de priorização baseadas em mecanismo: GAD-7 severo → estabilização fisiológica primeiro (M5); incontrolabilidade alta (`nc`) → mudar relação com o pensamento primeiro (M7, M4); crenças positivas altas (`pr`) → metacognições antes (M3) e reestruturação por último (M6); autocobrança sobre pensamentos (`nb`) → CFT antes das técnicas ativas (M8). M1 permanece porta de entrada universal (o modelo do ciclo é pré-requisito conceitual). As justificativas são **mostradas ao usuário** (transparência → percepção de autonomia, SDT).
 
-### Gamificação (XP, níveis, conquistas, sequência)
-- **Superficial:** valores de XP, nomes dos níveis, emojis das conquistas.
-- **Profunda:** reforço de **competência e progresso visível** (SDT); a sequência (streak) celebra constância mas **nunca pune a quebra** — o nudge de retorno após pausa é de acolhimento (CFT), explicitamente contra o efeito "estraguei tudo" (abstinence violation effect).
+### Reconhecimento do progresso (etapas da travessia, marcas do caminho, dias com prática)
+- **Superficial:** nomes das etapas (metáforas da travessia, sem ranking), emojis das marcas, pontos internos que só alimentam a barra.
+- **Profunda:** reforço **informativo** de competência e progresso (SDT), sem recompensa contingente à vista: não há "+N XP" nem "Conquista!" nas mensagens ("Registrado ✓ … Isso conta."). Não há sequência que se quebra: a home mostra **dias com prática nas últimas 4 semanas**, que só soma. O nudge de retorno após pausa é de acolhimento (CFT), explicitamente contra o efeito "estraguei tudo" (abstinence violation effect).
+- **Autonomia (SDT) e COM-B:** cada módulo e tipo de exercício traz um "Por que isso?" recolhido; os planos "quando-então" perguntam, opcionalmente, **quando e onde**; as reflexões oferecem um espaço opcional para uma **pessoa de apoio** (relação/pertencimento). Ver `shared/apoio.js`.
 
 ### Nudges comportamentais (home)
 - **Superficial:** textos, emojis, ordem visual.

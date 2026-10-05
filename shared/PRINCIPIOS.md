@@ -34,17 +34,29 @@ depende de texto, tom e decisões de cada app.
 
 ## Auditoria por app (o que já atende e o que ainda tensiona os princípios)
 
+Revisão com os referenciais TFC, psicologia positiva, COM-B e SDT (Teoria da Autodeterminação). Mudanças aplicadas:
+
+| Mudança | Onde | Referencial |
+|---|---|---|
+| **Sem sequência que se quebra:** "🔥 N dias seguidos" virou "dias com prática nas últimas 4 semanas", que só soma | Farol, Floresça | TFC (ameaça), SDT |
+| **Etapas em vez de ranking:** "Nível N — Especialista/Mestre/a" virou etapas-metáfora (Farol: Zarpando → Porto seguro; Floresça: Semente → Jardim Vivo; Matiz: Primeiros traços → Mapa vivo) | Farol, Floresça, Matiz | TFC (desempenho), psicologia positiva |
+| **Reconhecimento só informativo:** sem "+15 XP" nem "Conquista:" nas mensagens ("Registrado ✓ … Isso conta."), sem "faltam N XP", sem "Dedicado/a: 300 XP"; "Conquistas" virou "Marcas do caminho" | Farol, Floresça, Matiz | SDT (motivação intrínseca) |
+| **"Por que isso?"** recolhido em cada módulo/exercício/etapa (explica o sentido e lembra que a pessoa decide) | Farol, Floresça, Matiz, Aurora, Segurança Interna | SDT (autonomia) |
+| **"Quando e onde você vai fazer?"** (opcional) ao programar uma atividade e nos planos | Aurora (atividades), Farol/Floresça (plano "quando-então", experimentos), Matiz (plano) | COM-B (oportunidade, pista) |
+| **Pessoa de apoio** (opcional): guarda o nome só no aparelho e oferece uma frase pronta para copiar/compartilhar; nada é enviado pelo app | Farol, Floresça, Matiz, Aurora, Segurança Interna | SDT (relação/pertencimento) |
+
+O que sustenta tudo isso fica em `shared/apoio.js` e `shared/apoio.css`, carregados por `auth/auth.js`. Os números de pontos (XP) continuam existindo internamente só para encher a barra de etapa e para o painel de pesquisa da profissional.
+
 | App | Atende | Tensões / lacunas |
 |---|---|---|
-| **Farol** | Notificações opt-in e raras; apoio de crise no app; pesquisa opcional; sem conta possível | **Gamificação com XP, níveis e "dias seguidos"** (a sequência que se quebra pode gerar culpa em quem tem ansiedade e perfeccionismo) |
-| **Floresça** | Idem | Idem (XP, níveis, "dias seguidos") |
-| **Matiz** | Sem notificações; sem sequência; progresso calculado dos registros | XP e medalhas (sem punição por faltar); **sem ajuda em crise dentro do app** (só pelo painel ⚙) |
-| **Segurança Interna** | Sem pontos, sem sequência, sem notificações; ritmo livre | **Sem ajuda em crise dentro do app** (só pelo painel ⚙), embora o tema possa mobilizar sofrimento |
-| **Aurora** | Sem pontos nem sequência; lembrete só se não registrou; passo pequeno; retorno acolhedor; crise visível; PHQ-9 com cuidado no item 9 | Lembretes locais podem não disparar se o app for encerrado (limitação técnica) |
+| **Farol** | Notificações opt-in e raras; apoio de crise no app; pesquisa opcional; sem conta possível; sem sequência; etapas sem ranking | A barra de etapa ainda é uma forma de progresso quantificado (informativa) |
+| **Floresça** | Idem | Idem |
+| **Matiz** | Sem notificações; sem sequência; progresso calculado dos registros; etapas sem ranking | **Sem ajuda em crise dentro do app** (só pelo painel ⚙) |
+| **Segurança Interna** | Sem pontos, sem sequência, sem notificações; ritmo livre; "Por que isso?" e pessoa de apoio | **Sem ajuda em crise dentro do app** (só pelo painel ⚙), embora o tema possa mobilizar sofrimento |
+| **Aurora** | Sem pontos nem sequência; lembrete só se não registrou; passo pequeno; retorno acolhedor; crise visível; PHQ-9 com cuidado no item 9; "quando e onde" ao programar | Lembretes locais podem não disparar se o app for encerrado (limitação técnica) |
 
 ## Sugestões ainda não aplicadas (dependem de decisão da profissional)
-1. **Farol e Floresça:** trocar "dias seguidos" por "dias com prática" (sem a ideia de quebrar) ou tirar a sequência; manter XP só como reconhecimento, sem perdas.
-2. **Matiz e Segurança Interna:** acrescentar um botão visível "Preciso de ajuda agora" (como no Aurora).
-3. **Revisão de linguagem** com olhar de design compassivo em cada app (verbos de cobrança como "você precisa", "não perca").
-4. **Modo escuro** e **ajuste de tamanho do texto** nos apps (hoje seguem o zoom do navegador).
-5. **Testes com pessoas reais**, incluindo quem usa leitor de tela e quem está em sofrimento.
+1. **Matiz e Segurança Interna:** acrescentar um botão visível "Preciso de ajuda agora" (como no Aurora).
+2. **Pessoa de apoio:** hoje é só uma frase para copiar/compartilhar; uma ponte com a profissional (compartilhamento opcional) já existe pelo painel, mas não há canal de apoio entre pares.
+3. **Modo escuro** e **ajuste de tamanho do texto** nos apps (hoje seguem o zoom do navegador).
+4. **Testes com pessoas reais**, incluindo quem usa leitor de tela e quem está em sofrimento.

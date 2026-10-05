@@ -50,6 +50,7 @@ let D = {
   entries: [],          // registro de momentos positivos
   experiments: [],      // execuções de experimentos { id, expId, ts, date, predicted, predictNote, status, actual, noticed, tsDone }
   doseRecords: [],      // dose cultivada semanal { ts, date, weekStart, tags[], text }
+  plans: [],            // planos "quando-então" com quando e onde (opcional)
   doseSkipWeek: null,   // semana (segunda-feira) em que dispensou o prompt
   moduleFeedback: [],   // vocabulário do usuário { ts, date, moduleId, word }
   assessment: null,     // SPANE { p, n, b, date, answers }
@@ -90,6 +91,7 @@ function load(){
       if(!D.analytics.labEvents)    D.analytics.labEvents=[];
       if(!D.experiments) D.experiments=[];
       if(!D.doseRecords) D.doseRecords=[];
+      if(!D.plans) D.plans=[];
       if(D.doseSkipWeek === undefined) D.doseSkipWeek = null;
       if(!D.moduleFeedback) D.moduleFeedback=[];
       if(!D.participantId) D.participantId = generateUUID();
@@ -174,7 +176,7 @@ function getLevelPct(xp){
 }
 function awardXP(amount, msg){
   D.xp += amount; save();
-  toast('+'+ amount +' XP — '+ msg);
+  toast('Registrado ✓ '+ msg +'. Isso conta.');
 }
 
 /* ══════════════════════════════════
@@ -189,9 +191,9 @@ const ALL_BADGES = [
   { id:'b_m6',   emoji:'💚', name:'Contentamento',       desc:'Completou o Módulo 6' },
   { id:'b_m7',   emoji:'🧪', name:'Destemido/a',         desc:'Completou o Módulo 7' },
   { id:'b_m8',   emoji:'🌳', name:'Jardim Completo',     desc:'Completou todos os módulos' },
-  { id:'b_str7', emoji:'🔥', name:'Constância',          desc:'7 dias seguidos' },
+  { id:'b_str7', emoji:'🔥', name:'Voltando ao jardim',  desc:'7 dias com prática em 4 semanas' },
   { id:'b_d10',  emoji:'📔', name:'Caçador/a de Momentos', desc:'10+ momentos registrados' },
-  { id:'b_xp',   emoji:'⭐', name:'Dedicado/a',          desc:'Atingiu 300 XP' },
+  { id:'b_xp',   emoji:'⭐', name:'Jardim cultivado',    desc:'Muitas práticas registradas' },
   { id:'b_exp1', emoji:'🔬', name:'Cientista de Si',     desc:'Concluiu o 1º experimento' },
   { id:'b_exp5', emoji:'🏆', name:'Pesquisador/a',       desc:'Concluiu 5 experimentos' },
 ];
@@ -199,7 +201,7 @@ function awardBadge(id){
   if(D.badges.includes(id)) return;
   D.badges.push(id); save();
   const b = ALL_BADGES.find(x => x.id===id);
-  if(b) toast('🏅 Conquista: '+b.name);
+  if(b) toast('🏅 Isso conta: '+b.name);
 }
 function checkBadges(){
   if(D.xp >= 300) awardBadge('b_xp');
@@ -207,19 +209,8 @@ function checkBadges(){
   const expDone = D.experiments.filter(e=>e.status==='done').length;
   if(expDone >= 1) awardBadge('b_exp1');
   if(expDone >= 5) awardBadge('b_exp5');
-  // streak
-  if(D.entries.length){
-    const dates = [...new Set(D.entries.map(e=>e.date))].sort().reverse();
-    let streak=0, t=today(), y=prevDay(1);
-    if(dates[0]===t||dates[0]===y){
-      streak=1;
-      for(let i=1;i<dates.length;i++){
-        const a=new Date(dates[i-1]+'T12:00'),b2=new Date(dates[i]+'T12:00');
-        if(Math.round((a-b2)/864e5)===1) streak++; else break;
-      }
-    }
-    if(streak>=7) awardBadge('b_str7');
-  }
+  // dias com prática nas últimas 4 semanas (sem ideia de "quebrar")
+  if(diasComPratica()>=7) awardBadge('b_str7');
 }
 
 /* ══════════════════════════════════
@@ -339,6 +330,7 @@ const MODULES = [
     levelTag:'Nível 1 — Preparar o Solo',
     title:'Por que Cultivar Emoções Positivas',
     tagline:'A ciência do que faz bem',
+    why:'Emoções positivas não são luxo: ampliam a atenção e os recursos. Entender isso ajuda a dar espaço ao que já faz bem, sem forçar entusiasmo.',
     xp:50, badgeId:'b_m1', unlockAfter:null,
     steps:[
       {
@@ -394,6 +386,7 @@ ${svgBroaden()}
     levelTag:'Nível 1 — Preparar o Solo',
     title:'O Repertório: 10 Emoções Positivas',
     tagline:'Nomear com precisão amplia o sentir',
+    why:'Dar nome preciso ao que você sente amplia o sentir. Um repertório mais variado do que “bem” ou “mal” facilita reconhecer o que já existe na sua vida.',
     xp:60, badgeId:'b_m2', unlockAfter:'m1',
     steps:[
       {
@@ -449,6 +442,7 @@ ${emoGridHTML()}
     levelTag:'Nível 2 — Notar e Saborear',
     title:'Notar: o Radar do Positivo',
     tagline:'Treinar a atenção para o que já vai bem',
+    why:'O cérebro nota ameaças por padrão. Treinar o olhar para o que já vai bem equilibra a atenção, sem negar o que é difícil.',
     xp:65, badgeId:'b_m3', unlockAfter:'m2',
     steps:[
       {
@@ -503,6 +497,7 @@ ${emoGridHTML()}
     levelTag:'Nível 2 — Notar e Saborear',
     title:'Saborear: Presente, Passado e Futuro',
     tagline:'Amplificar e prolongar o que é bom',
+    why:'Prolongar um momento bom (saborear) faz a experiência durar e ficar na memória. É um jeito de aproveitar mais do que já acontece.',
     xp:70, badgeId:'b_m4', unlockAfter:'m3',
     steps:[
       {
@@ -559,6 +554,7 @@ ${emoGridHTML()}
     levelTag:'Nível 3 — Aprofundar',
     title:'Gratidão que Transforma',
     tagline:'A prática com mais evidência da área',
+    why:'A gratidão genuína, sem obrigação, está entre as práticas com mais evidência na psicologia positiva. Aqui ela é um convite, não um dever.',
     xp:70, badgeId:'b_m5', unlockAfter:'m4',
     steps:[
       {
@@ -615,6 +611,7 @@ ${emoGridHTML()}
     levelTag:'Nível 3 — Aprofundar',
     title:'Contentamento e Segurança (TFC)',
     tagline:'O bem-estar que não depende de conquista',
+    why:'Há bem-estar que não depende de conquistar nada: calma, segurança, calor humano. Cultivá-lo é descanso, não preguiça.',
     xp:80, badgeId:'b_m6', unlockAfter:'m5',
     steps:[
       {
@@ -664,6 +661,7 @@ ${svgThreeSystems()}
     levelTag:'Nível 4 — Florescer',
     title:'Crenças que Bloqueiam a Alegria',
     tagline:'Testar na prática os medos do bem-estar',
+    why:'Muita gente teme sentir alegria (“vai dar errado depois”). Testar esses medos em pequenos experimentos mostra o que de fato acontece.',
     xp:90, badgeId:'b_m7', unlockAfter:'m6',
     steps:[
       {
@@ -734,6 +732,7 @@ ${svgThreeSystems()}
     levelTag:'Nível 4 — Florescer',
     title:'Um Jardim que Dura',
     tagline:'Transformar práticas em recursos para a vida',
+    why:'Práticas viram recurso quando cabem na rotina. Planejar quando e onde faz o cuidado sobreviver aos dias corridos.',
     xp:100, badgeId:'b_m8', unlockAfter:'m7',
     steps:[
       {
@@ -1228,7 +1227,7 @@ function showPosttestDelta(){
       ${bImproved && post.spane.b>pre.spane.b ? '<div style="font-size:13px;color:var(--mint-d);margin-top:8px">Saldo emocional '+(post.spane.b-pre.spane.b)+' pontos acima — o cultivo está funcionando! 🎉</div>':''}
     </div>
     <button class="btn mint" onclick="goTo('home')" style="margin-top:8px">Ver meu progresso completo</button>
-    <button class="btn ghost" onclick="goTo('progress')" style="margin-top:0">Ver conquistas</button>
+    <button class="btn ghost" onclick="goTo('progress')" style="margin-top:0">Ver meu caminho</button>
   </div>`;
 }
 
@@ -1252,22 +1251,20 @@ function renderHome(){
   renderNudge();
   renderDoseCard();
 
-  const lv = getLevel(D.xp), pct = getLevelPct(D.xp), nextLv = LEVELS[lv.n] || lv;
+  const lv = getLevel(D.xp), pct = getLevelPct(D.xp);
   document.getElementById('h-xp').innerHTML =
     `<div class="xp-wrap">
       <div class="xp-head">
-        <span class="xp-level">${lv.emoji} Nível ${lv.n} — ${lv.name}</span>
-        <span class="xp-val">${D.xp} XP</span>
+        <span class="xp-level">${lv.emoji} Seu jardim hoje: ${lv.name}</span>
       </div>
       <div class="xp-bar-bg"><div class="xp-bar" style="width:${pct}%"></div></div>
-      <div class="xp-label" style="margin-top:5px">${lv.n<5?'Para o próximo nível: '+(nextLv.min-D.xp)+' XP restantes':'🌳 Nível máximo atingido!'}</div>
+      <div class="xp-label" style="margin-top:5px">Um retrato do que já foi cultivado, no seu ritmo. Não é uma nota.</div>
     </div>`;
 
   const done = MODULES.filter(m=>D.moduleProgress[m.id]?.done).length;
-  const streak = calcStreak();
   document.getElementById('hs-mod').textContent = done+'/'+MODULES.length;
-  document.getElementById('hs-str').textContent = streak;
-  document.getElementById('hs-xp').textContent  = D.xp;
+  document.getElementById('hs-str').textContent = diasComPratica();
+  document.getElementById('hs-xp').textContent  = D.entries.length;
   document.getElementById('h-assess-sub').textContent = D.assessment?'Refazer avaliação':'SPANE · Como você se sente';
 
   const next = orderedModules().find(m=>!D.moduleProgress[m.id]?.done && isUnlocked(m));
@@ -1285,12 +1282,10 @@ function renderHome(){
   rp.innerHTML = buildEntry([...D.entries].sort((a,b)=>b.ts-a.ts)[0]);
 }
 
-function calcStreak(){
-  if(!D.entries.length) return 0;
-  const dates=[...new Set(D.entries.map(e=>e.date))].sort().reverse();
-  let s=0,t=today(),y=prevDay(1);
-  if(dates[0]===t||dates[0]===y){ s=1; for(let i=1;i<dates.length;i++){ const a=new Date(dates[i-1]+'T12:00'),b=new Date(dates[i]+'T12:00'); if(Math.round((a-b)/864e5)===1)s++; else break; } }
-  return s;
+/* Dias com prática nas últimas 4 semanas — só soma; nunca "quebra" nem zera por faltar um dia. */
+function diasComPratica(){
+  const desde = prevDay(27);
+  return new Set(D.entries.filter(e=>e.date>=desde).map(e=>e.date)).size;
 }
 
 function renderMiniChart(svgId,emptyId){
@@ -1359,7 +1354,7 @@ function renderModuleList(){
         <div class="mod-info">
           <div class="mod-level-tag">${m.tagline}</div>
           <div class="mod-title">${m.title}</div>
-          <div class="mod-xp">Canteiro ${i+1} · +${m.xp} XP · ${m.steps.length} etapas</div>
+          <div class="mod-xp">Canteiro ${i+1} · ${m.steps.length} etapas</div>
           <div class="mod-prog-bar"><div class="mod-prog-fill" style="width:${pct}%"></div></div>
         </div>
         <div class="mod-status">${statusIcon}</div>
@@ -1389,6 +1384,15 @@ function openModule(id){
   goTo('module');
   renderModuleStep();
 }
+
+/* "Por que isso?" por tipo de exercício (mostrado recolhido; ver shared/apoio.js) */
+const STEP_WHY = {
+  quiz:     'Estas perguntas ajudam você a testar o que entendeu. Não há nota: errar também ensina.',
+  classify: 'Separar exemplos é um jeito de treinar o olhar com o que você acabou de ler. Não vale nota, é só prática.',
+  fill:     'Colocar em palavras organiza o que está difuso e deixa a ideia mais sua. O que você escreve aqui não é enviado a ninguém.',
+  breath:   'Respirar mais devagar manda ao corpo o sinal de que dá para desacelerar. Se incomodar, pare ou respire do seu jeito.',
+  guided:   'Praticar é como o aprendizado vira experiência, e não só informação. Vá no seu ritmo; pode parar quando quiser.'
+};
 
 function renderModuleStep(){
   const mod  = MODULES.find(m=>m.id===_curModId);
@@ -1425,6 +1429,13 @@ function renderModuleStep(){
   else if(step.type==='breath')   body = renderBreathStepHTML(step);
   else if(step.type==='guided')   body = renderGuidedStep(step);
 
+  // Autonomia e apoio (shared/apoio.js): "Por que isso?" no começo do módulo e por tipo de exercício; pessoa de apoio nas reflexões
+  if(window.PeaApoio){
+    if(_curStep===0 && mod.why) body += PeaApoio.porQue(mod.why);
+    if(step.type!=='info' && step.type!=='flipcard' && STEP_WHY[step.type]) body += PeaApoio.porQue(STEP_WHY[step.type]);
+    if(step.type==='fill') body += PeaApoio.apoio(mod.title);
+  }
+
   const isLast = _curStep === mod.steps.length - 1;
   const btnLabel = isLast ? 'Concluir módulo 🎉' : 'Continuar →';
 
@@ -1434,7 +1445,7 @@ function renderModuleStep(){
       <button class="mod-hero-back" onclick="goTo('modules')">←</button>
       <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;opacity:.8;margin-bottom:6px;margin-top:24px">${mod.levelTag}</div>
       <div style="font-size:20px;font-weight:800;letter-spacing:-.3px;line-height:1.25;margin-bottom:10px">${mod.title}</div>
-      <div style="font-size:12px;font-weight:700;opacity:.85;background:rgba(255,255,255,.15);display:inline-block;padding:4px 10px;border-radius:20px">Etapa ${_curStep+1} de ${mod.steps.length} · +${mod.xp} XP ao concluir</div>
+      <div style="font-size:12px;font-weight:700;opacity:.85;background:rgba(255,255,255,.15);display:inline-block;padding:4px 10px;border-radius:20px">Etapa ${_curStep+1} de ${mod.steps.length}</div>
     </div>
     <div style="background:var(--sand);padding:8px 0 4px">${dots.length>1?`<div style="display:flex;align-items:center;justify-content:center;gap:6px;padding:4px 0">${dots}</div>`:''}</div>
     <div class="step-body" style="padding-bottom:8px">${body}</div>
@@ -1488,7 +1499,7 @@ function completeModule(){
 function showCelebrate(mod){
   document.getElementById('cel-emoji').textContent  = mod.emoji;
   document.getElementById('cel-title').textContent  = mod.title+' concluído!';
-  document.getElementById('cel-xp').textContent     = '+'+mod.xp+' XP conquistados';
+  document.getElementById('cel-xp').textContent     = 'Isso conta. Obrigado/a por cuidar de você.';
   document.getElementById('cel-sub').textContent    = 'Seu progresso foi salvo. Continue para o próximo canteiro ou registre um momento bom!';
   const w = document.getElementById('cel-word'); if(w) w.value='';
   document.getElementById('celebrate-card').classList.add('show');
@@ -1776,6 +1787,7 @@ function renderLab(){
       <div class="lab-belief">🔬 Testa a crença: <strong>${exp.belief}</strong></div>
       <div class="predict-panel">
         <div class="predict-lbl">Sua previsão foi: ${active.predicted}/5 ${active.predictNote?'— "'+esc(active.predictNote)+'"':''}</div>
+        ${active.plan?`<div class="predict-lbl" style="margin-top:6px">Seu plano: ${esc(active.plan)}</div>`:''}
         <div class="predict-lbl" style="margin-top:12px">Já fez? Quanto você REALMENTE sentiu?</div>
         <div class="slider-row"><span style="font-size:18px">😐</span><input type="range" id="exp-actual" min="1" max="5" value="3" step="1" oninput="document.getElementById('exp-actual-v').textContent=this.value"><span style="font-size:18px">🤩</span><span class="slider-val" id="exp-actual-v">3</span></div>
         <div class="predict-lbl" style="margin-top:10px">O que você notou? (o que aconteceu de verdade)</div>
@@ -1831,6 +1843,7 @@ function openPredict(expId){
     <div class="slider-row"><span style="font-size:18px">😐</span><input type="range" id="exp-pred-${expId}" min="1" max="5" value="2" step="1" oninput="document.getElementById('exp-pred-v-${expId}').textContent=this.value"><span style="font-size:18px">🤩</span><span class="slider-val" id="exp-pred-v-${expId}">2</span></div>
     <div class="predict-lbl" style="margin-top:10px">O que você acha que vai acontecer? (opcional)</div>
     <textarea id="exp-note-${expId}" placeholder="Ex.: vou me sentir boba, não vai dar em nada, a pessoa vai estranhar..."></textarea>
+    ${window.PeaApoio ? PeaApoio.quandoOnde('exp-'+expId) + PeaApoio.porQue('Um experimento é uma pergunta, não uma prova. Fazer uma pequena parte, e prever antes, mostra o que acontece de verdade com as crenças que bloqueiam a alegria. Você escolhe se, quando e como.') + PeaApoio.apoio('um experimento de bem-estar') : ''}
     <div class="lab-actions">
       <button class="lab-btn" onclick="startExperiment('${expId}')">Ativar experimento 🧪</button>
       <button class="lab-btn ghost" onclick="renderLab()">Cancelar</button>
@@ -1842,9 +1855,10 @@ function openPredict(expId){
 function startExperiment(expId){
   const predicted = parseInt(document.getElementById('exp-pred-'+expId)?.value||2);
   const note = (document.getElementById('exp-note-'+expId)?.value||'').trim();
+  const qo = window.PeaApoio ? PeaApoio.lerQuandoOnde('exp-'+expId) : { frase:'' };
   D.experiments.push({
     id: Date.now().toString(), expId, ts: Date.now(), date: today(),
-    predicted, predictNote: note, status:'active',
+    predicted, predictNote: note, plan: qo.frase, status:'active',
     actual: null, noticed: null, tsDone: null,
   });
   save();
@@ -1943,7 +1957,6 @@ function renderProgress(){
   const el=document.getElementById('progress-content');
   const lv=getLevel(D.xp), pct=getLevelPct(D.xp);
   const doneMods=MODULES.filter(m=>D.moduleProgress[m.id]?.done);
-  const totalXP=MODULES.reduce((a,m)=>a+m.xp,0);
 
   const badgesHTML=ALL_BADGES.map(b=>{
     const earned=D.badges.includes(b.id);
@@ -1970,8 +1983,8 @@ function renderProgress(){
     const savored=D.entries.filter(e=>(e.savoring||[]).some(s=>s!=='Ainda não saboreei')).length;
     const pctS=Math.round(savored/D.entries.length*100);
     insights.push({c:'l',t:'🍯 Taxa de saboreio',b:`Em <strong>${pctS}% dos momentos</strong> você fez algo para amplificar a experiência. Saborear é o multiplicador do notar.`});
-    const streak=calcStreak();
-    if(streak>0) insights.push({c:'',t:'🔥 Sequência atual',b:`<strong>${streak} dia${streak!==1?'s':''}</strong> de registro consecutivo. A constância rega mais que a intensidade.`});
+    const dp=diasComPratica();
+    if(dp>0) insights.push({c:'',t:'🗓️ Dias com prática',b:`<strong>${dp} dia${dp!==1?'s':''}</strong> com registro nas últimas 4 semanas. Cada dia conta, e os intervalos fazem parte do cultivo.`});
   }
   // experimentos
   const expDone = D.experiments.filter(e=>e.status==='done');
@@ -1988,16 +2001,15 @@ function renderProgress(){
     const practicedWeeks = new Set(D.doseRecords.map(r=>r.weekStart)).size;
     insights.push({c:'l',t:'🌱 Dose cultivada',b:`Semanas com prática registrada: <strong>${practicedWeeks} de ${totalWeeks}</strong> desde o início. A dose que importa é a praticada, não a recebida.`});
   }
-  insights.push({c:'s',t:'📚 Canteiros cultivados',b:`<strong>${doneMods.length} de ${MODULES.length}</strong> módulos concluídos · <strong>${D.xp} de ${totalXP} XP</strong> totais conquistados.`});
+  insights.push({c:'s',t:'📚 Canteiros cultivados',b:`<strong>${doneMods.length} de ${MODULES.length}</strong> módulos concluídos, no seu tempo.`});
 
   el.innerHTML=
     `<div class="xp-wrap" style="margin:0 16px 12px">
       <div class="xp-head">
-        <span class="xp-level">${lv.emoji} Nível ${lv.n} — ${lv.name}</span>
-        <span class="xp-val">${D.xp} XP</span>
+        <span class="xp-level">${lv.emoji} Seu jardim hoje: ${lv.name}</span>
       </div>
       <div class="xp-bar-bg"><div class="xp-bar" style="width:${pct}%"></div></div>
-      <div class="xp-label" style="margin-top:5px">${lv.n<5?'Para o próximo nível: '+(LEVELS[lv.n].min-D.xp)+' XP restantes':'🌳 Nível máximo!'}</div>
+      <div class="xp-label" style="margin-top:5px">Um retrato do que já foi cultivado, no seu ritmo. Não é uma nota.</div>
     </div>
     <div class="card">
       <div class="card-lbl">Momentos positivos — 7 dias</div>
@@ -2011,7 +2023,7 @@ function renderProgress(){
     ${insights.map(i=>`<div class="insight-c ${i.c}"><div class="insight-t">${i.t}</div><div class="insight-b">${i.b}</div></div>`).join('')}
     <div class="sdiv">Seus registros</div>
     <div id="p-registros" style="margin:0 16px 12px"></div>
-    <div class="sdiv">Conquistas</div>
+    <div class="sdiv">Marcas do caminho</div>
     <div class="card"><div class="badge-shelf">${badgesHTML}</div></div>
     <div class="sdiv">Exportar</div>
     <button class="btn ghost-mint" onclick="exportHTML()">Baixar relatório (HTML)</button>
@@ -2137,7 +2149,7 @@ table{width:100%;border-collapse:collapse;background:white;border-radius:12px;ov
   <div class="stat"><div class="stat-n">${avg}</div><div class="stat-l">intensidade média (1-5)</div></div>
   <div class="stat"><div class="stat-n">${felt.size}/10</div><div class="stat-l">repertório de emoções</div></div>
   <div class="stat"><div class="stat-n">${expDone.length}</div><div class="stat-l">experimentos concluídos</div></div>
-  <div class="stat"><div class="stat-n">${D.xp}</div><div class="stat-l">XP · Nível ${lv.n} ${lv.name}</div></div>
+  <div class="stat"><div class="stat-n">${lv.emoji}</div><div class="stat-l">seu jardim hoje: ${lv.name}</div></div>
   <div class="stat"><div class="stat-n">${doneMods.length}/${MODULES.length}</div><div class="stat-l">módulos concluídos</div></div>
 </div>
 ${doneMods.length?`<h2>Módulos concluídos</h2><div class="ins"><div class="ins-b">${doneMods.map(m=>`<span class="pill">${m}</span>`).join('')}</div></div>`:''}
@@ -2334,12 +2346,12 @@ function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg
 /* ══════════════════════════════════
    NUDGES COMPORTAMENTAIS (home)
    Prioridade: pré-teste pendente > experimento ativo >
-   retorno após pausa (autocompaixão) > módulo a meio (Zeigarnik) > streak
+   retorno após pausa (autocompaixão) > módulo a meio (Zeigarnik) > dias com prática
    ══════════════════════════════════ */
 function renderNudge(){
   const el = document.getElementById('h-nudge');
   if(!el) return;
-  const streak = calcStreak();
+  const dp = diasComPratica();
   const lastEntry = D.entries.length ? [...D.entries].sort((a,b)=>b.ts-a.ts)[0] : null;
   const daysSince = lastEntry ? Math.floor((Date.now()-lastEntry.ts)/864e5) : null;
   const halfMod = MODULES.find(m=>{ const mp=D.moduleProgress[m.id]; return mp && !mp.done && mp.steps?.some(Boolean); });
@@ -2403,12 +2415,12 @@ function renderNudge(){
       <button class="nudge-btn" onclick="openModule('${halfMod.id}')">Continuar</button>
     </div>`;
   }
-  // 4. Streak ativo — reforço sem pressão
-  else if(streak >= 2){
+  // 4. Dias com prática — reconhecimento informativo (sem sequência, sem pressão)
+  else if(dp >= 2){
     html = `<div class="nudge amber">
-      <div class="nudge-icon">🔥</div>
-      <div class="nudge-body"><strong>${streak} dias seguidos de cultivo.</strong>
-      A constância — não a perfeição — é o que treina o radar.</div>
+      <div class="nudge-icon">🗓️</div>
+      <div class="nudge-body"><strong>${dp} dias de cultivo nas últimas 4 semanas.</strong>
+      Voltar, no seu ritmo, é o que treina o radar. Os intervalos fazem parte.</div>
     </div>`;
   }
   el.innerHTML = html;
@@ -2422,14 +2434,28 @@ const IFTHEN_PLANS = [
   'Quando terminar algo difícil, vou <strong>reconhecer meu esforço</strong> em uma frase.',
   'Quando alguém me contar uma boa notícia, vou <strong>perguntar mais e comemorar junto</strong>.',
 ];
+let _planAtual = '';
+/* Guarda o plano com "quando e onde" (opcional) só neste aparelho; COM-B: oportunidade e pista no ambiente */
+function combinarPlano(){
+  const qo = window.PeaApoio ? PeaApoio.lerQuandoOnde('plano') : { quando:'', onde:'', frase:'' };
+  if(qo.frase){
+    D.plans.push({ ts:Date.now(), plano:_planAtual.replace(/<[^>]+>/g,''), quando:qo.quando, onde:qo.onde });
+    save();
+    toast('Plano guardado. '+qo.frase);
+  }
+  closeModal();
+}
 function maybeShowIfThen(){
   if(D.entries.length % 3 !== 1) return;
   const plan = IFTHEN_PLANS[Math.floor(Math.random()*IFTHEN_PLANS.length)];
+  _planAtual = plan;
   document.getElementById('modal-title').textContent = '🌱 Um plano para amanhã';
   document.getElementById('modal-body').innerHTML =
-    plan + '<br><br><span style="font-size:12px;color:var(--light)">Planos "quando-então" duplicam a chance de agir no momento certo (Gollwitzer, 1999).</span>';
+    plan + '<br><br><span style="font-size:12px;color:var(--light)">Planos "quando-então" duplicam a chance de agir no momento certo (Gollwitzer, 1999). Se este não combina com você, é só fechar.</span>'
+    + (window.PeaApoio ? PeaApoio.quandoOnde('plano') : '');
   document.getElementById('modal-actions').innerHTML =
-    '<button class="btn mint" onclick="closeModal()">Combinado 🤝</button>';
+    '<button class="btn mint" onclick="combinarPlano()">Combinado 🤝</button>'
+    + '<button class="btn ghost" onclick="closeModal()">Agora não</button>';
   document.getElementById('modal-ov').classList.add('on');
 }
 

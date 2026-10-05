@@ -1,0 +1,16 @@
+/* apoio.css — "Por que isso?", "Quando e onde?" e "Pessoa de apoio" (camada compartilhada; ver apoio.js). */
+.pea-porque, .pea-apoio, .pea-qo { margin: 14px 0; border: 1px solid rgba(63,67,75,.16); border-radius: 14px; background: color-mix(in srgb, var(--mint-l, #E6EFEA) 45%, white); color: var(--graphite, #3F434B);
+  font: 400 14px/1.55 var(--font, 'Nunito Sans', system-ui, sans-serif); text-align: left; }
+.pea-porque > summary, .pea-apoio > summary { cursor: pointer; padding: 12px 14px; min-height: 44px; box-sizing: border-box; font-weight: 800; font-size: 13.5px; color: var(--mint-d, var(--primary-d, #3D5A52)); }
+.pea-porque > summary:focus-visible, .pea-apoio > summary:focus-visible { outline: 3px solid var(--mint, var(--primary, #5E7D73)); outline-offset: 2px; border-radius: 12px; }
+.pea-porque > p, .pea-apoio > div { margin: 0; padding: 0 14px 14px; }
+.pea-porque small { display: block; margin-top: 8px; color: var(--muted, #6B7280); font-size: 12.5px; }
+.pea-qo { padding: 12px 14px; }
+.pea-qo b { display: block; margin-bottom: 8px; font-size: 13.5px; color: var(--mint-d, var(--primary-d, #3D5A52)); }
+.pea-qo label, .pea-apoio label { display: block; margin: 8px 0 4px; font-size: 12.5px; font-weight: 700; color: var(--muted, #6B7280); }
+.pea-qo input, .pea-apoio input, .pea-apoio textarea { width: 100%; box-sizing: border-box; min-height: 44px; padding: 10px 12px; border-radius: 10px; border: 1.5px solid rgba(63,67,75,.22);
+  font: inherit; color: inherit; background: #fff; }
+.pea-qo input:focus-visible, .pea-apoio input:focus-visible, .pea-apoio textarea:focus-visible { outline: 3px solid var(--mint, var(--primary, #5E7D73)); outline-offset: 1px; }
+.pea-apoio textarea { min-height: 84px; resize: vertical; }
+.pea-apoio button { min-height: 44px; margin-top: 10px; padding: 10px 16px; border: 1.5px solid rgba(63,67,75,.22); border-radius: 12px; background: #fff; cursor: pointer; font: 800 13.5px var(--font, system-ui); color: var(--mint-d, var(--primary-d, #3D5A52)); }
+.pea-apoio .pea-apoio-ok { margin: 8px 0 0; padding: 0; font-size: 12.5px; color: var(--muted, #6B7280); min-height: 1.2em; }

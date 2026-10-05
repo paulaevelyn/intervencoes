@@ -1197,10 +1197,18 @@ document.addEventListener('DOMContentLoaded', function () {
       });
     });
     el.ifthenInput.value = state.ifThenPlan || '';
+    // Autonomia, "quando e onde" e pessoa de apoio (shared/apoio.js), se já carregado
+    var extra = document.getElementById('ifthen-extra');
+    if (extra && window.PeaApoio) {
+      extra.innerHTML = PeaApoio.porQue('Um lembrete simples, ligado a um momento do seu dia, ajuda a lembrar de nomear a emoção sem depender de força de vontade. Você escolhe o sinal e o jeito.') +
+        PeaApoio.quandoOnde('matiz-plano') + PeaApoio.apoio('nomear minhas emoções');
+    }
   }
 
   el.ifthenContinueBtn.addEventListener('click', function () {
     state.ifThenPlan = el.ifthenInput.value.trim();
+    var qo = window.PeaApoio ? PeaApoio.lerQuandoOnde('matiz-plano') : { frase: '' };
+    if (state.ifThenPlan && qo.frase) state.ifThenPlan += ' (' + qo.frase + ')';
     finalizeResult();
   });
   el.ifthenSkipBtn.addEventListener('click', function () {
@@ -1229,7 +1237,7 @@ document.addEventListener('DOMContentLoaded', function () {
       deltaHtml = '<p class="science-note">Sua autopercepção mudou em ' + (d1 >= 0 ? '+' + d1 : d1) + ' ponto(s) na questão 1 e ' + (d2 >= 0 ? '+' + d2 : d2) + ' ponto(s) na questão 2, comparado ao início. Isso não é um diagnóstico — é só um retrato de como você se percebeu hoje.</p>';
     }
     el.resultDelta.innerHTML = deltaHtml;
-    // Progresso (calculado dos registros): mostra o nível e o XP depois do check-in.
+    // Progresso (calculado dos registros): mostra a etapa do mapa depois do check-in.
     if (window.MatizProgresso) MatizProgresso.resumo(document.getElementById('matiz-xp-resultado'));
     showScreen('result');
   }

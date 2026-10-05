@@ -49,6 +49,11 @@ const TEM_PESQUISA = eu.dataset.pesquisa !== 'nao';
     document.head.appendChild(css);
     const js = document.createElement('script'); js.src = new URL('bemestar.js', base).href; js.defer = true;
     document.head.appendChild(js);
+    // "Por que isso?", "Quando e onde?" e "Pessoa de apoio" (shared/apoio.*)
+    const css2 = document.createElement('link'); css2.rel = 'stylesheet'; css2.href = new URL('apoio.css', base).href;
+    document.head.appendChild(css2);
+    const js2 = document.createElement('script'); js2.src = new URL('apoio.js', base).href; js2.defer = true;
+    document.head.appendChild(js2);
   } catch (e) { console.warn('[auth] bem-estar digital indisponível', e); }
 })();
 function botaoAjustes() {

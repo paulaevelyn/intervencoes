@@ -26,7 +26,8 @@ const K = {
   rate:  'depressao_app_ratings',          // { 'AAAA-MM-DD': { idAtividade: { p, m, ts } } }  prazer e domínio, 0–10
   val:   'depressao_app_valores',          // { atualizado, dominios: { id: { imp, cons, texto } } }
   trap:  'depressao_app_trap',             // [ { id, ts, date, gatilho, resposta, evitacao, custo, alternativa, atividade } ]
-  task:  'depressao_app_tarefas'           // [ { id, ts, date, titulo, passos:[{t,feito}], concluida } ]
+  task:  'depressao_app_tarefas',          // [ { id, ts, date, titulo, passos:[{t,feito}], concluida } ]
+  qo:    'depressao_app_quando_onde'       // { 'AAAA-MM-DD': { idAtividade: { quando, onde, frase } } }  plano opcional "quando e onde"
 };
 const MOODS = [
   { v: 1, e: '😞', l: 'Muito baixo' }, { v: 2, e: '😔', l: 'Baixo' }, { v: 3, e: '😐', l: 'Neutro' },
@@ -54,6 +55,10 @@ function wr(k, v) {
 const getMood = () => rd(K.mood, {});
 const getLog = () => rd(K.log, {});
 const getSched = () => rd(K.sched, {});
+const getQO = () => rd(K.qo, {});
+/* "Por que isso?" e pessoa de apoio (shared/apoio.js; carregado por auth.js, então checamos antes de usar) */
+const pq = txt => window.PeaApoio ? PeaApoio.porQue(txt) : '';
+const apoio = ctx => window.PeaApoio ? PeaApoio.apoio(ctx) : '';
 const getGrat = () => rd(K.grat, {});
 const getEsc = () => rd(K.esc, {});
 
@@ -78,6 +83,26 @@ function toggleSched(id, date) {
   const i = s[d].indexOf(id); if (i >= 0) s[d].splice(i, 1); else s[d].push(id);
   wr(K.sched, s);
 }
+/* Programar para hoje com "Quando e onde você vai fazer?" (opcional). Tirar da lista é direto, sem pergunta. */
+let _qoPend = null;
+function planejar(id, depois) {
+  const d = today();
+  if ((getSched()[d] || []).indexOf(id) >= 0 || !window.PeaApoio) { toggleSched(id); if (depois) depois(); return; }
+  const a = activityById(id); if (!a) return;
+  _qoPend = { id, depois };
+  showModal('Quando e onde?', `<p style="margin:0 0 6px">Para "${esc(a.label)}". Dizer quando e onde ajuda a atividade a caber no dia. É opcional, e você pode mudar de ideia.</p>` + PeaApoio.quandoOnde('aurora'),
+    `<button class="btn" onclick="planejarOk(false)">Programar</button><button class="btn ghost" onclick="planejarOk(true)">Programar sem detalhes</button>`);
+}
+function planejarOk(sem) {
+  if (!_qoPend) { closeModal(); return; }
+  const { id, depois } = _qoPend; _qoPend = null;
+  const qo = !sem && window.PeaApoio ? PeaApoio.lerQuandoOnde('aurora') : { frase: '' };
+  toggleSched(id);
+  if (qo.frase) { const m = getQO(), d = today(); m[d] = m[d] || {}; m[d][id] = { quando: qo.quando, onde: qo.onde, frase: qo.frase }; wr(K.qo, m); }
+  closeModal(); toast(qo.frase ? 'Na sua lista de hoje. ' + qo.frase : 'Adicionado à sua lista de hoje.');
+  if (depois) depois();
+}
+function qoLinha(id) { const q = (getQO()[today()] || {})[id]; return q && q.frase ? `<div class="as-note" style="margin-top:4px">${esc(q.frase)}</div>` : ''; }
 function toggleDone(id, date) {
   const d = date || today(), l = getLog(); l[d] = l[d] || [];
   const i = l[d].indexOf(id);
@@ -188,10 +213,11 @@ function renderStep() {
   const jaProg = (getSched()[today()] || []).indexOf(a.id) >= 0;
   el.innerHTML = `<div class="step-card"><div class="st-lbl">Um passo pequeno para hoje</div>
     <div class="st-t">${esc(a.label)}</div><div class="st-m">${cat.emoji} ${esc(cat.label)} · ${esc(a.duration)}</div>
+    ${pq('Passos de poucos minutos baixam a barreira para começar. Muitas vezes o humor melhora depois de agir, e não antes. É um convite: pode trocar a ideia, adiar ou ignorar.')}
     ${jaProg ? '<button class="btn ghost" disabled style="opacity:.7">Já está na sua lista de hoje ✓</button>' : `<button class="btn" onclick="stepAdd('${a.id}')">Programar para hoje</button>`}
     <button class="btn ghost" style="margin:8px 0 0" onclick="stepOther()">Outra ideia</button></div>`;
 }
-function stepAdd(id) { toggleSched(id); toast('Adicionado à sua lista de hoje.'); renderHome(); }
+function stepAdd(id) { planejar(id, renderHome); }
 function stepOther() { _stepOffset++; renderStep(); }
 
 function renderToday() {
@@ -208,7 +234,7 @@ function actRow(id, isDone, fn) {
   const a = activityById(id); if (!a) return '';
   const c = CATEGORIES[a.category];
   return `<div class="act${isDone ? ' done' : ''}"><button class="act-ck" aria-label="${isDone ? 'Desmarcar' : 'Marcar como feito'}: ${esc(a.label)}" onclick="${fn}('${id}')">${isDone ? '✓' : ''}</button>
-    <div class="act-body"><div class="act-t">${esc(a.label)}</div><div class="act-meta"><span class="act-cat">${c.emoji} ${esc(c.label)}</span><span>${esc(a.duration)}</span></div>${ratingLinkHTML(id, isDone)}</div></div>`;
+    <div class="act-body"><div class="act-t">${esc(a.label)}</div><div class="act-meta"><span class="act-cat">${c.emoji} ${esc(c.label)}</span><span>${esc(a.duration)}</span></div>${qoLinha(id)}${ratingLinkHTML(id, isDone)}</div></div>`;
 }
 
 function renderMoodChart() {
@@ -239,7 +265,7 @@ function renderActivate() {
     return `<div class="act${isDone ? ' done' : ''}">
       <button class="act-ck" aria-label="${isDone ? 'Desmarcar' : 'Marcar como feito'}: ${esc(a.label)}" onclick="actDone('${a.id}')">${isDone ? '✓' : ''}</button>
       <div class="act-body"><div class="act-t">${esc(a.label)}</div>
-        <div class="act-meta"><span class="act-cat">${c.emoji} ${esc(c.label)}</span><span>${esc(a.duration)}</span></div>
+        <div class="act-meta"><span class="act-cat">${c.emoji} ${esc(c.label)}</span><span>${esc(a.duration)}</span></div>${isSched ? qoLinha(a.id) : ''}
         <button class="act-why" aria-expanded="${open}" onclick="toggleWhy('${a.id}')">Por que funciona?</button>${isDone ? '<br>' + ratingLinkHTML(a.id, true) : ''}
         ${open ? `<div class="act-ev">${esc(a.evidence)}</div>` : ''}</div>
       <button class="act-plus${isSched ? ' on' : ''}" aria-pressed="${isSched}" onclick="actSched('${a.id}')">${isSched ? 'Na lista' : '+ Hoje'}</button></div>`;
@@ -248,7 +274,7 @@ function renderActivate() {
 function setFilter(k) { _aFilter = k; renderActivate(); }
 function toggleOnlyToday() { _aOnlyToday = !_aOnlyToday; renderActivate(); }
 function toggleWhy(id) { if (_aOpen.has(id)) _aOpen.delete(id); else _aOpen.add(id); renderActivate(); }
-function actSched(id) { toggleSched(id); renderActivate(); }
+function actSched(id) { planejar(id, renderActivate); }
 function actDone(id) { const f = toggleDone(id); if (f) { toast('Feito. Isso conta!'); renderActivate(); askRating(id); } else renderActivate(); }
 
 /* ═══════════════ REGISTRAR (humor + 3 coisas boas) ═══════════════ */
@@ -263,6 +289,7 @@ function renderDiary() {
   const gSaved = g && g.items && g.items.some(x => x && x.trim());
 
   $('d-form').innerHTML = `
+    ${isToday ? pq('Notar o humor e três coisas boas, mesmo pequenas, ajuda o cérebro a enxergar também o que vai bem e mostra padrões ao longo dos dias. Não existe humor certo, e você pode registrar só uma parte.') : ''}
     ${!isToday ? `<div class="insight-c l" style="margin:0 0 12px"><div class="insight-t">${esc(fmtDay(_dDate, true))}</div><div class="insight-b">Você está vendo um dia anterior. <a href="#" onclick="event.preventDefault();pickDay('${t}')" style="color:var(--mint-d);font-weight:800">Voltar para hoje</a></div></div>` : ''}
     <div class="card"><div class="card-lbl">📓 Humor${isToday ? '' : ' desse dia'}</div>
       <div class="mood-row" role="radiogroup" aria-label="Humor">${MOODS.map(x => `<button class="mood-btn" role="radio" aria-checked="${_dRating === x.v}" ${isToday ? `onclick="dMood(${x.v})"` : 'disabled'}><span class="mo-e">${x.e}</span><span class="mo-l">${x.l}</span></button>`).join('')}</div>
@@ -438,7 +465,7 @@ function openModal(id) {
   }
 }
 function deleteAll() {
-  [K.mood, K.log, K.sched, K.grat, K.esc, K.rate, K.val, K.trap, K.task].forEach(k => { try { localStorage.removeItem(k); } catch (e) { /* ok */ } });
+  [K.mood, K.log, K.sched, K.grat, K.esc, K.rate, K.val, K.trap, K.task, K.qo].forEach(k => { try { localStorage.removeItem(k); } catch (e) { /* ok */ } });
   closeModal(); toast('Dados apagados deste aparelho.'); goTo('home');
 }
 let _installPrompt = null;
@@ -515,6 +542,7 @@ function renderTasks() {
       ${_tDraft.passos.map((p, i) => `<div class="g-field"><span>${i + 1}.</span><input type="text" id="t-p${i}" maxlength="100" value="${esc(p)}" placeholder="${i === 0 ? 'Um primeiro passo bem pequeno' : 'Próximo passo'}" aria-label="Passo ${i + 1}"></div>`).join('')}
       <button class="btn ghost" style="margin:0 0 10px" onclick="tAddStep()" ${_tDraft.passos.length >= 8 ? 'disabled' : ''}>+ Adicionar passo</button>
       <div class="as-note" style="margin-bottom:10px"><strong>Exemplo — tomar banho:</strong> 1. Pegar a toalha. 2. Ligar o chuveiro. 3. Entrar e lavar só o rosto. 4. Lavar o resto, no seu tempo.</div>
+      ${apoio('uma tarefa que está pesada')}
       <button class="btn" onclick="tSave()">Salvar tarefa</button><button class="btn ghost" style="margin-top:8px" onclick="tCancel()">Cancelar</button></div>`;
   } else {
     h += `<button class="btn" onclick="tNew()">+ Nova tarefa</button>`;
@@ -583,6 +611,7 @@ function renderTrap() {
       <textarea class="d-note" id="tr-f" maxlength="400" placeholder="${esc(p.ph)}" aria-label="${esc(p.pergunta)}">${esc(_tr[p.campo])}</textarea>
       ${p.extra ? `<label class="form-lbl" for="tr-x" style="margin-top:12px">${esc(p.extra.rotulo)}</label><textarea class="d-note" id="tr-x" maxlength="300" placeholder="${esc(p.extra.ph)}">${esc(_tr[p.extra.campo])}</textarea>` : ''}
       ${p.atividade ? `<label class="form-lbl" for="tr-a" style="margin-top:12px">Quer ligar isso a uma atividade da lista? (opcional)</label><select id="tr-a" class="demo-input" style="width:100%"><option value="">Nenhuma por ora</option>${ACTIVITIES.map(a => `<option value="${a.id}" ${_tr.atividade === a.id ? 'selected' : ''}>${esc(a.label)}</option>`).join('')}</select>` : ''}
+      ${pq('Olhar para o padrão, sem se julgar, é o primeiro passo para ter mais escolha sobre ele. Você pode escrever pouco, e pode parar a qualquer momento.')}${_tr.passo === TR_PASSOS.length - 1 ? apoio('um padrão que estou notando') : ''}
       <button class="btn" style="margin-top:12px" onclick="trNext()">${_tr.passo < TR_PASSOS.length - 1 ? 'Continuar' : 'Salvar'}</button>
       ${_tr.passo > 0 ? '<button class="btn ghost" style="margin-top:8px" onclick="trBack()">Voltar</button>' : ''}<button class="btn ghost" style="margin-top:8px" onclick="trCancel()">Cancelar</button></div>`;
     return;
@@ -612,7 +641,7 @@ function trNext() {
   wr(K.trap, l); const at = _tr.atividade; _tr = null; toast('Análise salva. Notar o padrão já é um passo.');
   if (at && (getSched()[today()] || []).indexOf(at) < 0) {
     showModal('Programar para hoje?', `Você ligou a sua saída a "${esc(activityById(at).label)}". Quer colocar essa atividade na sua lista de hoje?`,
-      `<button class="btn" onclick="toggleSched('${at}');closeModal();toast('Adicionado à sua lista de hoje.');renderTrap()">Sim, programar</button><button class="btn ghost" onclick="closeModal()">Agora não</button>`);
+      `<button class="btn" onclick="planejar('${at}', renderTrap)">Sim, programar</button><button class="btn ghost" onclick="closeModal()">Agora não</button>`);
   }
   renderTrap(); window.scrollTo(0, 0);
 }
@@ -635,6 +664,7 @@ function renderValues() {
       <label class="form-lbl" for="v-${d.id}-t">O que isso significa para mim (opcional)</label>
       <input class="d-note" style="min-height:0" type="text" id="v-${d.id}-t" maxlength="140" value="${esc(x.texto || '')}" oninput="vText('${d.id}',this.value)" placeholder="Em uma frase"></div>`;
   }).join('');
+  h += pq('Atividades ligadas ao que importa para você tendem a motivar mais do que atividades feitas por obrigação. Aqui não há resposta certa: é só uma bússola sua.') + apoio('o que importa para mim');
   h += `<button class="btn" onclick="vSave()">Salvar meus valores</button>`;
   if (sv.atualizado) h += `<div class="as-note" style="margin-top:8px">Última atualização: ${esc(fmtDay(sv.atualizado.slice(0, 10)))}. Vale revisar de tempos em tempos.</div>` + valuesSummary(sv.dominios);
   el.innerHTML = h;

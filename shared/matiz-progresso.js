@@ -7,17 +7,17 @@
    MatizProgresso.calcular(estado) -> { xp, nivel, pct, faltam, medalhas[] }
    MatizProgresso.estadoLocal()    -> estado lido do localStorage
    MatizProgresso.render(estado)   -> HTMLElement (cartão completo)
-   MatizProgresso.resumo(el)       -> escreve o resumo curto (nível + XP) em `el`
+   MatizProgresso.resumo(el)       -> escreve o resumo curto (etapa do mapa) em `el`
    Todo texto entra por textContent. */
 (function (global) {
   'use strict';
 
   var NIVEIS = [
-    { n: 1, nome: 'Curioso/a',    emoji: '🌱', min: 0,   max: 60 },
-    { n: 2, nome: 'Explorador/a', emoji: '🔍', min: 60,  max: 150 },
-    { n: 3, nome: 'Praticante',   emoji: '🌿', min: 150, max: 280 },
-    { n: 4, nome: 'Especialista', emoji: '⭐', min: 280, max: 450 },
-    { n: 5, nome: 'Mestre/a',     emoji: '🏆', min: 450, max: 99999 }
+    { n: 1, nome: 'Primeiros traços', emoji: '✏️', min: 0,   max: 60 },
+    { n: 2, nome: 'Contornos',        emoji: '🗺️', min: 60,  max: 150 },
+    { n: 3, nome: 'Tons nomeados',    emoji: '🎨', min: 150, max: 280 },
+    { n: 4, nome: 'Mapa em cores',    emoji: '🌈', min: 280, max: 450 },
+    { n: 5, nome: 'Mapa vivo',        emoji: '🌿', min: 450, max: 99999 }
   ];
 
   var XP = { checkin: 10, familia: 3, plano: 5, palavra: 4, dose: 5, escala: 15 };
@@ -57,10 +57,10 @@
       { id: 'fam5',  emoji: '🎨', nome: 'Nomeando tons',      desc: 'Nomeou a família da emoção 5 vezes',    ganha: comFamilia >= 5 },
       { id: 'plano3',emoji: '🧭', nome: 'Com um plano',       desc: '3 planos “quando… então…”',             ganha: comPlano >= 3 },
       { id: 'voc3',  emoji: '📖', nome: 'Vocabulário próprio', desc: '3 palavras suas na Biblioteca',        ganha: vocab >= 3 },
-      { id: 'sem4',  emoji: '📅', nome: 'Constância',         desc: 'Check-ins em 4 semanas diferentes',     ganha: Object.keys(semanas).length >= 4 },
+      { id: 'sem4',  emoji: '📅', nome: 'Voltando ao mapa',   desc: 'Check-ins em 4 semanas diferentes',     ganha: Object.keys(semanas).length >= 4 },
       { id: 'dose3', emoji: '⚓', nome: 'Prática semanal',    desc: '3 semanas com prática registrada',      ganha: doses.length >= 3 },
       { id: 'esc',   emoji: '📋', nome: 'Olhar para si',      desc: 'Respondeu ao questionário',             ganha: temPre },
-      { id: 'xp300', emoji: '⭐', nome: 'Dedicado/a',         desc: 'Chegou a 300 XP',                       ganha: xp >= 300 }
+      { id: 'xp300', emoji: '⭐', nome: 'Mapa cuidado',       desc: 'Muitos registros feitos',                       ganha: xp >= 300 }
     ];
 
     return { xp: xp, nivel: niv, pct: pct, faltam: niv.n < 5 ? niv.max - xp : 0, medalhas: medalhas };
@@ -71,11 +71,10 @@
   function render(estado) {
     var r = calcular(estado), raiz = h('div', 'mp');
     var topo = h('div', 'mp-topo');
-    topo.appendChild(h('span', 'mp-nivel', r.nivel.emoji + ' Nível ' + r.nivel.n + ' · ' + r.nivel.nome));
-    topo.appendChild(h('span', 'mp-xp', r.xp + ' XP'));
+    topo.appendChild(h('span', 'mp-nivel', r.nivel.emoji + ' Seu mapa hoje: ' + r.nivel.nome));
     raiz.appendChild(topo);
     var trilho = h('div', 'mp-trilho'), fill = h('div', 'mp-fill'); fill.style.width = r.pct + '%'; trilho.appendChild(fill); raiz.appendChild(trilho);
-    raiz.appendChild(h('p', 'mp-prox', r.nivel.n < 5 ? 'Faltam ' + r.faltam + ' XP para o próximo nível.' : 'Nível máximo. Obrigado por cuidar do seu mapa.'));
+    raiz.appendChild(h('p', 'mp-prox', 'Um retrato do que você já registrou, no seu ritmo. Isso conta; não é uma nota.'));
     var prat = h('div', 'mp-medalhas');
     r.medalhas.forEach(function (m) {
       var it = h('div', 'mp-med' + (m.ganha ? ' on' : ''));
@@ -85,14 +84,14 @@
       prat.appendChild(it);
     });
     raiz.appendChild(prat);
-    raiz.appendChild(h('p', 'mp-nota', 'Pontos e medalhas só medem o quanto você usou o Matiz. Eles não dizem nada sobre o quanto você sente ou acerta.'));
+    raiz.appendChild(h('p', 'mp-nota', 'Estas marcas só reconhecem o quanto você usou o Matiz. Elas não dizem nada sobre o quanto você sente ou acerta, e nada aqui se perde por pausar.'));
     return raiz;
   }
 
   function resumo(el) {
     if (!el) return;
     var r = calcular(estadoLocal());
-    el.textContent = r.nivel.emoji + ' Nível ' + r.nivel.n + ' · ' + r.nivel.nome + ' · ' + r.xp + ' XP';
+    el.textContent = r.nivel.emoji + ' Seu mapa hoje: ' + r.nivel.nome;
   }
 
   global.MatizProgresso = { calcular: calcular, estadoLocal: estadoLocal, render: render, resumo: resumo, NIVEIS: NIVEIS, XP: XP };
