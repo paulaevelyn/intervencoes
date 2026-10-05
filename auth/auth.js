@@ -55,6 +55,7 @@ let overlay = null;
 let botaoConta = null;
 let ultimoSnap = '';
 let enviando = false;
+let podeEnviar = false;
 let aguardandoSenha = false;
 const raiz = document.documentElement;
 
@@ -268,11 +269,7 @@ function mostrarPainelConta() {
     area, fechar, recado);
 
   fechar.addEventListener('click', fecharOverlay);
-  sairBtn.addEventListener('click', async function () {
-    sairBtn.disabled = true;
-    await enviar(true);
-    await sb.auth.signOut();
-  });
+  sairBtn.addEventListener('click', function () { sairDaConta(sairBtn); });
 
   baixar.addEventListener('click', async function () {
     baixar.disabled = true;
@@ -348,7 +345,9 @@ function marcarEstado(estado, texto) {
 }
 
 async function enviar(forcar) {
-  if (!sb || !usuario || enviando) return;
+  // Só envia depois de ter conferido a conta com sucesso: sem isso, uma falha
+  // de leitura poderia levar este aparelho a sobrescrever o que já estava lá.
+  if (!sb || !usuario || enviando || !podeEnviar) return;
   const snap = lerSnap();
   if (!snap || (!forcar && snap === ultimoSnap)) return;
   enviando = true;
@@ -386,14 +385,18 @@ async function sincronizarEntrada() {
 
   // Dados locais de outra conta: descartar antes de qualquer coisa.
   if (dono && dono !== usuario.id) { limparLocal(); }
-  const localValido = !dono || dono === usuario.id;
-  const snapLocal = localValido ? lerSnap() : '';
-  const pendente = localValido && snapLocal && snapLocal !== (meta.snap || '');
+  // "Pendente" só existe num aparelho que JÁ sincronizou com esta conta: aí dá
+  // para saber o que mudou desde a última vez. Num aparelho novo, o app cria
+  // sozinho um estado vazio — isso NÃO é trabalho da pessoa e não pode vencer
+  // o que já está na conta.
+  const jaSincronizou = dono === usuario.id && !!meta.ts;
+  const snapLocal = jaSincronizou ? lerSnap() : '';
+  const pendente = jaSincronizou && snapLocal && snapLocal !== (meta.snap || '');
 
   localStorage.setItem(K_DONO, usuario.id);
 
   if (remoto) {
-    const remotoMaisNovo = !meta.ts || new Date(remoto.atualizado_em) > new Date(meta.ts);
+    const remotoMaisNovo = !jaSincronizou || new Date(remoto.atualizado_em) > new Date(meta.ts);
     if (!pendente && remotoMaisNovo && !jaRecarregou) {
       aplicarRemoto(remoto.valor, remoto.atualizado_em);
       sessionStorage.setItem(K_RELOAD, '1');
@@ -434,6 +437,7 @@ async function seguirEntrada() {
   }
   if (!seguir) return;
 
+  podeEnviar = !falhou;
   liberarApp();
   montarBotaoConta(falhou);
   clearInterval(entrarNoApp.timer);
@@ -442,10 +446,21 @@ async function seguirEntrada() {
 }
 
 function montarBotaoConta(falhou) {
-  if (botaoConta) botaoConta.remove();
+  document.querySelectorAll('.pea-auth-barra').forEach(function (b) { b.remove(); });
   botaoConta = novo('button', { class: 'pea-auth-conta-btn', type: 'button', 'aria-label': 'Minha conta', onclick: mostrarPainelConta });
-  document.body.appendChild(botaoConta);
+  const sairVisivel = novo('button', {
+    class: 'pea-auth-conta-btn', type: 'button', texto: 'Sair', 'aria-label': 'Sair da conta',
+    onclick: function () { sairDaConta(sairVisivel); }
+  });
+  document.body.appendChild(novo('div', { class: 'pea-auth-barra' }, botaoConta, sairVisivel));
   if (falhou) marcarEstado('erro', '⚠ sem sincronizar'); else marcarEstado('ok', '👤 conta');
+}
+
+// Salva o que faltar na conta e só então encerra a sessão.
+async function sairDaConta(botao) {
+  if (botao) { botao.disabled = true; botao.textContent = 'Saindo…'; }
+  await enviar(true);
+  await sb.auth.signOut();
 }
 
 function sairDoApp() {
