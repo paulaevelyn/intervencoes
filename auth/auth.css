@@ -65,3 +65,11 @@ html.pea-auth-carregando body > *:not(#pea-auth-tela):not(#pea-auth-aviso) { dis
 @media (prefers-color-scheme: dark) {
   .pea-auth-conta-btn { color: #A9C9BD; background: rgba(42,47,51,.92); border-color: rgba(255,255,255,.18); }
 }
+
+/* Tela de acesso com dois caminhos */
+.pea-auth-conjunto { width: 100%; max-width: 400px; display: flex; flex-direction: column; gap: 14px; }
+.pea-auth-cartao-2 { background: transparent; box-shadow: none; }
+.pea-auth-cartao-2 .pea-auth-titulo { font-size: 17px; }
+span.pea-auth-conta-btn { cursor: default; }
+
+#pea-auth-tela [hidden] { display: none !important; }

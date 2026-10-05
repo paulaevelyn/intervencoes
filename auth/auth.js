@@ -39,6 +39,11 @@ const NOME = eu.dataset.nome || APP;
 const LOGO = eu.dataset.logo || '';
 const CHAVES = (eu.dataset.storageKeys || '').split(',').map(function (s) { return s.trim(); }).filter(Boolean);
 
+// Cadastro aberto ao público. Mantenha false até ter: SMTP próprio (o e-mail
+// padrão do Supabase tem limite baixo), CAPTCHA no painel e plano Pro.
+const CADASTRO_ABERTO = false;
+
+const K_SEM_CONTA = 'pea_sem_conta_' + APP;
 const K_DONO = 'pea_dono_' + APP;
 const K_SYNC = 'pea_sync_' + APP;
 const K_RELOAD = 'pea_reload_' + APP;
@@ -118,10 +123,27 @@ function esconderApp() {
   raiz.classList.add('pea-auth-carregando');
 }
 
+// Modo sem conta: o app funciona como sempre, só neste aparelho. Nada é enviado
+// pela camada de login; uma barra discreta lembra isso e oferece "Entrar".
+function entrarSemConta() {
+  liberarApp();
+  document.querySelectorAll('.pea-auth-barra').forEach(function (b) { b.remove(); });
+  const entrar = novo('button', {
+    class: 'pea-auth-conta-btn', type: 'button', texto: 'Entrar',
+    onclick: function () {
+      try { localStorage.removeItem(K_SEM_CONTA); } catch (e) { /* ok */ }
+      document.querySelectorAll('.pea-auth-barra').forEach(function (b) { b.remove(); });
+      mostrarTelaAcesso('entrar');
+    }
+  });
+  const aviso = novo('span', { class: 'pea-auth-conta-btn', texto: 'sem conta · só neste aparelho', title: 'Seus registros ficam apenas neste aparelho. Ninguém os vê.' });
+  document.body.appendChild(novo('div', { class: 'pea-auth-barra' }, aviso, entrar));
+}
+
 // ── Entrar / recuperar ──────────────────────────────────────────────
 function mostrarTelaAcesso(modoInicial) {
   esconderApp();
-  let modo = modoInicial || 'entrar'; // 'entrar' | 'recuperar'
+  let modo = modoInicial || 'entrar'; // 'entrar' | 'criar' | 'recuperar'
 
   const email = novo('input', { type: 'email', id: 'pea-email', autocomplete: 'email', placeholder: 'voce@email.com' });
   const senha = novo('input', { type: 'password', id: 'pea-senha', autocomplete: 'current-password', placeholder: 'sua senha' });
@@ -131,15 +153,23 @@ function mostrarTelaAcesso(modoInicial) {
   const botao = novo('button', { class: 'pea-auth-btn', type: 'submit' });
   const recado = novo('div', { class: 'pea-auth-recado', hidden: true });
   const alternar = novo('button', { class: 'pea-auth-link', type: 'button' });
+  const linkCriar = novo('button', { class: 'pea-auth-link', type: 'button', texto: 'Criar uma conta' });
 
   function pintar() {
     recado.hidden = true;
     campoSenha.hidden = modo === 'recuperar';
+    senha.autocomplete = modo === 'criar' ? 'new-password' : 'current-password';
+    linkCriar.hidden = !CADASTRO_ABERTO || modo !== 'entrar';
     if (modo === 'entrar') {
-      titulo.textContent = 'Entrar';
-      texto.textContent = 'O acesso é individual. Use o e-mail e a senha da sua conta: seu progresso fica guardado nela e acompanha você em qualquer aparelho.';
+      titulo.textContent = 'Já tenho conta';
+      texto.textContent = 'Entre com o e-mail e a senha da sua conta. Seu progresso fica guardado nela e acompanha você em qualquer aparelho. Se você é paciente da Paula, é aqui que entra com o convite.';
       botao.textContent = 'Entrar';
       alternar.textContent = 'Esqueci minha senha / primeiro acesso';
+    } else if (modo === 'criar') {
+      titulo.textContent = 'Criar conta';
+      texto.textContent = 'Com uma conta, seu progresso fica guardado e acompanha você em outros aparelhos. Só você enxerga o que registra. Use um e-mail e uma senha de pelo menos 6 caracteres.';
+      botao.textContent = 'Criar minha conta';
+      alternar.textContent = 'Voltar para entrar';
     } else {
       titulo.textContent = 'Recuperar acesso';
       texto.textContent = 'Digite o e-mail da sua conta e enviaremos um link para você definir uma senha nova.';
@@ -148,17 +178,30 @@ function mostrarTelaAcesso(modoInicial) {
     }
   }
   alternar.addEventListener('click', function () { modo = modo === 'entrar' ? 'recuperar' : 'entrar'; pintar(); });
+  linkCriar.addEventListener('click', function () { modo = 'criar'; pintar(); });
 
   const form = novo('form', { class: 'pea-auth-cartao' },
     titulo, texto,
     novo('div', { class: 'pea-auth-campo' }, novo('label', { for: 'pea-email', texto: 'E-mail' }), email),
-    campoSenha, botao, alternar, recado);
+    campoSenha, botao, alternar, linkCriar, recado);
+
+  // Segundo caminho: usar sem conta. Nada sai do aparelho.
+  const botaoSemConta = novo('button', { class: 'pea-auth-btn sec', type: 'button', texto: 'Continuar sem conta' });
+  botaoSemConta.addEventListener('click', function () {
+    try { localStorage.setItem(K_SEM_CONTA, '1'); } catch (e) { /* sem armazenamento: vale só nesta visita */ }
+    entrarSemConta();
+  });
+  const cartaoSemConta = novo('div', { class: 'pea-auth-cartao pea-auth-cartao-2' },
+    novo('h2', { class: 'pea-auth-titulo', texto: 'Usar sem conta' }),
+    novo('p', { class: 'pea-auth-texto', texto: 'Você usa o ' + NOME + ' normalmente, mas o que registra fica só neste aparelho. Ninguém vê, nem a Psicoterapia e Afins, e nada acompanha você em outro aparelho. Você pode criar ou usar uma conta depois.' }),
+    botaoSemConta);
+  const conjunto = novo('div', { class: 'pea-auth-conjunto' }, form, cartaoSemConta);
 
   form.addEventListener('submit', async function (ev) {
     ev.preventDefault();
     const e = email.value.trim();
     if (!e) { recadoEm(recado, 'Preencha o e-mail.'); return; }
-    if (modo === 'entrar' && senha.value.length < 6) { recadoEm(recado, 'A senha precisa ter pelo menos 6 caracteres.'); return; }
+    if (modo !== 'recuperar' && senha.value.length < 6) { recadoEm(recado, 'A senha precisa ter pelo menos 6 caracteres.'); return; }
     botao.disabled = true;
     const original = botao.textContent;
     botao.textContent = 'Aguarde…';
@@ -166,6 +209,12 @@ function mostrarTelaAcesso(modoInicial) {
       if (modo === 'entrar') {
         const r = await sb.auth.signInWithPassword({ email: e, password: senha.value });
         if (r.error) throw r.error;
+        try { localStorage.removeItem(K_SEM_CONTA); } catch (x) { /* ok */ }
+      } else if (modo === 'criar') {
+        // O consentimento é pedido na primeira entrada (tela "Antes de começar").
+        const r = await sb.auth.signUp({ email: e, password: senha.value, options: { emailRedirectTo: location.origin + location.pathname } });
+        if (r.error) throw r.error;
+        if (!r.data.session) recadoEm(recado, 'Conta criada. Enviamos um e-mail de confirmação: clique no link e volte para entrar.', 'ok');
       } else {
         const r = await sb.auth.resetPasswordForEmail(e, { redirectTo: location.origin + location.pathname });
         if (r.error) throw r.error;
@@ -179,7 +228,7 @@ function mostrarTelaAcesso(modoInicial) {
     }
   });
 
-  abrirOverlay(form, true);
+  abrirOverlay(conjunto, true);
   pintar();
   if (erroNoLink) {
     recadoEm(recado, erroNoLink[1] === 'otp_expired'
@@ -503,9 +552,15 @@ async function iniciar() {
   const sessao = r.data && r.data.session;
   if (sessao && sessao.user) {
     if (aguardandoSenha) mostrarTelaNovaSenha(); else entrarNoApp(sessao.user);
+  } else if (semContaEscolhido()) {
+    entrarSemConta();
   } else {
     mostrarTelaAcesso('entrar');
   }
+}
+
+function semContaEscolhido() {
+  try { return localStorage.getItem(K_SEM_CONTA) === '1'; } catch (e) { return false; }
 }
 
 iniciar().catch(function (erro) {
