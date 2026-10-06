@@ -1,7 +1,7 @@
 /* Farol — Service Worker
    Offline-first para assets, network-first para HTML.
    Incrementar CACHE_VERSION a cada deploy para forçar atualização. */
-const CACHE_VERSION = 'farol-v9';
+const CACHE_VERSION = 'farol-v11';
 const CORE = [
   './',
   './index.html',

@@ -1191,3 +1191,4 @@ input[type=range]::-moz-range-thumb{
   /* nothing extra needed for toast/celebrate at 1024px+ */
 }
 
+.back-btn{display:inline-block;margin:calc(env(safe-area-inset-top,0px) + 44px) 16px 0;padding:9px 14px;font:700 14px inherit;font-family:inherit;color:var(--mint-d);background:transparent;border:1.5px solid var(--border);border-radius:99px;cursor:pointer;position:relative;z-index:2}
