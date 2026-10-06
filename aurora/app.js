@@ -96,10 +96,16 @@ function daysWithRecord() {
 
 /* ── Navegação ───────────────────────────────────────────────────────── */
 const SCREENS = ['home', 'activate', 'diary', 'feel', 'learn', 'progress', 'assess', 'dados', 'tasks', 'trap', 'values'];
+let _hist = [], _cur = 'home';
+const SUBTELAS = ['tasks', 'trap', 'values', 'assess', 'dados'];
+function voltar() { const p = _hist.pop() || 'home'; _hist.length = Math.min(_hist.length, 5); goTo(p, true); }
 function goTo(s) {
+  if (!arguments[1] && s !== _cur) { _hist.push(_cur); if (_hist.length > 8) _hist.shift(); }
+  _cur = s;
   SCREENS.forEach(id => { $('scr-' + id)?.classList.remove('on'); $('nb-' + id)?.classList.remove('on'); });
   const scr = $('scr-' + s); if (!scr) return;
   scr.classList.add('on');
+  if (SUBTELAS.indexOf(s) >= 0 && !scr.querySelector('.back-btn')) { const b = document.createElement('button'); b.className = 'back-btn'; b.type = 'button'; b.textContent = '← Voltar'; b.onclick = voltar; scr.insertBefore(b, scr.firstChild); }
   $('nb-' + s)?.classList.add('on');
   window.scrollTo(0, 0); scr.scrollTop = 0;
   if (s === 'home') renderHome();
