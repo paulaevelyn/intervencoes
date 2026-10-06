@@ -42,9 +42,15 @@ depende de texto, tom e decisões de cada app.
 | **Segurança Interna** | Sem pontos, sem sequência, sem notificações; ritmo livre | **Sem ajuda em crise dentro do app** (só pelo painel ⚙), embora o tema possa mobilizar sofrimento |
 | **Aurora** | Sem pontos nem sequência; lembrete só se não registrou; passo pequeno; retorno acolhedor; crise visível; PHQ-9 com cuidado no item 9 | Lembretes locais podem não disparar se o app for encerrado (limitação técnica) |
 
+## Revisão de linguagem aplicada (TFC, psicologia positiva, COM-B e TDA)
+1. **Sem sequência a quebrar:** "dias seguidos" virou "dias com prática" (nos últimos 14 dias, não precisam ser consecutivos). A medalha passou a "Praticou em 7 dias diferentes".
+2. **Níveis sem ranking:** "Especialista" e "Mestre/a" viraram "Navegante" e "Companheiro/a de si" (Farol), "Observador/a atento/a" e "Companheiro/a de si" (Matiz). Medalha "Dedicado/a" virou "Presença".
+3. **Pontos e marcas só informativos:** os avisos dizem "Registrado: …" e "Marca nova no seu caminho", sem "+XP" nem "Conquista". "Conquistas" virou "Marcas do caminho".
+4. **"Por que isso?"** no começo de cada módulo do Farol e do Floresça, recolhível, para apoiar a autonomia (entender o sentido do que se faz).
+5. **Quando e onde (COM-B, oportunidade):** no Aurora, ao programar uma atividade, um convite opcional para dizer quando, onde e o que fazer se algo atrapalhar (`depressao_app_planos`). Sincroniza com a conta da própria pessoa, mas **não entra na projeção** da profissional.
+6. **Pertencimento:** no painel ⚙ "Quem caminha com você": nome opcional de uma pessoa de apoio (só no aparelho) e mensagens prontas, enviadas pela própria pessoa (compartilhar ou copiar). Nada é enviado pelo app.
+
 ## Sugestões ainda não aplicadas (dependem de decisão da profissional)
-1. **Farol e Floresça:** trocar "dias seguidos" por "dias com prática" (sem a ideia de quebrar) ou tirar a sequência; manter XP só como reconhecimento, sem perdas.
-2. **Matiz e Segurança Interna:** acrescentar um botão visível "Preciso de ajuda agora" (como no Aurora).
-3. **Revisão de linguagem** com olhar de design compassivo em cada app (verbos de cobrança como "você precisa", "não perca").
-4. **Modo escuro** e **ajuste de tamanho do texto** nos apps (hoje seguem o zoom do navegador).
-5. **Testes com pessoas reais**, incluindo quem usa leitor de tela e quem está em sofrimento.
+1. **Matiz e Segurança Interna:** acrescentar um botão visível "Preciso de ajuda agora" (como no Aurora).
+2. **Modo escuro** e **ajuste de tamanho do texto** nos apps (hoje seguem o zoom do navegador).
+3. **Testes com pessoas reais**, incluindo quem usa leitor de tela e quem está em sofrimento.

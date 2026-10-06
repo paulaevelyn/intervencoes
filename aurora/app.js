@@ -26,7 +26,8 @@ const K = {
   rate:  'depressao_app_ratings',          // { 'AAAA-MM-DD': { idAtividade: { p, m, ts } } }  prazer e domínio, 0–10
   val:   'depressao_app_valores',          // { atualizado, dominios: { id: { imp, cons, texto } } }
   trap:  'depressao_app_trap',             // [ { id, ts, date, gatilho, resposta, evitacao, custo, alternativa, atividade } ]
-  task:  'depressao_app_tarefas'           // [ { id, ts, date, titulo, passos:[{t,feito}], concluida } ]
+  task:  'depressao_app_tarefas',          // [ { id, ts, date, titulo, passos:[{t,feito}], concluida } ]
+  plan:  'depressao_app_planos'             // { 'AAAA-MM-DD': { idAtividade: { quando, onde, se } } }  intenção de implementação (opcional, não vai para a profissional)
 };
 const MOODS = [
   { v: 1, e: '😞', l: 'Muito baixo' }, { v: 2, e: '😔', l: 'Baixo' }, { v: 3, e: '😐', l: 'Neutro' },
@@ -191,7 +192,7 @@ function renderStep() {
     ${jaProg ? '<button class="btn ghost" disabled style="opacity:.7">Já está na sua lista de hoje ✓</button>' : `<button class="btn" onclick="stepAdd('${a.id}')">Programar para hoje</button>`}
     <button class="btn ghost" style="margin:8px 0 0" onclick="stepOther()">Outra ideia</button></div>`;
 }
-function stepAdd(id) { toggleSched(id); toast('Adicionado à sua lista de hoje.'); renderHome(); }
+function stepAdd(id) { toggleSched(id); toast('Adicionado à sua lista de hoje.'); renderHome(); askPlan(id); }
 function stepOther() { _stepOffset++; renderStep(); }
 
 function renderToday() {
@@ -240,6 +241,7 @@ function renderActivate() {
       <button class="act-ck" aria-label="${isDone ? 'Desmarcar' : 'Marcar como feito'}: ${esc(a.label)}" onclick="actDone('${a.id}')">${isDone ? '✓' : ''}</button>
       <div class="act-body"><div class="act-t">${esc(a.label)}</div>
         <div class="act-meta"><span class="act-cat">${c.emoji} ${esc(c.label)}</span><span>${esc(a.duration)}</span></div>
+        ${isSched ? planLinhaHTML(a.id) : ''}
         <button class="act-why" aria-expanded="${open}" onclick="toggleWhy('${a.id}')">Por que funciona?</button>${isDone ? '<br>' + ratingLinkHTML(a.id, true) : ''}
         ${open ? `<div class="act-ev">${esc(a.evidence)}</div>` : ''}</div>
       <button class="act-plus${isSched ? ' on' : ''}" aria-pressed="${isSched}" onclick="actSched('${a.id}')">${isSched ? 'Na lista' : '+ Hoje'}</button></div>`;
@@ -248,7 +250,7 @@ function renderActivate() {
 function setFilter(k) { _aFilter = k; renderActivate(); }
 function toggleOnlyToday() { _aOnlyToday = !_aOnlyToday; renderActivate(); }
 function toggleWhy(id) { if (_aOpen.has(id)) _aOpen.delete(id); else _aOpen.add(id); renderActivate(); }
-function actSched(id) { toggleSched(id); renderActivate(); }
+function actSched(id) { const ja = (getSched()[today()] || []).indexOf(id) >= 0; toggleSched(id); renderActivate(); if (!ja) askPlan(id); }
 function actDone(id) { const f = toggleDone(id); if (f) { toast('Feito. Isso conta!'); renderActivate(); askRating(id); } else renderActivate(); }
 
 /* ═══════════════ REGISTRAR (humor + 3 coisas boas) ═══════════════ */
@@ -431,6 +433,31 @@ function exportCSV() {
   baixar('aurora-humor-e-atividades.csv', 'text/csv;charset=utf-8', '﻿' + linhas.join('\r\n'));
   toast('Arquivo baixado.');
 }
+/* Quando e onde (COM-B: oportunidade; intenção de implementação). Tudo opcional. */
+function planLinhaHTML(id) {
+  const p = (rd(K.plan, {})[today()] || {})[id];
+  const txt = p ? [p.quando, p.onde].filter(Boolean).join(' · ') : '';
+  return '<div class="act-meta"><button class="act-why" onclick="askPlan(\x27' + id + '\x27)">' + (txt ? '🕒 ' + esc(txt) + ' (mudar)' : 'Definir quando e onde') + '</button></div>';
+}
+function askPlan(id, date) {
+  const a = activityById(id); if (!a) return;
+  const d = date || today(), p = ((rd(K.plan, {})[d] || {})[id]) || {};
+  const per = ['', 'De manhã', 'Depois do almoço', 'À tarde', 'À noite'];
+  const opts = per.map(x => '<option value="' + esc(x) + '"' + (x === p.quando ? ' selected' : '') + '>' + esc(x || '(escolher)') + '</option>').join('');
+  showModal('Quando e onde você vai fazer?',
+    '<p style="margin-bottom:10px">Planos com hora e lugar costumam sair do papel com mais facilidade. É opcional, e você pode mudar depois.</p><strong>' + esc(a.label) + '</strong>' +
+    '<label class="plan-l" for="pl-q">Quando</label><select id="pl-q" class="plan-i">' + opts + '</select>' +
+    '<label class="plan-l" for="pl-o">Onde</label><input id="pl-o" class="plan-i" maxlength="80" placeholder="Ex.: na sala, na rua perto de casa" value="' + esc(p.onde || '') + '">' +
+    '<label class="plan-l" for="pl-s">Se algo atrapalhar, o que você pode fazer em vez disso? (opcional)</label><input id="pl-s" class="plan-i" maxlength="120" placeholder="Ex.: fazer só 5 minutos" value="' + esc(p.se || '') + '">',
+    '<button class="btn" onclick="savePlan(\'' + id + '\',\'' + d + '\')">Guardar</button><button class="btn ghost" onclick="closeModal()">Agora não</button>');
+}
+function savePlan(id, d) {
+  const q = $('pl-q').value, o = $('pl-o').value.trim(), s = $('pl-s').value.trim();
+  const all = rd(K.plan, {}); all[d] = all[d] || {};
+  if (q || o || s) all[d][id] = { quando: q, onde: o, se: s }; else delete all[d][id];
+  wr(K.plan, all); closeModal(); toast(q || o || s ? 'Plano guardado.' : 'Ok, sem plano.');
+  if ($('scr-activate').classList.contains('on')) renderActivate();
+}
 function openModal(id) {
   if (id === 'del') {
     showModal('Apagar os dados deste aparelho?', 'Isso apaga humor, atividades, diário e questionários guardados <strong>neste aparelho</strong>, e não tem volta. Se você usa uma conta, os dados dela são apagados em "Minha conta". Baixe uma cópia antes, se quiser guardar.',
@@ -438,7 +465,7 @@ function openModal(id) {
   }
 }
 function deleteAll() {
-  [K.mood, K.log, K.sched, K.grat, K.esc, K.rate, K.val, K.trap, K.task].forEach(k => { try { localStorage.removeItem(k); } catch (e) { /* ok */ } });
+  [K.mood, K.log, K.sched, K.grat, K.esc, K.rate, K.val, K.trap, K.task, K.plan].forEach(k => { try { localStorage.removeItem(k); } catch (e) { /* ok */ } });
   closeModal(); toast('Dados apagados deste aparelho.'); goTo('home');
 }
 let _installPrompt = null;

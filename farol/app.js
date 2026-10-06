@@ -179,8 +179,8 @@ const LEVELS = [
   { n:1, name:'Curioso/a',    emoji:'🌱', min:0,   max:100  },
   { n:2, name:'Explorador/a', emoji:'🔍', min:100, max:250  },
   { n:3, name:'Praticante',   emoji:'🌿', min:250, max:430  },
-  { n:4, name:'Especialista', emoji:'⭐', min:430, max:595  },
-  { n:5, name:'Mestre/a',     emoji:'🏆', min:595, max:9999 },
+  { n:4, name:'Navegante',    emoji:'⭐', min:430, max:595  },
+  { n:5, name:'Companheiro/a de si', emoji:'💚', min:595, max:9999 },
 ];
 function getLevel(xp){ return LEVELS.slice().reverse().find(l => xp >= l.min) || LEVELS[0]; }
 function getLevelPct(xp){
@@ -190,7 +190,7 @@ function getLevelPct(xp){
 }
 function awardXP(amount, msg){
   D.xp += amount; save();
-  toast('+'+ amount +' XP — '+ msg);
+  toast('Registrado: '+ msg +' (+'+ amount +' pontos de progresso)');
 }
 
 /* ══════════════════════════════════
@@ -205,33 +205,22 @@ const ALL_BADGES = [
   { id:'b_m6',   emoji:'🔧', name:'Reestruturador/a',  desc:'Completou o Módulo 6' },
   { id:'b_m7',   emoji:'🌊', name:'Desapegado/a',      desc:'Completou o Módulo 7' },
   { id:'b_m8',   emoji:'💚', name:'Compassivo/a',      desc:'Completou todos os módulos' },
-  { id:'b_str7', emoji:'🔥', name:'Consistente',       desc:'7 dias seguidos' },
+  { id:'b_str7', emoji:'🌱', name:'Presença',          desc:'Praticou em 7 dias diferentes' },
   { id:'b_d10',  emoji:'📔', name:'Diário Regular',    desc:'10+ registros no diário' },
-  { id:'b_xp',   emoji:'⭐', name:'Dedicado/a',        desc:'Atingiu 300 XP' },
+  { id:'b_xp',   emoji:'⭐', name:'Presença no caminho', desc:'Chegou a 300 pontos de progresso' },
 ];
 function awardBadge(id){
   if(D.badges.includes(id)) return;
   D.badges.push(id); save();
   const b = ALL_BADGES.find(x => x.id===id);
-  if(b) toast('🏅 Conquista: '+b.name);
+  if(b) toast('🏅 Marca nova no seu caminho: '+b.name);
 }
 function checkBadges(){
   if(D.xp >= 300) awardBadge('b_xp');
   const entries = D.entries;
   if(entries.length >= 10) awardBadge('b_d10');
-  // streak
-  if(entries.length){
-    const dates = [...new Set(entries.map(e=>e.date))].sort().reverse();
-    let streak=0, t=today(), y=prevDay(1);
-    if(dates[0]===t||dates[0]===y){
-      streak=1;
-      for(let i=1;i<dates.length;i++){
-        const a=new Date(dates[i-1]+'T12:00'),b2=new Date(dates[i]+'T12:00');
-        if(Math.round((a-b2)/864e5)===1) streak++; else break;
-      }
-    }
-    if(streak>=7) awardBadge('b_str7');
-  }
+  // dias com pratica (nao precisam ser seguidos)
+  if(new Set(D.entries.map(e=>e.date)).size>=7) awardBadge('b_str7');
 }
 
 /* ══════════════════════════════════
@@ -334,6 +323,7 @@ const MODULES = [
     levelTag:'Nível 1 — Fundamentos',
     title:'Entendendo as Preocupações',
     tagline:'Como o ciclo da preocupação funciona',
+    porque:'Entender como a preocupação funciona ajuda a notar o ciclo em vez de brigar com ele. Você decide o que levar para a sua vida.',
     xp:50, badgeId:'b_m1', unlockAfter:null,
     steps:[
       {
@@ -375,6 +365,7 @@ ${svgCycleWorry()}
     levelTag:'Nível 1 — Fundamentos',
     title:'Preocupação Útil vs. Inútil',
     tagline:'Nem toda preocupação é igual',
+    porque:'Nem toda preocupação precisa ser eliminada. Separar o que pede ação do que só gira te devolve escolha sobre onde colocar energia.',
     xp:60, badgeId:'b_m2', unlockAfter:'m1',
     steps:[
       {
@@ -431,6 +422,7 @@ ${svgCycleWorry()}
     levelTag:'Nível 2 — Padrões Internos',
     title:'Metacognições: Crenças sobre o Pensar',
     tagline:'O verdadeiro motor da preocupação crônica',
+    porque:'As crenças sobre o preocupar-se mantêm o ciclo. Olhar para elas com curiosidade, sem julgamento, é o primeiro passo para mudar a relação com elas.',
     xp:70, badgeId:'b_m3', unlockAfter:'m2',
     steps:[
       {
@@ -475,6 +467,7 @@ ${svgCycleWorry()}
     levelTag:'Nível 2 — Padrões Internos',
     title:'Tempo de Preocupação',
     tagline:'Aprenda a adiar, não a suprimir',
+    porque:'Adiar, e não suprimir, deixa você no comando: a preocupação tem um lugar, e o resto do dia fica mais livre. Teste e ajuste ao seu jeito.',
     xp:65, badgeId:'b_m4', unlockAfter:'m3',
     steps:[
       {
@@ -517,6 +510,7 @@ ${svgCycleWorry()}
     levelTag:'Nível 3 — Regulação',
     title:'Regulação pelo Corpo',
     tagline:'Fisiologia que acalma a ansiedade',
+    porque:'Quando o corpo acalma, a mente tem mais espaço para pensar. São recursos para experimentar e ficar com o que funcionar para você.',
     xp:80, badgeId:'b_m5', unlockAfter:'m4',
     steps:[
       {
@@ -555,6 +549,7 @@ ${svgANS()}`
     levelTag:'Nível 3 — Regulação',
     title:'Reestruturação Cognitiva',
     tagline:'Questionar pensamentos, não suprimi-los',
+    porque:'Questionar um pensamento é olhar para ele de outros ângulos, não forçar pensamento positivo. Você escolhe o que fazer com o que encontrar.',
     xp:80, badgeId:'b_m6', unlockAfter:'m5',
     steps:[
       {
@@ -601,6 +596,7 @@ ${svgANS()}`
     levelTag:'Nível 4 — Transformação',
     title:'Desfusão e Aceitação (ACT)',
     tagline:'Mudar a relação com os pensamentos',
+    porque:'Pensamentos são eventos mentais, não ordens. Criar distância deles permite agir de acordo com o que importa para você.',
     xp:90, badgeId:'b_m7', unlockAfter:'m6',
     steps:[
       {
@@ -642,6 +638,7 @@ ${svgANS()}`
     levelTag:'Nível 4 — Transformação',
     title:'Autocompaixão para a Ansiedade',
     tagline:'TFC/CFT — o sistema calmante em ação',
+    porque:'A autocrítica ativa o sistema de ameaça. Um tom gentil ativa o sistema calmante, e isso torna o enfrentamento mais possível.',
     xp:100, badgeId:'b_m8', unlockAfter:'m7',
     steps:[
       {
@@ -1151,7 +1148,7 @@ function showPosttestDelta(){
       ${subsRows}
     </div>
     <button class="btn mint" onclick="goTo('home')" style="margin-top:8px">Ver meu progresso completo</button>
-    <button class="btn ghost" onclick="goTo('progress')" style="margin-top:0">Ver conquistas</button>
+    <button class="btn ghost" onclick="goTo('progress')" style="margin-top:0">Ver marcas do caminho</button>
   </div>`;
 }
 
@@ -1203,11 +1200,9 @@ function renderHome(){
 }
 
 function calcStreak(){
-  if(!D.entries.length) return 0;
-  const dates=[...new Set(D.entries.map(e=>e.date))].sort().reverse();
-  let s=0,t=today(),y=prevDay(1);
-  if(dates[0]===t||dates[0]===y){ s=1; for(let i=1;i<dates.length;i++){ const a=new Date(dates[i-1]+'T12:00'),b=new Date(dates[i]+'T12:00'); if(Math.round((a-b)/864e5)===1)s++; else break; } }
-  return s;
+  // dias com pratica nos ultimos 14 dias (sem sequencia a quebrar)
+  const lim=prevDay(13);
+  return new Set(D.entries.filter(e=>e.date>=lim).map(e=>e.date)).size;
 }
 
 function renderMiniChart(svgId,emptyId){
@@ -1267,7 +1262,7 @@ function modCardHTML(m){
       <div class="mod-info">
         <div class="mod-level-tag">${m.tagline}</div>
         <div class="mod-title">${m.title}</div>
-        <div class="mod-xp">+${m.xp} XP · ${m.steps.length} etapas</div>
+        <div class="mod-xp">${m.steps.length} etapas</div>
         <div class="mod-prog-bar"><div class="mod-prog-fill" style="width:${pct}%"></div></div>
       </div>
       <div class="mod-status">${statusIcon}</div>
@@ -1385,9 +1380,10 @@ function renderModuleStep(){
       <button class="mod-hero-back" onclick="goTo('modules')">←</button>
       <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;opacity:.8;margin-bottom:6px;margin-top:24px">${mod.levelTag}</div>
       <div style="font-size:20px;font-weight:800;letter-spacing:-.3px;line-height:1.25;margin-bottom:10px">${mod.title}</div>
-      <div style="font-size:12px;font-weight:700;opacity:.85;background:rgba(255,255,255,.15);display:inline-block;padding:4px 10px;border-radius:20px">Etapa ${_curStep+1} de ${mod.steps.length} · +${mod.xp} XP ao concluir</div>
+      <div style="font-size:12px;font-weight:700;opacity:.85;background:rgba(255,255,255,.15);display:inline-block;padding:4px 10px;border-radius:20px">Etapa ${_curStep+1} de ${mod.steps.length}</div>
     </div>
     <div style="background:var(--sand);padding:8px 0 4px">${dots.length>1?`<div style="display:flex;align-items:center;justify-content:center;gap:6px;padding:4px 0">${dots}</div>`:''}</div>
+    ${_curStep===0&&mod.porque?`<details class="porque" style="margin:8px 16px 0;font-size:13.5px;color:var(--muted)"><summary style="cursor:pointer;font-weight:800;color:var(--mint-d)">Por que isso?</summary><p style="margin-top:6px">${mod.porque}</p></details>`:''}
     <div class="step-body" style="padding-bottom:8px">${body}</div>
     <div class="step-footer">
       ${_curStep>0?`<button class="btn ghost step-prev" onclick="prevStep()">← Anterior</button>`:''}
@@ -1440,7 +1436,7 @@ function completeModule(){
 function showCelebrate(mod){
   document.getElementById('cel-emoji').textContent  = mod.emoji;
   document.getElementById('cel-title').textContent  = mod.title+' concluído!';
-  document.getElementById('cel-xp').textContent     = '+'+mod.xp+' XP conquistados';
+  document.getElementById('cel-xp').textContent     = '+'+mod.xp+' pontos de progresso registrados';
   document.getElementById('cel-sub').textContent    = 'Seu progresso foi salvo. Continue para o próximo módulo ou registre no diário!';
   const w = document.getElementById('cel-word'); if(w) w.value='';
   document.getElementById('celebrate-card').classList.add('show');
@@ -1777,7 +1773,7 @@ function renderProgress(){
     const topS=Object.entries(stratC).sort((a,b)=>b[1]-a[1]).slice(0,3).map(s=>s[0]);
     if(topS.length) insights.push({c:'l',t:'🔧 Estratégias favoritas',b:`Ferramentas mais usadas: <strong>${topS.join(', ')}</strong>.`});
     const streak=calcStreak();
-    if(streak>0) insights.push({c:'',t:'🔥 Sequência atual',b:`<strong>${streak} dia${streak!==1?'s':''}</strong> de prática consecutiva. Consistência cria mudança real.`});
+    if(streak>0) insights.push({c:'',t:'🌱 Dias com prática',b:`<strong>${streak} dia${streak!==1?'s':''}</strong> com prática nas últimas duas semanas. Cada dia conta, e os intervalos fazem parte do processo.`});
   }
   // Dose praticada — semanas com prática vs. semanas desde o início
   const doseStart = D.consentDate ? weekStart(D.consentDate.slice(0,10)) : (D.doseRecords[0]?.weekStart || null);
@@ -1786,7 +1782,7 @@ function renderProgress(){
     const practicedWeeks = new Set(D.doseRecords.map(r=>r.weekStart)).size;
     insights.push({c:'l',t:'⚓ Dose praticada',b:`Semanas com prática registrada: <strong>${practicedWeeks} de ${totalWeeks}</strong> desde o início. A dose que importa é a praticada, não a recebida.`});
   }
-  insights.push({c:'s',t:'📚 Módulos concluídos',b:`<strong>${doneMods.length} de ${MODULES.length}</strong> módulos concluídos · <strong>${D.xp} de ${totalXP} XP</strong> totais conquistados.`});
+  insights.push({c:'s',t:'📚 Módulos concluídos',b:`<strong>${doneMods.length} de ${MODULES.length}</strong> módulos concluídos · <strong>${D.xp} de ${totalXP} XP</strong> totais registrados.`});
 
   el.innerHTML=
     `<div class="xp-wrap" style="margin:0 16px 12px">
@@ -1805,7 +1801,7 @@ function renderProgress(){
     ${insights.map(i=>`<div class="insight-c ${i.c}"><div class="insight-t">${i.t}</div><div class="insight-b">${i.b}</div></div>`).join('')}
     <div class="sdiv">Seus registros de preocupação</div>
     <div id="p-worries" style="margin:0 16px 12px"></div>
-    <div class="sdiv">Conquistas</div>
+    <div class="sdiv">Marcas do caminho</div>
     <div class="card"><div class="badge-shelf">${badgesHTML}</div></div>
     <div class="sdiv">Exportar</div>
     <button class="btn ghost-mint" onclick="exportHTML()">Baixar relatório (HTML)</button>
@@ -2204,9 +2200,9 @@ function renderNudge(){
   // 3. Streak ativo — reforço do progresso (sem pressão)
   else if(streak >= 2){
     html = `<div class="nudge amber">
-      <div class="nudge-icon">🔥</div>
-      <div class="nudge-body"><strong>${streak} dias seguidos de prática.</strong>
-      A constância — não a perfeição — é o que treina o cérebro.</div>
+      <div class="nudge-icon">🌱</div>
+      <div class="nudge-body"><strong>Você praticou em ${streak} dias nas últimas duas semanas.</strong>
+      Voltar, no seu ritmo, é o que treina o cérebro. Os intervalos fazem parte.</div>
     </div>`;
   }
   el.innerHTML = html;

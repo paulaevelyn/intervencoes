@@ -56,3 +56,6 @@ html { scrollbar-width: thin; scrollbar-color: color-mix(in srgb, var(--mint, va
 html.pea-calmo *, html.pea-calmo *::before, html.pea-calmo *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
 html.pea-calmo .pea-resp { animation: none; transform: scale(.9); }
 @media (prefers-reduced-motion: reduce) { html:not(.pea-mov-ok) .pea-resp { animation: none; transform: scale(.9); } }
+.pea-bem-apoio { margin: 12px 0; padding: 12px 14px; border: 1.5px solid rgba(63,67,75,.14); border-radius: 14px; font-size: 14px; }
+.pea-bem-apoio small { display: block; color: var(--muted, #6B7280); font-size: 12.5px; margin: 2px 0 8px; }
+.pea-bem-apoio input, .pea-bem-apoio select { width: 100%; padding: 10px 12px; margin-bottom: 8px; font: inherit; color: inherit; background: transparent; border: 1.5px solid rgba(63,67,75,.2); border-radius: 10px; }

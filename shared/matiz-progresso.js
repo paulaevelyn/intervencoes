@@ -16,8 +16,8 @@
     { n: 1, nome: 'Curioso/a',    emoji: '🌱', min: 0,   max: 60 },
     { n: 2, nome: 'Explorador/a', emoji: '🔍', min: 60,  max: 150 },
     { n: 3, nome: 'Praticante',   emoji: '🌿', min: 150, max: 280 },
-    { n: 4, nome: 'Especialista', emoji: '⭐', min: 280, max: 450 },
-    { n: 5, nome: 'Mestre/a',     emoji: '🏆', min: 450, max: 99999 }
+    { n: 4, nome: 'Observador/a atento/a', emoji: '⭐', min: 280, max: 450 },
+    { n: 5, nome: 'Companheiro/a de si', emoji: '💚', min: 450, max: 99999 }
   ];
 
   var XP = { checkin: 10, familia: 3, plano: 5, palavra: 4, dose: 5, escala: 15 };
@@ -60,7 +60,7 @@
       { id: 'sem4',  emoji: '📅', nome: 'Constância',         desc: 'Check-ins em 4 semanas diferentes',     ganha: Object.keys(semanas).length >= 4 },
       { id: 'dose3', emoji: '⚓', nome: 'Prática semanal',    desc: '3 semanas com prática registrada',      ganha: doses.length >= 3 },
       { id: 'esc',   emoji: '📋', nome: 'Olhar para si',      desc: 'Respondeu ao questionário',             ganha: temPre },
-      { id: 'xp300', emoji: '⭐', nome: 'Dedicado/a',         desc: 'Chegou a 300 XP',                       ganha: xp >= 300 }
+      { id: 'xp300', emoji: '⭐', nome: 'Presença no caminho', desc: 'Chegou a 300 pontos',                       ganha: xp >= 300 }
     ];
 
     return { xp: xp, nivel: niv, pct: pct, faltam: niv.n < 5 ? niv.max - xp : 0, medalhas: medalhas };

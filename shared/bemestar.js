@@ -108,6 +108,28 @@
     var a2 = el('a', { href: 'tel:192' }, '192 (SAMU)'); ajuda.appendChild(a2);
     ajuda.appendChild(document.createTextNode('. Você não precisa explicar tudo.'));
     cx.appendChild(ajuda);
+    /* Quem caminha com você: opcional, só neste aparelho, nunca enviado a lugar nenhum */
+    var ap = el('div', { class: 'pea-bem-apoio' });
+    ap.appendChild(el('strong', {}, 'Quem caminha com você (opcional)'));
+    ap.appendChild(el('small', {}, 'Ter alguém por perto ajuda. Se quiser, anote o nome de uma pessoa de confiança. Fica só neste aparelho.'));
+    var nome = el('input', { type: 'text', maxlength: '40', placeholder: 'Ex.: minha irmã, um amigo', 'aria-label': 'Pessoa de apoio' }); nome.value = cfg.apoio || '';
+    nome.addEventListener('change', function () { cfg.apoio = nome.value.trim(); gravar(cfg); });
+    ap.appendChild(nome);
+    var MODELOS = ['Oi! Estou fazendo um programa para cuidar de mim. Podemos conversar um pouco hoje?',
+                   'Hoje não está um dia fácil. Você pode ficar comigo um tempinho, mesmo sem falar de nada em especial?',
+                   'Fiz uma coisa por mim hoje e queria te contar.'];
+    var sel = el('select', { 'aria-label': 'Mensagem pronta' });
+    ['Uma conversa', 'Um dia difícil', 'Contar uma conquista'].forEach(function (t, i) { var o = el('option', { value: String(i) }, t); sel.appendChild(o); });
+    ap.appendChild(sel);
+    var env = el('button', { class: 'pea-bem-btn sec', type: 'button' }, 'Enviar uma mensagem pronta');
+    env.addEventListener('click', function () {
+      var txt = MODELOS[+sel.value];
+      if (navigator.share) { navigator.share({ text: txt }).catch(function () { /* cancelado */ }); return; }
+      try { navigator.clipboard.writeText(txt).then(function () { env.textContent = 'Mensagem copiada. Cole onde preferir.'; }); } catch (e) { env.textContent = txt; }
+    });
+    ap.appendChild(env);
+    cx.appendChild(ap);
+
 
     cx.appendChild(linhaAjuste('Menos movimento', 'Reduz animações e rolagem suave. Segue a configuração do seu aparelho, a menos que você escolha aqui.', movimentoReduzido(), function (v) { cfg.calmo = v; gravar(cfg); aplicarMovimento(); }));
     cx.appendChild(linhaAjuste('Barra de progresso da tela', 'Mostra no topo o quanto você já percorreu, e um botão para voltar ao início.', barraLigada(), function (v) { cfg.barra = v; gravar(cfg); recalcular(); }));

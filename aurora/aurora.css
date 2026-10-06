@@ -104,3 +104,5 @@
 .rt-v{display:inline-block;min-width:1.2em;text-align:center;font-weight:800;color:var(--mint-d)}
 .rt-field input[type=range]{width:100%;accent-color:var(--mint-d);height:28px}
 .act-why{text-align:left}
+.plan-l{display:block;margin:12px 0 4px;font-size:13px;font-weight:700}
+.plan-i{width:100%;padding:11px 12px;font:inherit;color:inherit;background:transparent;border:1.5px solid var(--border,rgba(63,67,75,.2));border-radius:10px}
