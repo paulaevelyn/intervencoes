@@ -1,0 +1,15 @@
+<svg width="320" height="88" viewBox="0 0 320 88" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Ícone (mesmo desenho do sintonia-icon.svg) + wordmark -->
+  <g transform="translate(2,2) scale(0.84)">
+    <circle cx="50" cy="50" r="42" fill="#EEE9FB"/>
+    <circle cx="50" cy="50" r="30" stroke="#8B7FB8" stroke-width="2.500" opacity=".55"/>
+    <circle cx="50" cy="50" r="17" stroke="#8B7FB8" stroke-width="2.500" opacity=".85"/>
+    <circle cx="50" cy="50" r="6" fill="#3D2E7A"/>
+    <circle cx="50" cy="20" r="5.500" fill="#C47D2A"/>
+    <circle cx="76" cy="38" r="4.500" fill="#5E7D73"/>
+    <circle cx="68" cy="73" r="4.500" fill="#5E7D73"/>
+    <circle cx="32" cy="73" r="4.500" fill="#5E7D73"/>
+    <circle cx="24" cy="38" r="4.500" fill="#5E7D73"/>
+  </g>
+  <text x="96" y="58" font-family="Nunito Sans, Quicksand, -apple-system, sans-serif" font-size="42" font-weight="800" letter-spacing="-1" fill="#3D2E7A">Sintonia</text>
+</svg>

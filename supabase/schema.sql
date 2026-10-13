@@ -229,3 +229,13 @@ notify pgrst, 'reload schema';
 -- permissão), trap (date, atividade; gatilho/resposta/evitacao/custo/alternativa só com permissão) e
 -- tarefas (date, concluida, total, feitos; titulo e passos só com permissão). O lembrete diário
 -- (depressao_app_lembrete) é local do aparelho e NUNCA é sincronizado nem projetado.
+
+-- ── 14. Sintonia (migração pendente: app_sintonia) ──
+-- A Sintonia (treino de atenção auditiva) sincroniza as chaves sintonia_sessoes e sintonia_ob. Para a conta
+-- guardar esses dados, app_dados precisa aceitar app = 'sintonia' (hoje a restrição lista só os apps antigos;
+-- o Aurora foi liberado pela migração painel_aurora). Sem isso, quem usa conta continua usando o app, mas a
+-- sincronização falha; quem usa "sem conta" não é afetado. Ainda não há projeção para o painel da profissional.
+-- (Confira o nome e a lista atuais da restrição no banco antes de rodar; estes comandos são o esboço.)
+--   alter table public.app_dados drop constraint app_dados_app_check;
+--   alter table public.app_dados add constraint app_dados_app_check
+--     check (app in ('farol','floresca','matiz','seguranca-interna','aurora','sintonia'));
