@@ -1,0 +1,32 @@
+{
+  "name": "Sintonia — Treino de Atenção Auditiva",
+  "short_name": "Sintonia",
+  "description": "Exercício guiado de atenção com sons ao redor, para praticar entre as sessões — Psicoterapia e Afins",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#3D2E7A",
+  "background_color": "#F7F3EF",
+  "lang": "pt-BR",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/sintonia-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
