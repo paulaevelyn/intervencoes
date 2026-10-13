@@ -135,7 +135,8 @@ const APPS = {
   floresca: { nome: 'Floresça', render: (d, o) => window.FlorescaPainel.render(d, o) },
   matiz: { nome: 'Matiz', render: (d, o) => window.MatizPainel.render(d, Object.assign({ profissional: true }, o)) },
   'seguranca-interna': { nome: 'Segurança Interna', render: (d, o) => window.SegurancaPainel.render(d, o) },
-  aurora: { nome: 'Aurora', render: (d, o) => window.AuroraPainel.render(d, Object.assign({ profissional: true }, o)) }
+  aurora: { nome: 'Aurora', render: (d, o) => window.AuroraPainel.render(d, Object.assign({ profissional: true }, o)) },
+  sintonia: { nome: 'Sintonia', render: (d, o) => window.SintoniaPainel.render(d, o) }
 };
 
 async function abrirPaciente(p, appEscolhido) {
@@ -197,5 +198,6 @@ if (!session) mostrar('v-login');
 <script src="../shared/matiz-painel.js"></script>
 <script src="../shared/seguranca-painel.js"></script>
 <script src="../shared/aurora-painel.js"></script>
+<script src="../shared/sintonia-painel.js"></script>
 </body>
 </html>
