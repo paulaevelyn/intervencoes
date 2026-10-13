@@ -230,12 +230,9 @@ notify pgrst, 'reload schema';
 -- tarefas (date, concluida, total, feitos; titulo e passos só com permissão). O lembrete diário
 -- (depressao_app_lembrete) é local do aparelho e NUNCA é sincronizado nem projetado.
 
--- ── 14. Sintonia (migração pendente: app_sintonia) ──
--- A Sintonia (treino de atenção auditiva) sincroniza as chaves sintonia_sessoes e sintonia_ob. Para a conta
--- guardar esses dados, app_dados precisa aceitar app = 'sintonia' (hoje a restrição lista só os apps antigos;
--- o Aurora foi liberado pela migração painel_aurora). Sem isso, quem usa conta continua usando o app, mas a
--- sincronização falha; quem usa "sem conta" não é afetado. Ainda não há projeção para o painel da profissional.
--- (Confira o nome e a lista atuais da restrição no banco antes de rodar; estes comandos são o esboço.)
---   alter table public.app_dados drop constraint app_dados_app_check;
---   alter table public.app_dados add constraint app_dados_app_check
---     check (app in ('farol','floresca','matiz','seguranca-interna','aurora','sintonia'));
+-- ── 14. Sintonia (migração painel_sintonia, aplicada em 2026-10-13) ──
+-- app_dados aceita app = 'sintonia' (restrição app_dados_app_check com os 6 apps). projecao_sintonia(chaves, com_textos)
+-- recebe a chave sintonia_sessoes e devolve { sessoes: [ { id, iso, date (fuso America/Sao_Paulo), modo, planejado,
+-- feito, completa, antes:{w,s,c}, depois:{w,s,c}, tem_nota } ] } (até 500, só números e booleanos válidos; o resto é
+-- descartado). A observação escrita (nota) só sai com com_textos. painel_dados despacha 'sintonia'.
+-- O SQL completo está na migração painel_sintonia do projeto; aqui fica o resumo, como nas seções 9 a 13.

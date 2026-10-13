@@ -22,8 +22,8 @@ se explica ou ilustra → superficial.
 | Estado | `localStorage`, chaves `sintonia_*` | Ver "Chaves de dados" |
 | Navegação | `SCREENS` + `goTo()` + uma `render*()` por tela | Telas: Treinar (início), Sessão, Depois, Registro salvo, Progresso, Aprender. Sessão, Depois e Registro salvo escondem a barra de navegação (classe `foco` no `body`) |
 | Offline | `sw.js` (HTML network-first, assets cache-first). **Incrementar `CACHE_VERSION` a cada deploy** | `/auth/` e `/shared/` sempre da rede |
-| Login/sync | `../auth/auth.js` (conta por convite, "usar sem conta", sincronização), `data-storage-keys` lista as chaves sincronizadas | Igual aos outros apps. **Depende da migração 14 em `supabase/schema.sql`** para a sincronização funcionar |
-| Painel | **Ainda não há** projeção para o painel da profissional | Hoje a pessoa leva os dados por "Copiar resumo" (Progresso) ou pelos arquivos de Aprender → Seus dados |
+| Login/sync | `../auth/auth.js` (conta por convite, "usar sem conta", sincronização), `data-storage-keys` lista as chaves sincronizadas | Igual aos outros apps. Migração `painel_sintonia` aplicada (seção 14 de `supabase/schema.sql`) |
+| Painel | `../shared/sintonia-painel.js` (leitura da profissional) + projeção `projecao_sintonia` no banco | Só números (data, duração, completa, notas antes e depois); a observação escrita só com a permissão da pessoa. A pessoa também leva os dados por "Copiar resumo" (Progresso) |
 | Pesquisa | Nenhuma (`data-pesquisa="nao"`) | Igual ao Aurora |
 
 ### Chaves de dados
@@ -87,7 +87,6 @@ Formulação própria de apoio, **não é escala validada**. A pessoa compara s�
 3. `git commit` e `git push` (o GitHub Pages atualiza em cerca de 1 minuto). Quem já usou o app precisa recarregar a página duas vezes para o service worker trocar de versão.
 
 ## Pendências conhecidas
-- **Migração do banco** (`supabase/schema.sql`, seção 14): liberar `app = 'sintonia'` em `app_dados` antes de convidar pessoas para usar conta.
-- **Painel da profissional:** criar a projeção `projecao_sintonia` (somente números: data, duração, completa, notas antes e depois; o texto livre só com permissão da pessoa) e `shared/sintonia-painel.js`, como no Aurora.
+- Testar o painel de ponta a ponta com uma conta real: a projeção foi testada com dados fictícios, mas ainda não há uma pessoa vinculada usando a Sintonia.
 - O áudio depende de o navegador manter a página viva: a sessão pausa se a tela for para segundo plano (comportamento intencional). No iPhone, o modo silencioso bloqueia o som.
 - Possíveis próximos passos: escolher o conjunto de sons, lembrete diário opcional (como no Aurora) e testes com pessoas reais, incluindo quem usa leitor de tela.
