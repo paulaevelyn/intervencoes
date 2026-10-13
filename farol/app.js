@@ -1375,7 +1375,7 @@ function renderModuleStep(){
   const btnId    = 'step-continue';
 
   document.getElementById('module-content').innerHTML =
-    `<div style="background:${grad};min-height:150px;padding:calc(env(safe-area-inset-top,0px)+20px) 20px 24px;color:white;position:relative;overflow:hidden">
+    `<div style="background:${grad};min-height:150px;padding:calc(env(safe-area-inset-top,0px) + 20px) 20px 24px;color:white;position:relative;overflow:hidden">
       <div style="position:absolute;right:-8px;top:-8px;font-size:80px;opacity:.15;user-select:none">${mod.emoji}</div>
       <button class="mod-hero-back" onclick="goTo('modules')">←</button>
       <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;opacity:.8;margin-bottom:6px;margin-top:24px">${mod.levelTag}</div>

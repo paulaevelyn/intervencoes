@@ -1,7 +1,7 @@
 /* Sintonia — Service Worker
    Offline-first para assets, network-first para HTML.
    Incrementar CACHE_VERSION a cada deploy para forçar atualização. */
-const CACHE_VERSION = 'sintonia-v1';
+const CACHE_VERSION = 'sintonia-v2';
 const CORE = [
   './',
   './index.html',
