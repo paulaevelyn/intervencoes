@@ -1,0 +1,101 @@
+<!--
+  E-mail de CONVITE (Supabase → Authentication → Email Templates → "Invite user").
+
+  ASSUNTO (cole no campo "Subject"):
+    Seu convite para as intervenções da Psicoterapia e Afins
+
+  CORPO: cole tudo a partir de <!DOCTYPE html> no campo "Message body" (modo HTML/source).
+  Variáveis do Supabase usadas: {{ .ConfirmationURL }} (link para criar a senha) e {{ .Email }}.
+  Não altere esses dois trechos entre chaves.
+
+  Este modelo vale para TODOS os convites (é um só para o projeto). O bloco marcado
+  "OPCIONAL: SINTONIA" fala só da Sintonia: apague-o se o convite for para outro app.
+-->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Seu convite para as intervenções da Psicoterapia e Afins</title>
+</head>
+<body style="margin:0;padding:0;background:#F7F3EF;">
+<!-- Texto de prévia (aparece ao lado do assunto na caixa de entrada) -->
+<div style="display:none;max-height:0;overflow:hidden;opacity:0;color:#F7F3EF;">Crie a sua senha para entrar. O link vale por tempo limitado.</div>
+
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#F7F3EF;">
+  <tr>
+    <td align="center" style="padding:28px 16px;">
+
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
+        <tr>
+          <td style="padding:0 4px 14px;font-family:'Nunito Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;font-size:12px;font-weight:800;letter-spacing:1.6px;text-transform:uppercase;color:#B85550;">
+            Psicoterapia e Afins
+          </td>
+        </tr>
+
+        <tr>
+          <td style="background:#FFFFFF;border-radius:18px;padding:30px 28px;font-family:'Nunito Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;color:#3F434B;font-size:16px;line-height:1.6;">
+
+            <h1 style="margin:0 0 14px;font-size:26px;line-height:1.2;font-weight:800;color:#3D5A52;">Seu convite chegou</h1>
+
+            <p style="margin:0 0 14px;">Olá! A Psicoterapia e Afins criou um acesso para você usar as <strong>intervenções interativas</strong>: programas de apoio para fazer no seu ritmo, direto no celular ou no computador.</p>
+
+            <p style="margin:0 0 22px;">Para ativar o acesso, crie a sua senha:</p>
+
+            <!-- Botão -->
+            <table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 0 22px;">
+              <tr>
+                <td align="center" style="background:#B85550;border-radius:12px;">
+                  <a href="{{ .ConfirmationURL }}" style="display:inline-block;padding:15px 30px;font-family:'Nunito Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;font-size:16px;font-weight:800;color:#FFFFFF;text-decoration:none;">Criar minha senha</a>
+                </td>
+              </tr>
+            </table>
+
+            <p style="margin:0 0 6px;font-size:13.5px;color:#6B7280;">Se o botão não abrir, copie este endereço e cole no navegador:</p>
+            <p style="margin:0 0 24px;font-size:13px;color:#6B7280;word-break:break-all;overflow-wrap:anywhere;">{{ .ConfirmationURL }}</p>
+
+            <h2 style="margin:0 0 8px;font-size:17px;font-weight:800;color:#3D5A52;">O que acontece depois</h2>
+            <ol style="margin:0 0 22px;padding-left:22px;">
+              <li style="margin-bottom:6px;">Você cria a senha.</li>
+              <li style="margin-bottom:6px;">Entra com este e-mail (<strong>{{ .Email }}</strong>) e a senha que criou.</li>
+              <li>O seu progresso fica guardado na sua conta e acompanha você em outros aparelhos.</li>
+            </ol>
+
+            <!-- OPCIONAL: SINTONIA (apague este bloco se o convite não for para a Sintonia) -->
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 22px;">
+              <tr>
+                <td style="background:#EEE9FB;border-radius:12px;padding:16px 18px;font-size:15px;line-height:1.55;color:#3F434B;word-break:break-word;overflow-wrap:anywhere;">
+                  <strong style="color:#3D2E7A;">Para começar pela Sintonia</strong> (exercício de atenção com sons): depois de criar a senha, abra
+                  <a href="https://paulaevelyn.github.io/intervencoes/sintonia/" style="color:#3D2E7A;font-weight:800;">paulaevelyn.github.io/intervencoes/sintonia</a>.
+                  Use <strong>fones de ouvido</strong> e comece com o <strong>volume baixo</strong>. No iPhone, desligue o modo silencioso.
+                </td>
+              </tr>
+            </table>
+            <!-- FIM DO BLOCO OPCIONAL -->
+
+            <h2 style="margin:0 0 8px;font-size:17px;font-weight:800;color:#3D5A52;">Sua privacidade</h2>
+            <p style="margin:0 0 22px;">Só você vê os seus registros. Se você tem acompanhamento com a profissional que fez o convite, <strong>você decide</strong>, dentro do app (botão ⚙ e depois "Minha conta"), se quer compartilhar os seus números e, separadamente, os textos que escreve. Dá para desligar quando quiser.</p>
+
+            <p style="margin:0;padding-top:18px;border-top:1px solid #ECE7E1;font-size:13.5px;line-height:1.55;color:#6B7280;">
+              Este é um recurso de apoio e não substitui o acompanhamento com um profissional de saúde mental.
+              Se você estiver em crise, ligue <strong>188 (CVV)</strong>, 24 horas, gratuito, ou <strong>192 (SAMU)</strong>.
+            </p>
+          </td>
+        </tr>
+
+        <tr>
+          <td style="padding:16px 4px 0;font-family:'Nunito Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;font-size:12.5px;line-height:1.55;color:#8A929A;text-align:center;">
+            Você recebeu este e-mail porque alguém da Psicoterapia e Afins cadastrou o seu endereço. Se não esperava, pode ignorar esta mensagem: nada será criado sem que você defina uma senha.<br>
+            <a href="https://www.psicoterapiaeafins.com.br" style="color:#5E7D73;font-weight:700;text-decoration:none;">psicoterapiaeafins.com.br</a>
+            &nbsp;·&nbsp;
+            <a href="https://www.instagram.com/psicoterapiaeafins" style="color:#5E7D73;font-weight:700;text-decoration:none;">@psicoterapiaeafins</a>
+          </td>
+        </tr>
+      </table>
+
+    </td>
+  </tr>
+</table>
+</body>
+</html>
