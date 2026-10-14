@@ -191,13 +191,13 @@ html.pea-calmo .map .beam,html.pea-calmo .pseg i{transition:none}
 .scale button{width:48px;height:48px;border-radius:50%;border:1.5px solid var(--border);background:var(--white);color:var(--graphite);font:800 15px var(--font);cursor:pointer}
 .scale button[aria-pressed="true"]{background:var(--lav-d);border-color:var(--lav-d);color:#fff}
 .scale button:focus-visible,.seg button:focus-visible,.chip:focus-visible{outline:3px solid var(--lav);outline-offset:2px}
-.scale-ends{display:flex;justify-content:space-between;max-width:288px;margin-top:6px}
-.settings-grid{display:grid;gap:18px;grid-template-columns:1fr}
+.scale-ends{display:flex;justify-content:space-between;max-width:288px;margin:6px 0 0!important}   /* sem o respiro extra de .card .hint-t: o cartão não fica com vão no fim */
+.settings-grid{display:grid;gap:22px;grid-template-columns:1fr}
 @media(min-width:680px){.settings-grid{grid-template-columns:1fr 1fr}}
 .setting{display:flex;flex-direction:column;gap:8px;min-width:0}
-.slabel{font-weight:800;font-size:14px}
-.seg{display:flex;flex-wrap:wrap;gap:6px}
-.seg button{min-height:44px;padding:8px 14px;border-radius:10px;border:1.5px solid var(--border);background:var(--white);color:var(--graphite);cursor:pointer;font:800 13.5px var(--font)}
+.slabel{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}   /* igual ao .card-lbl do Clássico */
+.seg{display:grid;grid-template-columns:repeat(auto-fit,minmax(96px,1fr));gap:8px}
+.seg button{min-height:52px;padding:12px 14px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--white);color:var(--graphite);cursor:pointer;font:800 15px var(--font);text-align:left}   /* mesmo formato dos cartões .opt do Clássico */
 .seg button[aria-pressed="true"]{border-color:var(--lav);background:var(--lav-l);color:var(--lav-d)}
 
 /* Cartões de fase */
