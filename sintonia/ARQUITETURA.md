@@ -18,18 +18,19 @@ se explica ou ilustra → superficial.
 | Item | Sintonia | Observação |
 |---|---|---|
 | Pilha | HTML + CSS + JS puros, **sem build** | O áudio é gerado no navegador (Web Audio API), sem arquivos de som |
-| Arquivos | `index.html`, `style.css`, `extra.css` (herdados), `sintonia.css`, `app.js`, `sw.js`, `manifest.json`, `assets/` | `style.css` e `extra.css` são os mesmos do Aurora (design system da marca). A cor própria da Sintonia é o lavanda (`--lav`, `--lav-d`) |
+| Arquivos | `index.html`, `style.css`, `extra.css` (herdados), `sintonia.css`, `app.js` (ATT clássica, dados, navegação), `toques.js` (tipo Com toques), `progresso.js` (progresso, reflexão semanal, relatório), `sw.js`, `manifest.json`, `assets/` | `style.css` e `extra.css` são os mesmos do Aurora (design system da marca). A cor própria da Sintonia é o lavanda (`--lav`, `--lav-d`) |
 | Estado | `localStorage`, chaves `sintonia_*` | Ver "Chaves de dados" |
-| Navegação | `SCREENS` + `goTo()` + uma `render*()` por tela | Telas: Treinar (início), Sessão, Depois, Registro salvo, Progresso, Aprender. Sessão, Depois e Registro salvo escondem a barra de navegação (classe `foco` no `body`) |
+| Navegação | `SCREENS` + `goTo()` + uma `render*()` por tela | Telas: Treinar (início), Sessão, Depois, Registro salvo, Bloco (toques), Bloco concluído, Progresso, Aprender. As telas de exercício escondem a barra de navegação (classe `foco` no `body`). A tela inicial muda com o tipo de treino (`data-tipo` e as classes `only-classico` / `only-toques`) |
 | Offline | `sw.js` (HTML network-first, assets cache-first). **Incrementar `CACHE_VERSION` a cada deploy** | `/auth/` e `/shared/` sempre da rede |
 | Login/sync | `../auth/auth.js` (conta por convite, "usar sem conta", sincronização), `data-storage-keys` lista as chaves sincronizadas | Igual aos outros apps. Migração `painel_sintonia` aplicada (seção 14 de `supabase/schema.sql`) |
 | Painel | `../shared/sintonia-painel.js` (leitura da profissional) + projeção `projecao_sintonia` no banco | Só números (data, duração, completa, notas antes e depois); a observação escrita só com a permissão da pessoa. A pessoa também leva os dados por "Copiar resumo" (Progresso) |
 | Pesquisa | Nenhuma (`data-pesquisa="nao"`) | Igual ao Aurora |
 
 ### Chaves de dados
-`sintonia_sessoes` · `sintonia_ob` (sincronizadas) e `sintonia_cfg` (volume, duração e voz: só neste aparelho)
+`sintonia_sessoes` · `sintonia_semanal` · `sintonia_ob` (sincronizadas) e `sintonia_cfg` (volume, duração, voz e ajustes do tipo Com toques) e `sintonia_nome` (nome opcional do relatório): só neste aparelho
 
 Cada sessão guarda: `id`, `iso`, `modo` (`full`/`short`), `planejado` e `feito` (segundos), `completa`, `antes` e `depois` (`{w, s, c}`, de 0 a 10 ou `null` quando a pessoa não deu nota) e `nota` (texto livre).
+Blocos com toques acrescentam: `tipo:'toques'`, `fase` (1 a 3), `cenario`, `sons`, `ritmo`, `acertos`, `chamadas`, `rt` (mediana, em segundos), `longest` (foco contínuo, em segundos), `voltas` e `mente` (`{antes, depois}`, de 1 a 5). A reflexão semanal (`sintonia_semanal`) guarda `{ key (segunda-feira), ts, items (4 notas de 1 a 5), note }`.
 
 ---
 
@@ -52,6 +53,25 @@ Regras que **não** devem mudar sem reavaliar a evidência:
 - O som na **fase 2 muda sem previsibilidade** (sorteio), para exigir troca ativa e não ritmo previsível.
 
 Superficial (adaptável): timbres dos sons, nomes, cores, textos das instruções (inclusive a voz), duração exata da preparação.
+
+---
+
+## Tipo "Com toques" (adaptação para TDAH, a partir da Clareira)
+
+Criado a partir do artefato **Clareira**. É um **segundo mecanismo**, e não a ATT de Wells: na ATT clássica a pessoa não responde a nada e não há acerto ou erro; aqui há uma **tarefa de detecção** com medida de desempenho. Por isso é um tipo à parte, escolhido na tela inicial, e cada registro guarda `tipo:'toques'`, para a profissional nunca misturar os dois.
+
+| Elemento | Superficial (adaptável) | Profundo (preservar) |
+|---|---|---|
+| Fases | Nomes e textos | **Foco seletivo** (um som, outros chegam aos poucos), **Alternância** (o alvo muda de lugar, com anel-guia e aviso sonoro) e **Atenção dividida** (todos os sons, quem chama?). Um bloco = uma fase |
+| Chamada dupla | Timbres, cenários (Floresta, Oceano, Espaço) | Às vezes um som vem **duas vezes seguidas** (a segunda 12% mais aguda, 0,17 s depois). A pessoa toca na fonte em até cerca de 3 s. Chamadas só ocorrem depois de alguns sons de cada fonte, com intervalo mínimo entre elas |
+| Medidas | Rótulos | **Chamadas percebidas** (%), **tempo de resposta** (mediana), **foco contínuo** (maior sequência de percepções com intervalos de até 14 s) e **voltas ao foco** (mais de 14 s entre duas percepções) |
+| Ajustes para TDAH | Valores e rótulos | **Blocos curtos** (3, 5 ou 8 min), **menos sons** (3 a 5), **ritmo das trocas** lento a rápido, **intensidade visual** calma a viva, **anel-guia** ligado ou desligado, teclado (teclas 1 a 6 e Esc). Tudo escolhido pela pessoa, no aparelho |
+| Linguagem | Frases | **Sem pontos, derrota ou ranking.** "Momentos de foco", nunca "acertos" na tela; a dispersão é tratada como parte do exercício ("perceber e voltar é o exercício"). A pessoa só se compara consigo mesma |
+| Mente antes/depois | Rótulos | Uma única escala de **1 (calma) a 5 (agitada)**, opcional, para pouca carga |
+| Reflexão semanal | Perguntas | 4 itens de 1 a 5 sobre o **dia a dia**, uma vez por semana, mais uma situação em texto. Mostra a experiência da pessoa, **não prova** que o treino causou a mudança |
+| Relatório | Layout | PDF, texto, CSV e resumo para a profissional, com período de 7, 30 ou 90 dias. O nome é opcional. O PDF carrega as bibliotecas (`jsPDF`, `autoTable`, da cdnjs) **só quando a pessoa pede**, então precisa de internet; texto, CSV e resumo funcionam offline |
+
+Limite honesto, repetido na tela inicial: o treino de atenção costuma ter **efeito limitado fora do exercício**, por isso funciona melhor junto de estratégias do dia a dia. A sugestão do dia é descritiva ("Blocos curtos e regulares funcionam melhor"), sem meta.
 
 ---
 
@@ -87,6 +107,7 @@ Formulação própria de apoio, **não é escala validada**. A pessoa compara s�
 3. `git commit` e `git push` (o GitHub Pages atualiza em cerca de 1 minuto). Quem já usou o app precisa recarregar a página duas vezes para o service worker trocar de versão.
 
 ## Pendências conhecidas
-- Testar o painel de ponta a ponta com uma conta real: a projeção foi testada com dados fictícios, mas ainda não há uma pessoa vinculada usando a Sintonia.
+- Testar o painel de ponta a ponta com uma conta real: a projeção (`painel_sintonia` e `painel_sintonia_toques`) foi testada com dados fictícios, mas ainda não há uma pessoa vinculada usando a Sintonia.
+- O tipo Com toques ainda não foi validado com pessoas com TDAH: ajustar tempos, quantidade de sons e linguagem depois dos primeiros testes.
 - O áudio depende de o navegador manter a página viva: a sessão pausa se a tela for para segundo plano (comportamento intencional). No iPhone, o modo silencioso bloqueia o som.
 - Possíveis próximos passos: escolher o conjunto de sons, lembrete diário opcional (como no Aurora) e testes com pessoas reais, incluindo quem usa leitor de tela.
