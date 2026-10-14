@@ -16,8 +16,10 @@
 /* ── Dados ───────────────────────────────────────────────────────────── */
 const K = {
   sess: 'sintonia_sessoes',   // [ { id, iso, modo, planejado, feito, completa, antes:{w,s,c}, depois:{w,s,c}, nota } ]  (sincronizada)
+                              // Com toques: tipo:'toques', fase, cenario, sons, ritmo, acertos, chamadas, rt, longest, voltas, mente:{antes,depois} (1 a 5)
+  sem:  'sintonia_semanal',   // [ { key, ts, items:[4 notas de 1 a 5], note } ]  reflexão semanal sobre o dia a dia             (sincronizada)
   ob:   'sintonia_ob',        // { feito:true, data }                                                                    (sincronizada)
-  cfg:  'sintonia_cfg'        // { volume, mode, voice }  preferências deste aparelho (NÃO sincronizada)
+  cfg:  'sintonia_cfg'        // { volume, mode, voice, tipo, cenario, tdur, sons, ritmo, visual, guia }  preferências deste aparelho (NÃO sincronizada)
 };
 const SOURCES = [
   { id: 'sino',    nome: 'Sino',      onde: 'à sua esquerda',     ang: 290 },
@@ -49,7 +51,11 @@ function wr(k, v) {
 (function () { try { localStorage.setItem('__sint', '1'); localStorage.removeItem('__sint'); } catch (e) { STORE_OK = false; } })();
 
 let SESS = (function () { const d = rd(K.sess, []); return Array.isArray(d) ? d : []; })();   // em memória: vale mesmo sem armazenamento
-const CFG = Object.assign({ volume: 55, mode: 'full', voice: false }, rd(K.cfg, {}) || {});
+const CFG = Object.assign({
+  volume: 55, mode: 'full', voice: false,
+  tipo: 'classico',                                   // 'classico' (ATT) ou 'toques' (adaptação para TDAH)
+  cenario: 'floresta', tdur: 3, sons: 4, ritmo: 'medio', visual: 'media', guia: true   // ajustes do tipo 'toques'
+}, rd(K.cfg, {}) || {});
 function saveSess() { wr(K.sess, SESS); }
 function saveCfg() { wr(K.cfg, CFG); }
 
@@ -71,8 +77,8 @@ function reduced() {
 }
 
 /* ── Navegação ───────────────────────────────────────────────────────── */
-const SCREENS = ['home', 'session', 'after', 'done', 'progress', 'learn'];
-const FOCO = ['session', 'after', 'done'];   // telas sem a barra de navegação
+const SCREENS = ['home', 'session', 'after', 'done', 'tap', 'tapsum', 'progress', 'learn'];
+const FOCO = ['session', 'after', 'done', 'tap', 'tapsum'];   // telas sem a barra de navegação
 let _cur = 'home', _booted = false;
 function goTo(s) {
   _cur = s;
@@ -84,7 +90,7 @@ function goTo(s) {
   window.scrollTo(0, 0); scr.scrollTop = 0;
   if (s === 'home') renderHome();
   if (s === 'progress') renderProgress();
-  if (_booted && (s === 'after' || s === 'done')) { const h = scr.querySelector('h1'); if (h) { h.setAttribute('tabindex', '-1'); h.focus({ preventScroll: true }); } }
+  if (_booted && (s === 'after' || s === 'done' || s === 'tapsum')) { const h = scr.querySelector('h1'); if (h) { h.setAttribute('tabindex', '-1'); h.focus({ preventScroll: true }); } }
 }
 
 /* ── Toast e modal ───────────────────────────────────────────────────── */
@@ -604,18 +610,22 @@ function sessOrdenadas() { return SESS.slice().sort((a, b) => a.id - b.id); }
 
 function renderProgress() {
   const ss = sessOrdenadas();
-  const ex = ss.length === 0;
-  const items = (ex ? exampleItems() : ss).slice(-12);
+  const cls = ss.filter(r => r.tipo !== 'toques'), tq = ss.filter(r => r.tipo === 'toques');
+  const ex = ss.length === 0;                 // sem nenhum registro: mostra o gráfico de exemplo
+  const items = (ex ? exampleItems() : cls).slice(-12);
   $('ps-n').textContent = ss.length;
   $('ps-d').textContent = new Set(ss.map(r => diaLocal(r.iso))).size;
   $('ps-m').textContent = Math.round(ss.reduce((a, r) => a + (r.feito || 0), 0) / 60);
-  $('chart').innerHTML = chartSvg(items, S.ck);
-  $('chart-wrap').classList.toggle('is-example', ex);
-  $('ex-badge').hidden = !ex;
+  $('chart-wrap').style.display = (ex || cls.length) ? '' : 'none';
+  if (ex || cls.length) {
+    $('chart').innerHTML = chartSvg(items, S.ck);
+    $('chart-wrap').classList.toggle('is-example', ex);
+    $('ex-badge').hidden = !ex;
+    document.querySelectorAll('#ck button').forEach(b => b.setAttribute('aria-pressed', b.dataset.k === S.ck ? 'true' : 'false'));
+  }
   $('store-warn').hidden = STORE_OK;
-  $('p-acts').style.display = ex ? 'none' : '';
-  if (ex) $('fallback').hidden = true;
-  document.querySelectorAll('#ck button').forEach(b => b.setAttribute('aria-pressed', b.dataset.k === S.ck ? 'true' : 'false'));
+  $('p-toques').hidden = tq.length === 0;
+  if (typeof renderProgressoExtra === 'function') renderProgressoExtra();   // progresso.js: toques, reflexão semanal e relatório
   $('hist-count').textContent = ex ? 'Sessões' : ss.length + (ss.length === 1 ? ' sessão registrada' : ' sessões registradas');
   const list = $('hist-list');
   if (ex) {
@@ -624,24 +634,13 @@ function renderProgress() {
   }
   list.innerHTML = ss.slice().reverse().map(r => {
     const dur = r.completa ? minTxt(r.planejado) + ' min, completa' : 'encerrada com ' + Math.floor(r.feito / 60) + ' de ' + minTxt(r.planejado) + ' min';
-    return '<article class="hs"><div class="hs-h"><div><strong>' + fmtDate(r.iso) + '</strong> <span class="muted">· ' + dur + '</span></div><button type="button" class="link-btn" data-del="' + r.id + '" aria-label="Remover o registro de ' + fmtDate(r.iso) + '">Remover</button></div>'
-      + METRICS.map(m => dumb(m.nome, r.antes ? r.antes[m.k] : null, r.depois ? r.depois[m.k] : null)).join('')
-      + (r.nota ? '<p class="note-box">' + esc(r.nota) + '</p>' : '') + '</article>';
+    const corpo = r.tipo === 'toques'
+      ? '<p class="note-box" style="margin:6px 0 0">' + esc(tqResumoLinha(r)) + '</p>'
+      : METRICS.map(m => dumb(m.nome, r.antes ? r.antes[m.k] : null, r.depois ? r.depois[m.k] : null)).join('');
+    const nome = r.tipo === 'toques' ? ' · ' + (TQ_FASES[r.fase] || 'Com toques') : '';
+    return '<article class="hs"><div class="hs-h"><div><strong>' + fmtDate(r.iso) + '</strong> <span class="muted">' + esc(nome) + ' · ' + dur + '</span></div><button type="button" class="link-btn" data-del="' + r.id + '" aria-label="Remover o registro de ' + fmtDate(r.iso) + '">Remover</button></div>'
+      + corpo + (r.nota ? '<p class="note-box">' + esc(r.nota) + '</p>' : '') + '</article>';
   }).join('');
-}
-
-function summaryText() {
-  const ss = sessOrdenadas();
-  let t = 'Treino de Atenção Auditiva (ATT) · Sintonia\n' + ss.length + (ss.length === 1 ? ' sessão' : ' sessões') + ', de ' + fmtShort(ss[0].iso) + ' a ' + fmtShort(ss[ss.length - 1].iso) + '\n';
-  ss.forEach(r => {
-    t += '\n' + fmtDate(r.iso) + ' | ' + (r.completa ? 'completa' : 'encerrada antes do fim') + ', ' + minTxt(r.feito) + ' min de ' + minTxt(r.planejado) + '\n';
-    METRICS.forEach(m => {
-      const a = r.antes ? r.antes[m.k] : null, b = r.depois ? r.depois[m.k] : null;
-      t += '  ' + m.nome + ': ' + (a != null ? a : 'sem nota') + ' → ' + (b != null ? b : 'sem nota') + '\n';
-    });
-    if (r.nota) t += '  Observação: ' + r.nota + '\n';
-  });
-  return t;
 }
 
 /* ── Tela inicial ────────────────────────────────────────────────────── */
@@ -663,8 +662,9 @@ function renderHome() {
   if (!ss.length) return;
   const dias = Math.floor((Date.now() - ss[ss.length - 1].id) / 86400000);
   if (dias >= 7) {
-    box.innerHTML = '<div class="insight-c l"><div class="insight-t">Que bom ver você de novo</div><div class="insight-b">Não é preciso recuperar nada. Se hoje estiver difícil, a versão de 6 minutos já conta.</div></div>';
+    box.innerHTML = '<div class="insight-c l"><div class="insight-t">Que bom ver você de novo</div><div class="insight-b">Não é preciso recuperar nada. Se hoje estiver difícil, um bloco curto já conta.</div></div>';
   }
+  if (typeof wkLembreteHTML === 'function') box.innerHTML += wkLembreteHTML();   // progresso.js
 }
 function setVol(v) {
   v = +v;
@@ -675,7 +675,7 @@ function setVol(v) {
 
 /* ── Dados: exportar e apagar ────────────────────────────────────────── */
 function baixar(nome, tipo, texto) {
-  const url = URL.createObjectURL(new Blob([texto], { type: tipo })), a = document.createElement('a');
+  const url = URL.createObjectURL(texto instanceof Blob ? texto : new Blob([texto], { type: tipo })), a = document.createElement('a');
   a.href = url; a.download = nome; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 function exportJSON() {
@@ -683,12 +683,7 @@ function exportJSON() {
   toast('Arquivo baixado.');
 }
 function exportCSV() {
-  const cel = v => '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"';
-  const cab = ['data', 'modo', 'minutos_planejados', 'minutos_feitos', 'completa']
-    .concat(METRICS.reduce((a, m) => a.concat([m.curto.toLowerCase() + '_antes', m.curto.toLowerCase() + '_depois']), []), ['observacao']);
-  const linhas = [cab.map(cel).join(',')].concat(sessOrdenadas().map(r => [fmtDate(r.iso), r.modo === 'short' ? 'curta' : 'completa', minTxt(r.planejado), minTxt(r.feito), r.completa ? 'sim' : 'não']
-    .concat(METRICS.reduce((a, m) => a.concat([r.antes ? r.antes[m.k] : '', r.depois ? r.depois[m.k] : '']), []), [r.nota || '']).map(cel).join(',')));
-  baixar('sintonia-sessoes.csv', 'text/csv;charset=utf-8', '﻿' + linhas.join('\r\n'));
+  baixar('sintonia-sessoes.csv', 'text/csv;charset=utf-8', csvSessoes(sessOrdenadas()));
   toast('Arquivo baixado.');
 }
 function openModal(id) {
@@ -698,7 +693,8 @@ function openModal(id) {
   }
 }
 function deleteAll() {
-  SESS = []; try { localStorage.removeItem(K.sess); } catch (e) { /* ok */ }
+  SESS = []; try { localStorage.removeItem(K.sess); localStorage.removeItem(K.sem); localStorage.removeItem('sintonia_nome'); } catch (e) { /* ok */ }
+  if (typeof WK !== 'undefined') { WK = []; wkIniciado = false; $('repName').value = ''; }
   closeModal(); toast('Dados apagados deste aparelho.'); goTo('home');
 }
 function removeOne(id) {
@@ -785,23 +781,11 @@ if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catc
     showModal('Remover este registro?', 'O registro desta sessão será apagado deste aparelho e não tem volta.',
       '<button class="btn danger" onclick="removeOne(' + id + ')">Sim, remover</button><button class="btn ghost" onclick="closeModal()">Cancelar</button>');
   });
-  $('copy').addEventListener('click', async () => {
-    if (!SESS.length) return;
-    const txt = summaryText();
-    try {
-      await navigator.clipboard.writeText(txt);
-      toast('Resumo copiado.');
-    } catch (e) {
-      const ta = $('fallback'); ta.hidden = false; ta.value = txt; ta.focus(); ta.select();
-      toast('Selecione o texto abaixo e copie.');
-    }
-  });
-
   document.addEventListener('visibilitychange', () => { if (document.hidden && S.running) pause(); });
 
   let k = 0;
   setInterval(() => {
-    if (_cur === 'home' && !document.hidden) { homeMap.ripple(k % SOURCES.length); k++; }
+    if (_cur === 'home' && CFG.tipo !== 'toques' && !document.hidden) { homeMap.ripple(k % SOURCES.length); k++; }
   }, 1700);
 
   const ob = rd(K.ob, null);

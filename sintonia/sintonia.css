@@ -181,3 +181,81 @@ body.foco #nav{display:none}
 @media(prefers-reduced-motion:reduce){.ripple{display:none}.map .beam{transition:none}.pseg i{transition:none}}
 html.pea-calmo .ripple{display:none}
 html.pea-calmo .map .beam,html.pea-calmo .pseg i{transition:none}
+
+/* ═══ Tipo de treino: Com toques (adaptação inspirada na Clareira, para TDAH) ═══ */
+#scr-home[data-tipo="toques"] .only-classico{display:none!important}
+#scr-home:not([data-tipo="toques"]) .only-toques{display:none!important}
+
+/* Escala de 1 a 5 e ajustes */
+.scale{display:flex;gap:8px;flex-wrap:wrap}
+.scale button{width:48px;height:48px;border-radius:50%;border:1.5px solid var(--border);background:var(--white);color:var(--graphite);font:800 15px var(--font);cursor:pointer}
+.scale button[aria-pressed="true"]{background:var(--lav-d);border-color:var(--lav-d);color:#fff}
+.scale button:focus-visible,.seg button:focus-visible,.chip:focus-visible{outline:3px solid var(--lav);outline-offset:2px}
+.scale-ends{display:flex;justify-content:space-between;max-width:288px;margin-top:6px}
+.settings-grid{display:grid;gap:18px;grid-template-columns:1fr}
+@media(min-width:680px){.settings-grid{grid-template-columns:1fr 1fr}}
+.setting{display:flex;flex-direction:column;gap:8px;min-width:0}
+.slabel{font-weight:800;font-size:14px}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button{min-height:44px;padding:8px 14px;border-radius:10px;border:1.5px solid var(--border);background:var(--white);color:var(--graphite);cursor:pointer;font:800 13.5px var(--font)}
+.seg button[aria-pressed="true"]{border-color:var(--lav);background:var(--lav-l);color:var(--lav-d)}
+
+/* Cartões de fase */
+.tq-fases{display:grid;gap:var(--gap);grid-template-columns:1fr;padding:0 var(--pg);margin-bottom:var(--gap)}
+@media(min-width:900px){.tq-fases{grid-template-columns:repeat(3,1fr)}}
+.tq-fase{display:flex;flex-direction:column;gap:8px;margin:0}
+.tq-fase h3{font-size:16px;font-weight:800}
+.tq-meta{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:10px;padding-top:6px}
+.tq-meta .btn{margin:0}
+.ic{width:100%;max-width:190px;height:auto;display:block}
+.ic .dot{fill:var(--light);opacity:.7}
+.ic .ring{fill:none;stroke:var(--amber);stroke-width:2;stroke-dasharray:3 3}
+.ic .arrow{fill:none;stroke:var(--amber);stroke-width:1.8;stroke-linecap:round}
+.ic .wave{fill:none;stroke:var(--mint);stroke-width:1.6;stroke-linecap:round;opacity:.8}
+
+/* Bloco em andamento */
+.tap{display:grid;gap:14px;padding:calc(env(safe-area-inset-top,0px) + 28px) var(--pg) 0;min-width:0}
+.tq-bar{display:flex;align-items:center;gap:12px}
+.tq-bar .btn{margin:0;flex:none}
+.tq-prog{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+.tbar{height:8px;border-radius:99px;background:var(--border);overflow:hidden}
+.tbar i{display:block;height:100%;width:0;background:var(--lav-d);border-radius:99px;transition:width .4s linear}
+.tq-status{font-size:1.05rem;min-height:3.3em;max-width:64ch;line-height:1.5}
+.tq-stage{position:relative;border-radius:var(--r);overflow:hidden;border:1px solid var(--border);background:var(--mint-xl);aspect-ratio:4/5;touch-action:manipulation}
+@media(min-width:720px){.tq-stage{aspect-ratio:16/10}}
+.tq-stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block;cursor:pointer}
+.tq-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;background:rgba(247,243,239,.9);padding:20px}
+.tq-overlay>div{display:flex;flex-direction:column;gap:12px;align-items:center}
+.tq-ov-title{font-size:1.5rem;font-weight:800}
+.tq-foot{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px 16px}
+.tq-counter{display:flex;align-items:baseline;gap:10px}
+.tq-counter b{font-size:2rem;font-weight:800;font-variant-numeric:tabular-nums;line-height:1;color:var(--lav-d)}
+.tq-counter b.pop{animation:tqpop .5s ease}
+@keyframes tqpop{0%{transform:scale(1)}35%{transform:scale(1.25);color:var(--amber)}100%{transform:scale(1)}}
+.tap .link-btn{justify-self:center}
+
+/* Resumo do bloco e progresso */
+.tstats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;padding:var(--gap) var(--pg) 0;margin-bottom:var(--gap)}
+.tstats .stat{padding:14px 10px}
+.tstats .stat-n{font-size:22px;color:var(--lav-d)}
+.cmp{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px}
+.cmpi{border:1px solid var(--border);border-radius:var(--rs);padding:12px 14px;display:flex;flex-direction:column;gap:2px;background:var(--sand);min-width:0}
+.cmpi b{font-size:1.6rem;line-height:1.15;font-variant-numeric:tabular-nums;color:var(--lav-d)}
+.cmp-d{font-size:12.5px;color:var(--muted)}
+.cmp-d.up{color:var(--mint-d);font-weight:800}
+.chart .grid{stroke:var(--border);stroke-width:1}
+.chart .area{fill:var(--lav);opacity:.15;stroke:none}
+.chart .line{fill:none;stroke:var(--lav-d);stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round}
+.chart .avg{fill:none;stroke:var(--light);stroke-width:1.5;stroke-dasharray:4 4}
+.chart .pt{fill:var(--lav-d)}
+.chart .pt.last{fill:var(--amber);stroke:var(--white);stroke-width:2}
+.chart .pb{fill:var(--white);stroke:var(--light);stroke-width:2}
+.chart .link{stroke:var(--light);stroke-width:2;opacity:.6}
+.chart .val{font-weight:800;fill:var(--graphite)}
+.loglist{list-style:none;display:flex;flex-direction:column;gap:6px;margin-top:10px}
+.loglist li{display:flex;flex-wrap:wrap;gap:4px 12px;justify-content:space-between;border-top:1px solid var(--border);padding-top:8px;font-size:13.5px}
+.loglist li:first-child{border-top:0;padding-top:0}
+.card .field{margin:0}
+.card textarea.demo-input,.card input.demo-input{width:100%}
+@media(prefers-reduced-motion:reduce){.tq-counter b.pop{animation:none}.tbar i{transition:none}}
+html.pea-calmo .tq-counter b.pop{animation:none}

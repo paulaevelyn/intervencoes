@@ -236,3 +236,8 @@ notify pgrst, 'reload schema';
 -- feito, completa, antes:{w,s,c}, depois:{w,s,c}, tem_nota } ] } (até 500, só números e booleanos válidos; o resto é
 -- descartado). A observação escrita (nota) só sai com com_textos. painel_dados despacha 'sintonia'.
 -- O SQL completo está na migração painel_sintonia do projeto; aqui fica o resumo, como nas seções 9 a 13.
+
+-- ── 15. Sintonia: tipo Com toques e reflexão semanal (migração painel_sintonia_toques) ──
+-- projecao_sintonia passa a incluir, por sessão, tipo ('toques'), fase (1 a 3), cenario, ritmo, sons, acertos, chamadas,
+-- rt, longest, voltas e mente {antes, depois} (1 a 5), e a lista 'semanal' (chave sintonia_semanal: key, ts, items
+-- numéricos; a situação escrita, nota, só com com_textos). Valores fora da lista branca são descartados.
