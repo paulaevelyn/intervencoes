@@ -75,6 +75,22 @@ Limite honesto, repetido na tela inicial: o treino de atenção costuma ter **ef
 
 ---
 
+## Cenário Bateria (pessoas que tocam ou estão aprendendo bateria)
+
+Pensado para um cliente que toca bateria. Vale para os **dois tipos de treino** e **não muda o mecanismo**, só o conteúdo sonoro (estrutura superficial):
+
+| Onde | Como aparece | O que toca |
+|---|---|---|
+| Clássico | Cartão "Sons" na tela inicial (Padrão ou Bateria), guardado em `CFG.conjunto` | Mesmas cinco posições ao redor: **Prato** (esquerda), **Chimbal** (direita), **Bumbo** (frente), **Tom** (atrás, à direita) e **Caixa** (atrás, à esquerda). O bumbo mantém um pulso regular, como a madeira do conjunto padrão |
+| Com toques | Cenário "Bateria" nos ajustes (`CFG.cenario`) | Bumbo, caixa, chimbal, tom agudo, tom grave e prato. A **chamada dupla** (um som duas vezes seguidas) corresponde ao toque duplo (*double stroke*) |
+
+- Todos os sons são **sintetizados no navegador** (ruído filtrado e osciladores); não há arquivos de áudio. Não soam como um kit gravado. Trocar por gravações com licença seria só substituir a síntese.
+- **Cuidado auditivo:** quem toca bateria já tem o ouvido mais exposto. Quando a Bateria está escolhida, a tela inicial mostra o aviso "Cuide do ouvido" e o volume continua baixo por padrão.
+- Cada registro marca `conjunto:'bateria'` (clássico) ou `cenario:'bateria'` (com toques); o painel da profissional mostra "(bateria)".
+- Fora de escopo, por precisar de validação clínica: exercícios que usam pulso e ritmo (por exemplo, manter um pulso interno enquanto os sons trocam).
+
+---
+
 ## Diferenças deliberadas em relação ao Farol/Floresça
 
 | Elemento | Farol/Floresça | Sintonia | Por quê (profundo) |

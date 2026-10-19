@@ -151,6 +151,13 @@
         <label class="opt"><input type="radio" name="mode" value="short" id="mode-short"><span><b>6 minutos</b><small>Versão curta</small></span></label>
       </div>
     </div>
+    <div class="card">
+      <div class="card-lbl">Sons</div>
+      <div class="opts" role="radiogroup" aria-label="Conjunto de sons">
+        <label class="opt"><input type="radio" name="conjunto" value="padrao" id="conj-padrao"><span><b>Padrão</b><small>Sino, gotas, madeira, tom e vento</small></span></label>
+        <label class="opt"><input type="radio" name="conjunto" value="bateria" id="conj-bateria"><span><b>Bateria</b><small>Prato, chimbal, bumbo, tom e caixa</small></span></label>
+      </div>
+    </div>
   </div>
 
   <!-- Só no tipo Com toques -->
@@ -184,6 +191,9 @@
     </div>
     <div class="set-row" style="cursor:default">
       <div style="flex:1"><div class="set-lbl">🎧 Teste dos fones</div><div class="set-desc" id="test-msg" role="status" aria-live="polite">Use fones de ouvido. No teste, o sino vem da esquerda, as gotas da direita e as batidas da frente.</div></div>
+    </div>
+    <div class="set-row" id="bat-aviso" style="cursor:default" hidden>
+      <div style="flex:1"><div class="set-lbl">🥁 Cuide do ouvido</div><div class="set-desc">Quem toca bateria já expõe o ouvido a volume alto. Comece com o volume baixo e aumente só até ouvir bem.</div></div>
     </div>
     <div class="set-row only-classico" id="voice-wrap" style="cursor:default">
       <div style="flex:1"><div class="set-lbl">🗣️ Instruções faladas</div><div class="set-desc">Uma voz anuncia cada troca de som.</div></div>
