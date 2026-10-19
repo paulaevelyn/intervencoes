@@ -241,3 +241,6 @@ notify pgrst, 'reload schema';
 -- projecao_sintonia passa a incluir, por sessão, tipo ('toques'), fase (1 a 3), cenario, ritmo, sons, acertos, chamadas,
 -- rt, longest, voltas e mente {antes, depois} (1 a 5), e a lista 'semanal' (chave sintonia_semanal: key, ts, items
 -- numéricos; a situação escrita, nota, só com com_textos). Valores fora da lista branca são descartados.
+
+-- ── 16. Sintonia: cenário Bateria (migração painel_sintonia_bateria) ──
+-- projecao_sintonia aceita cenario = 'bateria' (com toques) e o campo 'conjunto' ('padrao' ou 'bateria', do clássico).

@@ -12,7 +12,7 @@
 
 const TQ_FASES = ['', 'Foco seletivo', 'Alternância', 'Atenção dividida'];
 const TQ_OPCOES = {
-  cenario: [['floresta', 'Floresta'], ['oceano', 'Oceano'], ['espaco', 'Espaço']],
+  cenario: [['floresta', 'Floresta'], ['oceano', 'Oceano'], ['espaco', 'Espaço'], ['bateria', 'Bateria']],
   tdur: [[3, '3 min'], [5, '5 min'], [8, '8 min']],
   sons: [[3, 'Baixa'], [4, 'Média'], [5, 'Alta']],
   ritmo: [['lento', 'Lento'], ['medio', 'Médio'], ['rapido', 'Rápido']],
@@ -36,6 +36,14 @@ const TQ_CENAS = {
     { name: 'Barco', lbl: 'o barco', hue: 95, gap: [3.0, 5.0], v: { kind: 'hum', f: 62, a: .4, d: 1.2, peak: .24 } },
     { name: 'Bolhas', lbl: 'as bolhas', hue: 340, gap: [1.4, 2.8], v: { kind: 'chirp', f0: 300, f1: 900, d: .07, wave: 'sine', peak: .2 } }
   ] },
+  bateria: { label: 'Bateria', voices: [
+    { name: 'Bumbo', lbl: 'o bumbo', hue: 22, gap: [1.5, 2.8], v: { kind: 'thump', f0: 150, f1: 48, d: .3, peak: .6 } },
+    { name: 'Caixa', lbl: 'a caixa', hue: 48, gap: [1.8, 3.2], v: { kind: 'snare', peak: .35 } },
+    { name: 'Chimbal', lbl: 'o chimbal', hue: 195, gap: [0.9, 1.8], v: { kind: 'noise', ft: 'highpass', f: 7500, q: .5, a: .002, d: .05, peak: .22 } },
+    { name: 'Tom agudo', lbl: 'o tom agudo', hue: 290, gap: [2.4, 4.2], v: { kind: 'thump', f0: 230, f1: 150, d: .3, peak: .5 } },
+    { name: 'Tom grave', lbl: 'o tom grave', hue: 340, gap: [2.8, 4.6], v: { kind: 'thump', f0: 140, f1: 85, d: .4, peak: .55 } },
+    { name: 'Prato', lbl: 'o prato', hue: 95, gap: [3.2, 5.5], v: { kind: 'noise', ft: 'highpass', f: 5200, q: .6, a: .004, d: 1.3, peak: .22 } }
+  ] },
   espaco: { label: 'Espaço', voices: [
     { name: 'Pulsar', lbl: 'o pulsar', hue: 48, gap: [1.2, 2.2], v: { kind: 'blip', f: 760, d: .06, wave: 'square', peak: .06 } },
     { name: 'Sonar', lbl: 'o sonar', hue: 195, gap: [2.6, 4.6], v: { kind: 'chirp', f0: 1250, f1: 1190, d: .9, wave: 'sine', peak: .14 } },
@@ -49,7 +57,8 @@ const TQ_CENAS = {
 const TQ_PAL = {
   floresta: { top: '#e2f1e7', bot: '#c4e1d0', gnd: '#a8cdb8', dot: '#fffbe0', stem: '#3f8a66' },
   oceano: { top: '#dcedf5', bot: '#b8dbe8', gnd: '#9cc8d9', dot: '#ffffff', stem: '#2f86a8' },
-  espaco: { top: '#e6e5f5', bot: '#cdc9ea', gnd: '#b7b1de', dot: '#ffffff', stem: '#6a63b8' }
+  espaco: { top: '#e6e5f5', bot: '#cdc9ea', gnd: '#b7b1de', dot: '#ffffff', stem: '#6a63b8' },
+  bateria: { top: '#f3e8dd', bot: '#e6cfb9', gnd: '#cfae92', dot: '#fff6ea', stem: '#9a5f3a' }
 };
 const TQ_TH = { fg: '#3F434B', glow: '#C47D2A' };
 
@@ -110,6 +119,10 @@ function tqVoice(v, t, dest, mul) {
   } else if (k === 'blip') {
     const o = tctx.createOscillator(); o.type = v.wave || 'square'; o.frequency.value = v.f * mul;
     const g = tqEnv(t, 0.004, v.d, v.peak); o.connect(g); g.connect(dest); o.start(t); o.stop(t + v.d + 0.05);
+  } else if (k === 'snare') {
+    tqNoise({ ft: 'highpass', f: 1400, q: .7, a: .003, d: .17, peak: v.peak }, t, dest);
+    const o = tctx.createOscillator(); o.type = 'triangle'; o.frequency.setValueAtTime(190 * mul, t); o.frequency.exponentialRampToValueAtTime(150, t + .1);
+    const g = tqEnv(t, 0.004, 0.1, v.peak * 0.7); o.connect(g); g.connect(dest); o.start(t); o.stop(t + 0.2);
   } else if (k === 'noise') {
     tqNoise(v, t, dest);
   } else if (k === 'hum') {
@@ -399,6 +412,11 @@ function tqBloom(b, i, now, w, h, sc, fa) {
     tcx.fillStyle = tqOrbColor(b.hue, 0.95);
     for (let k = 0; k < 6; k++) { const a = k * Math.PI / 3 + (b.seed % 7); tcx.beginPath(); tcx.arc(hx + Math.cos(a) * pr * 1.3, hy + Math.sin(a) * pr * 1.3, pr, 0, 6.2832); tcx.fill(); }
     tcx.fillStyle = TQ_TH.glow; tcx.beginPath(); tcx.arc(hx, hy, pr * 0.8, 0, 6.2832); tcx.fill();
+  } else if (TG.cenario === 'bateria') {
+    const x = b.x * w, y = h * (0.76 + 0.18 * b.y), s = (h * 0.016 + b.sz * h * 0.014) * e;
+    tcx.strokeStyle = tqOrbColor(b.hue, 0.9); tcx.lineWidth = 2; tcx.beginPath(); tcx.arc(x, y, s, 0, 6.2832); tcx.stroke();
+    tcx.lineWidth = 1.2; tcx.beginPath(); tcx.arc(x, y, s * 1.7, 0, 6.2832); tcx.stroke();
+    tcx.fillStyle = tqOrbColor(b.hue, 0.9); tcx.beginPath(); tcx.arc(x, y, s * 0.35, 0, 6.2832); tcx.fill();
   } else if (TG.cenario === 'oceano') {
     const r = tqRng(b.seed), x = b.x * w, y0 = h * (0.93 + 0.05 * b.y), L = (h * 0.05 + b.sz * h * 0.04) * e;
     tcx.strokeStyle = tqOrbColor(b.hue, 0.95);
@@ -514,6 +532,7 @@ function tqRenderAjustes() {
 function tqAplicarTipo() {
   $('scr-home').dataset.tipo = CFG.tipo;
   $('tipo-' + CFG.tipo).checked = true;
+  atualizarAvisoBateria();
   $('tipo-dica').textContent = CFG.tipo === 'toques'
     ? 'Um exercício ativo de atenção: toque na fonte quando um som se repetir. Mostra o seu progresso, sem pontos nem derrota. Pensado para quem tem TDAH ou prefere algo mais ativo.'
     : 'A escuta guiada da ATT: você só ouve e leva a atenção ao som indicado, sem acertos nem erros.';
@@ -540,7 +559,7 @@ function tqResumoLinha(r) {
   document.querySelectorAll('#scr-home .seg').forEach(el => el.addEventListener('click', e => {
     const b = e.target.closest('button'); if (!b) return;
     const key = el.dataset.key; const o = TQ_OPCOES[key].find(x => String(x[0]) === b.dataset.v); if (!o) return;
-    CFG[key] = o[0]; saveCfg(); tqRenderAjustes();
+    CFG[key] = o[0]; saveCfg(); tqRenderAjustes(); atualizarAvisoBateria();
   }));
   document.querySelectorAll('[data-scale]').forEach(tqConstruirEscala);
   document.querySelectorAll('[data-fase]').forEach(b => b.addEventListener('click', () => tqStart(+b.dataset.fase)));

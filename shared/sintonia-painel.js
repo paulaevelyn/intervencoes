@@ -102,7 +102,7 @@
       ss.slice().reverse().slice(0, 12).forEach(function (s) {
         var ehTq = s.tipo === 'toques';
         var topo = h('div', { class: 'fp-item-topo' }, h('span', { class: 'fp-data', texto: U.rotuloData(s.date) }),
-          h('span', { class: 'fp-tag', texto: (ehTq ? (FASES[s.fase] || 'Com toques') : 'ATT clássica') + ' · ' + (s.completa === false ? 'encerrada' : 'completa') + ' · ' + min(s.feito) + ' de ' + min(s.planejado) + ' min' }));
+          h('span', { class: 'fp-tag', texto: (ehTq ? (FASES[s.fase] || 'Com toques') + (s.cenario === 'bateria' ? ' (bateria)' : '') : 'ATT clássica' + (s.conjunto === 'bateria' ? ' (bateria)' : '')) + ' · ' + (s.completa === false ? 'encerrada' : 'completa') + ' · ' + min(s.feito) + ' de ' + min(s.planejado) + ' min' }));
         var it = h('div', { class: 'fp-item' }, topo);
         if (ehTq) {
           var p = perc(s);

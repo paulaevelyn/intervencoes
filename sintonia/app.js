@@ -21,13 +21,23 @@ const K = {
   ob:   'sintonia_ob',        // { feito:true, data }                                                                    (sincronizada)
   cfg:  'sintonia_cfg'        // { volume, mode, voice, tipo, cenario, tdur, sons, ritmo, visual, guia }  preferências deste aparelho (NÃO sincronizada)
 };
-const SOURCES = [
+/* Conjuntos de sons do tipo Clássico: Padrão e Bateria (pensado para quem toca ou está aprendendo bateria).
+   Mesmas cinco posições ao redor da pessoa; muda só o que cada ponto toca. */
+const SOURCES_PADRAO = [
   { id: 'sino',    nome: 'Sino',      onde: 'à sua esquerda',     ang: 290 },
   { id: 'gotas',   nome: 'Gotas',     onde: 'à sua direita',      ang: 70 },
   { id: 'madeira', nome: 'Madeira',   onde: 'à sua frente',       ang: 0 },
   { id: 'tom',     nome: 'Tom grave', onde: 'atrás, à direita',   ang: 140 },
   { id: 'vento',   nome: 'Vento',     onde: 'atrás, à esquerda',  ang: 220 }
 ];
+const SOURCES_BATERIA = [
+  { id: 'prato',   nome: 'Prato',     onde: 'à sua esquerda',     ang: 290 },
+  { id: 'chimbal', nome: 'Chimbal',   onde: 'à sua direita',      ang: 70 },
+  { id: 'bumbo',   nome: 'Bumbo',     onde: 'à sua frente',       ang: 0 },
+  { id: 'tomb',    nome: 'Tom',       onde: 'atrás, à direita',   ang: 140 },
+  { id: 'caixa',   nome: 'Caixa',     onde: 'atrás, à esquerda',  ang: 220 }
+];
+let SOURCES = SOURCES_PADRAO;
 const METRICS = [
   { k: 'w', nome: 'Preocupação ou ruminação', curto: 'Preocupação',    dica: '0 = nenhuma, 10 = muito intensa' },
   { k: 's', nome: 'Atenção presa em mim',     curto: 'Atenção em mim', dica: 'pensamentos e sensações do corpo, de 0 a 10' },
@@ -54,6 +64,7 @@ let SESS = (function () { const d = rd(K.sess, []); return Array.isArray(d) ? d 
 const CFG = Object.assign({
   volume: 55, mode: 'full', voice: false,
   tipo: 'classico',                                   // 'classico' (ATT) ou 'toques' (adaptação para TDAH)
+  conjunto: 'padrao',                                 // sons do tipo clássico: 'padrao' ou 'bateria'
   cenario: 'floresta', tdur: 3, sons: 4, ritmo: 'medio', visual: 'media', guia: true   // ajustes do tipo 'toques'
 }, rd(K.cfg, {}) || {});
 function saveSess() { wr(K.sess, SESS); }
@@ -245,12 +256,47 @@ const Au = {
       o.connect(g); g.connect(this.master); o.start(t); o.stop(t + p[2] + 0.05);
     });
   },
+  /* Bateria sintetizada (sem arquivos de som) */
+  noiseHit(dest, t, ft, f, q, d, peak) {
+    const c = this.ctx, n = c.createBufferSource(); n.buffer = this.noise;
+    const fl = c.createBiquadFilter(); fl.type = ft; fl.frequency.value = f; fl.Q.value = q;
+    const g = c.createGain();
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(peak, t + 0.003);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + d);
+    n.connect(fl); fl.connect(g); g.connect(dest);
+    n.start(t, Math.random() * Math.max(0.05, 1.9 - d), d + 0.05);
+  },
+  toneHit(dest, t, type, f0, f1, d, peak) {
+    const c = this.ctx, o = c.createOscillator(); o.type = type;
+    o.frequency.setValueAtTime(f0, t); o.frequency.exponentialRampToValueAtTime(f1, t + Math.min(d, 0.14));
+    const g = c.createGain();
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(peak, t + 0.004);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + d);
+    o.connect(g); g.connect(dest); o.start(t); o.stop(t + d + 0.05);
+  },
+  kick(dest, t) { this.toneHit(dest, t, 'sine', 150, 48, 0.32, 0.9); this.noiseHit(dest, t, 'lowpass', 600, 0.5, 0.03, 0.15); },
+  snare(dest, t) { this.noiseHit(dest, t, 'highpass', 1400, 0.7, 0.17, 0.5); this.toneHit(dest, t, 'triangle', 190, 150, 0.1, 0.35); },
+  hat(dest, t) { this.noiseHit(dest, t, 'highpass', 7500, 0.5, 0.05, 0.3); },
+  cymbal(dest, t) { this.noiseHit(dest, t, 'highpass', 5200, 0.6, 1.3, 0.28); this.noiseHit(dest, t, 'bandpass', 8800, 2.5, 0.9, 0.12); },
+  tomHit(dest, t) { this.toneHit(dest, t, 'sine', 175, 100, 0.38, 0.65); this.noiseHit(dest, t, 'lowpass', 900, 0.5, 0.03, 0.12); },
   build(i) {
     const c = this.ctx, s = SOURCES[i];
     const out = c.createGain(), pan = this.panner(s.ang, 3);
     out.connect(pan); pan.connect(this.master);
     const o = { i: i, out: out, pan: pan, nodes: null, next: 0, n: 0, fire: null, iv: null };
-    if (s.id === 'sino') {
+    if (s.id === 'prato') {
+      out.gain.value = 0.55; o.fire = t => this.cymbal(out, t); o.iv = () => 3.2 + Math.random() * 1.8;
+    } else if (s.id === 'chimbal') {
+      out.gain.value = 0.55; o.fire = t => this.hat(out, t); o.iv = () => 0.3 + Math.random() * 0.6;
+    } else if (s.id === 'bumbo') {
+      out.gain.value = 0.6; o.fire = t => this.kick(out, t); o.iv = () => 0.625;
+    } else if (s.id === 'tomb') {
+      out.gain.value = 0.6; o.fire = t => this.tomHit(out, t); o.iv = () => 2.6 + Math.random() * 1.6;
+    } else if (s.id === 'caixa') {
+      out.gain.value = 0.6; o.fire = t => this.snare(out, t); o.iv = () => 2.2 + Math.random() * 1.6;
+    } else if (s.id === 'sino') {
       out.gain.value = 0.55; o.fire = t => this.bell(out, t); o.iv = () => 2.2 + Math.random() * 1.6;
     } else if (s.id === 'gotas') {
       out.gain.value = 0.5; o.fire = t => this.drop(out, t); o.iv = () => 0.25 + Math.random() * 0.9;
@@ -321,7 +367,7 @@ const Au = {
       });
     }, 1800);
   },
-  test(vol) {
+  test(vol, kit) {
     if (!this.init()) return false;
     const c = this.ctx;
     if (c.resume) c.resume();
@@ -335,9 +381,15 @@ const Au = {
       return g;
     };
     const L = tmp(290, 0.55), Rr = tmp(70, 0.5), F = tmp(0, 0.55);
-    this.bell(L, now + 0.15);
-    [1.5, 1.8, 2.2].forEach(d => this.drop(Rr, now + d));
-    [0, 1, 2, 3].forEach(k => this.wood(F, now + 3.2 + k * 0.5, k === 3));
+    if (kit) {
+      this.cymbal(L, now + 0.15);
+      [1.5, 1.8, 2.2].forEach(d => this.hat(Rr, now + d));
+      [0, 1, 2, 3].forEach(k => this.kick(F, now + 3.2 + k * 0.5));
+    } else {
+      this.bell(L, now + 0.15);
+      [1.5, 1.8, 2.2].forEach(d => this.drop(Rr, now + d));
+      [0, 1, 2, 3].forEach(k => this.wood(F, now + 3.2 + k * 0.5, k === 3));
+    }
     return true;
   }
 };
@@ -549,6 +601,7 @@ function dumb(label, a, b) {
 function saveSession() {
   const rec = {
     id: Date.now(), iso: new Date().toISOString(), modo: S.mode,
+    conjunto: CFG.conjunto === 'bateria' ? 'bateria' : undefined,
     planejado: MODES[S.mode].durs.reduce((a, b) => a + b, 0),
     feito: S.doneSec, completa: S.completa,
     antes: S.before || { w: null, s: null, c: null },
@@ -666,6 +719,24 @@ function renderHome() {
   }
   if (typeof wkLembreteHTML === 'function') box.innerHTML += wkLembreteHTML();   // progresso.js
 }
+/* Bateria: vale para o Clássico (conjunto) e para o Com toques (cenário) */
+function usaKit() { return CFG.tipo === 'toques' ? CFG.cenario === 'bateria' : CFG.conjunto === 'bateria'; }
+function descrMapa() {
+  const n = SOURCES.map(s => s.nome.toLowerCase() + ' ' + s.onde.replace('à sua ', 'à ')).join(', ');
+  return 'Mapa dos cinco sons ao seu redor: ' + n + '.';
+}
+function aplicarConjunto(inicio) {
+  SOURCES = CFG.conjunto === 'bateria' ? SOURCES_BATERIA : SOURCES_PADRAO;
+  if (!inicio) { homeMap.build(); liveMap.build(); }
+  $('map-home').setAttribute('aria-label', descrMapa());
+  atualizarAvisoBateria();
+}
+function atualizarAvisoBateria() {
+  const a = $('bat-aviso'); if (a) a.hidden = !usaKit();
+  const t = $('test-msg'); if (t) t.textContent = usaKit()
+    ? 'Use fones de ouvido. No teste, o prato vem da esquerda, o chimbal da direita e as batidas de bumbo da frente.'
+    : 'Use fones de ouvido. No teste, o sino vem da esquerda, as gotas da direita e as batidas da frente.';
+}
 function setVol(v) {
   v = +v;
   CFG.volume = v;
@@ -734,6 +805,8 @@ if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catc
 
 /* ═══════════════ INIT ═══════════════ */
 (function init() {
+  if (CFG.conjunto !== 'bateria') CFG.conjunto = 'padrao';
+  SOURCES = CFG.conjunto === 'bateria' ? SOURCES_BATERIA : SOURCES_PADRAO;
   homeMap = new MapView($('map-home'));
   liveMap = new MapView($('map-session'));
   buildSliders();
@@ -758,9 +831,12 @@ if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catc
     if (Voice.on) Voice.say('Instruções faladas ligadas.');
   });
   $('test').addEventListener('click', () => {
-    const ok = Au.test(CFG.volume);
-    $('test-msg').textContent = ok ? 'Você deve ouvir um sino à esquerda, gotas à direita e quatro batidas à frente. Se tudo vier do mesmo lado, confira os fones.' : 'Este navegador não consegue reproduzir os sons. Tente outro navegador.';
+    const kit = usaKit(), ok = Au.test(CFG.volume, kit);
+    $('test-msg').textContent = ok ? (kit ? 'Você deve ouvir um prato à esquerda, chimbal à direita e quatro batidas de bumbo à frente. Se tudo vier do mesmo lado, confira os fones.' : 'Você deve ouvir um sino à esquerda, gotas à direita e quatro batidas à frente. Se tudo vier do mesmo lado, confira os fones.') : 'Este navegador não consegue reproduzir os sons. Tente outro navegador.';
   });
+  const cj = $('conj-' + CFG.conjunto); if (cj) cj.checked = true;
+  document.querySelectorAll('input[name=conjunto]').forEach(r => r.addEventListener('change', () => { CFG.conjunto = r.value; saveCfg(); aplicarConjunto(); }));
+  aplicarConjunto(true);
   $('start').addEventListener('click', startSession);
   $('btn-pause').addEventListener('click', () => { S.running ? pause() : resume(); });
   $('btn-end').addEventListener('click', () => { pause(); $('end-confirm').hidden = false; });
