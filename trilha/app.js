@@ -26,9 +26,14 @@ const K = {
   sos:    'trilha_sos',      // [ { id, ts, t:{item} } ]                               (só da pessoa)
   ob:     'trilha_ob',       // { feito, data }
   cfg:    'trilha_cfg',      // { nome }  só neste aparelho (não sincroniza)
+  jogo:     'trilha_jogo',      // { pts, miss, med, revd, pet }  energia, missões, medalhas (jogo.js)
+  rev:      'trilha_rev',       // { idQuestao: { b, d } }  revisão espaçada
+  forcas:   'trilha_forcas',    // { ts, top:[ids], dev:[ids], t:{ex_id, uso_id} }
+  recursos: 'trilha_recursos',  // [ { id, ts, cat, t:{item} } ]  só da pessoa
   orient: 'trilha_orient'    // cache das orientações da profissional (não sincroniza; amarrado ao usuário)
 };
-const SYNC = ['trilha_regs', 'trilha_semanal', 'trilha_escada', 'trilha_feitos', 'trilha_lidos', 'trilha_plano', 'trilha_agenda', 'trilha_sos', 'trilha_ob'];
+const SYNC = ['trilha_regs', 'trilha_semanal', 'trilha_escada', 'trilha_feitos', 'trilha_lidos', 'trilha_plano', 'trilha_agenda', 'trilha_sos', 'trilha_ob',
+              'trilha_jogo', 'trilha_rev', 'trilha_forcas', 'trilha_recursos'];
 
 function rd(k, fb) { try { const r = localStorage.getItem(k); return r !== null ? JSON.parse(r) : fb; } catch (e) { return fb; } }
 function wr(k, v) {
@@ -87,8 +92,8 @@ document.addEventListener('pea-auth-pronto', () => { lerCacheOri(); carregarOrie
 document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') carregarOrientacoes(); });
 
 /* ── Navegação ───────────────────────────────────────────────────────── */
-const SCREENS = ['home', 'trilha', 'modulo', 'tools', 'tool', 'registro', 'eu'];
-const SUBTELAS = ['modulo', 'tool', 'registro'];
+const SCREENS = ['home', 'trilha', 'modulo', 'missao', 'revisao', 'tools', 'tool', 'registro', 'eu'];
+const SUBTELAS = ['modulo', 'missao', 'revisao', 'tool', 'registro'];
 let _hist = [], _cur = 'home';
 function voltar() { const p = _hist.pop() || 'home'; goTo(p, true); }
 function goTo(s) {
@@ -203,6 +208,8 @@ function renderHome() {
   $('h-modulo').innerHTML = m ? `<div class="tr-card suave"><div class="tr-lbl">Módulo de agora</div><h3>${esc(m.emoji)} ${esc(m.nome)}</h3><p>${esc(m.porque)}</p>
     <div class="tr-acoes"><button class="tr-btn" type="button" onclick="openModulo(${m.id})">Abrir módulo</button></div></div>` : '';
 
+  if (typeof renderJogoHome === 'function') renderJogoHome();
+
   // Balanço da semana (opcional)
   const sk = segunda(today()), fez = getSem().some(s => s.key === sk);
   $('h-semanal').innerHTML = fez ? '' : `<div class="tr-card suave"><div class="tr-lbl">Opcional</div><h3>📋 Balanço da semana</h3><p>Como foi a semana, em poucos itens (2 minutos).</p>
@@ -210,7 +217,7 @@ function renderHome() {
 
   $('hs-dias').textContent = diasComPratica();
   $('hs-regs').textContent = getRegs().length;
-  $('hs-mods').textContent = Object.keys(getLidos()).length;
+  $('hs-mods').textContent = typeof getJogo === 'function' ? TRILHA.MODULOS.filter(m => modCompleto(getJogo(), m.id)).length : 0;
   const p = getPlano(); $('h-plano-sub').textContent = p && p.t && Object.keys(p.t).length ? 'Ver e atualizar' : 'Montar com sua psicóloga';
 }
 function toggleTarefa(id) {
@@ -222,14 +229,16 @@ function toggleTarefa(id) {
 /* ── Trilha ──────────────────────────────────────────────────────────── */
 function renderTrilha() {
   const lidos = getLidos(); let h = '';
+  const J = typeof getJogo === 'function' ? getJogo() : null;
   TRILHA.FASES.forEach(f => {
-    h += `<div class="fase-h">${esc(f.nome)}</div>`;
+    const feitos = J ? f.mods.filter(id => modCompleto(J, id)).length : 0;
+    h += `<div class="fase-h">${esc(f.nome)}${J ? ` <span class="fase-p">${feitos}/${f.mods.length} missões</span>` : ''}</div>`;
     f.mods.forEach(id => {
       const m = moduloPorId(id), agora = ORI.modulo === id;
       h += `<button class="mod${agora ? ' agora' : ''}" type="button" onclick="openModulo(${m.id})">
         <span class="mod-e">${esc(m.emoji)}</span>
         <span style="flex:1;min-width:0"><span class="mod-n">Módulo ${m.id}</span><br><span class="mod-t">${esc(m.nome)}</span><br>
-          ${agora ? '<span class="mod-tag">Agora</span>' : ''}${lidos[m.id] ? '<span class="mod-tag vis">Visto</span>' : ''}<span class="mod-tag ab">${esc(m.abord)}</span></span></button>`;
+          ${agora ? '<span class="mod-tag">Agora</span>' : ''}${lidos[m.id] ? '<span class="mod-tag vis">Visto</span>' : ''}${J && J.med['mod' + m.id] ? '<span class="mod-tag vis">Medalha</span>' : ''}<span class="mod-tag ab">${esc(m.abord)}</span></span>${typeof pipsHTML === 'function' ? pipsHTML(m.id) : ''}</button>`;
     });
   });
   h += `<div class="insight-c l"><div class="insight-t">E se eu precisar de outra coisa?</div><div class="insight-b">Além desses módulos, você e sua psicóloga podem combinar trabalhos específicos (por exemplo, para uma fobia, TOC ou algo difícil que você viveu). Isso é conversado na sessão.</div></div>`;
@@ -246,6 +255,7 @@ function openModulo(id) {
     <div class="bloco"><h3>Para praticar</h3><p>${esc(m.pratica)}</p></div>
     <div class="sdiv">Ferramentas deste módulo</div>
     <div class="quick-grid">${fs.map(f => `<div class="quick-card" role="button" tabindex="0" onclick="openTool('${esc(f.id)}')" onkeydown="if(event.key==='Enter')openTool('${esc(f.id)}')"><div class="quick-icon">${esc(f.emoji)}</div><div class="quick-title">${esc(f.nome)}</div><div class="quick-sub">${esc(f.sub)}</div></div>`).join('')}</div>
+    ${typeof hubMissaoHTML === 'function' ? hubMissaoHTML(m) : ''}
     <button class="btn ${lido ? 'ghost-mint' : 'mint'}" type="button" onclick="marcarLido(${m.id})">${lido ? '✓ Visto (toque para desmarcar)' : 'Marcar como visto'}</button>`;
   goTo('modulo');
 }
@@ -293,6 +303,7 @@ function confirmaApagar(id) { wr(K.regs, getRegs().filter(r => r.id !== id)); cl
 
 /* ── Eu ──────────────────────────────────────────────────────────────── */
 function renderEu() {
+  if (typeof renderCamp === 'function') renderCamp();
   $('eu-privacidade').innerHTML = `<div class="pv-txt">
     <div class="pv-linha"><span>🙋</span><span><strong>Sua psicóloga</strong> só vê o que você liberar em “Minha conta” (botão no topo): nada, só números, ou números e textos. Você pode mudar quando quiser.</span></div>
     <div class="pv-linha"><span>👨‍👩‍👧</span><span><strong>Seus responsáveis</strong> não têm acesso ao app. O que a família sabe é combinado nas sessões.</span></div>
@@ -334,9 +345,10 @@ if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catc
 })();
 
 /* ── Início ──────────────────────────────────────────────────────────── */
-lerCacheOri();
-(function () {
+/* Chamada por um <script> no fim do index.html, depois de carregar ferramentas.js e jogo.js. */
+function iniciarTrilha() {
+  lerCacheOri();
   const ob = rd(K.ob, null), temDados = getRegs().length > 0;
   if ((ob && ob.feito) || temDados) { $('onboard').classList.add('hide'); goTo('home'); }
   else { $('onboard').classList.remove('hide'); }
-})();
+}

@@ -20,14 +20,14 @@ function openTool(id, tarefaId) {
   $('tool-sub').textContent = ft.sub;
   goTo('tool');
   ({ form: renderForm, respirar: renderRespirar, aterrar: renderAterrar, lista: renderLista,
-     escada: renderEscada, plano: renderPlano, semanal: renderSemanal }[ft.tipo])(ft);
+     escada: renderEscada, plano: renderPlano, semanal: renderSemanal, forcas: renderForcas, recursos: renderRecursos }[ft.tipo])(ft);
 }
 function concluirTarefa() {
   if (!_ctx.tarefa) return;
   const f = getFeitos(); if (!f[_ctx.tarefa]) { f[_ctx.tarefa] = Date.now(); wr(K.feitos, f); toast('Marcado como feito no que foi combinado.'); }
   _ctx.tarefa = null;
 }
-function guardarRegistro(rec) { const r = getRegs(); r.push(rec); wr(K.regs, r); }
+function guardarRegistro(rec) { const r = getRegs(); r.push(rec); wr(K.regs, r); if (typeof pontuarRegistro === 'function') pontuarRegistro(rec); }
 function novoRegistro(f) { return { id: uid(), ts: Date.now(), date: today(), f: f, n: {}, c: {}, t: {} }; }
 function fimTela(titulo, msg, extraHTML) {
   $('tool-wrap').innerHTML = `<div class="tr-card"><h3>${esc(titulo)}</h3><p>${esc(msg)}</p>${extraHTML || ''}
@@ -177,7 +177,7 @@ function addLista(fid) {
 }
 function toggleLista(id) {
   const l = rd(K.agenda, []), it = l.find(x => x.id === id); if (!it) return;
-  it.feito = it.feito ? null : Date.now(); wr(K.agenda, l); renderLista(_ft);
+  it.feito = it.feito ? null : Date.now(); wr(K.agenda, l); if (it.feito) pontuaUso('agenda'); renderLista(_ft);
 }
 function removerLista(fid, id) { const chave = fid === 'agenda' ? K.agenda : K.sos; wr(chave, rd(chave, []).filter(x => x.id !== id)); renderLista(_ft); }
 
@@ -212,7 +212,7 @@ function tentouDegrau(id) {
 function registrarTentativa(id, v) {
   const l = rd(K.esc, []), d = l.find(x => x.id === id); if (!d) return;
   d.tentativas = d.tentativas || []; const t = { ts: Date.now(), n: {} }; if (typeof v === 'number') t.n.durante = v; d.tentativas.push(t);
-  wr(K.esc, l); closeModal(); concluirTarefa(); renderEscada(); toast('Tentativa registrada.');
+  wr(K.esc, l); closeModal(); concluirTarefa(); pontuaUso('escada'); renderEscada(); toast('Tentativa registrada.');
 }
 
 /* ── Plano de segurança (modelo Stanley-Brown) ───────────────────────── */
@@ -237,7 +237,7 @@ function renderPlano() {
 function salvarPlano() {
   const t = {}; CAMPOS_PLANO.forEach(c => { const v = String(_draft.t[c.k] || '').trim().slice(0, 600); if (v) t[c.k] = v; });
   if (!Object.keys(t).length) { toast('Preencha pelo menos um passo.'); return; }
-  wr(K.plano, { ts: Date.now(), t: t }); concluirTarefa();
+  wr(K.plano, { ts: Date.now(), t: t }); concluirTarefa(); pontuaUso('plano');
   fimTela('Plano salvo', 'Ele aparece também no botão “Preciso de ajuda agora”. Você pode atualizar quando quiser.');
 }
 
@@ -273,5 +273,6 @@ function salvarSemanal() {
   if (!Object.keys(n).length && !nota) { toast('Responda pelo menos um item.'); return; }
   const sk = segunda(today()), l = getSem().filter(s => s.key !== sk); l.push({ key: sk, ts: Date.now(), n: n, t: t });
   wr(K.sem, l); concluirTarefa();
+  window._semCelebrar = n.risco >= 1; pontuaUso('semanal'); window._semCelebrar = false;   // sem comemoração sobre a mensagem de cuidado
   fimTela('Balanço salvo', 'Obrigado/a por olhar para a sua semana.', n.risco >= 1 ? cuidadoHTML().replace(/^<div class="cuidado">/, '<div class="cuidado" style="margin:12px 0 0">') : '');
 }

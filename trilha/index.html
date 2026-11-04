@@ -60,11 +60,12 @@
       <div class="ob-title">Como funciona</div>
       <div class="ob-list">
         <div class="ob-li"><span class="ob-li-ic">🏠</span><span><strong>Hoje:</strong> sua próxima sessão e o que foi combinado para a semana.</span></div>
-        <div class="ob-li"><span class="ob-li-ic">🧭</span><span><strong>Trilha:</strong> os módulos que você e sua psicóloga vão percorrendo.</span></div>
+        <div class="ob-li"><span class="ob-li-ic">🧭</span><span><strong>Trilha:</strong> o mapa da sua expedição, com missões curtas para aprender, treinar e praticar.</span></div>
         <div class="ob-li"><span class="ob-li-ic">🧰</span><span><strong>Ferramentas:</strong> check-in, respiração, detetive de pensamentos e mais.</span></div>
+        <div class="ob-li"><span class="ob-li-ic">🎒</span><span><strong>Acampamento:</strong> suas forças, habilidades e medalhas.</span></div>
         <div class="ob-li"><span class="ob-li-ic">🛟</span><span><strong>Plano de segurança:</strong> para os dias muito difíceis.</span></div>
       </div>
-      <div class="ob-body" style="font-size:13.5px">Não existe pontuação, ranking nem “sequência” para quebrar. Dia ruim faz parte.</div>
+      <div class="ob-body" style="font-size:13.5px">Você ganha <strong>energia</strong> e <strong>medalhas</strong> por aprender e praticar. Ela só sobe: não existe ranking, tempo limite nem “sequência” para quebrar. Dia ruim faz parte.</div>
     </div>
     <div class="ob-dots"><div class="ob-dot"></div><div class="ob-dot on"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div></div>
     <button class="btn" onclick="obNext(2)">Continuar</button>
@@ -127,6 +128,7 @@
   <div id="h-sessao"></div>
   <div id="h-tarefas"></div>
   <div id="h-modulo"></div>
+  <div id="h-jogo"></div>
   <div id="h-semanal"></div>
   <div class="stats">
     <div class="stat"><div class="stat-n" style="color:var(--tr)" id="hs-dias">0</div><div class="stat-l">dias com prática (14 dias)</div></div>
@@ -144,14 +146,24 @@
 
 <!-- TRILHA -->
 <div class="scr" id="scr-trilha">
-  <div class="hdr"><h1>Trilha</h1><p>Os módulos que você percorre com sua psicóloga.</p></div>
-  <div class="insight-c"><div class="insight-t">Como usar</div><div class="insight-b">Sua psicóloga indica por onde seguir (o módulo <strong>Agora</strong>). Você pode ler os outros quando tiver curiosidade, sem pular a ordem das sessões.</div></div>
+  <div class="hdr"><h1>Trilha</h1><p>O mapa da sua expedição.</p></div>
+  <div class="insight-c"><div class="insight-t">Como usar</div><div class="insight-b">Cada módulo é uma missão com 3 etapas: <strong>aprender</strong> (micro-aula), <strong>treinar</strong> (questões com explicação) e <strong>praticar</strong> (um desafio na vida real). Sua psicóloga indica por onde seguir (<strong>Agora</strong>), mas você pode jogar qualquer missão, em qualquer ordem. Nada é bloqueado e nada se perde.</div></div>
   <div id="t-lista"></div>
 </div>
 
 <!-- MÓDULO -->
 <div class="scr" id="scr-modulo">
   <div id="m-wrap"></div>
+</div>
+
+<!-- ETAPA DE UMA MISSÃO -->
+<div class="scr" id="scr-missao">
+  <div id="ms-wrap"></div>
+</div>
+
+<!-- REVISÃO RELÂMPAGO -->
+<div class="scr" id="scr-revisao">
+  <div id="rv-wrap"></div>
 </div>
 
 <!-- FERRAMENTAS -->
@@ -174,7 +186,8 @@
 
 <!-- EU -->
 <div class="scr" id="scr-eu">
-  <div class="hdr"><h1>Eu</h1><p>Privacidade, dados e ajustes.</p></div>
+  <div class="hdr"><h1>Acampamento</h1><p>Seu nível, suas habilidades, medalhas e mochila.</p></div>
+  <div id="eu-camp" style="padding-top:14px"></div>
   <div class="sdiv">Quem vê o quê</div>
   <div class="bloco" id="eu-privacidade"></div>
 
@@ -220,7 +233,7 @@
     <svg viewBox="0 0 24 24"><path d="M14.7 6.3a4 4 0 00-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 005.4-5.4l-2.6 2.6-2.4-.6-.6-2.4z"/></svg><span>Ferramentas</span>
   </button>
   <button class="nb" id="nb-eu" onclick="goTo('eu')">
-    <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0116 0"/></svg><span>Eu</span>
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0116 0"/></svg><span>Acampamento</span>
   </button>
 </nav>
 
@@ -238,10 +251,13 @@
 <div id="toast" role="status" aria-live="polite"></div>
 
 <script src="data.js"></script>
+<script src="missoes.js"></script>
 <script src="app.js"></script>
 <script src="ferramentas.js"></script>
+<script src="jogo.js"></script>
+<script>iniciarTrilha();</script>
 
 <!-- LOGIN: camada compartilhada (../auth/). Contas só por convite. -->
-<script type="module" src="../auth/auth.js" data-app="trilha" data-nome="Trilha" data-logo="assets/trilha-logo.svg" data-pesquisa="nao" data-storage-keys="trilha_regs,trilha_semanal,trilha_escada,trilha_feitos,trilha_lidos,trilha_plano,trilha_agenda,trilha_sos,trilha_ob"></script>
+<script type="module" src="../auth/auth.js" data-app="trilha" data-nome="Trilha" data-logo="assets/trilha-logo.svg" data-pesquisa="nao" data-storage-keys="trilha_regs,trilha_semanal,trilha_escada,trilha_feitos,trilha_lidos,trilha_plano,trilha_agenda,trilha_sos,trilha_ob,trilha_jogo,trilha_rev,trilha_forcas,trilha_recursos"></script>
 </body>
 </html>

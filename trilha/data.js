@@ -176,10 +176,75 @@
     { id: 'agenda', emoji: '🗓️', nome: 'Ações da semana', sub: 'Pequenas ações que fazem bem', tipo: 'lista', min: 'no seu ritmo' },
     { id: 'sos', emoji: '🧰', nome: 'Caixa SOS', sub: 'O que me ajuda quando está difícil', tipo: 'lista', min: 'no seu ritmo' },
     { id: 'plano', emoji: '🛟', nome: 'Plano de segurança', sub: 'Para os dias muito difíceis', tipo: 'plano', min: '10 min, com sua psicóloga' },
-    { id: 'semanal', emoji: '📋', nome: 'Balanço da semana', sub: 'Como foi a semana, em poucos itens', tipo: 'semanal', min: '2 min' }
+    { id: 'semanal', emoji: '📋', nome: 'Balanço da semana', sub: 'Como foi a semana, em poucos itens', tipo: 'semanal', min: '2 min' },
+    { id: 'forcas', emoji: '🎒', nome: 'Minhas forças', sub: 'Descobrir o que você tem de melhor', tipo: 'forcas', min: '10 min' },
+    { id: 'forca', emoji: '🌟', nome: 'Força do dia', sub: 'Qual força você usou hoje?', tipo: 'form', min: '1 min',
+      intro: 'Forças aparecem em gestos pequenos. Escolha a que você usou hoje, mesmo que de leve.',
+      campos: [
+        { k: 'forca', b: 'c', t: 'chips', multi: true, l: 'Que força você usou?', opts: 'FORCAS' },
+        { k: 'exemplo', b: 't', t: 'txt', l: 'Como foi? (opcional)', ph: 'Uma frase já basta' }
+      ] },
+    { id: 'recursos', emoji: '🗃️', nome: 'Minha mochila de recursos', sub: 'Pessoas, lugares e conquistas que me sustentam', tipo: 'recursos', min: 'no seu ritmo' }
   ];
 
-  var OPTS = { EMOCOES: EMOCOES, CORPO: CORPO, IMPULSOS: IMPULSOS, ARMADILHAS: ARMADILHAS, TIPOS_ACAO: TIPOS_ACAO };
+  /* ── Jogo: Expedição (gamificação por domínio, SEM perdas) ─────────────
+     Regras de projeto: pontos só sobem; sem sequência que quebra; sem ranking; sem tempo limite;
+     pontos por COMPLETAR (nunca por acertar), para não punir quem erra ou é perfeccionista. */
+  var HABILIDADES = [   // as 5 competências socioemocionais (modelo CASEL)
+    { id: 'auto', emoji: '🔭', nome: 'Autoconhecimento', desc: 'Perceber o que você pensa, sente e valoriza.' },
+    { id: 'gestao', emoji: '🧘', nome: 'Autogestão', desc: 'Lidar com emoções, estresse e metas.' },
+    { id: 'social', emoji: '🌍', nome: 'Consciência social', desc: 'Entender o outro e respeitar diferenças.' },
+    { id: 'relacoes', emoji: '🤝', nome: 'Relacionamentos', desc: 'Comunicar, pedir ajuda, colocar limites.' },
+    { id: 'decisao', emoji: '🧭', nome: 'Decisões responsáveis', desc: 'Escolher com cuidado e pensar nas consequências.' }
+  ];
+  var NIVEIS = [
+    { min: 0, nome: 'Primeiros passos', emoji: '🥾' }, { min: 60, nome: 'Caminhante', emoji: '🚶' },
+    { min: 160, nome: 'Rastreador', emoji: '🔎' }, { min: 320, nome: 'Navegante', emoji: '🧭' },
+    { min: 520, nome: 'Guia de si', emoji: '🏔️' }
+  ];
+  var COMPANHEIROS = [  // desbloqueiam por nível (índice em NIVEIS)
+    { id: 'raposa', e: '🦊', nome: 'Raposa', nivel: 0 }, { id: 'coruja', e: '🦉', nome: 'Coruja', nivel: 1 },
+    { id: 'lobo', e: '🐺', nome: 'Lobo', nivel: 2 }, { id: 'tartaruga', e: '🐢', nome: 'Tartaruga', nivel: 2 },
+    { id: 'veado', e: '🦌', nome: 'Veado', nivel: 3 }, { id: 'aguia', e: '🦅', nome: 'Águia', nivel: 4 }
+  ];
 
-  global.TRILHA = { FASES: FASES, MODULOS: MODULOS, FERRAMENTAS: FERRAMENTAS, OPTS: OPTS, EMOCOES: EMOCOES };
+  /* 24 forças pessoais, em linguagem de adolescente. Inspiradas na psicologia positiva; textos PRÓPRIOS
+     (não reproduzem itens de instrumentos protegidos). ids: a-z 0-9 _ (usados no banco). `uso` = como a força
+     ajuda nos momentos difíceis (aparece nas missões). */
+  var FORCAS = [
+    { id: 'curiosidade', e: '🔍', n: 'Curiosidade', d: 'Querer descobrir e entender coisas novas.', uso: 'investigar um pensamento como detetive, em vez de acreditar nele de cara.' },
+    { id: 'criatividade', e: '🎨', n: 'Criatividade', d: 'Ter ideias e jeitos novos de fazer as coisas.', uso: 'inventar saídas diferentes quando o jeito de sempre não funciona.' },
+    { id: 'mente_aberta', e: '🪟', n: 'Mente aberta', d: 'Olhar vários lados antes de decidir.', uso: 'testar se a previsão ruim é mesmo a única possibilidade.' },
+    { id: 'amor_aprender', e: '📚', n: 'Amor por aprender', d: 'Gostar de aprender e de melhorar.', uso: 'tratar cada tentativa como treino, e não como prova.' },
+    { id: 'perspectiva', e: '🦉', n: 'Visão ampla', d: 'Enxergar o quadro maior e dar bons conselhos.', uso: 'pensar no que você diria a um amigo na mesma situação.' },
+    { id: 'coragem', e: '🦁', n: 'Coragem', d: 'Agir mesmo sentindo medo.', uso: 'subir um degrau da escada de enfrentamento.' },
+    { id: 'persistencia', e: '🧗', n: 'Persistência', d: 'Continuar tentando, em passos pequenos.', uso: 'voltar ao plano depois de um dia ruim.' },
+    { id: 'honestidade', e: '🪞', n: 'Honestidade', d: 'Ser verdadeiro/a consigo e com os outros.', uso: 'dar nome ao que você sente de verdade.' },
+    { id: 'energia', e: '⚡', n: 'Energia', d: 'Entusiasmo e vontade de fazer.', uso: 'dar o primeiro passo de uma ação planejada.' },
+    { id: 'amor', e: '💞', n: 'Vínculo', d: 'Criar laços e deixar-se cuidar.', uso: 'pedir ajuda a quem você confia.' },
+    { id: 'bondade', e: '🌱', n: 'Bondade', d: 'Cuidar e ajudar os outros.', uso: 'lembrar que a gentileza vale para você também.' },
+    { id: 'intel_social', e: '🧩', n: 'Leitura de pessoas', d: 'Perceber o que os outros sentem e o que a situação pede.', uso: 'escolher como falar numa conversa difícil.' },
+    { id: 'equipe', e: '🏐', n: 'Trabalho em equipe', d: 'Colaborar e fazer parte de um grupo.', uso: 'procurar o grupo quando a vontade é se isolar.' },
+    { id: 'justica', e: '⚖️', n: 'Justiça', d: 'Tratar todos de forma justa.', uso: 'colocar limites sem agredir ninguém.' },
+    { id: 'lideranca', e: '🚩', n: 'Liderança', d: 'Organizar e animar o grupo.', uso: 'assumir o comando do seu próprio plano.' },
+    { id: 'perdao', e: '🕊️', n: 'Perdão', d: 'Soltar o rancor e dar nova chance.', uso: 'largar a culpa por um erro, seu ou de alguém.' },
+    { id: 'humildade', e: '🌾', n: 'Humildade', d: 'Não precisar se exibir e aceitar limites.', uso: 'reconhecer que pedir ajuda é inteligente.' },
+    { id: 'prudencia', e: '🧠', n: 'Prudência', d: 'Pensar antes de agir e escolher com cuidado.', uso: 'fazer uma pausa antes de reagir no calor da emoção.' },
+    { id: 'autocontrole', e: '🎛️', n: 'Autocontrole', d: 'Conduzir emoções e impulsos.', uso: 'usar o ritmo calmante antes de responder.' },
+    { id: 'beleza', e: '🌄', n: 'Olhar para o belo', d: 'Notar o que é bonito e admirável.', uso: 'treinar a atenção no que está bom agora.' },
+    { id: 'gratidao', e: '🙏', n: 'Gratidão', d: 'Reconhecer o que é bom e agradecer.', uso: 'registrar uma coisa boa do dia.' },
+    { id: 'esperanca', e: '🌅', n: 'Esperança', d: 'Acreditar que dá para melhorar e agir por isso.', uso: 'planejar o próximo passo mesmo num dia difícil.' },
+    { id: 'humor', e: '😄', n: 'Humor', d: 'Rir e trazer leveza.', uso: 'aliviar a tensão sem fugir do problema.' },
+    { id: 'sentido', e: '🧭', n: 'Propósito', d: 'Ter algo que importa e dá direção.', uso: 'lembrar por que vale a pena enfrentar o desconforto.' }
+  ];
+  var CAT_RECURSOS = [
+    { v: 'pessoas', l: '👥 Pessoas' }, { v: 'lugares', l: '📍 Lugares' }, { v: 'atividades', l: '🎯 Atividades' },
+    { v: 'superei', l: '🏆 O que já superei' }, { v: 'sei', l: '🛠️ O que eu sei fazer' }
+  ];
+
+  var OPTS = { EMOCOES: EMOCOES, CORPO: CORPO, IMPULSOS: IMPULSOS, ARMADILHAS: ARMADILHAS, TIPOS_ACAO: TIPOS_ACAO,
+               FORCAS: FORCAS.map(function (f) { return { v: f.id, e: f.e, l: f.n }; }), CAT_RECURSOS: CAT_RECURSOS };
+
+  global.TRILHA = { FASES: FASES, MODULOS: MODULOS, FERRAMENTAS: FERRAMENTAS, OPTS: OPTS, EMOCOES: EMOCOES,
+                    HABILIDADES: HABILIDADES, NIVEIS: NIVEIS, COMPANHEIROS: COMPANHEIROS, FORCAS: FORCAS };
 })(window);
