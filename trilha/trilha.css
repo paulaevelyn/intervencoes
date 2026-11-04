@@ -106,3 +106,71 @@ html.pea-calmo .resp-circ,html.pea-calmo .resp-circ.in,html.pea-calmo .resp-circ
 
 /* A data no topo vem em minúsculas do navegador: sem "capitalize" do design system herdado */
 .home-date{text-transform:none}
+
+/* ═══ Expedição (jogo): energia só sobe, sem perdas ═══ */
+.xpbar{height:8px;border-radius:99px;background:var(--border);overflow:hidden;margin:6px 0 4px}
+.xpbar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--tr),var(--mint));transition:width .6s ease}
+.tr-card.nivel{display:flex;gap:14px;align-items:center;cursor:pointer}
+.nv-pet{font-size:2.4rem;line-height:1;flex:none}
+.nv-t{font-size:12.5px;color:var(--muted)}
+.camp{text-align:center}
+.camp-pet{font-size:4.2rem;line-height:1.1;margin-bottom:4px}
+.chip.trava{opacity:.55;cursor:default}
+.nb span{font-size:9.5px}
+
+/* Mapa */
+.fase-p{font-weight:700;color:var(--muted);text-transform:none;letter-spacing:0;margin-left:6px;font-size:11.5px}
+.pips{display:flex;gap:4px;flex:none;align-self:center}
+.pips i{width:9px;height:9px;border-radius:50%;background:var(--border)}
+.pips i.on{background:var(--tr)}
+
+/* Etapas da missão */
+.etapas{display:flex;flex-direction:column;gap:8px;margin:0 var(--pg) var(--gap)}
+.etapa{display:flex;gap:14px;align-items:center;text-align:left;background:var(--white);border:1.5px solid var(--border);border-radius:var(--r);padding:12px 14px;cursor:pointer;font-family:var(--font);color:var(--graphite);box-shadow:var(--shadow)}
+.etapa.feita{background:var(--tr-xl);border-color:var(--tr)}
+.et-e{flex:none;width:38px;height:38px;border-radius:50%;background:var(--tr-xl);display:grid;place-items:center;font-size:1.2rem}
+.etapa.feita .et-e{background:var(--tr);color:#fff;font-weight:800}
+.etapa strong{display:block;font-size:15px}
+.etapa small{display:block;font-size:12px;color:var(--muted);margin-top:1px}
+.etapa:focus-visible,.qz-op:focus-visible,.fc:focus-visible{outline:3px solid var(--tr);outline-offset:2px}
+
+/* Micro-aula */
+.dots{display:flex;gap:6px;justify-content:center;margin:0 0 12px}
+.dots i{width:8px;height:8px;border-radius:50%;background:var(--border)}
+.dots i.on{background:var(--tr);width:20px;border-radius:4px}
+.bloco.licao{text-align:center;padding:22px 20px}
+.licao-e{font-size:3.2rem;line-height:1.1;margin-bottom:6px}
+.bloco.licao h3{font-size:18px;text-transform:none;letter-spacing:0;color:var(--graphite);margin-bottom:8px}
+.bloco.licao p{text-align:left;font-size:15.5px}
+
+/* Questões */
+.qz-q{font-size:16.5px;font-weight:800;line-height:1.4;margin-bottom:14px}
+.qz-ops{display:flex;flex-direction:column;gap:8px}
+.qz-op{text-align:left;border:1.5px solid var(--border);border-radius:var(--rs);background:var(--white);color:var(--graphite);font:600 14.5px var(--font);padding:13px 14px;cursor:pointer;line-height:1.4}
+.qz-op.ok{border-color:var(--mint);background:var(--mint-xl);color:var(--mint-d)}
+.qz-op.no{border-color:var(--amber);background:var(--amber-l)}
+.qz-op:disabled{cursor:default}
+.qz-fb{margin-top:12px;padding:12px 14px;border-radius:var(--rs);background:var(--tr-xl);font-size:14px;line-height:1.55}
+.qz-item{margin-bottom:14px}
+.qz-it{font-size:15px;font-weight:700;margin-bottom:6px}
+.qz-res{font-size:12.5px;margin-top:6px;font-weight:700}
+.qz-res.ok{color:var(--mint-d)}.qz-res.no{color:var(--amber)}
+
+/* Forças */
+.fc-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 var(--pg)}
+.fc{display:flex;flex-direction:column;gap:3px;text-align:left;background:var(--white);border:1.5px solid var(--border);border-radius:var(--r);padding:12px;cursor:pointer;font-family:var(--font);color:var(--graphite);box-shadow:var(--shadow)}
+.fc.sel{border-color:var(--tr);background:var(--tr-xl)}
+.fc:disabled{opacity:.4;cursor:default}
+.fc-e{font-size:1.7rem;line-height:1}
+.fc strong{font-size:14px}
+.fc small{font-size:11.5px;color:var(--muted);line-height:1.35}
+
+/* Habilidades e medalhas */
+.hab{margin-bottom:12px}
+.hab-t{display:flex;justify-content:space-between;font-size:14px}
+.hab-d{font-size:12px;color:var(--muted)}
+.med-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:0 var(--pg);margin-bottom:var(--gap)}
+.med{background:var(--white);border-radius:var(--rs);padding:12px 6px;text-align:center;box-shadow:var(--shadow);opacity:.55}
+.med.on{opacity:1;border:1.5px solid var(--tr)}
+.med-e{display:block;font-size:1.9rem;line-height:1.2}
+.med-n{display:block;font-size:11px;font-weight:700;line-height:1.25;margin-top:4px}

@@ -18,7 +18,9 @@
   function numero(x) { return typeof x === 'number'; }
   function f1(n) { return (Math.round(n * 10) / 10).toFixed(1).replace('.', ','); }
   function rotulo(lista, v) { var o = (T.OPTS[lista] || []).filter(function (x) { return x.v === v; })[0]; return o ? o.l : v; }
-  function ferr(id) { var f = T.FERRAMENTAS.filter(function (x) { return x.id === id; })[0]; return f ? f.nome : id; }
+  function ferr(id) { if (id === 'missao') return 'Missão do módulo'; var f = T.FERRAMENTAS.filter(function (x) { return x.id === id; })[0]; return f ? f.nome : id; }
+  function forca(id) { var f = (T.FORCAS || []).filter(function (x) { return x.id === id; })[0]; return f ? f.e + ' ' + f.n : id; }
+  function nivelDe(xp) { var n = (T.NIVEIS || [])[0], i; for (i = 0; i < (T.NIVEIS || []).length; i++) if (xp >= T.NIVEIS[i].min) n = T.NIVEIS[i]; return n; }
   function dmy(key) { var p = String(key).split('-'); return p[2] + '/' + p[1]; }
   function lista(regs, k, campo) { return [].concat.apply([], regs.map(function (r) { return (r.c && r.c[campo]) || []; })); }
   function pares(regs, f) { return regs.filter(function (r) { return r.f === f; }); }
@@ -30,8 +32,10 @@
     var regs = (estado.registros || []).filter(function (r) { return r && r.date; });
     var sem = (estado.semanal || []).filter(function (s) { return s && s.key && s.n; }).sort(function (a, b) { return a.key < b.key ? -1 : 1; });
     var esc = estado.escada || [], feitos = estado.feitos || {}, lidos = estado.lidos || {}, plano = estado.plano || {};
+    var jogo = estado.jogo || { xp: 0, miss: {}, med: [] }, fc = estado.forcas || { top: [], dev: [] };
+    var temJogo = (jogo.xp || 0) > 0 || Object.keys(jogo.miss || {}).length, temForcas = (fc.top || []).length;
 
-    if (!regs.length && !sem.length && !esc.length && !plano.preenchido) {
+    if (!regs.length && !sem.length && !esc.length && !plano.preenchido && !temJogo && !temForcas) {
       var v = U.cartao('Registros'); v.appendChild(h('p', { class: 'fp-vazio', texto: 'Ainda não há registros da Trilha.' })); raiz.appendChild(v); return raiz;
     }
 
@@ -54,7 +58,34 @@
     raiz.appendChild(h('div', { class: 'fp-resumo' },
       h('div', { class: 'fp-stat' }, h('strong', { texto: String(regs.length) }), h('span', { texto: 'registros' })),
       h('div', { class: 'fp-stat' }, h('strong', { texto: String(Object.keys(dias).length) }), h('span', { texto: 'dias com prática (14 dias)' })),
-      h('div', { class: 'fp-stat' }, h('strong', { texto: String(Object.keys(lidos).length) }), h('span', { texto: 'módulos vistos' }))));
+      h('div', { class: 'fp-stat' }, h('strong', { texto: String(Object.keys(jogo.miss || {}).filter(function (k) { return jogo.miss[k] === 3; }).length || Object.keys(lidos).length) }), h('span', { texto: Object.keys(jogo.miss || {}).length ? 'missões concluídas' : 'módulos vistos' }))));
+
+    // ── Expedição (jogo) e forças ─────────────────────────────────────
+    if (temJogo) {
+      var cj = U.cartao('Expedição', 'Energia só sobe e vale por completar, não por acertar. Não é avaliação de desempenho.');
+      var nv = nivelDe(jogo.xp || 0);
+      cj.appendChild(h('div', { class: 'fp-escala' }, h('span', { class: 'fp-nome', texto: 'Nível' }), h('strong', { texto: (nv ? nv.emoji + ' ' + nv.nome : '–') + ' · ' + Math.round(jogo.xp || 0) + ' de energia' })));
+      (T.MODULOS || []).forEach(function (m) {
+        var n = jogo.miss && jogo.miss[m.id]; if (!n) return;
+        cj.appendChild(h('div', { class: 'fp-escala' }, h('span', { class: 'fp-nome', texto: 'Módulo ' + m.id + ' · ' + m.nome }), h('strong', { texto: n === 3 ? 'concluída' : n + ' de 3 etapas' })));
+      });
+      cj.appendChild(h('p', { class: 'fp-dica', texto: (jogo.med || []).length + ' medalha' + ((jogo.med || []).length === 1 ? '' : 's') + ' conquistada' + ((jogo.med || []).length === 1 ? '' : 's') + '.' }));
+      raiz.appendChild(cj);
+    }
+    if (temForcas) {
+      var cf = U.cartao('Forças escolhidas', 'Escolhidas pelo próprio adolescente. Boa porta de entrada para a conversa em sessão.');
+      cf.appendChild(h('div', { class: 'fp-escala' }, h('span', { class: 'fp-nome', texto: 'Mais parecem comigo' }), h('strong', { texto: (fc.top || []).map(forca).join(', ') })));
+      if ((fc.dev || []).length) cf.appendChild(h('div', { class: 'fp-escala' }, h('span', { class: 'fp-nome', texto: 'Quero desenvolver' }), h('strong', { texto: fc.dev.map(forca).join(', ') })));
+      if (opts.textos && fc.t) (fc.top || []).forEach(function (id) {
+        var ex = fc.t['ex_' + id], us = fc.t['uso_' + id]; if (!ex && !us) return;
+        var it = h('div', { class: 'fp-item' }, h('div', { class: 'fp-item-topo' }, h('span', { class: 'fp-data', texto: forca(id) })));
+        if (ex) it.appendChild(h('p', { class: 'fp-texto', texto: 'Quando usou: ' + ex }));
+        if (us) it.appendChild(h('p', { class: 'fp-texto', texto: 'Como pode usar: ' + us }));
+        cf.appendChild(it);
+      });
+      else cf.appendChild(h('p', { class: 'fp-vazio', texto: 'Os exemplos escritos não foram compartilhados.' }));
+      raiz.appendChild(cf);
+    }
 
     if (regs.length) {
       var c1 = U.cartao('Registros por semana', 'Últimas 8 semanas');
