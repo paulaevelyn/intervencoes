@@ -1,4 +1,5 @@
 import { useState, type ReactNode, type ButtonHTMLAttributes } from 'react';
+import { useStore } from './store';
 
 /* ---------- Ícones (sempre acompanhados de texto) ---------- */
 const P: Record<string, ReactNode> = {
@@ -199,4 +200,23 @@ export function TextList({ items, onChange, addLabel, placeholder, ideas = [] }:
       )}
     </div>
   );
+}
+
+/** Lê um texto em voz alta (síntese de voz do aparelho). Só aparece se o recurso existir e estiver ligado em Ajustes. */
+export function Listen({ text, label = 'Ouvir' }: { text: string; label?: string }) {
+  const { state } = useStore();
+  const [on, setOn] = useState(false);
+  if (!state.settings.listen || !('speechSynthesis' in window)) return null;
+  const toggle = () => {
+    const synth = window.speechSynthesis;
+    if (on) { synth.cancel(); setOn(false); return; }
+    synth.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = 'pt-BR';
+    u.onend = () => setOn(false);
+    u.onerror = () => setOn(false);
+    setOn(true);
+    synth.speak(u);
+  };
+  return <Button icon="wind" aria-pressed={on} onClick={toggle}>{on ? 'Parar áudio' : label}</Button>;
 }

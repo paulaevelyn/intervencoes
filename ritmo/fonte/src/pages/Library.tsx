@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { go, useRoute } from '../router';
 import { useStore } from '../store';
-import { Button, Card, Copy, Note, PageHead } from '../ui';
+import { Button, Card, Copy, Listen, Note, PageHead } from '../ui';
 import { GOALS, PRACTICES, practiceById, type GoalId, type Practice } from '../data/library';
 
 export function Library() {
@@ -66,7 +66,7 @@ function PracticeView({ p }: { p: Practice }) {
           {p.lines.map((l, i) => (
             <Card as="li" key={i}>
               <p className="text-lg">{l}</p>
-              {p.copyable && <div className="mt-2"><Copy text={l} label="Copiar" /></div>}
+              <div className="mt-2 flex flex-wrap gap-2"><Listen text={l} />{p.copyable && <Copy text={l} label="Copiar" />}</div>
             </Card>
           ))}
         </ul>
@@ -95,6 +95,7 @@ function StepPlayer({ steps }: { steps: string[] }) {
       <Card className="py-8">
         <p className="text-sm text-muted mb-2">Passo {i + 1} de {steps.length}</p>
         <p className="text-xl font-semibold leading-snug">{steps[i]}</p>
+        <div className="mt-3"><Listen text={steps[i]} /></div>
       </Card>
       <div className="mt-4 flex flex-wrap gap-2">
         {!last ? <Button kind="primary" big onClick={() => setI(i + 1)}>Próximo</Button> : <p role="status" className="rounded-xl bg-soft p-3 w-full">Pronto. Fique com o que serviu e deixe o resto.</p>}

@@ -69,6 +69,7 @@ export function Home() {
           </button>
         ))}
       </div>
+      <div className="mt-4"><Button kind="ghost" onClick={() => go('/entender')}>Não sei o que estou sentindo</Button></div>
       {last && (
         <p className="mt-6 text-sm text-muted">
           Último registro: {new Date(last.at).toLocaleDateString('pt-BR', { day: '2-digit', month: 'long' })}. Seus dados ficam neste aparelho (e na sua conta, se você entrar).

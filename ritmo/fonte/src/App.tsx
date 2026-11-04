@@ -15,6 +15,9 @@ import { Comms } from './pages/Comms';
 import { Settings } from './pages/Settings';
 import { About } from './pages/About';
 import { Onboarding } from './pages/Onboarding';
+import { Profile } from './pages/Profile';
+import { States, Understand } from './pages/States';
+import { Planner } from './pages/Planner';
 import { useReminders } from './reminders';
 
 const NAV = [
@@ -24,7 +27,7 @@ const NAV = [
   { to: '/regulacao', label: 'Regulação', icon: 'wind', root: 'regulacao' },
   { to: '/mais', label: 'Mais', icon: 'more', root: 'mais' },
 ];
-const MORE_ROOTS = ['mais', 'plano', 'sensorial', 'comunicacao', 'ajustes', 'sobre', 'energia'];
+const MORE_ROOTS = ['mais', 'plano', 'sensorial', 'comunicacao', 'ajustes', 'sobre', 'energia', 'perfil', 'estados', 'entender'];
 
 function useAppearance() {
   const { state } = useStore();
@@ -81,6 +84,10 @@ export function App() {
     case 'comunicacao': page = <Comms />; break;
     case 'ajustes': page = <Settings />; break;
     case 'sobre': page = <About />; break;
+    case 'perfil': page = <Profile />; break;
+    case 'estados': page = <States />; break;
+    case 'entender': page = <Understand />; break;
+    case 'planejar': page = <Planner />; break;
     default: page = <Home />;
   }
 

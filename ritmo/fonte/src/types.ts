@@ -10,7 +10,31 @@ export interface Settings {
   wideSpacing: boolean;
   alerts: AlertMode;
   showCounts: boolean; // mostrar contagens de tempo na tela
+  listen: boolean; // botão "Ouvir" (leitura em voz alta)
+  ai: { enabled: boolean; useProfile: boolean; consent?: string }; // ajuda de IA, opt-in
 }
+
+export type TraitId = 'autismo' | 'tdah' | 'audhd' | 'dislexia' | 'ah' | 'dispraxia' | 'discalculia' | 'tourette' | 'investigando' | 'outro';
+export type Tone = 'acolhedor' | 'direto';
+/** Perfil autodeclarado. Não é diagnóstico e não exige laudo. */
+export interface Profile {
+  traits: TraitId[];
+  tone: Tone;
+  values: string[]; // o que importa para mim
+  wants: string[]; // comportamentos que quero cultivar
+  asked: boolean; // já viu a tela de perfil
+}
+
+export interface StateEntry {
+  id: string;
+  at: number;
+  state?: string; // id em data/estados.ts
+  sensations: string[];
+  context: string[];
+  need?: string;
+  note?: string;
+}
+export interface StateNotes { signs: string[]; helps: string[] }
 
 export interface Step { id: string; text: string; done: boolean }
 export interface Task {
@@ -84,4 +108,7 @@ export interface State {
   sensory: SensoryEntry[];
   plan: Plan;
   templateEdits: Record<string, string>;
+  profile: Profile;
+  stateLog: StateEntry[];
+  stateNotes: Record<string, StateNotes>;
 }

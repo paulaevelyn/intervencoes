@@ -9,8 +9,8 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icon-192.png">
-  <script type="module" crossorigin src="./assets/index-Dfd1qAcx.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-gndOUbhY.css">
+  <script type="module" crossorigin src="./assets/index-BnTJkR0t.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-DgMdwwgc.css">
   <link rel="stylesheet" href="../auth/auth.css">
   <script>document.documentElement.classList.add('pea-auth-carregando');
 (function () {
@@ -19,7 +19,8 @@
     var r = document.documentElement, a = document.getElementById('pea-auth-aviso');
     if (!r.classList.contains('pea-auth-carregando') || n > 160) { clearInterval(t); return; }
     if (document.getElementById('pea-auth-tela')) return; // tela de acesso visível: a pessoa decide
-    if (!navigator.onLine || (a && /^N.o consegui/.test(a.textContent || ''))) {
+    // login falhou, sem internet ou demorando demais (mais de ~8 s): abre com os dados do aparelho
+    if (!navigator.onLine || n > 10 || (a && /^N.o consegui/.test(a.textContent || ''))) {
       r.classList.remove('pea-auth-carregando'); if (a) a.remove(); clearInterval(t);
     }
   }, 750);
