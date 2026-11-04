@@ -1,7 +1,7 @@
 -- ═══════════════════════════════════════════════════════════════════════
 -- Trilha (saúde mental de adolescentes, terapia online)
--- Migração "trilha" — NÃO aplicada ainda. Revise, depois aplique no projeto
--- Intervenções (ref qhjdhlrmmopgucseprkb) pelo SQL Editor ou por apply_migration.
+-- Migração "trilha" — APLICADA em 2026-11-04 no projeto Intervenções (ref qhjdhlrmmopgucseprkb),
+-- seguida da correção "trilha_sanear_regex_link" (limite de 255 repetições do regex de link, já refletida abaixo).
 --
 -- O que faz
 --   1. app_dados passa a aceitar app = 'trilha'.
@@ -64,7 +64,8 @@ begin
     begin ini := (s->>'inicio')::timestamptz; exception when others then ini := null; end;
     continue when ini is null or coalesce(s->>'id', '') !~ '^[a-z0-9_-]{1,40}$';
     link := s->>'link';
-    if link is null or link !~ '^https://[A-Za-z0-9._~:/?#@!$&()*+,;=%-]{1,300}$' then link := null; end if;
+    -- Postgres limita repetições de regex a 255; por isso o tamanho é checado à parte
+    if link is null or length(link) > 300 or link !~ '^https://[A-Za-z0-9._~:/?#@!$&()*+,;=%-]+$' then link := null; end if;
     sessoes := sessoes || jsonb_build_array(jsonb_strip_nulls(jsonb_build_object(
       'id', s->>'id', 'inicio', ini, 'link', link,
       'combinados', left(coalesce(s->>'combinados', ''), 1000))));

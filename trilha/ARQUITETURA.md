@@ -19,7 +19,7 @@ Conteúdo de base: `docs/trilha-saude-mental-adolescentes.md` (UP-A de Barlow/Eh
 | Estado | `localStorage`, chaves `trilha_*` (sincronizadas por `auth/auth.js`) |
 | Orientações da profissional | tabela `trilha_orientacoes` (somente leitura para o adolescente). `auth.js` expõe `window.PeaAuth` e o evento `pea-auth-pronto`; o app lê por RLS. Cache local amarrado ao id do usuário (`trilha_orient`, não sincroniza) |
 | Painel | `shared/trilha-painel.js` (leitura) e `shared/trilha-orientacoes.js` (editor), ligados em `painel/index.html` |
-| Banco | `supabase/trilha.sql` (**ainda não aplicado**) |
+| Banco | `supabase/trilha.sql` (aplicado em 2026-11-04) |
 
 ### Chaves de dados
 `trilha_regs` · `trilha_semanal` · `trilha_escada` · `trilha_feitos` · `trilha_lidos` · `trilha_plano` · `trilha_agenda` · `trilha_sos` · `trilha_ob` (sincronizadas) e `trilha_cfg` (nome opcional) · `trilha_orient` (cache): só neste aparelho.
@@ -42,7 +42,7 @@ texto livre nunca em `n`/`c`, porque esses dois chegam ao painel mesmo sem a per
 5. **Links da sessão:** só `https://` (filtrados no banco por `trilha_sanear` e de novo no app por `linkSeguro`). Todo texto da profissional entra por `esc()`/`textContent`.
 
 ## Pendências antes de usar com pacientes
-- **Aplicar `supabase/trilha.sql`** e testar o caminho completo com uma conta real (adolescente e profissional): leitura das orientações, sincronização, projeção, painel.
+- Migração aplicada e funções testadas isoladamente. **Falta testar o caminho completo com contas reais** (adolescente e profissional): leitura das orientações, sincronização, projeção e painel.
 - **Consentimento de menores (LGPD e Código de Ética).** O aviso de privacidade do `auth.js` é o geral dos apps. Para adolescentes, definir fora do sistema: termo assinado pelos responsáveis + assentimento do adolescente, antes de enviar o convite. Revisar o texto com apoio jurídico/CFP (a regulamentação de atendimento mediado por tecnologia está na resolução vigente do CFP).
 - Convidar a conta do adolescente (Supabase) e vincular no painel, como nos outros apps.
 - Testar com adolescentes reais (linguagem, tamanho dos textos) e com leitor de tela.
