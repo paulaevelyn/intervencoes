@@ -79,6 +79,13 @@ button:disabled{opacity:.5;cursor:not-allowed}
     </div>
   </section>
 
+  <!-- Plano e agenda (Trilha): o que a profissional escreve para o adolescente -->
+  <section id="v-orient" hidden>
+    <button class="s voltar" id="voltar-o">← Pacientes</button>
+    <div class="card" style="margin-bottom:12px"><div class="pac-email" id="o-email"></div><div class="pac-meta">Trilha · plano e agenda</div></div>
+    <div id="o-conteudo"></div>
+  </section>
+
   <!-- Um paciente -->
   <section id="v-paciente" hidden>
     <button class="s voltar" id="voltar">← Pacientes</button>
@@ -94,7 +101,7 @@ const { createClient } = await import('https://esm.sh/@supabase/supabase-js@2.45
 const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
 const $ = (id) => document.getElementById(id);
 const el = (tag, props, ...filhos) => { const e = document.createElement(tag); Object.entries(props || {}).forEach(([k, v]) => { if (k === 'class') e.className = v; else if (k === 'texto') e.textContent = v; else e.setAttribute(k, v); }); filhos.filter(Boolean).forEach((f) => e.appendChild(f)); return e; };
-const mostrar = (id) => ['v-login', 'v-lista', 'v-paciente'].forEach((v) => { $(v).hidden = v !== id; });
+const mostrar = (id) => ['v-login', 'v-lista', 'v-paciente', 'v-orient'].forEach((v) => { $(v).hidden = v !== id; });
 const recado = (id, txt, tipo) => { const r = $(id); r.textContent = txt; r.className = 'recado ' + (tipo || 'erro'); r.hidden = false; };
 const erroTxt = (e) => {
   const m = (e && e.message || '').toLowerCase();
@@ -122,10 +129,12 @@ async function abrirLista() {
     const ver = el('button', { class: 'p', type: 'button', texto: 'Ver' });
     ver.disabled = !p.compartilha_numeros;
     ver.addEventListener('click', () => abrirPaciente(p));
+    const plano = el('button', { class: 's', type: 'button', texto: 'Plano e agenda' });
+    plano.addEventListener('click', () => abrirOrientacoes(p));
     lista.appendChild(el('div', { class: 'card pac' },
       el('div', { class: 'pac-info' }, el('div', { class: 'pac-email', texto: p.email }), selos,
         el('div', { class: 'pac-meta', texto: p.compartilha_numeros ? 'Última atividade: ' + dataBr(p.ultima_atividade) : 'Vinculado em ' + dataBr(p.vinculado_em) })),
-      ver));
+      el('div', { class: 'linha' }, plano, ver)));
   });
 }
 
@@ -136,8 +145,16 @@ const APPS = {
   matiz: { nome: 'Matiz', render: (d, o) => window.MatizPainel.render(d, Object.assign({ profissional: true }, o)) },
   'seguranca-interna': { nome: 'Segurança Interna', render: (d, o) => window.SegurancaPainel.render(d, o) },
   aurora: { nome: 'Aurora', render: (d, o) => window.AuroraPainel.render(d, Object.assign({ profissional: true }, o)) },
-  sintonia: { nome: 'Sintonia', render: (d, o) => window.SintoniaPainel.render(d, o) }
+  sintonia: { nome: 'Sintonia', render: (d, o) => window.SintoniaPainel.render(d, o) },
+  trilha: { nome: 'Trilha', render: (d, o) => window.TrilhaPainel.render(d, o) }
 };
+
+// Plano e agenda da Trilha: o que a profissional escreve para o adolescente (não depende de ele compartilhar dados).
+function abrirOrientacoes(p) {
+  mostrar('v-orient');
+  $('o-email').textContent = p.email;
+  window.TrilhaOrientacoes.montar(sb, p.paciente_id, $('o-conteudo'));
+}
 
 async function abrirPaciente(p, appEscolhido) {
   mostrar('v-paciente');
@@ -166,6 +183,7 @@ async function abrirPaciente(p, appEscolhido) {
 }
 
 $('voltar').addEventListener('click', abrirLista);
+$('voltar-o').addEventListener('click', abrirLista);
 $('sair').addEventListener('click', () => sb.auth.signOut());
 
 $('f-login').addEventListener('submit', async (ev) => {
@@ -199,5 +217,8 @@ if (!session) mostrar('v-login');
 <script src="../shared/seguranca-painel.js"></script>
 <script src="../shared/aurora-painel.js"></script>
 <script src="../shared/sintonia-painel.js"></script>
+<script src="../trilha/data.js"></script>
+<script src="../shared/trilha-painel.js"></script>
+<script src="../shared/trilha-orientacoes.js"></script>
 </body>
 </html>

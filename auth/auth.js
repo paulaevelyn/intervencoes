@@ -576,6 +576,7 @@ async function seguirEntrada() {
 
   podeEnviar = !falhou;
   liberarApp();
+  document.dispatchEvent(new CustomEvent('pea-auth-pronto'));
   montarBotaoConta(falhou);
   clearInterval(entrarNoApp.timer);
   entrarNoApp.timer = setInterval(function () { enviar(false); }, 4000);
@@ -633,6 +634,9 @@ async function iniciar() {
   if (emIframe()) { abrirEmIframe(); return; }
   const { createClient } = await import(SUPABASE_LIB);
   sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+  // Acesso somente leitura para apps que precisam de dados além do próprio estado (ex.: Trilha lê as
+  // orientações da profissional). Quem protege os dados continua sendo o RLS do banco.
+  window.PeaAuth = { cliente: function () { return sb; }, usuario: function () { return usuario; } };
 
   aguardandoSenha = veioConvite;
 

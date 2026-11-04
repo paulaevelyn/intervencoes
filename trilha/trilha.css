@@ -1,0 +1,108 @@
+/* trilha.css — o que é específico da Trilha, sobre o design system herdado (style.css + extra.css).
+   Cor própria: azul-petróleo (--tr), com a base da marca (mint, coral, amber, lav, sand). */
+:root{--tr:#2F6F7A;--tr-d:#245860;--tr-l:#DCEBED;--tr-xl:#EEF6F7}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--tr:#7FB6BF;--tr-d:#A5CFD6;--tr-l:#27393D;--tr-xl:#222E31}}
+
+/* Cabeçalho das telas internas e botão voltar */
+.back-btn{display:inline-block;margin:12px 16px 0;padding:10px 14px;font:700 14px inherit;font-family:inherit;color:var(--tr-d);background:transparent;border:1.5px solid rgba(63,67,75,.18);border-radius:99px;cursor:pointer}
+.nb.on{color:var(--tr)}
+.ob-dot.on{background:var(--tr)}
+
+/* Caixa de apoio de crise (tom acolhedor, nunca alarmista) */
+.crisis-box{background:var(--amber-l);border:1.5px solid color-mix(in srgb,var(--amber) 55%,transparent);border-radius:var(--r);padding:14px 16px;font-size:14px;line-height:1.5;color:var(--graphite)}
+.crisis-box a{color:var(--coral-d);font-weight:800}
+.crisis-title{font-weight:800;margin-bottom:4px}
+.quick-card.crisis-card{background:var(--amber-l);border:1.5px solid color-mix(in srgb,var(--amber) 45%,transparent)}
+.ob-list{display:flex;flex-direction:column;gap:10px;margin:6px 0 14px;text-align:left}
+.ob-li{display:flex;gap:12px;align-items:flex-start;font-size:15px;line-height:1.45}
+.ob-li-ic{font-size:1.35rem;line-height:1.2;flex:none}
+
+/* Cartões da tela inicial */
+.tr-card{background:var(--white);border-radius:var(--r);padding:16px 18px;margin:0 var(--pg) var(--gap);box-shadow:var(--shadow);border-left:4px solid var(--tr)}
+.tr-card.suave{border-left-color:var(--light)}
+.tr-card h3{font-size:15px;font-weight:800;margin-bottom:4px}
+.tr-card p{font-size:13.5px;color:var(--muted);line-height:1.55}
+.tr-lbl{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--tr-d);margin-bottom:6px}
+.tr-acoes{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.tr-btn{border:0;border-radius:12px;padding:10px 16px;font:800 13.5px var(--font);cursor:pointer;background:var(--tr);color:#fff;text-decoration:none;display:inline-block}
+.tr-btn.ghost{background:transparent;color:var(--tr-d);border:1.5px solid var(--border)}
+.tr-btn:focus-visible,.chip:focus-visible,.esc-b:focus-visible,.mod:focus-visible{outline:3px solid var(--tr);outline-offset:2px}
+.tr-btn:disabled{opacity:.5;cursor:default}
+
+/* Tarefas combinadas com a profissional */
+.tarefa{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-top:1px solid var(--border)}
+.tarefa:first-of-type{border-top:0}
+.tarefa .ck{flex:none;width:28px;height:28px;border-radius:50%;border:2px solid var(--light);background:transparent;display:grid;place-items:center;color:#fff;font-size:14px;cursor:pointer;padding:0}
+.tarefa.feita .ck{background:var(--tr);border-color:var(--tr)}
+.tarefa .tt{font-size:14.5px;font-weight:700;line-height:1.35}
+.tarefa.feita .tt{text-decoration:line-through;color:var(--light)}
+.tarefa .ds{font-size:12.5px;color:var(--muted);margin-top:2px;line-height:1.5}
+
+/* Trilha de módulos */
+.fase-h{padding:16px var(--pg) 6px;font-size:12px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--tr-d)}
+.mod{display:flex;gap:14px;align-items:center;background:var(--white);border-radius:var(--r);margin:0 var(--pg) 10px;padding:14px 16px;box-shadow:var(--shadow);cursor:pointer;border:0;width:calc(100% - var(--pg)*2);text-align:left;font-family:var(--font);color:var(--graphite)}
+.mod.agora{box-shadow:0 0 0 2px var(--tr),var(--shadow)}
+.mod-e{font-size:1.8rem;flex:none;width:44px;height:44px;border-radius:12px;background:var(--tr-xl);display:grid;place-items:center}
+.mod-n{font-size:11px;font-weight:800;color:var(--muted);letter-spacing:.04em;text-transform:uppercase}
+.mod-t{font-size:15px;font-weight:800;line-height:1.3}
+.mod-tag{display:inline-block;margin-top:4px;margin-right:6px;font-size:11px;font-weight:800;padding:2px 9px;border-radius:99px;background:var(--tr-l);color:var(--tr-d)}
+.mod-tag.vis{background:var(--mint-l);color:var(--mint-d)}
+.mod-tag.ab{background:var(--lav-l);color:#3D2E7A}
+.bloco{background:var(--white);border-radius:var(--r);padding:16px 18px;margin:0 var(--pg) var(--gap);box-shadow:var(--shadow)}
+.bloco h3{font-size:12px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--tr-d);margin-bottom:6px}
+.bloco p{font-size:14.5px;line-height:1.65}
+
+/* Ferramentas */
+.f-sub{font-size:12px;color:var(--muted);margin-top:3px;line-height:1.35}
+.f-min{display:inline-block;margin-top:6px;font-size:11px;font-weight:800;color:var(--tr-d);background:var(--tr-l);border-radius:99px;padding:2px 9px}
+
+/* Formulários */
+.campo{margin:0 var(--pg) 18px}
+.campo .form-lbl{text-transform:none;letter-spacing:0;font-size:14px;color:var(--graphite);font-weight:800}
+.chip.sel{border-color:var(--tr);background:var(--tr-xl);color:var(--tr-d)}
+.esc-row{display:grid;grid-template-columns:repeat(11,1fr);gap:4px}
+.esc-b{border:1.5px solid var(--border);border-radius:10px;background:var(--white);color:var(--muted);font:700 13px var(--font);padding:11px 0;cursor:pointer}
+.esc-b.sel{background:var(--tr);border-color:var(--tr);color:#fff}
+.esc-leg{display:flex;justify-content:space-between;font-size:11px;color:var(--light);margin-top:4px}
+.esc-note{font-size:12px;color:var(--light);margin-top:4px}
+
+/* Respirar */
+.resp-area{display:grid;place-items:center;padding:20px 0 6px}
+.resp-circ{width:170px;height:170px;border-radius:50%;background:radial-gradient(circle at 35% 30%,var(--tr-l),var(--tr));display:grid;place-items:center;color:#fff;font-weight:800;font-size:16px;text-align:center;padding:12px;transform:scale(.62);transition:transform 4s ease-in-out}
+.resp-circ.in{transform:scale(1)}
+.resp-circ.out{transform:scale(.62);transition-duration:6s}
+html.pea-calmo .resp-circ,html.pea-calmo .resp-circ.in,html.pea-calmo .resp-circ.out{transition:none;transform:scale(.85)}
+.resp-info{text-align:center;color:var(--muted);font-size:13.5px;margin:10px 0 16px;min-height:20px}
+
+/* Lista (agenda, SOS, escada) */
+.li-add{display:flex;gap:8px;margin:0 var(--pg) var(--gap)}
+.li-add input[type=text]{flex:1}
+.li{display:flex;gap:12px;align-items:flex-start;background:var(--white);border-radius:var(--rs);padding:12px 14px;margin:0 var(--pg) 8px;box-shadow:var(--shadow)}
+.li.feita{background:var(--tr-xl)}
+.li .ck{flex:none;width:28px;height:28px;border-radius:50%;border:2px solid var(--light);background:transparent;display:grid;place-items:center;color:#fff;font-size:14px;cursor:pointer;padding:0}
+.li.feita .ck{background:var(--tr);border-color:var(--tr)}
+.li-t{flex:1;font-size:14.5px;font-weight:700;line-height:1.4}
+.li-m{font-size:12px;color:var(--muted);margin-top:3px;line-height:1.45}
+.li-x{flex:none;background:none;border:0;color:var(--light);font-size:18px;cursor:pointer;padding:2px 6px}
+
+/* Histórico */
+.hist-d{padding:14px var(--pg) 6px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.hist{background:var(--white);border-radius:var(--rs);padding:12px 14px;margin:0 var(--pg) 8px;box-shadow:var(--shadow)}
+.hist-t{font-size:14px;font-weight:800}
+.hist-s{font-size:13px;color:var(--muted);margin-top:3px;line-height:1.5;overflow-wrap:anywhere}
+
+.pv-txt{font-size:13.5px;line-height:1.6;color:var(--muted)}
+.pv-txt strong{color:var(--graphite)}
+.pv-linha{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-top:1px solid var(--border);font-size:13.5px;line-height:1.5}
+.pv-linha:first-child{border-top:0}
+.pv-linha span:first-child{flex:none}
+.cuidado{background:var(--amber-l);border:1.5px solid color-mix(in srgb,var(--amber) 55%,transparent);border-radius:var(--r);padding:16px 18px;margin:0 var(--pg) var(--gap)}
+.cuidado h3{font-size:15px;font-weight:800;margin-bottom:6px}
+.cuidado p{font-size:14px;line-height:1.6;margin-bottom:8px}
+.cuidado a{color:var(--coral-d);font-weight:800}
+
+/* Menos movimento: respeita o aparelho, a menos que a pessoa tenha pedido movimento no painel ⚙ */
+@media (prefers-reduced-motion:reduce){html:not(.pea-mov-ok) .resp-circ,html:not(.pea-mov-ok) .resp-circ.in,html:not(.pea-mov-ok) .resp-circ.out{transition:none;transform:scale(.85)}}
+
+/* A data no topo vem em minúsculas do navegador: sem "capitalize" do design system herdado */
+.home-date{text-transform:none}
