@@ -18,7 +18,7 @@
   function numero(x) { return typeof x === 'number'; }
   function f1(n) { return (Math.round(n * 10) / 10).toFixed(1).replace('.', ','); }
   function rotulo(lista, v) { var o = (T.OPTS[lista] || []).filter(function (x) { return x.v === v; })[0]; return o ? o.l : v; }
-  function ferr(id) { if (id === 'missao') return 'Missão do módulo'; var f = T.FERRAMENTAS.filter(function (x) { return x.id === id; })[0]; return f ? f.nome : id; }
+  function ferr(id) { if (id === 'missao') return 'Missão do módulo'; if (id === 'treino') return 'Treino social e de pensamentos'; var f = T.FERRAMENTAS.filter(function (x) { return x.id === id; })[0]; return f ? f.nome : id; }
   function forca(id) { var f = (T.FORCAS || []).filter(function (x) { return x.id === id; })[0]; return f ? f.e + ' ' + f.n : id; }
   function nivelDe(xp) { var n = (T.NIVEIS || [])[0], i; for (i = 0; i < (T.NIVEIS || []).length; i++) if (xp >= T.NIVEIS[i].min) n = T.NIVEIS[i]; return n; }
   function dmy(key) { var p = String(key).split('-'); return p[2] + '/' + p[1]; }
@@ -72,6 +72,35 @@
       cj.appendChild(h('p', { class: 'fp-dica', texto: (jogo.med || []).length + ' medalha' + ((jogo.med || []).length === 1 ? '' : 's') + ' conquistada' + ((jogo.med || []).length === 1 ? '' : 's') + '.' }));
       raiz.appendChild(cj);
     }
+    // ── Treino social e de pensamentos (derivado dos registros f:'treino') ──
+    var tr = pares(regs, 'treino'), CEN = global.TRILHA_CENARIOS;
+    if (tr.length && CEN) {
+      var ct = U.cartao('Treino social e de pensamentos', 'Cenários e classificação. Não é avaliação: serve de ponto de partida para conversar em sessão.');
+      var todos = CEN.SOCIAIS.concat(CEN.PENSAMENTOS), vistos = {};
+      tr.forEach(function (r) { var id = r.c && r.c.cenario && r.c.cenario[0]; if (id && !vistos[id]) vistos[id] = r.n && r.n.p; });
+      var ids = Object.keys(vistos);
+      if (ids.length) {
+        ct.appendChild(h('div', { class: 'fp-escala' }, h('span', { class: 'fp-nome', texto: 'Cenários feitos' }), h('strong', { texto: ids.length + ' de ' + todos.length })));
+        ids.forEach(function (id) {
+          var c = todos.filter(function (x) { return x.id === id; })[0]; if (!c) return;
+          ct.appendChild(h('div', { class: 'fp-item' }, h('div', { class: 'fp-item-topo' },
+            h('span', { class: 'fp-data', texto: c.titulo }),
+            h('span', { class: 'fp-tag', texto: (c.tipo === 'social' ? c.hab : 'Pensamentos') + ' · nível ' + c.nivel })),
+            h('p', { class: 'fp-texto', texto: vistos[id] === 1 ? 'Primeira escolha: a mais útil.' : 'Primeira escolha: outra opção (explorou as explicações).' })));
+        });
+      }
+      var kt = { pens: [0, 0], emo: [0, 0], acao: [0, 0] }, nps = 0;
+      tr.forEach(function (r) { if (!(r.c && r.c.psa)) return; nps++; ['pens', 'emo', 'acao'].forEach(function (c) { kt[c][0] += (r.n && r.n[c + '_c']) || 0; kt[c][1] += (r.n && r.n[c + '_t']) || 0; }); });
+      if (nps) {
+        var nm = { pens: 'Pensamentos', emo: 'Emoções e corpo', acao: 'Ações' };
+        ct.appendChild(h('div', { class: 'fp-lbl', texto: 'Pensar, sentir e agir (' + nps + ' de ' + CEN.PSA.length + ' situações)', style: 'margin-top:10px' }));
+        ['pens', 'emo', 'acao'].forEach(function (c) {
+          ct.appendChild(h('div', { class: 'fp-escala' }, h('span', { class: 'fp-nome', texto: nm[c] + ' identificados de primeira' }), h('strong', { texto: kt[c][0] + ' de ' + kt[c][1] })));
+        });
+      }
+      raiz.appendChild(ct);
+    }
+
     if (temForcas) {
       var cf = U.cartao('Forças escolhidas', 'Escolhidas pelo próprio adolescente. Boa porta de entrada para a conversa em sessão.');
       cf.appendChild(h('div', { class: 'fp-escala' }, h('span', { class: 'fp-nome', texto: 'Mais parecem comigo' }), h('strong', { texto: (fc.top || []).map(forca).join(', ') })));

@@ -71,5 +71,25 @@ Esta camada **reverte de propósito** o princípio inicial "sem pontos, níveis 
 **Forças:** 24 forças com textos próprios, inspiradas na psicologia positiva (sem reproduzir itens de instrumentos protegidos, como o VIA). O adolescente escolhe até 5 "mais parecem comigo" e até 2 "quero desenvolver", registra exemplos e usos, e usa a "Força do dia". Elas aparecem sugeridas nos desafios das missões. **Mochila de recursos** (pessoas, lugares, atividades, o que já superou, o que sabe fazer): só da pessoa.
 **Cuidados:** as lições são psicoeducação, não tratamento. Módulo 6 (sensações) e 8 (escada) reforçam que os exercícios de exposição são só com a psicóloga. Pontuação, medalhas e nível ficam no aparelho e na conta do adolescente; a profissional vê agregados (energia, etapas) apenas com a permissão de números.
 
+## Treino social e de pensamentos
+Origem: estratégias observadas nos jogos interativos do Psicoterapia e Afins (Habilidades Sociais, SocialMind e PECPlay), **sem** a pontuação punitiva e sem o visual intenso. Conteúdo próprio, escrito para adolescentes (`cenarios.js`; lógica em `treino.js`).
+
+| Estratégia observada | Como entrou na Trilha |
+|---|---|
+| Aprendizagem por problema com caixa de contexto | **16 cenários** (8 habilidades sociais + 8 de pensamentos) em 3 níveis, com situação, contexto e, nos de pensamento, o pensamento automático |
+| Feedback explicado de **cada** opção, com rótulo do estilo | Depois de escolher, todas as opções aparecem com o rótulo (assertivo, passivo, catástrofe…) e o porquê. Sem ❌ nem vermelho; "Boa escolha" ou "Vamos olhar juntos" |
+| Dica de aprendizagem | "Para guardar": uma frase por cenário |
+| Glossário das distorções (SocialMind) | **Mapa das armadilhas** (10): como soa, pergunta do detetive e pensamento mais equilibrado; marca "já treinei" |
+| Dificuldade progressiva (PECPlay) | Níveis 1 a 3 nos cenários e em **Pensar, sentir e agir** (6 situações de classificação); nada bloqueado |
+| Diagnóstico por categoria | **"Onde você tem mais facilidade"**: em linguagem de força, sem percentual e sem nota |
+| Micro-ação ("qual você vai testar esta semana?") | Cada cenário sugere uma micro-ação editável que vira item das **Ações da semana** (só da pessoa) |
+| Revisar a explicação / voltar | Nas questões das missões: "Ver por que cada opção é assim" e "Questão anterior" |
+| Leitura de sinais sociais (útil também para neurodivergência) | "Dica de leitura social" nos cenários sociais, opcional |
+
+**Não trazido (conflita com o design sem perdas):** sequência com bônus que zera ao errar, ❌ vermelho, "Precisa melhorar", pontuação /100, % de acerto, tempo total, medalha só por acerto, cenários de adulto (trabalho, vestibular, separação) e o visual de gradientes saturados.
+**Dados:** tudo vai em registros `f:'treino'` com números (`p` = a primeira escolha foi a mais útil; `pens_c/pens_t`, `emo_c/emo_t`, `acao_c/acao_t`) e escolhas (`cenario`, `psa`, `tipo`). **Nenhum texto livre**, então o painel lê sem migração (verificado no banco real). O progresso ("Feito", facilidades) é derivado dos registros; não há estado extra.
+**Energia e medalhas:** +10 por cenário e por situação de classificação (uma vez), +5 por micro-ação adicionada; medalhas *Em cena* (5 cenários), *Caçador/a de armadilhas* (8 de pensamentos), *Pensar, sentir, agir* (6 situações) e *Do pensar ao fazer* (3 micro-ações).
+**Pendências:** revisar clinicamente os cenários (o "mais útil" é uma escolha pedagógica, e a vida real tem nuances); testar com adolescentes e com neurodivergentes; o cenário das redes cita o Disque 100 e deve ser conferido.
+
 ## Para publicar uma atualização
 1. Editar os arquivos. 2. Incrementar `CACHE_VERSION` em `sw.js`. 3. `git commit` e `git push` (GitHub Pages).

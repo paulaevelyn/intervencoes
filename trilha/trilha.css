@@ -174,3 +174,27 @@ html.pea-calmo .resp-circ,html.pea-calmo .resp-circ.in,html.pea-calmo .resp-circ
 .med.on{opacity:1;border:1.5px solid var(--tr)}
 .med-e{display:block;font-size:1.9rem;line-height:1.2}
 .med-n{display:block;font-size:11px;font-weight:700;line-height:1.25;margin-top:4px}
+
+/* ═══ Treino social e de pensamentos: calmo, sem vermelho de erro ═══ */
+.cn-ctx{margin-top:10px;padding:10px 12px;border-radius:var(--rs);background:var(--tr-xl);font-size:13.5px;line-height:1.55}
+.cn-pens{margin-top:10px;padding:12px 14px;border-left:4px solid var(--lav);background:var(--lav-l);border-radius:var(--rs);font-size:15px;font-style:italic;line-height:1.5}
+.cn-pens span{display:block;font-size:11px;font-style:normal;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.cn-dica{margin-top:10px;font-size:13.5px}
+.cn-dica summary,.qz-todas summary,.ar summary{cursor:pointer;font-weight:800;color:var(--tr-d)}
+.cn-dica p{margin-top:6px;color:var(--muted)}
+.cn-ops{display:flex;flex-direction:column;gap:8px;padding:0 var(--pg) var(--gap)}
+.cn-op{text-align:left;border:1.5px solid var(--border);border-radius:var(--rs);background:var(--white);color:var(--graphite);font:600 14.5px var(--font);padding:13px 14px;cursor:pointer;line-height:1.4}
+.cn-op.fim{cursor:default}
+.cn-op.ok{border-color:var(--mint);background:var(--mint-xl)}
+.cn-op.esc:not(.ok){border-color:var(--amber);background:var(--amber-l)}
+.cn-t{font-weight:700}
+.cn-rot{display:inline-block;margin:6px 0 4px;font-size:11.5px;font-weight:800;padding:2px 9px;border-radius:99px;background:var(--border);color:var(--muted)}
+.cn-rot.ok{background:var(--mint-l);color:var(--mint-d)}
+.cn-x{font-size:13px;color:var(--muted);line-height:1.5;font-weight:500}
+.cn-op:focus-visible{outline:3px solid var(--tr);outline-offset:2px}
+.qz-todas{margin-top:10px;font-size:13.5px}
+.qz-ex{margin-top:8px;padding:9px 11px;border-radius:var(--rs);background:var(--sand);line-height:1.5}
+.qz-ex.ok{background:var(--mint-xl)}
+.ar{background:var(--white);border-radius:var(--rs);margin:0 var(--pg) 8px;padding:12px 14px;box-shadow:var(--shadow)}
+.ar summary em{font-weight:700;font-style:normal;color:var(--mint-d);font-size:12px}
+.ar p{margin-top:8px;font-size:14px;line-height:1.55}

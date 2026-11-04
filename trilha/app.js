@@ -92,8 +92,8 @@ document.addEventListener('pea-auth-pronto', () => { lerCacheOri(); carregarOrie
 document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') carregarOrientacoes(); });
 
 /* ── Navegação ───────────────────────────────────────────────────────── */
-const SCREENS = ['home', 'trilha', 'modulo', 'missao', 'revisao', 'tools', 'tool', 'registro', 'eu'];
-const SUBTELAS = ['modulo', 'missao', 'revisao', 'tool', 'registro'];
+const SCREENS = ['home', 'trilha', 'modulo', 'missao', 'revisao', 'treino', 'cenario', 'armadilhas', 'psa', 'tools', 'tool', 'registro', 'eu'];
+const SUBTELAS = ['modulo', 'missao', 'revisao', 'treino', 'cenario', 'armadilhas', 'psa', 'tool', 'registro'];
 let _hist = [], _cur = 'home';
 function voltar() { const p = _hist.pop() || 'home'; goTo(p, true); }
 function goTo(s) {
@@ -109,6 +109,8 @@ function goTo(s) {
   if (s === 'home') renderHome();
   if (s === 'trilha') renderTrilha();
   if (s === 'tools') renderTools();
+  if (s === 'treino' && typeof renderTreino === 'function') renderTreino();
+  if (s === 'armadilhas' && typeof renderArmadilhas === 'function') renderArmadilhas();
   if (s === 'registro') renderRegistro();
   if (s === 'eu') renderEu();
 }
@@ -230,6 +232,7 @@ function toggleTarefa(id) {
 function renderTrilha() {
   const lidos = getLidos(); let h = '';
   const J = typeof getJogo === 'function' ? getJogo() : null;
+  h += `<div class="tr-card"><div class="tr-lbl">Treino livre</div><h3>🎮 Cenários, pensamentos e pensar-sentir-agir</h3><p>Situações do dia a dia, com explicação de cada opção. Sem nota.</p><div class="tr-acoes"><button class="tr-btn" type="button" onclick="goTo('treino')">Abrir o treino</button><button class="tr-btn ghost" type="button" onclick="goTo('armadilhas')">🪤 Mapa das armadilhas</button></div></div>`;
   TRILHA.FASES.forEach(f => {
     const feitos = J ? f.mods.filter(id => modCompleto(J, id)).length : 0;
     h += `<div class="fase-h">${esc(f.nome)}${J ? ` <span class="fase-p">${feitos}/${f.mods.length} missões</span>` : ''}</div>`;
@@ -256,6 +259,7 @@ function openModulo(id) {
     <div class="sdiv">Ferramentas deste módulo</div>
     <div class="quick-grid">${fs.map(f => `<div class="quick-card" role="button" tabindex="0" onclick="openTool('${esc(f.id)}')" onkeydown="if(event.key==='Enter')openTool('${esc(f.id)}')"><div class="quick-icon">${esc(f.emoji)}</div><div class="quick-title">${esc(f.nome)}</div><div class="quick-sub">${esc(f.sub)}</div></div>`).join('')}</div>
     ${typeof hubMissaoHTML === 'function' ? hubMissaoHTML(m) : ''}
+    ${typeof linksTreinoHTML === 'function' ? linksTreinoHTML(m.id) : ''}
     <button class="btn ${lido ? 'ghost-mint' : 'mint'}" type="button" onclick="marcarLido(${m.id})">${lido ? '✓ Visto (toque para desmarcar)' : 'Marcar como visto'}</button>`;
   goTo('modulo');
 }
@@ -272,6 +276,8 @@ function renderTools() {
 
 /* ── Histórico ───────────────────────────────────────────────────────── */
 function resumoRegistro(r) {
+  if (r.f === 'missao') return r.n && r.n.modulo ? 'Módulo ' + r.n.modulo + (r.t && r.t.reflexao ? ' · “' + r.t.reflexao + '”' : '') : '';
+  if (r.f === 'treino') { const id = r.c && ((r.c.cenario && r.c.cenario[0]) || (r.c.psa && r.c.psa[0])); const c = id && (typeof cenarioPorId === 'function' ? cenarioPorId(id) : null) || (id && typeof CEN !== 'undefined' ? CEN.PSA.find(s => s.id === id) : null); return c ? c.titulo : ''; }
   const f = ferramentaPorId(r.f); if (!f) return '';
   const partes = [];
   if (r.c && r.c.emocao && r.c.emocao.length) partes.push(r.c.emocao.map(v => rotuloOpt('EMOCOES', v)).join(', '));
@@ -288,7 +294,7 @@ function renderRegistro() {
   let h = '', dia = '';
   regs.slice(0, 200).forEach(r => {
     if (r.date !== dia) { dia = r.date; h += `<div class="hist-d">${esc(fmtDay(r.date))}</div>`; }
-    const f = ferramentaPorId(r.f);
+    const f = ferramentaPorId(r.f) || ({ missao: { emoji: '🏕️', nome: 'Missão' }, treino: { emoji: '🎮', nome: 'Treino' } })[r.f];
     h += `<div class="hist"><div style="display:flex;justify-content:space-between;gap:8px"><div class="hist-t">${f ? esc(f.emoji) + ' ' + esc(f.nome) : esc(r.f)}</div>
       <button class="li-x" type="button" aria-label="Apagar este registro" onclick="apagarRegistro('${esc(r.id)}')">🗑</button></div>
       <div class="hist-s">${esc(resumoRegistro(r))}</div></div>`;
