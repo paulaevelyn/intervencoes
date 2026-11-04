@@ -254,3 +254,6 @@ notify pgrst, 'reload schema';
 -- ── 18. Trilha: Expedição e forças (migração "trilha_jogo", aplicada em 2026-11-04; arquivo supabase/trilha_jogo.sql) ──
 -- trilha_sanear aceita as ferramentas forcas, forca e recursos nas tarefas. projecao_trilha inclui jogo { xp, miss { módulo: etapas 0–3 },
 -- med [ids] } e forcas { top, dev, t só com com_textos }. Nunca projetados: trilha_rev, trilha_recursos, trilha_sos, trilha_agenda.
+
+-- ── 19. Ritmo (migração "ritmo", aplicada em 2026-11-04; arquivo supabase/ritmo.sql) ──
+-- app_dados aceita app = 'ritmo' (chave 'ritmo:v1'). Sem projeção e sem painel: nada do Ritmo é visível para a profissional.

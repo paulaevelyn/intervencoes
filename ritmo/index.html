@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ritmo · apoio no seu ritmo</title>
+<meta name="description" content="Ritmo: ferramenta de apoio para adultos neurodivergentes. Tarefas em micro-passos, rotinas visuais, regulação e plano de apoio. Seus dados ficam só no seu aparelho.">
+<meta name="theme-color" content="#2F6B62">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-192.png">
+  <script type="module" crossorigin src="./assets/index-Dfd1qAcx.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-gndOUbhY.css">
+  <link rel="stylesheet" href="../auth/auth.css">
+  <script>document.documentElement.classList.add('pea-auth-carregando');
+(function () {
+  var n = 0, t = setInterval(function () {
+    n++;
+    var r = document.documentElement, a = document.getElementById('pea-auth-aviso');
+    if (!r.classList.contains('pea-auth-carregando') || n > 160) { clearInterval(t); return; }
+    if (document.getElementById('pea-auth-tela')) return; // tela de acesso visível: a pessoa decide
+    if (!navigator.onLine || (a && /^N.o consegui/.test(a.textContent || ''))) {
+      r.classList.remove('pea-auth-carregando'); if (a) a.remove(); clearInterval(t);
+    }
+  }, 750);
+})();</script>
+</head>
+<body>
+  <div id="pea-auth-aviso">carregando…</div>
+
+<div id="root"></div>
+  <script type="module" src="../auth/auth.js" data-app="ritmo" data-nome="Ritmo" data-logo="icon.svg" data-pesquisa="nao" data-storage-keys="ritmo:v1"></script>
+</body>
+</html>
