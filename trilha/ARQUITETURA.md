@@ -48,7 +48,7 @@ Com a migração `trilha_jogo`, também chegam ao painel: energia total, etapas 
 - Convidar a conta do adolescente (Supabase) e vincular no painel, como nos outros apps.
 - Testar com adolescentes reais (linguagem, tamanho dos textos) e com leitor de tela.
 - Limite técnico: cada app guarda até ~2 MB por pessoa na conta; o `auth.js` mostra "não salvou" se passar.
-- **Migração `supabase/trilha_jogo.sql`** (projeção do jogo e das forças, e as novas ferramentas permitidas nas tarefas): testada num Postgres local, **ainda não aplicada** no banco real. Sem ela o app funciona, mas o painel não mostra o jogo nem as forças.
+- Migração `supabase/trilha_jogo.sql` (projeção do jogo e das forças, e as novas ferramentas permitidas nas tarefas): testada num Postgres local e **aplicada** em 2026-11-04 (verificada no banco real). Ainda falta o teste com contas reais.
 - Conteúdo das missões (`missoes.js`) escrito de forma resumida: **revisar clinicamente** (principalmente módulos 6 e 8) antes de usar.
 - Ideias fora da v1: projetar as Ações da semana (adesão), lembrete opcional, módulos por queixa (TOC, trauma), medidas validadas, painel de tarefas feitas por nome.
 

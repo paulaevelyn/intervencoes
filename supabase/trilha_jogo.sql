@@ -1,6 +1,6 @@
 -- ═══════════════════════════════════════════════════════════════════════
 -- Trilha: Expedição (jogo) e forças — migração "trilha_jogo"
--- NÃO aplicada ainda. Depende de supabase/trilha.sql (já aplicada).
+-- APLICADA em 2026-11-04 no projeto Intervenções (ref qhjdhlrmmopgucseprkb). Depende de supabase/trilha.sql.
 --
 -- O que faz
 --   1. trilha_sanear passa a aceitar as ferramentas novas nas tarefas da profissional:

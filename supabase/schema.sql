@@ -250,3 +250,7 @@ notify pgrst, 'reload schema';
 -- trilha_sanear (lista branca: módulo 1–13, sessões com link https, tarefas), projecao_trilha (lista branca dos registros:
 -- n números, c listas de ids, t textos só com permissão), painel_dados despacha 'trilha', e as funções painel_trilha_ler /
 -- painel_trilha_salvar (só profissional com vínculo). O SQL completo está em supabase/trilha.sql.
+
+-- ── 18. Trilha: Expedição e forças (migração "trilha_jogo", aplicada em 2026-11-04; arquivo supabase/trilha_jogo.sql) ──
+-- trilha_sanear aceita as ferramentas forcas, forca e recursos nas tarefas. projecao_trilha inclui jogo { xp, miss { módulo: etapas 0–3 },
+-- med [ids] } e forcas { top, dev, t só com com_textos }. Nunca projetados: trilha_rev, trilha_recursos, trilha_sos, trilha_agenda.
