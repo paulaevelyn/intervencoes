@@ -15,6 +15,8 @@ export const initialState = (): State => ({
     wideSpacing: false,
     alerts: 'screen',
     showCounts: true,
+    listen: false,
+    ai: { enabled: false, useProfile: false },
   },
   checkins: [],
   tasks: [],
@@ -22,6 +24,9 @@ export const initialState = (): State => ({
   sensory: [],
   plan: { signals: [], helps: [], contacts: [], phrases: [], reduce: [], minimum: [] },
   templateEdits: {},
+  profile: { traits: [], tone: 'acolhedor', values: [], wants: [], asked: false },
+  stateLog: [],
+  stateNotes: {},
 });
 
 /** Junta o que veio salvo com os padrões, para não quebrar se algum campo faltar. */
@@ -34,13 +39,16 @@ export function normalize(raw: unknown): State {
     ...base,
     onboarded: !!r.onboarded,
     recovery: !!r.recovery,
-    settings: { ...base.settings, ...(r.settings ?? {}) },
+    settings: { ...base.settings, ...(r.settings ?? {}), ai: { ...base.settings.ai, ...(r.settings?.ai ?? {}) } },
     checkins: arr(r.checkins),
     tasks: arr(r.tasks),
     routines: arr(r.routines),
     sensory: arr(r.sensory),
     plan: { ...base.plan, ...(r.plan ?? {}) },
     templateEdits: r.templateEdits && typeof r.templateEdits === 'object' ? r.templateEdits : {},
+    profile: { ...base.profile, ...(r.profile ?? {}) },
+    stateLog: arr(r.stateLog),
+    stateNotes: r.stateNotes && typeof r.stateNotes === 'object' ? r.stateNotes : {},
   };
 }
 

@@ -22,7 +22,8 @@ const login = (): Plugin => ({
     var r = document.documentElement, a = document.getElementById('pea-auth-aviso');
     if (!r.classList.contains('pea-auth-carregando') || n > 160) { clearInterval(t); return; }
     if (document.getElementById('pea-auth-tela')) return; // tela de acesso visível: a pessoa decide
-    if (!navigator.onLine || (a && /^N.o consegui/.test(a.textContent || ''))) {
+    // login falhou, sem internet ou demorando demais (mais de ~8 s): abre com os dados do aparelho
+    if (!navigator.onLine || n > 10 || (a && /^N.o consegui/.test(a.textContent || ''))) {
       r.classList.remove('pea-auth-carregando'); if (a) a.remove(); clearInterval(t);
     }
   }, 750);

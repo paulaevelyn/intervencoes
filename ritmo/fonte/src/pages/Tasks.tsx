@@ -4,6 +4,8 @@ import { go, useRoute } from '../router';
 import { Button, Card, ConfirmButton, Field, inputCls, Note, PageHead, TextList } from '../ui';
 import { splitTask } from '../data/split';
 import type { Task } from '../types';
+import { iaDividir, iaLigada, iaTemConta } from '../ia';
+import { startTips } from '../data/profile';
 
 export function Tasks() {
   const { state, update } = useStore();
@@ -52,6 +54,8 @@ export function Tasks() {
         <Button kind="primary" icon="plus" type="submit">Adicionar</Button>
       </form>
 
+      <div className="mb-4"><Button onClick={() => go('/planejar')}>Planejar o dia com ajuda</Button></div>
+
       <p role="status" aria-live="polite" className={msg ? 'mb-4 rounded-xl bg-soft p-3' : 'sr-only'}>{msg}</p>
 
       {state.recovery && (
@@ -98,7 +102,17 @@ function TaskItem({ t, patch, setMsg }: { t: Task; patch: (id: string, fn: (t: T
     patch(t.id, (x) => ({ ...x, done: !x.done, later: false }));
     setMsg(t.done ? `“${t.title}” voltou para a lista.` : `Feito: “${t.title}”. Obrigado/a por cuidar disso.`);
   };
-  const split = () => patch(t.id, (x) => ({ ...x, steps: splitTask(x.title).map((text) => ({ id: uid(), text, done: false })) }));
+  const { state } = useStore();
+  const [busy, setBusy] = useState(false);
+  const mk = (arr: string[]) => arr.map((text) => ({ id: uid(), text, done: false }));
+  const split = () => patch(t.id, (x) => ({ ...x, steps: mk(splitTask(x.title)) }));
+  const splitIA = async () => {
+    setBusy(true);
+    const r = await iaDividir(state.settings, state.profile, t.title);
+    setBusy(false);
+    if (r.ok) patch(t.id, (x) => ({ ...x, steps: mk(r.data) }));
+    else { split(); setMsg(r.mensagem); }
+  };
 
   return (
     <Card as="li" className={t.done ? 'opacity-80' : ''}>
@@ -147,7 +161,7 @@ function TaskItem({ t, patch, setMsg }: { t: Task; patch: (id: string, fn: (t: T
       {!t.done && !edit && (
         <div className="mt-4 flex flex-wrap gap-2">
           {t.steps.length === 0
-            ? <Button kind="primary" onClick={split}>Dividir em passos</Button>
+            ? <><Button kind="primary" onClick={split}>Dividir em passos</Button>{iaLigada(state.settings) && iaTemConta() && <Button disabled={busy} onClick={splitIA}>{busy ? 'Pensando…' : 'Dividir com IA'}</Button>}</>
             : <Button kind="primary" onClick={() => go(`/tarefas?foco=${t.id}`)}>Primeiro passo de 2 minutos</Button>}
           <Button aria-expanded={more} onClick={() => setMore(!more)}>{more ? 'Menos opções' : 'Mais opções'}</Button>
         </div>
@@ -207,6 +221,8 @@ function Focus({ task, onSplit, onStep, onExit, onAdd }: {
   }
 
   const next = task.steps.find((s) => !s.done);
+  const why = [...state.profile.values, ...state.profile.wants][Math.abs([...task.id].reduce((a, c) => a + c.charCodeAt(0), 0)) % Math.max(1, state.profile.values.length + state.profile.wants.length)];
+  const tips = startTips(state.profile);
   const start = () => {
     setOver(false);
     setLeft(120);
@@ -255,6 +271,12 @@ function Focus({ task, onSplit, onStep, onExit, onAdd }: {
         <Button kind="primary" onClick={() => { stop(); setOver(false); onStep(task, next.id); }}>Fiz este passo</Button>
         <Button onClick={() => { stop(); onExit(); }}>Parar por aqui</Button>
       </div>
+      {(why || tips.length > 0) && (
+        <Card className="mt-4 bg-soft border-soft">
+          {why && <p className="mb-2"><strong>Por que isso importa para você:</strong> {why}</p>}
+          {tips.length > 0 && <><p className="font-semibold">Para o seu jeito</p><ul className="list-disc pl-5">{tips.slice(0, 2).map((t) => <li key={t}>{t}</li>)}</ul></>}
+        </Card>
+      )}
       <p className="text-sm text-muted mt-4">Parar depois dos 2 minutos não é falha. Começar já foi o passo mais difícil.</p>
     </>
   );

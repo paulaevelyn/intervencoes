@@ -24,8 +24,12 @@ export function About() {
           <p>Seus dados ficam neste aparelho. A conta é opcional: sem ela, nada sai do aparelho; com ela, seus dados ficam guardados no mesmo serviço dos outros apps da Psicoterapia e Afins, só você os vê, e o plano de apoio, os registros e as tarefas nunca aparecem para a profissional. Não temos anúncios, não vendemos dados e não usamos rastreadores. Você pode baixar uma cópia ou apagar tudo em Ajustes. Quem usar este aparelho desbloqueado pode ver o que está salvo.</p>
         </Card>
         <Card>
+          <h2 className="font-bold mb-1">Perfil e ajuda de IA</h2>
+          <p>O perfil é autodeclarado: não é diagnóstico e não exige laudo, e serve só para adaptar dicas e ajustes. As sugestões e os guias funcionam sem IA, por regras simples. A ajuda de IA é opcional, exige conta e consentimento, e só envia o que você escrever quando você pedir. A IA pode errar e não substitui um profissional.</p>
+        </Card>
+        <Card>
           <h2 className="font-bold mb-1">Esta é uma versão de testes</h2>
-          <p>Algumas coisas podem mudar com o que aprendermos com quem usa. As divisões de tarefas e as sugestões seguem regras simples, não inteligência artificial.</p>
+          <p>Algumas coisas podem mudar com o que aprendermos com quem usa.</p>
         </Card>
         <CrisisBox />
       </div>

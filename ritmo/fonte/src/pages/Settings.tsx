@@ -5,6 +5,8 @@ import { Button, Card, Choice, ConfirmButton, Field, inputCls, Note, PageHead } 
 import { sampleData } from '../data/sample';
 import { iosNotInstalled, notifPermission, notifSupported, show, useRem } from '../reminders';
 import type { FontScale, State, ThemePref, AlertMode } from '../types';
+import { IA_CONSENT_VERSION, iaLigada, iaTemConta } from '../ia';
+import { go } from '../router';
 
 export function Settings() {
   const { state, update, replace } = useStore();
@@ -13,6 +15,8 @@ export function Settings() {
   const file = useRef<HTMLInputElement>(null);
   const [rem, setRem] = useRem();
   const [perm, setPerm] = useState(notifPermission());
+  const [aceito, setAceito] = useState(false);
+  const [ask, setAsk] = useState(false);
   const [msg, setMsg] = useState('');
   const hasExamples = [...state.tasks, ...state.routines, ...state.sensory, ...state.checkins].some((x) => x.example);
 
@@ -41,12 +45,42 @@ export function Settings() {
           <Choice<FontScale> legend="Tamanho do texto" value={s.fontScale} onChange={(v) => set({ fontScale: v })} cols={4} options={[{ v: 100, label: 'Padrão' }, { v: 115, label: 'Grande' }, { v: 130, label: 'Maior' }, { v: 150, label: 'Muito grande' }]} />
           <Toggle label="Fonte de leitura facilitada" help="Usa uma fonte mais aberta e fácil de distinguir letras." on={s.readingFont} onChange={(v) => set({ readingFont: v })} />
           <Toggle label="Espaçamento amplo" help="Mais espaço entre letras e linhas." on={s.wideSpacing} onChange={(v) => set({ wideSpacing: v })} />
+          <Toggle label="Botão “Ouvir”" help="Lê os textos em voz alta com a voz do seu aparelho." on={s.listen} onChange={(v) => set({ listen: v })} />
           <Toggle label="Mostrar contagens de tempo" help="Desligue se contagem regressiva deixa você tenso/a." on={s.showCounts} onChange={(v) => set({ showCounts: v })} />
         </Group>
 
         <Group title="Avisos de transição">
           <Choice<AlertMode> legend="Como avisar" value={s.alerts} onChange={(v) => set({ alerts: v })} cols={3} options={[{ v: 'off', label: 'Sem avisos' }, { v: 'screen', label: 'Só na tela' }, { v: 'vibrate', label: 'Tela + vibração leve' }]} />
           <Note>O Ritmo não usa sons, nem notificações fora do app, nem lembretes diários. Os avisos só aparecem enquanto você segue uma rotina.</Note>
+        </Group>
+
+        <Group title="Ajuda de IA (opcional)">
+          <Note>A IA pode ajudar a planejar o dia, dividir tarefas e traduzir o que você sente. Ela pode errar, não faz diagnóstico e não substitui terapia. As sugestões sem IA continuam funcionando.</Note>
+          {iaLigada(s) ? (
+            <>
+              <Toggle label="Ajuda de IA ligada" help="Só envia algo quando você aperta um botão de IA." on onChange={() => set({ ai: { ...s.ai, enabled: false } })} />
+              <Toggle label="Usar meu perfil" help="Envia junto seus traços (como TDAH ou autismo), tom e valores, para respostas mais adequadas. Desligado por padrão." on={s.ai.useProfile} onChange={(v) => set({ ai: { ...s.ai, useProfile: v } })} />
+              {!iaTemConta() && <Note tone="warm">A IA precisa de uma conta. Entre pelo botão no canto superior direito.</Note>}
+            </>
+          ) : ask ? (
+            <Card>
+              <h3 className="font-bold mb-2">Antes de ligar</h3>
+              <ul className="list-disc pl-5 space-y-1 mb-3">
+                <li>O que é enviado: o texto que você escrever naquele momento, seu nível de energia e o tempo disponível. Seu perfil só vai se você permitir.</li>
+                <li>Para quem: um provedor externo de IA (Anthropic), por meio de um servidor do Ritmo, só para gerar a resposta.</li>
+                <li>O que o Ritmo guarda: apenas quantos usos você fez no dia (limite diário). Não guarda o que você escreveu nem a resposta.</li>
+                <li>Exige conta. O plano de apoio, os registros sensoriais e as tarefas nunca são enviados.</li>
+                <li>Evite colocar nomes e dados de outras pessoas. Se você escrever sobre risco de se machucar, o app mostra o 188 (CVV) e não envia.</li>
+                <li>Você desliga quando quiser.</li>
+              </ul>
+              <label className="tap flex items-start gap-3 mb-3"><input type="checkbox" className="w-6 h-6 mt-0.5 accent-[var(--brand)] shrink-0" checked={aceito} onChange={(e) => setAceito(e.target.checked)} /><span>Li e concordo em enviar o que eu escrever, quando eu pedir, para gerar respostas de IA.</span></label>
+              <div className="flex flex-wrap gap-2"><Button kind="primary" disabled={!aceito} onClick={() => { set({ ai: { ...s.ai, enabled: true, consent: IA_CONSENT_VERSION } }); setAsk(false); setMsg('Ajuda de IA ligada.'); }}>Ligar ajuda de IA</Button><Button onClick={() => setAsk(false)}>Agora não</Button></div>
+            </Card>
+          ) : <Button onClick={() => setAsk(true)}>Ver como funciona e ligar</Button>}
+        </Group>
+
+        <Group title="Perfil">
+          <Button onClick={() => go('/perfil')}>Abrir meu perfil</Button>
         </Group>
 
         <Group title="Lembretes fora do app">

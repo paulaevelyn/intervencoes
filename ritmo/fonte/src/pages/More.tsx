@@ -1,6 +1,8 @@
 import { PageHead, Icon, Card } from '../ui';
 
 const ITEMS = [
+  { to: '/estados', icon: 'eye', title: 'Meus estados', text: 'Reconhecer emoções, sobrecarga, meltdown, shutdown e o que fazer.' },
+  { to: '/perfil', icon: 'heart', title: 'Meu perfil', text: 'Como você funciona. O Ritmo se adapta ao seu jeito.' },
   { to: '/plano', icon: 'heart', title: 'Meu plano de apoio', text: 'Sinais, o que ajuda e quem chamar. Fica só neste aparelho.' },
   { to: '/sensorial', icon: 'eye', title: 'Registro sensorial', text: 'Anote o que pesou e o que ajudou. Veja padrões da semana.' },
   { to: '/comunicacao', icon: 'chat', title: 'Mensagens prontas', text: 'Modelos curtos para pedir prazo, pausa ou dizer não.' },
