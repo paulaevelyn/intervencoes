@@ -5,7 +5,7 @@ import { Button, Card, Choice, ConfirmButton, Field, inputCls, Note, PageHead } 
 import { sampleData } from '../data/sample';
 import { iosNotInstalled, notifPermission, notifSupported, show, useRem } from '../reminders';
 import type { FontScale, State, ThemePref, AlertMode } from '../types';
-import { IA_CONSENT_VERSION, iaLigada, iaTemConta } from '../ia';
+import { IA_CONSENT_VERSION, IA_DISPONIVEL, iaLigada, iaTemConta } from '../ia';
 import { go } from '../router';
 
 export function Settings() {
@@ -54,7 +54,7 @@ export function Settings() {
           <Note>O Ritmo não usa sons, nem notificações fora do app, nem lembretes diários. Os avisos só aparecem enquanto você segue uma rotina.</Note>
         </Group>
 
-        <Group title="Ajuda de IA (opcional)">
+        {IA_DISPONIVEL && <Group title="Ajuda de IA (opcional)">
           <Note>A IA pode ajudar a planejar o dia, dividir tarefas e traduzir o que você sente. Ela pode errar, não faz diagnóstico e não substitui terapia. As sugestões sem IA continuam funcionando.</Note>
           {iaLigada(s) ? (
             <>
@@ -77,7 +77,7 @@ export function Settings() {
               <div className="flex flex-wrap gap-2"><Button kind="primary" disabled={!aceito} onClick={() => { set({ ai: { ...s.ai, enabled: true, consent: IA_CONSENT_VERSION } }); setAsk(false); setMsg('Ajuda de IA ligada.'); }}>Ligar ajuda de IA</Button><Button onClick={() => setAsk(false)}>Agora não</Button></div>
             </Card>
           ) : <Button onClick={() => setAsk(true)}>Ver como funciona e ligar</Button>}
-        </Group>
+        </Group>}
 
         <Group title="Perfil">
           <Button onClick={() => go('/perfil')}>Abrir meu perfil</Button>

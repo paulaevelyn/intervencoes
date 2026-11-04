@@ -8,6 +8,8 @@ import type { Guia } from './data/sensacoes';
    A chamada passa pela função ritmo-ia (Supabase), que guarda só um contador diário. */
 
 export const IA_CONSENT_VERSION = '2026-11-04';
+/** A ajuda de IA só aparece quando o servidor existe. Para ligar: build com VITE_RITMO_IA=1 (ver ARQUITETURA.md). */
+export const IA_DISPONIVEL = import.meta.env.VITE_RITMO_IA === '1';
 const CRISE = /suic[ií]d|me matar|me machucar|me ferir|acabar com (a )?(minha )?vida|n[aã]o quero (mais )?viver|queria (sumir|morrer)/i;
 
 type Falha = { ok: false; motivo: 'desligada' | 'sem-conta' | 'crise' | 'limite' | 'erro'; mensagem: string };
@@ -16,7 +18,7 @@ export type Resultado<T> = { ok: true; data: T } | Falha;
 interface PeaAuth { cliente(): { functions: { invoke(n: string, o: { body: unknown }): Promise<{ data: unknown; error: { message?: string; context?: Response } | null }> } } | null; usuario(): unknown }
 const auth = () => (window as unknown as { PeaAuth?: PeaAuth }).PeaAuth;
 
-export const iaLigada = (s: Settings) => s.ai.enabled && s.ai.consent === IA_CONSENT_VERSION;
+export const iaLigada = (s: Settings) => IA_DISPONIVEL && s.ai.enabled && s.ai.consent === IA_CONSENT_VERSION;
 export const iaTemConta = () => !!auth()?.usuario();
 
 const str = (x: unknown, n = 300) => (typeof x === 'string' ? x.trim().slice(0, n) : '');

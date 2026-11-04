@@ -4,7 +4,7 @@ import { back, go } from '../router';
 import { Button, Card, Choice, Field, inputCls, Note, PageHead } from '../ui';
 import { planejarLocal, type Plano } from '../data/planner';
 import { splitTask } from '../data/split';
-import { iaLigada, iaPlanejar, iaTemConta } from '../ia';
+import { IA_DISPONIVEL, iaLigada, iaPlanejar, iaTemConta } from '../ia';
 import type { Level3 } from '../types';
 import { CrisisBox } from './Plan';
 
@@ -87,7 +87,7 @@ export function Planner() {
             : <Button kind="primary" big disabled={!pode} onClick={regras}>Montar plano</Button>}
         </div>
         {ia && !iaTemConta() && <p className="text-sm text-muted">A IA está ligada, mas precisa de uma conta. Entre pelo botão no canto superior direito.</p>}
-        {!ia && <p className="text-sm text-muted">Quer ajuda de IA para ordenar e dividir? Ligue em Mais → Ajustes → Ajuda de IA.</p>}
+        {IA_DISPONIVEL && !ia && <p className="text-sm text-muted">Quer ajuda de IA para ordenar e dividir? Ligue em Mais → Ajustes → Ajuda de IA.</p>}
       </div>
     </>
   );
