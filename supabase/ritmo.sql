@@ -1,6 +1,6 @@
 -- ═══════════════════════════════════════════════════════════════════════
 -- Ritmo (apoio para adultos neurodivergentes)
--- Migração "ritmo" — A APLICAR no projeto Intervenções (ref qhjdhlrmmopgucseprkb).
+-- Migração "ritmo" — APLICADA em 2026-11-04 no projeto Intervenções (ref qhjdhlrmmopgucseprkb).
 --
 -- O que faz
 --   app_dados passa a aceitar app = 'ritmo', para a sincronização opcional por conta (auth/auth.js,
