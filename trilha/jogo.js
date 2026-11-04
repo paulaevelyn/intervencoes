@@ -126,6 +126,8 @@ function renderQuestao(cont, q, cb) {
       if (!o.ok) b.classList.add('no');
       const fb = box.querySelector('.qz-fb'); fb.hidden = false;
       fb.innerHTML = (o.ok ? '<strong>Isso!</strong> ' : '<strong>Quase.</strong> ') + esc(o.fb) + (o.ok ? '' : '<br><br><strong>Mais útil:</strong> ' + esc(certa.t) + '. ' + esc(certa.fb));
+      fb.insertAdjacentHTML('afterend', '<details class="qz-todas"><summary>Ver por que cada opção é assim</summary>' +
+        ops.map(x => `<div class="qz-ex${x.ok ? ' ok' : ''}"><strong>${esc(x.t)}</strong><br>${esc(x.fb)}</div>`).join('') + '</details>');
       box.querySelector('.tr-acoes').hidden = false;
     }));
     box.querySelector('[data-next]').addEventListener('click', () => cb(primeiraOk));
@@ -150,7 +152,7 @@ function renderQuestao(cont, q, cb) {
       const fb = box.querySelector('.qz-fb'); fb.hidden = false; fb.textContent = q.fb;
       box.querySelector('[data-ver]').hidden = true; box.querySelector('[data-next]').hidden = false;
     });
-    box.querySelector('[data-next]').addEventListener('click', () => cb(tudoOk));
+    box.querySelector('[data-next]').addEventListener('click', () => cb(tudoOk, itens.map((it, i) => ({ c: it.c, ok: sel[i] === it.c }))));
   }
 }
 
@@ -184,6 +186,7 @@ function renderEtapa() {
   } else if (_ms.et === 't') {
     const q = M.quiz[_ms.i];
     w.innerHTML = head + `<div class="dots">${M.quiz.map((_, i) => `<i class="${i <= _ms.i ? 'on' : ''}"></i>`).join('')}</div><div class="bloco"><div id="ms-q"></div></div>
+      ${_ms.i > 0 ? '<div class="tr-acoes" style="padding:0 var(--pg) 8px"><button class="tr-btn ghost" type="button" onclick="_ms.i--;renderEtapa()">← Questão anterior</button></div>' : ''}
       <p class="pv-txt" style="padding:0 var(--pg)">Aqui não tem nota: errar é parte de aprender. Você ganha energia por completar.</p>`;
     renderQuestao($('ms-q'), q, ok => { _ms.prim.push(ok); if (_ms.i < M.quiz.length - 1) { _ms.i++; renderEtapa(); } else fimTreinar(); });
   } else {
@@ -310,6 +313,7 @@ function renderJogoHome() {
     <div class="nv-t">${esc(String(xp))} de energia${ni.prox ? ' · faltam ' + ni.falta + ' para ' + esc(ni.prox.nome) : ' · você chegou ao topo do mapa'}</div></div></div>`;
   const dev = revDevidas().length;
   if (dev) h += `<div class="tr-card"><div class="tr-lbl">Opcional · 2 minutos</div><h3>⚡ Revisão relâmpago</h3><p>${dev} questão${dev > 1 ? 'ões' : ''} das suas missões para rever.</p><div class="tr-acoes"><button class="tr-btn" type="button" onclick="abrirRevisao()">Rever agora</button></div></div>`;
+  if (typeof treinoHomeHTML === 'function') h += treinoHomeHTML();
   h += f && f.top && f.top.length
     ? `<div class="tr-card suave"><div class="tr-lbl">Força do dia</div><h3>🌟 Qual força você usou hoje?</h3><p>Notar suas forças em gestos pequenos é o que as faz crescer.</p><div class="tr-acoes"><button class="tr-btn ghost" type="button" onclick="openTool('forca')">Registrar</button></div></div>`
     : `<div class="tr-card suave"><div class="tr-lbl">Para começar</div><h3>🎒 Descubra suas forças</h3><p>Escolha o que você tem de melhor e ganhe seu equipamento da expedição (10 minutos).</p><div class="tr-acoes"><button class="tr-btn" type="button" onclick="openTool('forcas')">Descobrir</button></div></div>`;
