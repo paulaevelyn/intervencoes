@@ -1,0 +1,95 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---------- Cores (tema claro) ---------- */
+:root {
+  --bg: #f7f4ee;
+  --surface: #ffffff;
+  --ink: #23282b;
+  --muted: #56606a;
+  --line: #d9d4c9;
+  --brand: #2f6b62;
+  --brand-ink: #ffffff;
+  --soft: #e3efeb;
+  --warm: #f6ead6;
+  --c-sage: #4f8a7b;
+  --c-sky: #4f7fa8;
+  --c-sand: #a98443;
+  --c-rose: #b4636b;
+  --c-lilac: #7b6cae;
+  --c-slate: #5f6b76;
+  --fs: 100%;
+  --ls: 0;
+  --lh: 1.6;
+  color-scheme: light;
+}
+:root[data-theme='dark'] {
+  --bg: #171b1e;
+  --surface: #20262a;
+  --ink: #ece9e3;
+  --muted: #b4bcc3;
+  --line: #3a434a;
+  --brand: #8cc4b7;
+  --brand-ink: #10201c;
+  --soft: #273832;
+  --warm: #3a3223;
+  --c-sage: #86c2b2;
+  --c-sky: #8db6dc;
+  --c-sand: #d4b26e;
+  --c-rose: #e09aa1;
+  --c-lilac: #b3a6e0;
+  --c-slate: #a3afba;
+  color-scheme: dark;
+}
+/* Baixo estímulo: tons neutros, sem sombras, sem movimento */
+:root[data-lowstim='true'] {
+  --brand: #4a5a58;
+  --soft: #ececea;
+  --warm: #efede9;
+  --bg: #f3f2ef;
+}
+:root[data-theme='dark'][data-lowstim='true'] {
+  --brand: #aebdb9;
+  --brand-ink: #14191a;
+  --soft: #252b2d;
+  --warm: #2a2b2b;
+  --bg: #151819;
+}
+:root[data-lowstim='true'] * {
+  animation: none !important;
+  transition: none !important;
+  scroll-behavior: auto !important;
+  box-shadow: none !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
+
+html { font-size: var(--fs); -webkit-text-size-adjust: 100%; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  line-height: var(--lh);
+  letter-spacing: var(--ls);
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  margin: 0;
+}
+:root[data-font='leitura'] body, :root[data-font='leitura'] button, :root[data-font='leitura'] input, :root[data-font='leitura'] textarea, :root[data-font='leitura'] select {
+  font-family: Verdana, Tahoma, 'DejaVu Sans', sans-serif;
+}
+button, input, textarea, select { font: inherit; letter-spacing: inherit; color: inherit; }
+
+/* Foco sempre visível */
+:focus-visible { outline: 3px solid var(--brand); outline-offset: 3px; border-radius: 6px; }
+:root[data-theme='dark'] :focus-visible { outline-color: #fff; }
+
+.tap { min-height: 3rem; min-width: 3rem; }
+.sr-only-link { position: absolute; left: -9999px; top: 0; }
+.sr-only-link:focus { left: 1rem; top: 1rem; z-index: 100; background: var(--surface); padding: .75rem 1rem; border-radius: .75rem; border: 2px solid var(--brand); }
+
+@keyframes breathe-grow { from { transform: scale(.6); } to { transform: scale(1); } }
+@keyframes breathe-shrink { from { transform: scale(1); } to { transform: scale(.6); } }
+
+/* O título recebe foco por script ao trocar de tela; não precisa de moldura. */
+#page-title:focus { outline: none; }

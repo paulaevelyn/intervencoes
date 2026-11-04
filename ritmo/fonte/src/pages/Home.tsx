@@ -1,0 +1,79 @@
+import { useState } from 'react';
+import { useStore, uid } from '../store';
+import { go } from '../router';
+import { Button, Card, PageHead } from '../ui';
+import { suggest, type Suggestion } from '../data/suggest';
+import type { Mood } from '../types';
+
+const MOODS: { id: Mood; label: string; sub: string }[] = [
+  { id: 'energia', label: 'Tenho energia', sub: 'Dá para fazer algo' },
+  { id: 'limite', label: 'Estou no limite', sub: 'Muita coisa ao mesmo tempo' },
+  { id: 'pausa', label: 'Preciso de uma pausa', sub: 'Quero parar um pouco' },
+];
+
+export function Suggestions({ items, onDone }: { items: Suggestion[]; onDone?: () => void }) {
+  const { update } = useStore();
+  return (
+    <ul className="space-y-3">
+      {items.map((s) => (
+        <li key={s.id}>
+          <Card as="div">
+            <h2 className="font-bold text-lg">{s.title}</h2>
+            <p className="text-muted mb-3">{s.why}</p>
+            <Button kind="primary" onClick={() => {
+              if (s.effect === 'recovery') update((st) => ({ ...st, recovery: true }));
+              onDone?.();
+              go(s.to);
+            }}>{s.label}</Button>
+          </Card>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+export function Home() {
+  const { state, update } = useStore();
+  const [mood, setMood] = useState<Mood | null>(null);
+
+  const choose = (m: Mood) => {
+    update((s) => ({ ...s, checkins: [...s.checkins, { id: uid(), at: Date.now(), mood: m }].slice(-300) }));
+    setMood(m);
+  };
+
+  if (mood) {
+    const items = suggest({ mood });
+    const text = { energia: 'Que bom. Aqui vão algumas ideias, sem obrigação:', limite: 'Obrigado/a por avisar. Vamos reduzir a carga. Escolha uma coisa:', pausa: 'Pausas são válidas. Escolha como quer descansar:' }[mood];
+    return (
+      <>
+        <PageHead title="O que pode ajudar agora" sub={text} />
+        <Suggestions items={items} />
+        <div className="mt-5 flex flex-wrap gap-2">
+          <Button onClick={() => setMood(null)}>Mudar minha resposta</Button>
+          <Button onClick={() => go('/energia')}>Registrar com mais detalhe</Button>
+        </div>
+      </>
+    );
+  }
+
+  const last = state.checkins[state.checkins.length - 1];
+  return (
+    <>
+      <PageHead title="Como você está agora?" sub="Escolha o que combina mais. Não existe resposta errada." />
+      <div className="space-y-3" role="group" aria-label="Como você está agora?">
+        {MOODS.map((m) => (
+          <button key={m.id} type="button" onClick={() => choose(m.id)}
+            className="tap w-full text-left rounded-2xl border-2 border-line bg-surface px-5 py-5 hover:border-brand">
+            <span className="block text-xl font-bold">{m.label}</span>
+            <span className="block text-muted">{m.sub}</span>
+          </button>
+        ))}
+      </div>
+      {last && (
+        <p className="mt-6 text-sm text-muted">
+          Último registro: {new Date(last.at).toLocaleDateString('pt-BR', { day: '2-digit', month: 'long' })}. Seus dados ficam só neste aparelho.
+        </p>
+      )}
+    </>
+  );
+}
