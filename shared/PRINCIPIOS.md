@@ -1,6 +1,6 @@
 # Bem-estar digital e design compassivo — princípios e como cada app os aplica
 
-Estes princípios valem para **todos os apps** do repositório (Farol, Floresça, Matiz, Segurança Interna, Aurora, Sintonia e o painel). São diretrizes de projeto, não uma norma
+Estes princípios valem para **todos os apps** do repositório (Farol, Floresça, Matiz, Segurança Interna, Aurora, Sintonia, Trilha e o painel). São diretrizes de projeto, não uma norma
 certificada. A camada compartilhada `bemestar.js` / `bemestar.css` (carregada por `auth/auth.js`, que todos os apps já incluem) implementa a parte técnica; o restante
 depende de texto, tom e decisões de cada app.
 
@@ -42,6 +42,7 @@ depende de texto, tom e decisões de cada app.
 | **Segurança Interna** | Sem pontos, sem sequência, sem notificações; ritmo livre | **Sem ajuda em crise dentro do app** (só pelo painel ⚙), embora o tema possa mobilizar sofrimento |
 | **Aurora** | Sem pontos nem sequência; lembrete só se não registrou; passo pequeno; retorno acolhedor; crise visível; PHQ-9 com cuidado no item 9 | Lembretes locais podem não disparar se o app for encerrado (limitação técnica) |
 | **Sintonia** | Sem pontos, sem sequência, sem notificações, sem pesquisa; notas de 0 a 10 opcionais e só comparadas consigo mesmo; pausa e "Encerrar" sempre à mão; "Preciso de ajuda agora" na tela inicial, durante e depois da sessão; retorno acolhedor depois de 7 dias; cuidado com volume e zumbido; tipo Com toques com blocos curtos, menos sons, visual calmo e "Preciso de ajuda agora" também durante o bloco | Som pode incomodar quem tem sensibilidade auditiva (aviso no onboarding e em Aprender); o exercício pode mobilizar pensamentos difíceis, e por isso a pessoa é convidada a levá-los à sessão; no tipo Com toques há medidas de desempenho (chamadas percebidas, tempo de resposta) que podem virar cobrança em quem é perfeccionista: o texto evita "acertos", a comparação é só consigo mesma e o tipo clássico (sem desempenho) segue sendo o padrão |
+| **Trilha** | Sem pontos, sem sequência, sem notificações, sem pesquisa; listas pessoais (Caixa SOS, Ações da semana) nunca vão para a profissional; "Preciso de ajuda agora" (188, 192, 100) na tela inicial e no plano de segurança; sigilo e seus limites explicados no onboarding; responsáveis sem acesso | Item de risco no balanço semanal: o app não avisa ninguém, e a profissional só vê se o adolescente liberar números; consentimento de menores (responsáveis + assentimento) ainda a definir fora do sistema; conteúdo e linguagem ainda sem teste com adolescentes |
 
 ## Revisão de linguagem aplicada (TFC, psicologia positiva, COM-B e TDA)
 1. **Sem sequência a quebrar:** "dias seguidos" virou "dias com prática" (nos últimos 14 dias, não precisam ser consecutivos). A medalha passou a "Praticou em 7 dias diferentes".

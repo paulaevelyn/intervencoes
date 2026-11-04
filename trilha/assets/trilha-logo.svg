@@ -1,0 +1,7 @@
+<svg width="260" height="90" viewBox="0 0 260 90" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Trilha">
+  <rect x="4" y="9" width="72" height="72" rx="17" fill="#245860"/>
+  <path d="M23 66c0-11 11-9 19-13s5-13-4-15-11-11-1-16" stroke="#F7F3EF" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="23" cy="66" r="6" fill="#F6C56F"/>
+  <circle cx="53" cy="22" r="6" fill="#D96C63"/>
+  <text x="90" y="58" font-family="Fraunces, Georgia, 'Times New Roman', serif" font-size="40" font-weight="600" fill="#245860">Trilha</text>
+</svg>

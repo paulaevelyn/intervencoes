@@ -244,3 +244,9 @@ notify pgrst, 'reload schema';
 
 -- ── 16. Sintonia: cenário Bateria (migração painel_sintonia_bateria) ──
 -- projecao_sintonia aceita cenario = 'bateria' (com toques) e o campo 'conjunto' ('padrao' ou 'bateria', do clássico).
+
+-- ── 17. Trilha (migrações "trilha" e "trilha_sanear_regex_link", aplicadas em 2026-11-04; arquivo supabase/trilha.sql) ──
+-- app_dados aceita app = 'trilha'. Tabela trilha_orientacoes (o que a profissional escreve; o adolescente só lê por RLS),
+-- trilha_sanear (lista branca: módulo 1–13, sessões com link https, tarefas), projecao_trilha (lista branca dos registros:
+-- n números, c listas de ids, t textos só com permissão), painel_dados despacha 'trilha', e as funções painel_trilha_ler /
+-- painel_trilha_salvar (só profissional com vínculo). O SQL completo está em supabase/trilha.sql.

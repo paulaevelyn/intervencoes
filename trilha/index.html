@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+
+<!-- PWA / Atalho na home screen -->
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="assets/trilha-icon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#245860">
+<meta name="application-name" content="Trilha">
+<meta name="description" content="Trilha: apoio entre as sessões de terapia online para adolescentes. Psicoterapia e Afins.">
+
+<!-- iOS (Safari não lê o manifest) -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Trilha">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+<title>Trilha — apoio entre as sessões</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="extra.css">
+<link rel="stylesheet" href="trilha.css">
+<!-- LOGIN: estilos e bloqueio do app até a sessão ser verificada -->
+<link rel="stylesheet" href="../auth/auth.css">
+<script>document.documentElement.classList.add("pea-auth-carregando");</script>
+</head>
+<body>
+<div id="pea-auth-aviso">carregando…</div>
+
+<!-- SPLASH SCREEN -->
+<div id="splash">
+  <div class="splash-inner">
+    <img src="assets/trilha-logo.svg" alt="Trilha" class="splash-logo">
+    <div class="splash-dots"><span></span><span></span><span></span></div>
+  </div>
+</div>
+
+<div id="app">
+
+<!-- ONBOARDING — 5 telas curtas, linguagem direta -->
+<div id="onboard" class="hide">
+
+  <div class="ob-slide on" id="obs0">
+    <div class="ob-top">
+      <div class="ob-brand"><img src="assets/trilha-logo.svg" alt="Trilha" width="190"></div>
+      <div class="ob-icon">🧭</div>
+      <div class="ob-title">Um espaço seu,<br>entre as sessões.</div>
+      <div class="ob-body">A Trilha é um app para você praticar o que conversa com sua psicóloga e acompanhar como você está. Sem pressão, no seu ritmo.</div>
+    </div>
+    <div class="ob-dots"><div class="ob-dot on"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div></div>
+    <button class="btn" onclick="obNext(1)">Continuar</button>
+    <button class="btn ghost" onclick="obDone()" style="margin-top:0">Já conheço o app</button>
+  </div>
+
+  <div class="ob-slide" id="obs1">
+    <div class="ob-top">
+      <div class="ob-icon">🗺️</div>
+      <div class="ob-title">Como funciona</div>
+      <div class="ob-list">
+        <div class="ob-li"><span class="ob-li-ic">🏠</span><span><strong>Hoje:</strong> sua próxima sessão e o que foi combinado para a semana.</span></div>
+        <div class="ob-li"><span class="ob-li-ic">🧭</span><span><strong>Trilha:</strong> os módulos que você e sua psicóloga vão percorrendo.</span></div>
+        <div class="ob-li"><span class="ob-li-ic">🧰</span><span><strong>Ferramentas:</strong> check-in, respiração, detetive de pensamentos e mais.</span></div>
+        <div class="ob-li"><span class="ob-li-ic">🛟</span><span><strong>Plano de segurança:</strong> para os dias muito difíceis.</span></div>
+      </div>
+      <div class="ob-body" style="font-size:13.5px">Não existe pontuação, ranking nem “sequência” para quebrar. Dia ruim faz parte.</div>
+    </div>
+    <div class="ob-dots"><div class="ob-dot"></div><div class="ob-dot on"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div></div>
+    <button class="btn" onclick="obNext(2)">Continuar</button>
+    <button class="btn ghost" onclick="obNext(0)" style="margin-top:0">Voltar</button>
+  </div>
+
+  <div class="ob-slide" id="obs2">
+    <div class="ob-top">
+      <div class="ob-icon">🔒</div>
+      <div class="ob-title">Quem vê o que você escreve</div>
+      <div class="consent-box"><div class="consent-items">
+        <div class="consent-item"><span class="consent-item-icon">🙋</span><span><strong>Você decide.</strong> Sua psicóloga só vê o que você liberar em “Minha conta” (botão no topo). Pode ser só números, ou números e textos.</span></div>
+        <div class="consent-item"><span class="consent-item-icon">👨‍👩‍👧</span><span><strong>Seus responsáveis não têm acesso ao app.</strong> O que a família sabe é combinado com você e com sua psicóloga nas sessões.</span></div>
+        <div class="consent-item"><span class="consent-item-icon">🧰</span><span><strong>Caixa SOS</strong> e suas listas pessoais ficam só com você.</span></div>
+        <div class="consent-item"><span class="consent-item-icon">🗑️</span><span>Você pode baixar ou apagar seus dados quando quiser.</span></div>
+      </div></div>
+    </div>
+    <div class="ob-dots"><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot on"></div><div class="ob-dot"></div><div class="ob-dot"></div></div>
+    <button class="btn" onclick="obNext(3)">Continuar</button>
+    <button class="btn ghost" onclick="obNext(1)" style="margin-top:0">Voltar</button>
+  </div>
+
+  <div class="ob-slide" id="obs3">
+    <div class="ob-top">
+      <div class="ob-icon">🤝</div>
+      <div class="ob-title">Uma coisa importante sobre sigilo</div>
+      <div class="ob-body">A conversa com sua psicóloga é sigilosa. A exceção é quando existe <strong>risco sério para você ou para outra pessoa</strong>: nesse caso, ela pode precisar envolver outras pessoas para te proteger, e vai conversar com você sobre isso antes, sempre que der.</div>
+      <div class="ob-body" style="margin-top:12px"><strong>O app não avisa ninguém sozinho.</strong> Ele não monitora você. Por isso, se algo muito pesado aparecer, fale com sua psicóloga ou com alguém de confiança. Você não precisa dar conta de tudo sozinho/a.</div>
+    </div>
+    <div class="ob-dots"><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot on"></div><div class="ob-dot"></div></div>
+    <button class="btn" onclick="obNext(4)">Entendi</button>
+    <button class="btn ghost" onclick="obNext(2)" style="margin-top:0">Voltar</button>
+  </div>
+
+  <div class="ob-slide" id="obs4">
+    <div class="ob-top">
+      <div class="ob-icon">🤍</div>
+      <div class="ob-title">Se estiver muito difícil</div>
+      <div class="ob-body">A Trilha apoia a terapia e <strong>não substitui</strong> o acompanhamento. Se você estiver em sofrimento forte, pensando em se machucar ou sem saber o que fazer, procure ajuda agora.</div>
+      <div class="crisis-box" style="margin-top:14px">
+        <div class="crisis-title">Ajuda agora</div>
+        <div><a href="tel:188">188 (CVV)</a>, gratuito, 24 horas · <a href="tel:192">192 (SAMU)</a> em risco imediato · <a href="tel:100">100</a> se alguém estiver te machucando ou violando seus direitos.</div>
+      </div>
+      <div class="ob-body" style="font-size:13.5px;margin-top:12px">O botão <strong>“Preciso de ajuda agora”</strong> fica sempre na tela inicial.</div>
+    </div>
+    <div class="ob-dots"><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot on"></div></div>
+    <button class="btn" onclick="obDone()">Começar</button>
+    <button class="btn ghost" onclick="obNext(3)" style="margin-top:0">Voltar</button>
+  </div>
+
+</div><!-- /onboard -->
+
+<!-- HOJE -->
+<div class="scr on" id="scr-home">
+  <div class="home-hero">
+    <div class="home-date" id="h-date"></div>
+    <div class="home-hi" id="h-hi">Oi</div>
+    <div class="home-sub" id="h-sub"></div>
+  </div>
+  <div id="h-sessao"></div>
+  <div id="h-tarefas"></div>
+  <div id="h-modulo"></div>
+  <div id="h-semanal"></div>
+  <div class="stats">
+    <div class="stat"><div class="stat-n" style="color:var(--tr)" id="hs-dias">0</div><div class="stat-l">dias com prática (14 dias)</div></div>
+    <div class="stat"><div class="stat-n" style="color:var(--amber)" id="hs-regs">0</div><div class="stat-l">registros</div></div>
+    <div class="stat"><div class="stat-n" style="color:var(--coral)" id="hs-mods">0</div><div class="stat-l">módulos vistos</div></div>
+  </div>
+  <div class="sdiv">Acesso rápido</div>
+  <div class="quick-grid">
+    <div class="quick-card" onclick="openTool('respirar')"><div class="quick-icon">🌬️</div><div class="quick-title">Respirar</div><div class="quick-sub">Baixar o alerta</div></div>
+    <div class="quick-card" onclick="openTool('plano')"><div class="quick-icon">🛟</div><div class="quick-title">Plano de segurança</div><div class="quick-sub" id="h-plano-sub">Para os dias difíceis</div></div>
+    <div class="quick-card crisis-card" onclick="openCrisis()" style="grid-column:1/-1"><div class="quick-icon">🤍</div><div class="quick-title">Preciso de ajuda agora</div><div class="quick-sub">188 · 192 · 100</div></div>
+  </div>
+  <div class="brand-footer" style="text-align:center;padding:18px 16px;font-size:12px;color:var(--light)">Psicoterapia e Afins</div>
+</div>
+
+<!-- TRILHA -->
+<div class="scr" id="scr-trilha">
+  <div class="hdr"><h1>Trilha</h1><p>Os módulos que você percorre com sua psicóloga.</p></div>
+  <div class="insight-c"><div class="insight-t">Como usar</div><div class="insight-b">Sua psicóloga indica por onde seguir (o módulo <strong>Agora</strong>). Você pode ler os outros quando tiver curiosidade, sem pular a ordem das sessões.</div></div>
+  <div id="t-lista"></div>
+</div>
+
+<!-- MÓDULO -->
+<div class="scr" id="scr-modulo">
+  <div id="m-wrap"></div>
+</div>
+
+<!-- FERRAMENTAS -->
+<div class="scr" id="scr-tools">
+  <div class="hdr"><h1>Ferramentas</h1><p>Para usar quando quiser, dentro ou fora da terapia.</p></div>
+  <div class="quick-grid" id="f-grid" style="margin-top:14px"></div>
+</div>
+
+<!-- UMA FERRAMENTA -->
+<div class="scr" id="scr-tool">
+  <div class="hdr"><h1 id="tool-h1"></h1><p id="tool-sub"></p></div>
+  <div id="tool-wrap" style="padding-top:16px"></div>
+</div>
+
+<!-- HISTÓRICO -->
+<div class="scr" id="scr-registro">
+  <div class="hdr"><h1>Meu histórico</h1><p>O que você registrou. Você pode apagar qualquer item.</p></div>
+  <div id="r-lista"></div>
+</div>
+
+<!-- EU -->
+<div class="scr" id="scr-eu">
+  <div class="hdr"><h1>Eu</h1><p>Privacidade, dados e ajustes.</p></div>
+  <div class="sdiv">Quem vê o quê</div>
+  <div class="bloco" id="eu-privacidade"></div>
+
+  <div class="sdiv">Meu espaço</div>
+  <div class="set-group">
+    <div class="set-row" onclick="goTo('registro')"><div><div class="set-lbl">📖 Meu histórico</div><div class="set-desc">Tudo que você registrou</div></div><span class="set-arr">›</span></div>
+    <div class="set-row" onclick="openTool('plano')"><div><div class="set-lbl">🛟 Plano de segurança</div><div class="set-desc">Para os dias muito difíceis</div></div><span class="set-arr">›</span></div>
+    <div class="set-row" onclick="openTool('sos')"><div><div class="set-lbl">🧰 Caixa SOS</div><div class="set-desc">Só você vê</div></div><span class="set-arr">›</span></div>
+  </div>
+  <div class="campo"><label class="form-lbl" for="eu-nome">Como você quer ser chamado/a? (opcional)</label>
+    <div class="form-hint">Fica só neste aparelho.</div>
+    <input type="text" id="eu-nome" maxlength="30" autocomplete="off" onchange="salvarNome(this.value)"></div>
+
+  <div class="sdiv">Seus dados</div>
+  <div class="set-group">
+    <div class="set-row" onclick="exportJSON()"><div><div class="set-lbl">⬇️ Baixar tudo (JSON)</div><div class="set-desc">Seus registros, listas e plano</div></div><span class="set-arr">›</span></div>
+    <div class="set-row" onclick="exportCSV()"><div><div class="set-lbl">📄 Baixar registros (CSV)</div><div class="set-desc">Para abrir em planilha ou levar para a sessão</div></div><span class="set-arr">›</span></div>
+    <div class="set-row" onclick="openModal('del')"><div><div class="set-lbl" style="color:var(--coral)">🗑️ Apagar os dados deste aparelho</div><div class="set-desc">Se você usa conta, apague-a em “Minha conta” (botão no topo)</div></div><span class="set-arr">›</span></div>
+  </div>
+
+  <div class="sdiv">Sobre</div>
+  <div class="legal-card">
+    <div class="legal-item"><span class="legal-item-icon">⚕️</span><div><strong>Não é tratamento</strong>A Trilha apoia a terapia, mas não substitui a psicóloga. Os módulos seguem abordagens com base científica (Protocolo Unificado, Terapia Focada na Compaixão e TCC).</div></div>
+    <div class="legal-item"><span class="legal-item-icon">🤍</span><div><strong>Em crise?</strong>Ligue <a href="tel:188">188 (CVV)</a>, 24 horas, ou <a href="tel:192">192 (SAMU)</a>. Violência contra criança ou adolescente: <a href="tel:100">100</a>.</div></div>
+    <div class="legal-item"><span class="legal-item-icon">🏛️</span><div><strong>Psicoterapia e Afins</strong><a href="https://www.psicoterapiaeafins.com.br" target="_blank" rel="noopener" class="brand-link mint" style="font-size:12px">🌐 psicoterapiaeafins.com.br</a></div></div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-logo"><img src="assets/trilha-icon.svg" alt="Trilha"></div>
+  <button class="nb on" id="nb-home" onclick="goTo('home')">
+    <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg><span>Hoje</span>
+  </button>
+  <button class="nb" id="nb-trilha" onclick="goTo('trilha')">
+    <svg viewBox="0 0 24 24"><circle cx="6" cy="19" r="2"/><circle cx="18" cy="5" r="2"/><path d="M8 19h5a4 4 0 000-8h-2a4 4 0 010-8h5"/></svg><span>Trilha</span>
+  </button>
+  <button class="nb cta" id="nb-checkin" onclick="openTool('checkin')">
+    <div class="cta-ic" style="background:var(--tr)"><svg viewBox="0 0 24 24" stroke="white" fill="none" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+    <span>Check-in</span>
+  </button>
+  <button class="nb" id="nb-tools" onclick="goTo('tools')">
+    <svg viewBox="0 0 24 24"><path d="M14.7 6.3a4 4 0 00-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 005.4-5.4l-2.6 2.6-2.4-.6-.6-2.4z"/></svg><span>Ferramentas</span>
+  </button>
+  <button class="nb" id="nb-eu" onclick="goTo('eu')">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0116 0"/></svg><span>Eu</span>
+  </button>
+</nav>
+
+</div><!-- /app -->
+
+<!-- MODAL -->
+<div id="modal-ov" onclick="closeModal(event)">
+  <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-title" id="modal-title"></div>
+    <div class="modal-body" id="modal-body"></div>
+    <div id="modal-actions" style="display:flex;flex-direction:column;gap:10px"></div>
+  </div>
+</div>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+<script src="ferramentas.js"></script>
+
+<!-- LOGIN: camada compartilhada (../auth/). Contas só por convite. -->
+<script type="module" src="../auth/auth.js" data-app="trilha" data-nome="Trilha" data-logo="assets/trilha-logo.svg" data-pesquisa="nao" data-storage-keys="trilha_regs,trilha_semanal,trilha_escada,trilha_feitos,trilha_lidos,trilha_plano,trilha_agenda,trilha_sos,trilha_ob"></script>
+</body>
+</html>
