@@ -13,7 +13,7 @@ export function Onboarding() {
       <Card className="space-y-3 text-lg">
         <p>Aqui você encontra tarefas em passos pequenos, rotinas visuais, pausas e um plano de apoio.</p>
         <ul className="list-disc pl-6 space-y-1">
-          <li>Sem cadastro. Seus dados ficam só neste aparelho.</li>
+          <li>Conta opcional. Sem conta, seus dados ficam só neste aparelho.</li>
           <li>Sem metas, sem pontos, sem cobrança.</li>
           <li>Não faz diagnóstico nem substitui terapia ou tratamento.</li>
         </ul>

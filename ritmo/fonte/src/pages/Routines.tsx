@@ -3,6 +3,7 @@ import { useStore, uid } from '../store';
 import { back, go, useRoute } from '../router';
 import { Button, Card, ConfirmButton, Field, Icon, inputCls, Note, PageHead } from '../ui';
 import { ROUTINE_MODELS } from '../data/sample';
+import { useRem } from '../reminders';
 import type { ColorId, Routine } from '../types';
 
 const ICONS = [
@@ -92,6 +93,7 @@ function Edit({ id }: { id: string }) {
   const { state, update } = useStore();
   const r = state.routines.find((x) => x.id === id);
   const [draft, setDraft] = useState('');
+  const [rem] = useRem();
   if (!r) return <><PageHead title="Rotina não encontrada" onBack={() => go('/rotinas')} /></>;
 
   const set = (fn: (r: Routine) => Routine) => update((s) => ({ ...s, routines: s.routines.map((x) => (x.id === id ? fn(x) : x)) }));
@@ -170,6 +172,14 @@ function Edit({ id }: { id: string }) {
           </select>
         </Field>
         {r.alertBefore > 0 && state.settings.alerts === 'off' && <Note tone="warm">Os avisos de transição estão desligados em Ajustes. Ligue lá para o alerta aparecer.</Note>}
+
+        <Field label="Lembrete diário fora do app (opcional)" hint="Uma notificação discreta nesse horário, todo dia.">
+          <div className="flex flex-wrap items-center gap-2">
+            <input type="time" className={`${inputCls} !w-40`} value={r.remindAt ?? ''} onChange={(e) => set((x) => ({ ...x, remindAt: e.target.value || undefined }))} />
+            {r.remindAt && <Button onClick={() => set((x) => ({ ...x, remindAt: undefined }))}>Tirar lembrete</Button>}
+          </div>
+        </Field>
+        {r.remindAt && !rem.enabled && <Note tone="warm">Os lembretes estão desligados. Ligue em Mais → Ajustes → Lembretes fora do app.</Note>}
 
         <div className="flex flex-wrap gap-2">
           <Button kind="primary" onClick={() => go('/rotinas')}>Pronto</Button>

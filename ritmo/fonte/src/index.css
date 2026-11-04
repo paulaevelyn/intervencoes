@@ -93,3 +93,7 @@ button, input, textarea, select { font: inherit; letter-spacing: inherit; color:
 
 /* O título recebe foco por script ao trocar de tela; não precisa de moldura. */
 #page-title:focus { outline: none; }
+
+/* Barra de conta do login compartilhado (fixa no topo à direita): reserva espaço para não cobrir o cabeçalho. */
+body:has(.pea-auth-barra) { --bar: 2.9rem; }
+.app-root { padding-top: var(--bar, 0px); }

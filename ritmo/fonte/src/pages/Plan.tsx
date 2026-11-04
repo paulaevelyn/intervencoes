@@ -19,7 +19,7 @@ export function Plan() {
   return (
     <>
       <PageHead title="Meu plano de apoio" sub="Escreva com calma, num dia mais leve. Nos dias difíceis, ele já estará pronto." onBack={() => back('/mais')} />
-      <Note>Este plano fica só neste aparelho e não vai para nenhum servidor. Quem usa o seu celular desbloqueado pode ver. Se precisar, o botão “Preciso de apoio agora” abre uma versão simples.</Note>
+      <Note>Este plano fica neste aparelho. Só vai para um servidor se você entrar numa conta, e nunca aparece para a profissional. Quem usa o seu celular desbloqueado pode ver. Se precisar, o botão “Preciso de apoio agora” abre uma versão simples.</Note>
       <div className="mt-5 mb-6"><Button kind="primary" icon="heart" onClick={() => go('/apoio-agora')}>Ver versão simplificada</Button></div>
 
       <div className="space-y-8">

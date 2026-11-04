@@ -1,8 +1,9 @@
 import { useRef, useState } from 'react';
 import { initialState, normalize, useStore } from '../store';
 import { back } from '../router';
-import { Button, Card, Choice, ConfirmButton, Note, PageHead } from '../ui';
+import { Button, Card, Choice, ConfirmButton, Field, inputCls, Note, PageHead } from '../ui';
 import { sampleData } from '../data/sample';
+import { iosNotInstalled, notifPermission, notifSupported, show, useRem } from '../reminders';
 import type { FontScale, State, ThemePref, AlertMode } from '../types';
 
 export function Settings() {
@@ -10,6 +11,8 @@ export function Settings() {
   const s = state.settings;
   const set = (patch: Partial<State['settings']>) => update((x) => ({ ...x, settings: { ...x.settings, ...patch } }));
   const file = useRef<HTMLInputElement>(null);
+  const [rem, setRem] = useRem();
+  const [perm, setPerm] = useState(notifPermission());
   const [msg, setMsg] = useState('');
   const hasExamples = [...state.tasks, ...state.routines, ...state.sensory, ...state.checkins].some((x) => x.example);
 
@@ -46,8 +49,36 @@ export function Settings() {
           <Note>O Ritmo não usa sons, nem notificações fora do app, nem lembretes diários. Os avisos só aparecem enquanto você segue uma rotina.</Note>
         </Group>
 
+        <Group title="Lembretes fora do app">
+          <Toggle label="Lembretes" help="Notificações discretas, sem som. Você escolhe os horários. Desligado por padrão." on={rem.enabled && perm === 'granted'} onChange={async (v) => {
+            if (!v) { setRem({ enabled: false }); return; }
+            if (!notifSupported()) { setMsg('Este navegador não oferece notificações.'); return; }
+            if (iosNotInstalled()) { setMsg('No iPhone, instale o Ritmo na tela de início (Compartilhar → Adicionar à Tela de Início) para ligar lembretes. É uma regra da Apple.'); return; }
+            const p = await Notification.requestPermission();
+            setPerm(p);
+            if (p === 'granted') { setRem({ enabled: true }); setMsg('Lembretes ligados.'); }
+            else setMsg('A permissão não foi concedida. Para ligar depois, libere as notificações nas configurações do navegador (cadeado ao lado do endereço).');
+          }} />
+          {perm === 'denied' && notifSupported() && <Note tone="warm">As notificações estão bloqueadas neste navegador. Libere nas configurações do navegador para usar lembretes.</Note>}
+          {rem.enabled && perm === 'granted' && (
+            <>
+              <Toggle label="Lembrete diário para ver como você está" help="No máximo 1 por dia, e só se você ainda não registrou nada no dia." on={rem.daily} onChange={(v) => setRem({ daily: v })} />
+              {rem.daily && (
+                <Field label="Horário do lembrete diário">
+                  <select className={inputCls} value={rem.hour} onChange={(e) => setRem({ hour: Number(e.target.value) })}>
+                    {Array.from({ length: 24 }, (_, h) => <option key={h} value={h}>{String(h).padStart(2, '0')}:00</option>)}
+                  </select>
+                </Field>
+              )}
+              <Note>Lembretes de rotinas: defina o horário ao editar cada rotina (Rotinas → Editar).</Note>
+              <div><Button onClick={() => show('Assim aparece um lembrete do Ritmo.', 'ritmo-teste')}>Enviar um lembrete de teste</Button></div>
+            </>
+          )}
+          <Note>Os lembretes são agendados no seu aparelho, sem servidor, e não são sincronizados com a conta. Funcionam melhor com o Ritmo instalado na tela de início. Se o navegador ficar fechado por muito tempo, um aviso pode não aparecer.</Note>
+        </Group>
+
         <Group title="Seus dados">
-          <Note>Tudo fica salvo apenas neste aparelho, no navegador. Não há cadastro, anúncios, rastreamento nem venda de dados. Limpar os dados do navegador apaga o Ritmo, então baixe uma cópia de vez em quando.</Note>
+          <Note>Sem conta, tudo fica salvo apenas neste aparelho, no navegador. Não há anúncios, rastreamento nem venda de dados. Limpar os dados do navegador apaga o Ritmo, então baixe uma cópia de vez em quando.</Note>
           <div className="flex flex-wrap gap-2">
             <Button onClick={download}>Baixar uma cópia</Button>
             <Button onClick={() => file.current?.click()}>Restaurar de uma cópia</Button>
@@ -67,8 +98,9 @@ export function Settings() {
 
         <Group title="Conta e sincronização">
           <Card>
-            <p className="font-semibold">Ainda não disponível.</p>
-            <p className="text-muted">No futuro, poderá existir uma conta opcional para usar o Ritmo em mais de um aparelho. Ela nunca será obrigatória, os dados só seriam enviados se você ligasse isso, com texto claro sobre o que é guardado, e poderão ser apagados quando você quiser. Até lá, use “Baixar uma cópia” e “Restaurar”.</p>
+            <p className="font-semibold">Opcional.</p>
+            <p className="text-muted">Pelo botão de conta, no canto superior direito (“sem conta”, “Entrar” ou “conta”), você entra com e-mail e senha para guardar seus dados na conta e usar o Ritmo em outros aparelhos. As contas seguem o mesmo sistema dos outros apps da Psicoterapia e Afins. Antes de guardar, o aviso de privacidade pede seu consentimento. Seu plano de apoio, seus registros e suas tarefas nunca aparecem no painel da profissional. Os lembretes ficam só no aparelho.</p>
+            <p className="text-muted mt-2">Se o botão não aparecer, o login não carregou (por exemplo, sem internet): o Ritmo segue funcionando só com os dados deste aparelho.</p>
           </Card>
         </Group>
       </div>

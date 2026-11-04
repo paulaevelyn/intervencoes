@@ -33,6 +33,7 @@ export interface Routine {
   color: ColorId;
   steps: RStep[];
   alertBefore: number; // minutos antes da transição; 0 = sem alerta
+  remindAt?: string; // lembrete diário fora do app, "HH:MM"
   example?: boolean;
 }
 

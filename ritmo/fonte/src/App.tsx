@@ -15,6 +15,7 @@ import { Comms } from './pages/Comms';
 import { Settings } from './pages/Settings';
 import { About } from './pages/About';
 import { Onboarding } from './pages/Onboarding';
+import { useReminders } from './reminders';
 
 const NAV = [
   { to: '/', label: 'Início', icon: 'home', root: '' },
@@ -53,6 +54,7 @@ export function App() {
   const { state, update, saveOk } = useStore();
   const route = useRoute();
   useAppearance();
+  useReminders(state);
   const root = route.parts[0] ?? '';
 
   // Ao trocar de tela, leva o foco para o título (leitor de tela e teclado) e volta ao topo.
@@ -83,11 +85,11 @@ export function App() {
   }
 
   return (
-    <div className="min-h-screen md:flex">
+    <div className="min-h-screen md:flex app-root">
       <a href="#conteudo" className="sr-only-link" onClick={(e) => { e.preventDefault(); document.getElementById('page-title')?.focus(); }}>Ir para o conteúdo</a>
 
       {!simple && (
-        <nav aria-label="Principal" className="fixed bottom-0 inset-x-0 z-20 border-t-2 border-line bg-surface md:sticky md:top-0 md:h-screen md:w-56 md:shrink-0 md:border-t-0 md:border-r-2 md:pt-20">
+        <nav aria-label="Principal" className="fixed bottom-0 inset-x-0 z-20 border-t-2 border-line bg-surface md:sticky md:top-[var(--bar,0px)] md:h-[calc(100vh-var(--bar,0px))] md:w-56 md:shrink-0 md:border-t-0 md:border-r-2 md:pt-20">
           <ul className="grid grid-cols-[repeat(auto-fit,minmax(3.6rem,1fr))] md:grid-cols-1 md:gap-1 md:p-3">
             {NAV.map((n) => {
               const active = n.to === '/mais' ? MORE_ROOTS.includes(root) : root === n.root;
@@ -106,7 +108,7 @@ export function App() {
       )}
 
       <div className="flex-1 min-w-0">
-        <header className="sticky top-0 z-10 border-b-2 border-line bg-bg/95 backdrop-blur-sm">
+        <header className="sticky top-[var(--bar,0px)] z-10 border-b-2 border-line bg-bg/95 backdrop-blur-sm">
           <div className="mx-auto max-w-2xl px-4 py-2 flex items-center justify-between gap-3">
             <a href="#/" className="text-xl font-bold tracking-tight tap flex items-center">Ritmo</a>
             {!simple && (
