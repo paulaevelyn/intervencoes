@@ -29,6 +29,8 @@ export const initialState = (): State => ({
   stateLog: [],
   stateNotes: {},
   inbox: [],
+  agenda: {},
+  agendaWin: { start: 7, end: 22 },
 });
 
 /** Junta o que veio salvo com os padrões, para não quebrar se algum campo faltar. */
@@ -51,6 +53,8 @@ export function normalize(raw: unknown): State {
     profile: { ...base.profile, ...(r.profile ?? {}) },
     stateLog: arr(r.stateLog),
     inbox: arr(r.inbox),
+    agenda: r.agenda && typeof r.agenda === 'object' ? r.agenda : {},
+    agendaWin: { ...base.agendaWin, ...(r.agendaWin ?? {}) },
     stateNotes: r.stateNotes && typeof r.stateNotes === 'object' ? r.stateNotes : {},
   };
 }

@@ -7,6 +7,7 @@ import { splitTask } from '../data/split';
 import { IA_DISPONIVEL, iaLigada, iaPlanejar, iaTemConta } from '../ia';
 import type { Level3 } from '../types';
 import { CrisisBox } from './Plan';
+import { dayKey, nowMin, place } from '../data/agenda';
 
 const TEMPOS = [{ v: 30, label: '30 min' }, { v: 60, label: '1 hora' }, { v: 120, label: '2 horas' }, { v: 240, label: 'Quase o dia todo' }];
 
@@ -45,6 +46,18 @@ export function Planner() {
     setFeito(true);
   };
 
+  const noDia = () => {
+    if (!plano) return;
+    const key = dayKey();
+    update((s) => {
+      const cur = s.agenda[key] ?? { priorities: ['', '', ''], blocks: [] };
+      const itens = plano.blocos.map((b) => ({ title: b.titulo, dur: Math.max(15, Math.round(b.minutos / 15) * 15), kind: b.tipo }));
+      const { added } = place(cur.blocks, itens, Math.max(s.agendaWin.start * 60, nowMin()), s.agendaWin.end * 60, uid);
+      return { ...s, agenda: { ...s.agenda, [key]: { ...cur, blocks: [...cur.blocks, ...added] } } };
+    });
+    go('/tarefas/agenda');
+  };
+
   if (plano) {
     return (
       <>
@@ -54,7 +67,7 @@ export function Planner() {
         <ol className="space-y-3">
           {plano.blocos.map((b, i) => (
             <Card as="li" key={i} className={b.tipo === 'pausa' ? 'bg-soft border-soft' : ''}>
-              <p className="font-bold text-lg">{b.tipo === 'pausa' ? '⏸ ' : ''}{b.titulo}</p>
+              <p className="font-bold text-lg">{b.titulo}</p>
               <p className="text-muted">{b.minutos} min</p>
               {b.nota && <p className="mt-1">{b.nota}</p>}
               {b.passos && b.passos.length > 0 && <ul className="list-disc pl-5 mt-1">{b.passos.map((p) => <li key={p}>{p}</li>)}</ul>}
@@ -66,6 +79,7 @@ export function Planner() {
         <div className="mt-5 flex flex-wrap gap-2">
           {plano.blocos.some((b) => b.tipo === 'tarefa') && <Button kind="primary" big disabled={feito} onClick={adicionar}>{feito ? 'Adicionado às tarefas' : 'Adicionar às minhas tarefas'}</Button>}
           {feito && <Button onClick={() => go('/tarefas')}>Ver tarefas</Button>}
+          {plano.blocos.some((b) => b.tipo === 'tarefa') && <Button onClick={noDia}>Colocar no meu dia</Button>}
           <Button onClick={() => setPlano(null)}>Refazer</Button>
         </div>
       </>
