@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useStore } from '../store';
 import { sampleData } from '../data/sample';
-import { Blobs, Button, Card, Choice, MultiChoice } from '../ui';
+import { Button, Card, Choice, MultiChoice } from '../ui';
+import { LogoStacked } from '../Logo';
 import { iosNotInstalled, notifSupported, useRem } from '../reminders';
 import type { Settings, ThemePref } from '../types';
 
@@ -47,8 +48,10 @@ export function Onboarding() {
   if (step === 0) {
     return (
       <main className="mx-auto max-w-xl px-4 py-10">
-        <Blobs className="w-full max-w-[18rem] mb-2" />
-        <h1 id="page-title" tabIndex={-1} className="brand-word text-5xl mb-2 outline-none text-brand">Ritmo</h1>
+        <div className="text-center mb-6">
+          <h1 id="page-title" tabIndex={-1} className="outline-none inline-block"><LogoStacked w={260} mono={calmo} /></h1>
+          <p className="text-lg text-muted mt-3">o seu dia, no seu compasso</p>
+        </div>
         <p className="text-xl mb-6">Um espaço para organizar seu dia no seu tempo, com menos sobrecarga e mais apoio.</p>
         <Card className="space-y-2">
           <p>Seus registros ficam no seu aparelho por padrão. Conta é opcional.</p>

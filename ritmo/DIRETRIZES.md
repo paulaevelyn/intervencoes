@@ -3,17 +3,34 @@
 Base: diretrizes de design do Ritmo (calma, previsibilidade, respeito; sem “eficiência corporativa” nem motivação agressiva), adaptadas à marca **Psicoterapia e Afins** (mesma paleta e fontes dos outros apps do repositório).
 Verificado em 2026-11-11 com testes automatizados (Playwright + axe) e leitura das telas. Não substitui teste com leitor de tela e com pessoas reais.
 
+## Logo do Ritmo (2026-11-11)
+Arte original criada pela profissional (barras em onda, laranja → lilás → azul → verde, palavra "ritmo" em verde-escuro, "o seu dia, no seu compasso"). Reconstruída em vetor com as medidas e cores medidas da imagem (21 barras; palavra em Nunito Black contornada, a fonte mais próxima da arte).
+
+| Arquivo (em `ritmo/`) | Uso |
+|---|---|
+| `symbol.svg` | só as barras |
+| `logo.svg`, `logo-dark.svg`, `logo-slogan.svg` | empilhada (fundo claro, fundo escuro, com o slogan) |
+| `logo-horizontal.svg` | símbolo + palavra; acompanha o tema claro/escuro do sistema (usada no login e na página inicial do repositório) |
+| `logo-horizontal-dark.svg` | para fundos escuros |
+| `icon.svg`, `icon-192.png`, `icon-512.png` | ícone do app (verde-escuro, barras coloridas) |
+| `icon-maskable.svg`, `icon-maskable-512.png`, `apple-touch-icon.png` | ícones sem cantos, para Android e iPhone |
+| `icon-alt.svg` | variante verde com barras brancas (não usada no app) |
+
+- **Tela de abertura:** o Ritmo no centro e "por Psicoterapia e Afins" embaixo, pequeno. Estática, sem animação, dura até ~1,3 s, uma vez por sessão, e fecha com um toque ou tecla. Enquanto o login carrega, a mesma tela aparece em HTML puro.
+- **Modo calmo:** as barras da logo ficam numa cor só (sem laranja, lilás e azul).
+- A logo é a única parte do app com várias cores vivas e gradiente: a interface continua calma, sem gradientes.
+
 ## Marca (adaptação)
 | Diretriz | Como ficou no Ritmo |
 |---|---|
-| Fundo off-white | Areia da marca `#F7F3EF` (claro) e carvão quente `#1F2326` (escuro, igual às diretrizes) |
-| Texto grafite suave, sem preto puro | Grafite da marca `#3F434B`; cartões `#FFFEFC`, nunca branco puro |
-| Cor principal azul-esverdeada | Verde-menta da marca `#3D5A52` (claro) / `#8FB3A6` (escuro) |
-| Apoio verde-sálvia | `#DDEAE2` (menta clara da marca) |
-| Energia/ação terracota suave | `#D98E73`, só nos botões de começar e agir, com texto escuro (contraste) |
+| Fundo off-white | Areia da logo `#F2EDE3`, cartões creme `#FBF8F0` (claro) e carvão quente `#1F2326` (escuro) |
+| Texto suave, sem preto puro | Verde-grafite `#26362F` (palavra da logo `#12372F` só na logo); nunca branco puro |
+| Cor principal azul-esverdeada | Verde da logo `#1B6B55` (claro) / `#6FCAA8` (escuro) |
+| Apoio verde-sálvia | `#DCECE3` |
+| Energia/ação terracota suave | `#EC8F6C` (laranja suave da logo), só nos botões de começar e agir, com texto escuro (contraste) |
 | Alerta âmbar discreto | `#FBF0DF` (âmbar claro da marca) em avisos |
 | Evitar vermelho intenso, amarelo vibrante, roxo saturado, gradientes | Nenhum gradiente; lilás da marca só como cor opcional de rotina |
-| Tipografia humanista | **Nunito Sans** (marca) no app todo; **Fraunces** só no nome “Ritmo”; **Atkinson Hyperlegible** como “fonte de leitura” opcional. Fontes empacotadas no app: sem chamadas externas, funcionam offline |
+| Tipografia humanista | **Nunito Sans** no app todo; a palavra “ritmo” é a da logo; **Atkinson Hyperlegible** como “fonte de leitura” opcional. Fontes empacotadas no app: sem chamadas externas, funcionam offline |
 | Tamanho 16–18 px, entrelinha 1,5–1,7 | 16 px, 1,6 (1,9 com espaçamento amplo); ajustável até 150% |
 | 60–75 caracteres por linha | Parágrafos limitados a 70ch |
 

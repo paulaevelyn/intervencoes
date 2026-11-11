@@ -221,15 +221,3 @@ export function Listen({ text, label = 'Ouvir' }: { text: string; label?: string
   };
   return <Button icon="wind" aria-pressed={on} onClick={toggle}>{on ? 'Parar áudio' : label}</Button>;
 }
-
-/** Ilustração abstrata e inclusiva (formas orgânicas suaves). Decorativa: some no modo calmo. */
-export function Blobs({ className = '' }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 240 120" className={`deco ${className}`} aria-hidden="true" focusable="false">
-      <ellipse cx="70" cy="70" rx="62" ry="44" fill="var(--soft)" />
-      <ellipse cx="150" cy="58" rx="54" ry="40" fill="var(--warm)" />
-      <ellipse cx="196" cy="84" rx="30" ry="24" fill="var(--soft)" opacity=".7" />
-      <path d="M30 78c24-20 44 14 70-6s46 8 70-8 40 4 44-4" fill="none" stroke="var(--brand)" strokeWidth="3" strokeLinecap="round" opacity=".55" />
-    </svg>
-  );
-}

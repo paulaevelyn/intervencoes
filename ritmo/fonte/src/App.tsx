@@ -19,6 +19,8 @@ import { Profile } from './pages/Profile';
 import { States, Understand } from './pages/States';
 import { Planner } from './pages/Planner';
 import { useReminders } from './reminders';
+import { LogoHorizontal } from './Logo';
+import { Splash } from './Splash';
 
 const NAV = [
   { to: '/', label: 'Hoje', icon: 'home', root: '' },
@@ -51,7 +53,7 @@ function useAppearance() {
     r.style.setProperty('--fs', `${s.fontScale}%`);
     r.style.setProperty('--ls', s.wideSpacing ? '0.04em' : '0');
     r.style.setProperty('--lh', s.wideSpacing ? '1.9' : '1.6');
-    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', isDark ? '#1f2326' : '#3d5a52');
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', isDark ? '#1f2326' : '#0f3e33');
   }, [s, dark]);
 }
 
@@ -69,7 +71,7 @@ export function App() {
     return () => clearTimeout(t);
   }, [route.path]);
 
-  if (!state.onboarded) return <Onboarding />;
+  if (!state.onboarded) return <><Splash /><Onboarding /></>;
 
   const simple = root === 'apoio-agora';
   let page;
@@ -95,6 +97,7 @@ export function App() {
 
   return (
     <div className="min-h-screen md:flex app-root">
+      <Splash />
       <a href="#conteudo" className="sr-only-link" onClick={(e) => { e.preventDefault(); document.getElementById('page-title')?.focus(); }}>Ir para o conteúdo</a>
 
       {!simple && (
@@ -119,9 +122,9 @@ export function App() {
       <div className="flex-1 min-w-0">
         <header className="sticky top-[var(--bar,0px)] z-10 border-b-2 border-line bg-bg/95 backdrop-blur-sm">
           <div className="mx-auto max-w-2xl px-4 py-2 flex items-center justify-between gap-3">
-            <a href="#/" className="brand-word text-2xl tap flex items-center text-brand">Ritmo</a>
+            <a href="#/" aria-label="Ritmo, ir para Hoje" className="tap flex items-center"><LogoHorizontal h={22} mono={state.settings.lowStim} /></a>
             {!simple && (
-              <Button icon="heart" onClick={() => go('/apoio-agora')} aria-label="Preciso de apoio agora. Abre o plano de apoio simplificado.">Preciso de apoio agora</Button>
+              <Button icon="heart" onClick={() => go('/apoio-agora')} aria-label="Preciso de apoio agora. Abre o plano de apoio simplificado."className="whitespace-nowrap">Preciso de apoio<span className="hidden min-[360px]:inline">&nbsp;agora</span></Button>
             )}
           </div>
         </header>

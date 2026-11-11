@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useStore, uid } from '../store';
 import { go } from '../router';
-import { Blobs, Button, Card, PageHead } from '../ui';
+import { Button, Card, PageHead } from '../ui';
+import { Symbol } from '../Logo';
 import { suggest, type Suggestion } from '../data/suggest';
 import type { Mood } from '../types';
 
@@ -68,7 +69,7 @@ export function Home() {
     : { q: 'Quer anotar uma coisa para fazer?', l: 'Abrir minhas tarefas', to: '/tarefas' };
   return (
     <>
-      <Blobs className="w-full max-w-[16rem] mb-1" />
+      <Symbol className="deco block w-40 h-auto mb-3" />
       <PageHead title="Como você está agora?" sub="Escolha o que combina mais. Não existe resposta errada." />
       <div className="space-y-3" role="group" aria-label="Como você está agora?">
         {MOODS.map((m) => (

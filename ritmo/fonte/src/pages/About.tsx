@@ -1,11 +1,13 @@
 import { back } from '../router';
 import { Card, PageHead } from '../ui';
+import { LogoStacked } from '../Logo';
 import { CrisisBox } from './Plan';
 
 export function About() {
   return (
     <>
       <PageHead title="Sobre este app" onBack={() => back('/mais')} />
+      <div className="flex justify-center mb-6"><LogoStacked w={200} /></div>
       <div className="space-y-4 text-lg">
         <Card>
           <h2 className="font-bold mb-1">O que é o Ritmo</h2>
