@@ -7,6 +7,7 @@ import type { Task } from '../types';
 import { iaDividir, iaLigada, iaTemConta } from '../ia';
 import { startTips, has } from '../data/profile';
 import { Inbox } from './Inbox';
+import { Agenda } from './Agenda';
 
 export function Tasks() {
   const { state, update } = useStore();
@@ -16,6 +17,7 @@ export function Tasks() {
   const [showAll, setShowAll] = useState(false);
   const focusParam = route.q.get('foco');
   if (route.parts[1] === 'caixa') return <Inbox />;
+  if (route.parts[1] === 'agenda') return <Agenda />;
 
   const patch = (id: string, fn: (t: Task) => Task) =>
     update((s) => ({ ...s, tasks: s.tasks.map((t) => (t.id === id ? fn(t) : t)) }));
@@ -65,6 +67,7 @@ export function Tasks() {
       </form>
 
       <div className="mb-4 flex flex-wrap gap-2">
+        <Button onClick={() => go('/tarefas/agenda')}>Meu dia em blocos</Button>
         <Button onClick={() => go('/tarefas/caixa')}>Caixa de captura{state.inbox.length > 0 ? ` (${state.inbox.length})` : ''}</Button>
         {!state.settings.lowStim && <Button onClick={() => go('/planejar')}>Planejar o dia com ajuda</Button>}
       </div>

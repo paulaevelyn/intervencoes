@@ -37,6 +37,9 @@ export interface StateEntry {
   note?: string;
 }
 export interface InboxItem { id: string; text: string; at: number; kind: 'ideia' | 'distracao' }
+/** Bloco de tempo no dia. start = minutos desde 00:00; dur = minutos. */
+export interface Block { id: string; start: number; dur: number; title: string; kind: 'tarefa' | 'pausa'; taskId?: string; done?: boolean }
+export interface AgendaDay { priorities: string[]; blocks: Block[] }
 export interface StateNotes { signs: string[]; helps: string[] }
 
 export interface Step { id: string; text: string; done: boolean }
@@ -115,4 +118,6 @@ export interface State {
   stateLog: StateEntry[];
   stateNotes: Record<string, StateNotes>;
   inbox: InboxItem[];
+  agenda: Record<string, AgendaDay>; // por data AAAA-MM-DD
+  agendaWin: { start: number; end: number }; // janela do dia, em horas
 }

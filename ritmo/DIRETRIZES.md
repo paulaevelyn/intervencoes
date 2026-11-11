@@ -56,6 +56,7 @@ Legenda: ✅ segue · 🟡 segue em parte · ⚪ diferente de propósito
 | Iniciar, priorizar, concluir | Tarefas em micro-passos, “Começar”, primeiro passo, adiar sem culpa | ✅ já existia |
 | Memória de trabalho | **Caixa de captura** (nova), lista única, lembretes opcionais | ✅ |
 | Distração e perda do fio | **“Guardei uma distração”** durante a tarefa (novo): salva na caixa e devolve à tarefa | ✅ |
+| Organizar o dia por tempo (timeboxing) | **Meu dia em blocos** (novo): 3 prioridades, despejo mental e grade de horários, com sugestão automática, sem arrastar e sem cobrança | ✅ |
 | Gestão do tempo | **Blocos de tempo flexíveis** (novo): 2, 10, 25 min ou o tempo da tarefa; cronômetro opcional; aviso 2 min antes do fim em blocos longos; pausa de 5 min | ✅ |
 | Passo ainda grande demais | **“Dividir este passo em passos menores”** (novo), em “Preciso de ajuda” | ✅ |
 | Sobrecarga sensorial | Registro sensorial + Modo calmo | ✅ já existia |
