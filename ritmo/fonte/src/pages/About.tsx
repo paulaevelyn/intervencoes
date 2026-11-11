@@ -21,7 +21,7 @@ export function About() {
         </Card>
         <Card>
           <h2 className="font-bold mb-1">Privacidade</h2>
-          <p>Seus dados ficam neste aparelho. A conta é opcional: sem ela, nada sai do aparelho; com ela, seus dados ficam guardados no mesmo serviço dos outros apps da Psicoterapia e Afins, só você os vê, e o plano de apoio, os registros e as tarefas nunca aparecem para a profissional. Não temos anúncios, não vendemos dados e não usamos rastreadores. Você pode baixar uma cópia ou apagar tudo em Ajustes. Quem usar este aparelho desbloqueado pode ver o que está salvo.</p>
+          <p>Seus dados ficam neste aparelho. A conta é opcional: sem ela, nada sai do aparelho; com ela, seus dados ficam guardados no mesmo serviço dos outros apps da Psicoterapia e Afins e só você os vê. Se você foi vinculada(o) a uma profissional, pode escolher compartilhar só números e categorias (check-ins, registros sensoriais, estados marcados e contagens de tarefas). Isso começa desligado e você muda quando quiser. O plano de apoio, o perfil, os textos que você escreve e os títulos das tarefas nunca aparecem para a profissional. Não temos anúncios, não vendemos dados e não usamos rastreadores. Você pode baixar uma cópia ou apagar tudo em Ajustes. Quem usar este aparelho desbloqueado pode ver o que está salvo.</p>
         </Card>
         <Card>
           <h2 className="font-bold mb-1">Perfil e sugestões</h2>
