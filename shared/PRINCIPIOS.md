@@ -57,3 +57,10 @@ depende de texto, tom e decisões de cada app.
 1. **Matiz e Segurança Interna:** acrescentar um botão visível "Preciso de ajuda agora" (como no Aurora).
 2. **Modo escuro** e **ajuste de tamanho do texto** nos apps (hoje seguem o zoom do navegador).
 3. **Testes com pessoas reais**, incluindo quem usa leitor de tela e quem está em sofrimento.
+
+## Adicionar à tela inicial (shared/bemestar.js)
+- **Sempre à mão:** o painel ⚙ "Cuidado digital" de todos os apps tem o bloco "Adicionar à tela inicial", com o passo a passo certo para iPhone/iPad, Android, Mac e computador (ou o botão "Instalar agora", quando o navegador permite).
+- **Convite discreto:** um cartão dispensável, só a partir da segunda visita, depois de alguns segundos e nunca durante a abertura ou a boas-vindas (para não cobrir o botão "Continuar"). "Agora não" some por 30 dias; "Já adicionei" some para sempre. Não aparece em app já instalado.
+- **Sem convite automático no Ritmo e na Segurança Interna** (baixa estimulação e tema de trauma): neles, só o bloco do painel ⚙. A lista é `SEM_CONVITE` em `shared/bemestar.js`.
+- Matiz e Segurança Interna ganharam `manifest.json` e ícones para poderem ser instalados.
+

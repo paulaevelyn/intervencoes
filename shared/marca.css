@@ -1,0 +1,43 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&display=swap');
+
+/* marca.css — identidade visual do Psicoterapia e Afins, fonte única para todos os apps.
+   Carregue DEPOIS do CSS de cada app: ele redefine as variáveis antigas (--coral, --mint, --lav, --sand,
+   --primary, --pea-*) a partir dos tokens abaixo. Para mudar a paleta, mude só aqui. */
+:root {
+  /* Tokens da marca (iguais aos da página inicial) */
+  --marca-teal: #1B8B6F;
+  --marca-teal-d: #146E57;      /* texto e botões sobre claro */
+  --marca-teal-deep: #0F3D33;   /* placas dos logos, faixas escuras */
+  --marca-salmao: #FFAF7F;
+  --marca-salmao-d: #BC5821;
+  --marca-salmao-dd: #9E4719;   /* texto salmão sobre claro */
+  --marca-lavanda: #AEAAF7;
+  --marca-lavanda-d: #7A74D6;
+  --marca-creme: #F3EDE2;
+  --marca-cartao: #FBF7F0;
+  --marca-tinta: #12372F;
+  --marca-tinta-suave: #3E5C54;
+  --font-corpo: 'DM Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+
+  /* Apelidos usados por Farol, Floresça, Aurora, Sintonia, Trilha, painel */
+  --coral: var(--marca-salmao-d);  --coral-d: var(--marca-salmao-dd);
+  --coral-l: var(--marca-salmao);  --coral-xl: #FFF1E8;
+  --mint: var(--marca-teal);       --mint-d: var(--marca-teal-d);
+  --mint-l: #D7EEE6;               --mint-xl: #EDF7F3;
+  --lav: var(--marca-lavanda-d);   --lav-l: #EEEDFD;
+  --sand: var(--marca-creme);      --graphite: var(--marca-tinta);
+  --font: var(--font-corpo);
+
+  /* Apelidos usados pelo Matiz */
+  --primary: var(--marca-teal);    --primary-d: var(--marca-teal-d);  --primary-l: #D7EEE6;
+  --accent: var(--marca-salmao-d); --accent-d: var(--marca-salmao-dd); --accent-l: #FFE6D6;
+  --bg: var(--marca-creme);        --ink: var(--marca-tinta);
+
+  /* Apelidos usados pelo Segurança Interna */
+  --pea-coral: var(--marca-salmao-d);  --pea-musgo: var(--marca-teal);
+  --pea-areia: var(--marca-creme);     --pea-grafite: var(--marca-tinta);
+}
+
+/* Títulos de tela em serifada, como na página inicial e no site */
+h1, .ob-title, .pea-auth-titulo, .pea-bem-cx h2 { font-family: var(--font-display); font-weight: 700; font-size-adjust: .48; letter-spacing: 0; }

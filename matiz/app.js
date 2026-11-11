@@ -1375,11 +1375,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     var html = '<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">' +
       '<title>Relatório Matiz</title>' +
-      '<style>body{font-family:sans-serif;max-width:720px;margin:40px auto;color:#33312E;padding:0 20px}h1{color:#38505B}</style>' +
+      '<style>body{font-family:sans-serif;max-width:720px;margin:40px auto;color:#12372F;padding:0 20px}h1{color:#146E57}</style>' +
       '</head><body>' +
       '<h1>Relatório pessoal — Matiz</h1>' +
       '<p>Exportado em ' + new Date().toLocaleString('pt-BR') + '.</p>' +
-      '<p style="background:#DCE6E9;padding:12px 16px;border-radius:10px;"><strong>Nota:</strong> este relatório é um recurso psicoeducativo e não substitui avaliação ou acompanhamento profissional. Pode ser levado ou enviado para conversar com seu/sua psicólogo/a.</p>' +
+      '<p style="background:#D7EEE6;padding:12px 16px;border-radius:10px;"><strong>Nota:</strong> este relatório é um recurso psicoeducativo e não substitui avaliação ou acompanhamento profissional. Pode ser levado ou enviado para conversar com seu/sua psicólogo/a.</p>' +
       rows +
       '<p style="font-size:12px;color:#6B6863;margin-top:30px">© Psicoterapia e Afins · psicoterapiaeafins.com.br</p>' +
       '</body></html>';
@@ -1400,7 +1400,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     var html = '<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">' +
       '<title>Cartão de referência rápida — Matiz</title>' +
-      '<style>body{font-family:sans-serif;max-width:480px;margin:30px auto;color:#33312E;padding:0 16px}h1{font-size:20px;color:#38505B}@media print{body{margin:0}}</style>' +
+      '<style>body{font-family:sans-serif;max-width:480px;margin:30px auto;color:#12372F;padding:0 16px}h1{font-size:20px;color:#146E57}@media print{body{margin:0}}</style>' +
       '</head><body>' +
       '<h1>Matiz — cartão de referência rápida</h1>' +
       '<p style="font-size:13px;color:#6B6863">Guarde ou imprima. Um lembrete rápido das 6 emoções básicas, suas pistas no corpo e pensamentos comuns.</p>' +

@@ -20,15 +20,15 @@ const RESEARCH_ENDPOINT = "https://script.google.com/macros/s/AKfycbyfdve1eTq55r
    BRAND ASSETS
    ══════════════════════════════════ */
 const BRAND_FOOTER_HTML = `
-<div style="margin:8px 0 0;background:#F0F6F3;border-radius:14px;padding:16px 18px;border:1px solid rgba(94,125,115,.12)">
+<div style="margin:8px 0 0;background:#EDF7F3;border-radius:14px;padding:16px 18px;border:1px solid rgba(27,139,111,.12)">
   <div style="margin-bottom:12px">
     <img src="assets/floresca-logo.svg" alt="Floresça" width="150" style="display:block">
   </div>
-  <div style="font-size:12px;color:#5A6B65;line-height:1.65;border-top:1px solid rgba(94,125,115,.15);padding-top:10px">
+  <div style="font-size:12px;color:#5A6B65;line-height:1.65;border-top:1px solid rgba(27,139,111,.15);padding-top:10px">
     ⚕️ <strong>Recurso psicoeducativo</strong> — não substitui acompanhamento psicológico profissional.<br>
-    🌐 <a href="https://www.psicoterapiaeafins.com.br" target="_blank" style="color:#3D5A52;font-weight:700;text-decoration:none">psicoterapiaeafins.com.br</a>
+    🌐 <a href="https://www.psicoterapiaeafins.com.br" target="_blank" style="color:#146E57;font-weight:700;text-decoration:none">psicoterapiaeafins.com.br</a>
     &nbsp;·&nbsp;
-    📷 <a href="https://www.instagram.com/psicoterapiaeafins" target="_blank" style="color:#B85550;font-weight:700;text-decoration:none">@psicoterapiaeafins</a>
+    📷 <a href="https://www.instagram.com/psicoterapiaeafins" target="_blank" style="color:#9E4719;font-weight:700;text-decoration:none">@psicoterapiaeafins</a>
   </div>
 </div>
 <div style="font-size:10px;color:#A0ADB8;text-align:center;padding:8px 0 4px;line-height:1.6">
@@ -242,23 +242,23 @@ function svgBroaden(){
     </defs>
     <!-- Node: Emoção positiva (top) -->
     <ellipse cx="150" cy="34" rx="72" ry="22" fill="#FBF0DF" stroke="#C47D2A" stroke-width="2"/>
-    <text x="150" y="30" text-anchor="middle" font-size="11" font-weight="700" fill="#7A4A10" font-family="Nunito Sans,sans-serif">Emoção positiva</text>
-    <text x="150" y="43" text-anchor="middle" font-size="10" fill="#7A4A10" font-family="Nunito Sans,sans-serif">mesmo breve e sutil</text>
+    <text x="150" y="30" text-anchor="middle" font-size="11" font-weight="700" fill="#7A4A10" font-family="DM Sans,sans-serif">Emoção positiva</text>
+    <text x="150" y="43" text-anchor="middle" font-size="10" fill="#7A4A10" font-family="DM Sans,sans-serif">mesmo breve e sutil</text>
     <path d="M212,45 Q255,80 255,120" fill="none" stroke="#A0ADB8" stroke-width="1.5" marker-end="url(#arrowJ)"/>
     <!-- Node: Mente amplia (right) -->
-    <ellipse cx="248" cy="140" rx="48" ry="24" fill="#EEE9FB" stroke="#8B7FB8" stroke-width="2"/>
-    <text x="248" y="134" text-anchor="middle" font-size="10" font-weight="700" fill="#3D2E7A" font-family="Nunito Sans,sans-serif">A mente amplia</text>
-    <text x="248" y="147" text-anchor="middle" font-size="9" fill="#3D2E7A" font-family="Nunito Sans,sans-serif">atenção · criatividade</text>
+    <ellipse cx="248" cy="140" rx="48" ry="24" fill="#EEEDFD" stroke="#7A74D6" stroke-width="2"/>
+    <text x="248" y="134" text-anchor="middle" font-size="10" font-weight="700" fill="#3D2E7A" font-family="DM Sans,sans-serif">A mente amplia</text>
+    <text x="248" y="147" text-anchor="middle" font-size="9" fill="#3D2E7A" font-family="DM Sans,sans-serif">atenção · criatividade</text>
     <path d="M240,166 Q230,210 180,225" fill="none" stroke="#A0ADB8" stroke-width="1.5" marker-end="url(#arrowJ)"/>
     <!-- Node: Recursos crescem (bottom) -->
-    <ellipse cx="150" cy="230" rx="72" ry="22" fill="#F0F6F3" stroke="#5E7D73" stroke-width="2"/>
-    <text x="150" y="226" text-anchor="middle" font-size="11" font-weight="700" fill="#3D5A52" font-family="Nunito Sans,sans-serif">Recursos crescem</text>
-    <text x="150" y="239" text-anchor="middle" font-size="10" fill="#3D5A52" font-family="Nunito Sans,sans-serif">laços · ideias · saúde</text>
+    <ellipse cx="150" cy="230" rx="72" ry="22" fill="#EDF7F3" stroke="#1B8B6F" stroke-width="2"/>
+    <text x="150" y="226" text-anchor="middle" font-size="11" font-weight="700" fill="#146E57" font-family="DM Sans,sans-serif">Recursos crescem</text>
+    <text x="150" y="239" text-anchor="middle" font-size="10" fill="#146E57" font-family="DM Sans,sans-serif">laços · ideias · saúde</text>
     <path d="M120,225 Q60,210 52,166" fill="none" stroke="#A0ADB8" stroke-width="1.5" marker-end="url(#arrowJ)"/>
     <!-- Node: Resiliência (left) -->
-    <ellipse cx="52" cy="140" rx="46" ry="24" fill="#FAF0EF" stroke="#D96C63" stroke-width="2"/>
-    <text x="52" y="134" text-anchor="middle" font-size="10" font-weight="700" fill="#B85550" font-family="Nunito Sans,sans-serif">Resiliência</text>
-    <text x="52" y="147" text-anchor="middle" font-size="9" fill="#B85550" font-family="Nunito Sans,sans-serif">amortece as quedas</text>
+    <ellipse cx="52" cy="140" rx="46" ry="24" fill="#FFF1E8" stroke="#BC5821" stroke-width="2"/>
+    <text x="52" y="134" text-anchor="middle" font-size="10" font-weight="700" fill="#9E4719" font-family="DM Sans,sans-serif">Resiliência</text>
+    <text x="52" y="147" text-anchor="middle" font-size="9" fill="#9E4719" font-family="DM Sans,sans-serif">amortece as quedas</text>
     <path d="M60,118 Q90,70 90,45" fill="none" stroke="#A0ADB8" stroke-width="1.5" marker-end="url(#arrowJ)"/>
   </svg>
   <p style="font-size:12px;color:var(--muted);text-align:center;margin-top:8px;line-height:1.5">Cada volta da espiral deixa você com <strong>mais recursos</strong> do que tinha antes — mesmo depois que a emoção passa.</p>
@@ -289,23 +289,23 @@ function svgThreeSystems(){
   return `<div class="diagram-wrap">
   <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:10px">Os Três Sistemas de Regulação (Gilbert)</p>
   <svg viewBox="0 0 300 240" style="width:100%;max-width:320px;display:block;margin:0 auto">
-    <circle cx="105" cy="145" r="72" fill="rgba(217,108,99,.18)" stroke="#D96C63" stroke-width="2"/>
+    <circle cx="105" cy="145" r="72" fill="rgba(210,104,47,.18)" stroke="#BC5821" stroke-width="2"/>
     <text x="88" y="130" font-size="18" text-anchor="middle" font-family="sans-serif">⚠️</text>
-    <text x="88" y="148" text-anchor="middle" font-size="11" font-weight="800" fill="#B85550" font-family="Nunito Sans,sans-serif">Ameaça</text>
-    <text x="88" y="161" text-anchor="middle" font-size="9" fill="#B85550" font-family="Nunito Sans,sans-serif">medo · ansiedade</text>
-    <text x="88" y="173" text-anchor="middle" font-size="9" fill="#B85550" font-family="Nunito Sans,sans-serif">raiva · evitamento</text>
+    <text x="88" y="148" text-anchor="middle" font-size="11" font-weight="800" fill="#9E4719" font-family="DM Sans,sans-serif">Ameaça</text>
+    <text x="88" y="161" text-anchor="middle" font-size="9" fill="#9E4719" font-family="DM Sans,sans-serif">medo · ansiedade</text>
+    <text x="88" y="173" text-anchor="middle" font-size="9" fill="#9E4719" font-family="DM Sans,sans-serif">raiva · evitamento</text>
     <circle cx="195" cy="145" r="72" fill="rgba(196,125,42,.15)" stroke="#C47D2A" stroke-width="2"/>
     <text x="212" y="130" font-size="18" text-anchor="middle" font-family="sans-serif">🎯</text>
-    <text x="212" y="148" text-anchor="middle" font-size="11" font-weight="800" fill="#7A4A10" font-family="Nunito Sans,sans-serif">Conquista</text>
-    <text x="212" y="161" text-anchor="middle" font-size="9" fill="#7A4A10" font-family="Nunito Sans,sans-serif">ambição · excitação</text>
-    <text x="212" y="173" text-anchor="middle" font-size="9" fill="#7A4A10" font-family="Nunito Sans,sans-serif">busca · realização</text>
-    <circle cx="150" cy="88" r="72" fill="rgba(94,125,115,.15)" stroke="#5E7D73" stroke-width="2.5"/>
+    <text x="212" y="148" text-anchor="middle" font-size="11" font-weight="800" fill="#7A4A10" font-family="DM Sans,sans-serif">Conquista</text>
+    <text x="212" y="161" text-anchor="middle" font-size="9" fill="#7A4A10" font-family="DM Sans,sans-serif">ambição · excitação</text>
+    <text x="212" y="173" text-anchor="middle" font-size="9" fill="#7A4A10" font-family="DM Sans,sans-serif">busca · realização</text>
+    <circle cx="150" cy="88" r="72" fill="rgba(27,139,111,.15)" stroke="#1B8B6F" stroke-width="2.5"/>
     <text x="150" y="68" font-size="20" text-anchor="middle" font-family="sans-serif">💚</text>
-    <text x="150" y="88" text-anchor="middle" font-size="11" font-weight="800" fill="#3D5A52" font-family="Nunito Sans,sans-serif">Calmante</text>
-    <text x="150" y="101" text-anchor="middle" font-size="9" fill="#3D5A52" font-family="Nunito Sans,sans-serif">contentamento · segurança</text>
-    <text x="150" y="113" text-anchor="middle" font-size="9" fill="#3D5A52" font-family="Nunito Sans,sans-serif">pertencimento · calor</text>
+    <text x="150" y="88" text-anchor="middle" font-size="11" font-weight="800" fill="#146E57" font-family="DM Sans,sans-serif">Calmante</text>
+    <text x="150" y="101" text-anchor="middle" font-size="9" fill="#146E57" font-family="DM Sans,sans-serif">contentamento · segurança</text>
+    <text x="150" y="113" text-anchor="middle" font-size="9" fill="#146E57" font-family="DM Sans,sans-serif">pertencimento · calor</text>
   </svg>
-  <p style="font-size:12px;color:var(--muted);text-align:center;margin-top:8px;line-height:1.5">Vivemos alternando entre <strong style="color:#B85550">Ameaça</strong> e <strong style="color:#7A4A10">Conquista</strong>. O sistema <strong style="color:#3D5A52">Calmante</strong> — fonte do contentamento — costuma ser o mais esquecido.</p>
+  <p style="font-size:12px;color:var(--muted);text-align:center;margin-top:8px;line-height:1.5">Vivemos alternando entre <strong style="color:#9E4719">Ameaça</strong> e <strong style="color:#7A4A10">Conquista</strong>. O sistema <strong style="color:#146E57">Calmante</strong> — fonte do contentamento — costuma ser o mais esquecido.</p>
 </div>`;
 }
 
@@ -1299,14 +1299,14 @@ function renderMiniChart(svgId,emptyId){
   const pts=vals.map((v,i)=>({x:px+i*step,y:v===null?null:H-py-((v-1)/4)*(H-2*py),v}));
   const valid=pts.filter(p=>p.y!==null);
   // subindo = florescendo (dourado) · estável/descendo = verde calmo
-  const col=valid.length>=2&&valid[valid.length-1].v>valid[0].v+.4?'#C4922A':'#5E7D73';
+  const col=valid.length>=2&&valid[valid.length-1].v>valid[0].v+.4?'#C4922A':'#1B8B6F';
   let pd=''; pts.forEach(p=>{if(p.y!==null)pd+=pd?'L'+p.x+','+p.y:'M'+p.x+','+p.y;});
   const f=valid[0],l=valid[valid.length-1];
   svg.innerHTML='<defs><linearGradient id="cg'+svgId+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="'+col+'" stop-opacity=".18"/><stop offset="100%" stop-color="'+col+'" stop-opacity="0"/></linearGradient></defs>'+
     '<path d="'+pd+' L'+l.x+','+H+' L'+f.x+','+H+' Z" fill="url(#cg'+svgId+')"/>'+
     '<path d="'+pd+'" fill="none" stroke="'+col+'" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>'+
     valid.map(p=>'<circle cx="'+p.x+'" cy="'+p.y+'" r="3.5" fill="'+col+'"/>').join('')+
-    days.map((d,i)=>'<text x="'+(px+i*step)+'" y="'+H+'" text-anchor="middle" font-size="9" fill="#A0ADB8" font-family="Nunito Sans,sans-serif">'+DIAS_C[new Date(d+'T12:00').getDay()]+'</text>').join('');
+    days.map((d,i)=>'<text x="'+(px+i*step)+'" y="'+H+'" text-anchor="middle" font-size="9" fill="#A0ADB8" font-family="DM Sans,sans-serif">'+DIAS_C[new Date(d+'T12:00').getDay()]+'</text>').join('');
 }
 
 function buildEntry(e){
@@ -1395,10 +1395,10 @@ function renderModuleStep(){
   _guidedPhase = 0;
 
   const heroGrad = {
-    mint:  'linear-gradient(135deg,#5E7D73,#3D5A52)',
-    coral: 'linear-gradient(135deg,#D96C63,#B85550)',
+    mint:  'linear-gradient(135deg,#1B8B6F,#146E57)',
+    coral: 'linear-gradient(135deg,#BC5821,#9E4719)',
     amber: 'linear-gradient(135deg,#C47D2A,#8A5520)',
-    lav:   'linear-gradient(135deg,#8B7FB8,#5B4E8A)',
+    lav:   'linear-gradient(135deg,#7A74D6,#5B4E8A)',
   };
   const grad = heroGrad[mod.color]||heroGrad.mint;
 
@@ -2109,15 +2109,15 @@ function exportHTML(){
     return `<tr><td>${new Date(r.tsDone).toLocaleDateString('pt-BR',{day:'2-digit',month:'short'})}</td><td>${exp.emoji||''} ${exp.title||r.expId}</td><td>${r.predicted}/5</td><td>${r.actual}/5</td><td>${esc(r.noticed||'—')}</td></tr>`;
   }).join('');
   const html=`<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><title>Relatório — Floresça</title>
-<style>@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;700;800&display=swap');
-*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Nunito Sans',sans-serif;background:#F7F3EF;color:#3F434B}
-.hero{background:linear-gradient(140deg,#5E7D73,#2B4A42);padding:40px 32px 32px;color:white}.hero h1{font-size:26px;font-weight:800;margin-bottom:6px}.hero p{font-size:13px;opacity:.82}
+<style>@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}body{font-family:'DM Sans',sans-serif;background:#F3EDE2;color:#12372F}
+.hero{background:linear-gradient(140deg,#1B8B6F,#2B4A42);padding:40px 32px 32px;color:white}.hero h1{font-size:26px;font-weight:800;margin-bottom:6px}.hero p{font-size:13px;opacity:.82}
 .body{max-width:760px;margin:0 auto;padding:28px 24px 48px}h2{font-size:17px;font-weight:800;margin:24px 0 12px}
 .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px;margin-bottom:4px}
-.stat{background:white;border-radius:12px;padding:16px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.05)}.stat-n{font-size:28px;font-weight:800;color:#5E7D73;line-height:1}.stat-l{font-size:12px;color:#6B7280;margin-top:5px}
-.ins{background:white;border-left:4px solid #5E7D73;border-radius:10px;padding:14px 16px;margin-bottom:10px}.ins-b{font-size:14px;line-height:1.65;color:#6B7280}.ins-b strong{color:#3D5A52}
-.pill{display:inline-block;background:#F0F6F3;color:#3D5A52;font-size:12px;padding:4px 10px;border-radius:20px;margin:3px;font-weight:700}
-table{width:100%;border-collapse:collapse;background:white;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.05);font-size:13px}th{background:#5E7D73;color:white;padding:10px 12px;text-align:left;font-weight:700;font-size:12px}td{padding:10px 12px;border-bottom:1px solid #F0EDE5;vertical-align:top;line-height:1.4}tr:last-child td{border-bottom:none}tr:nth-child(even)td{background:#FAFAF7}
+.stat{background:white;border-radius:12px;padding:16px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.05)}.stat-n{font-size:28px;font-weight:800;color:#1B8B6F;line-height:1}.stat-l{font-size:12px;color:#6B7280;margin-top:5px}
+.ins{background:white;border-left:4px solid #1B8B6F;border-radius:10px;padding:14px 16px;margin-bottom:10px}.ins-b{font-size:14px;line-height:1.65;color:#6B7280}.ins-b strong{color:#146E57}
+.pill{display:inline-block;background:#EDF7F3;color:#146E57;font-size:12px;padding:4px 10px;border-radius:20px;margin:3px;font-weight:700}
+table{width:100%;border-collapse:collapse;background:white;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.05);font-size:13px}th{background:#1B8B6F;color:white;padding:10px 12px;text-align:left;font-weight:700;font-size:12px}td{padding:10px 12px;border-bottom:1px solid #F0EDE5;vertical-align:top;line-height:1.4}tr:last-child td{border-bottom:none}tr:nth-child(even)td{background:#FAFAF7}
 .ft{margin-top:32px;padding-top:20px;border-top:1px solid #E0DDD5;font-size:12px;color:#A0ADB8;text-align:center;line-height:1.7}
 @media print{body{background:white}.hero{-webkit-print-color-adjust:exact;print-color-adjust:exact}}</style></head><body>
 <div class="hero">
@@ -2150,9 +2150,9 @@ ${[...D.doseRecords].sort((a,b)=>b.ts-a.ts).map(r=>
   <strong>© 2026 Psicoterapia e Afins · Todos os direitos reservados</strong><br>
   Este relatório contém dados pessoais. Compartilhe somente com seu profissional de saúde mental de confiança.<br>
   <strong>Recurso psicoeducativo baseado em evidências — não substitui psicoterapia profissional.</strong><br>
-  🌐 <a href="https://www.psicoterapiaeafins.com.br" style="color:#5E7D73">psicoterapiaeafins.com.br</a>
+  🌐 <a href="https://www.psicoterapiaeafins.com.br" style="color:#1B8B6F">psicoterapiaeafins.com.br</a>
   &nbsp;·&nbsp;
-  📷 <a href="https://www.instagram.com/psicoterapiaeafins" style="color:#D96C63">@psicoterapiaeafins</a><br>
+  📷 <a href="https://www.instagram.com/psicoterapiaeafins" style="color:#BC5821">@psicoterapiaeafins</a><br>
   Proibida a reprodução total ou parcial sem autorização prévia e por escrito.
 </div>
 </div></body></html>`;

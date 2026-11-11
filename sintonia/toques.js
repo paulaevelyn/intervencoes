@@ -60,7 +60,7 @@ const TQ_PAL = {
   espaco: { top: '#e6e5f5', bot: '#cdc9ea', gnd: '#b7b1de', dot: '#ffffff', stem: '#6a63b8' },
   bateria: { top: '#f3e8dd', bot: '#e6cfb9', gnd: '#cfae92', dot: '#fff6ea', stem: '#9a5f3a' }
 };
-const TQ_TH = { fg: '#3F434B', glow: '#C47D2A' };
+const TQ_TH = { fg: '#12372F', glow: '#C47D2A' };
 
 function tqRand(a, b) { return a + Math.random() * (b - a); }
 function tqPl(n, s, p) { return n === 1 ? s : p; }
@@ -478,7 +478,7 @@ function tqDraw() {
     tcx.globalAlpha = ja; tcx.fillStyle = tqOrbColor(s.def.hue, 0.95); tcx.beginPath(); tcx.arc(x, y, r, 0, 6.2832); tcx.fill();
     tcx.fillStyle = 'rgba(255,255,255,0.28)'; tcx.beginPath(); tcx.arc(x - r * 0.3, y - r * 0.3, r * 0.35, 0, 6.2832); tcx.fill();
     if (pk > 0) { tcx.globalAlpha = 0.45 * pk * ja * Math.min(MF, 1); tcx.strokeStyle = tqOrbColor(s.def.hue, 1); tcx.lineWidth = 2; tcx.beginPath(); tcx.arc(x, y, r * (1 + 1.2 * (pdt / 1.1)), 0, 6.2832); tcx.stroke(); }
-    tcx.globalAlpha = 0.9 * ja; tcx.fillStyle = TQ_TH.fg; tcx.font = '800 ' + (w < 480 ? 12 : 14) + 'px "Nunito Sans", system-ui, sans-serif'; tcx.textAlign = 'center';
+    tcx.globalAlpha = 0.9 * ja; tcx.fillStyle = TQ_TH.fg; tcx.font = '800 ' + (w < 480 ? 12 : 14) + 'px "DM Sans", system-ui, sans-serif'; tcx.textAlign = 'center';
     tcx.fillText(s.def.name, x, y + r + 18);
     tcx.globalAlpha = 1;
   });
