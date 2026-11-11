@@ -68,7 +68,7 @@ html,body{height:100%;font-family:var(--font);background:var(--sand);color:var(-
   animation:splashIn .55s cubic-bezier(.22,1,.36,1) forwards
 }
 .splash-logo{
-  width:clamp(160px,45vw,220px);height:auto
+  width:clamp(112px,32vw,152px);height:auto
 }
 
 /* Três pontos de loading animados */
@@ -769,7 +769,7 @@ input[type=range]::-moz-range-thumb{
   margin-bottom:28px
 }
 .ob-brand img{
-  height:38px;width:auto;
+  height:60px;width:60px;
   object-fit:contain;
   /* garante fundo transparente — não adicionar background aqui */
 }
