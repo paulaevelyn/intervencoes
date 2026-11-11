@@ -38,7 +38,12 @@ export function Library() {
 
   return (
     <>
-      <PageHead title="Regulação" sub="Micropráticas de 1 a 5 minutos. Escolha o que combina com agora." />
+      <PageHead title="Regulação e apoio" sub="Pausas, práticas de 1 a 5 minutos e o seu plano de apoio." />
+      <ul className="grid gap-3 sm:grid-cols-2 mb-6">
+        <li><a href="#/plano" className="block h-full"><Card as="div" className="h-full hover:border-brand bg-soft border-soft"><span className="block font-bold text-lg">Meu plano de apoio</span><span className="block text-muted">Sinais, o que ajuda e quem chamar.</span></Card></a></li>
+        <li><a href="#/estados" className="block h-full"><Card as="div" className="h-full hover:border-brand bg-soft border-soft"><span className="block font-bold text-lg">Meus estados</span><span className="block text-muted">Entender o que estou sentindo e o que fazer.</span></Card></a></li>
+      </ul>
+      <h2 className="text-xl font-bold mb-2">Escolha o que combina com agora</h2>
       <ul className="space-y-3">
         {GOALS.map((g) => (
           <li key={g.id}>
@@ -49,6 +54,14 @@ export function Library() {
           </li>
         ))}
       </ul>
+      <section className="mt-6" aria-label="Outras ferramentas">
+        <h2 className="text-xl font-bold mb-2">Outras ferramentas</h2>
+        <ul className="space-y-2">
+          {[['/sensorial', 'Registro sensorial', 'Anote o que pesou e o que ajudou.'], ['/comunicacao', 'Mensagens prontas', 'Modelos para pedir prazo, pausa ou dizer não.'], ['/energia', 'Como está sua energia hoje?', 'Energia, sobrecarga e o que você precisa agora.']].map(([to, t, d]) => (
+            <li key={to}><a href={`#${to}`} className="block"><Card as="div" className="hover:border-brand"><span className="block font-bold">{t}</span><span className="block text-muted">{d}</span></Card></a></li>
+          ))}
+        </ul>
+      </section>
     </>
   );
 }

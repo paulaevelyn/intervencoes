@@ -1,4 +1,4 @@
-export type GoalId = 'sobrecarga' | 'comecar' | 'ansiedade' | 'acalmar' | 'energia' | 'limite';
+export type GoalId = 'sobrecarga' | 'comecar' | 'ansiedade' | 'acalmar' | 'energia' | 'limite' | 'apoio';
 
 export const GOALS: { id: GoalId; label: string; hint: string }[] = [
   { id: 'sobrecarga', label: 'Estou sobrecarregado/a', hint: 'Muito estímulo ou muita demanda' },
@@ -6,7 +6,8 @@ export const GOALS: { id: GoalId; label: string; hint: string }[] = [
   { id: 'ansiedade', label: 'Estou ansioso/a', hint: 'Mente acelerada ou corpo em alerta' },
   { id: 'acalmar', label: 'Preciso me acalmar', hint: 'Baixar o ritmo do corpo' },
   { id: 'energia', label: 'Preciso de energia', hint: 'Um empurrãozinho gentil' },
-  { id: 'limite', label: 'Preciso de um limite', hint: 'Dizer não, pedir ajuste ou apoio' },
+  { id: 'limite', label: 'Preciso de um limite', hint: 'Dizer não ou combinar um ajuste' },
+  { id: 'apoio', label: 'Preciso pedir apoio', hint: 'Frases prontas e pedidos de ajuste' },
 ];
 
 export type Practice =
@@ -76,7 +77,7 @@ export const PRACTICES: Practice[] = [
     note: 'Esta lista não é salva. Se quiser guardar o que você pode reduzir, use o seu plano de apoio.',
   },
   {
-    id: 'frases-apoio', title: 'Frases para pedir apoio', minutes: 1, goals: ['limite', 'sobrecarga'],
+    id: 'frases-apoio', title: 'Frases para pedir apoio', minutes: 1, goals: ['apoio', 'limite', 'sobrecarga'],
     summary: 'Prontas para copiar quando falar está difícil.', kind: 'text', copyable: true,
     lines: [
       'Estou com sobrecarga e preciso de uma pausa. Posso voltar a falar daqui a pouco?',
@@ -89,7 +90,7 @@ export const PRACTICES: Practice[] = [
     link: { to: '/comunicacao', label: 'Ver mais modelos de mensagens' },
   },
   {
-    id: 'acomodacoes', title: 'Modelo para pedir acomodações no trabalho', minutes: 5, goals: ['limite'],
+    id: 'acomodacoes', title: 'Modelo para pedir acomodações no trabalho', minutes: 5, goals: ['apoio', 'limite'],
     summary: 'Um texto-base para adaptar. Você escolhe o que contar.', kind: 'text', copyable: true,
     lines: [
       'Olá, [nome]. Gostaria de combinar alguns ajustes que me ajudam a trabalhar melhor.',

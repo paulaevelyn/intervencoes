@@ -5,14 +5,17 @@ import { Button, Card, ConfirmButton, Field, inputCls, Note, PageHead, TextList 
 import { splitTask } from '../data/split';
 import type { Task } from '../types';
 import { iaDividir, iaLigada, iaTemConta } from '../ia';
-import { startTips } from '../data/profile';
+import { startTips, has } from '../data/profile';
+import { Inbox } from './Inbox';
 
 export function Tasks() {
   const { state, update } = useStore();
   const route = useRoute();
   const [title, setTitle] = useState('');
   const [msg, setMsg] = useState('');
+  const [showAll, setShowAll] = useState(false);
   const focusParam = route.q.get('foco');
+  if (route.parts[1] === 'caixa') return <Inbox />;
 
   const patch = (id: string, fn: (t: Task) => Task) =>
     update((s) => ({ ...s, tasks: s.tasks.map((t) => (t.id === id ? fn(t) : t)) }));
@@ -31,6 +34,12 @@ export function Tasks() {
         onStep={(t, stepId) => patch(t.id, (x) => ({ ...x, steps: x.steps.map((s) => (s.id === stepId ? { ...s, done: true } : s)) }))}
         onExit={() => go('/tarefas')}
         onAdd={(text) => update((s) => ({ ...s, tasks: [{ id: uid(), title: text, steps: [], done: false, later: false, createdAt: Date.now() }, ...s.tasks] }))}
+        onCapture={(text) => update((s) => ({ ...s, inbox: [{ id: uid(), text, at: Date.now(), kind: 'distracao' as const }, ...s.inbox] }))}
+        onSmaller={(t, stepId) => patch(t.id, (x) => ({ ...x, steps: x.steps.flatMap((st) => (st.id === stepId ? [
+          { id: uid(), text: 'Olhe para o que precisa e separe só o primeiro item.', done: false },
+          { id: uid(), text: `Faça só o primeiro minuto de: ${st.text}`, done: false },
+          { id: uid(), text: 'Pare e veja se quer continuar.', done: false },
+        ] : [st])) }))}
       />
     );
   }
@@ -43,7 +52,8 @@ export function Tasks() {
     setMsg(`Guardado: “${t}”. Sem pressa.`);
   };
 
-  const shown = state.recovery ? active.slice(0, 1) : active;
+  const calm = (state.recovery || state.settings.lowStim) && !showAll;
+  const shown = calm ? active.slice(0, 1) : active;
 
   return (
     <>
@@ -54,12 +64,18 @@ export function Tasks() {
         <Button kind="primary" icon="plus" type="submit">Adicionar</Button>
       </form>
 
-      <div className="mb-4"><Button onClick={() => go('/planejar')}>Planejar o dia com ajuda</Button></div>
+      <div className="mb-4 flex flex-wrap gap-2">
+        <Button onClick={() => go('/tarefas/caixa')}>Caixa de captura{state.inbox.length > 0 ? ` (${state.inbox.length})` : ''}</Button>
+        {!state.settings.lowStim && <Button onClick={() => go('/planejar')}>Planejar o dia com ajuda</Button>}
+      </div>
 
       <p role="status" aria-live="polite" className={msg ? 'mb-4 rounded-xl bg-soft p-3' : 'sr-only'}>{msg}</p>
 
-      {state.recovery && (
-        <Note>No modo de recuperação, mostramos só uma tarefa. As outras estão guardadas ({active.length > 1 ? active.length - 1 : 0} escondidas).</Note>
+      {calm && active.length > 1 && (
+        <div className="mb-3 flex flex-wrap items-center gap-2">
+          <Note>{state.recovery ? 'Modo de recuperação' : 'Modo calmo'}: só uma tarefa por vez. As outras ({active.length - 1}) estão guardadas.</Note>
+          {!state.recovery && <Button onClick={() => setShowAll(true)}>Ver todas</Button>}
+        </div>
       )}
 
       {shown.length === 0 && done.length === 0 && later.length === 0 && (
@@ -73,7 +89,7 @@ export function Tasks() {
         {shown.map((t) => <TaskItem key={t.id} t={t} patch={patch} setMsg={setMsg} />)}
       </ul>
 
-      {!state.recovery && later.length > 0 && (
+      {!calm && later.length > 0 && (
         <section className="mt-8" aria-labelledby="h-depois">
           <h2 id="h-depois" className="text-lg font-bold mb-2">Para depois ({later.length})</h2>
           <p className="text-muted text-sm mb-2">Guardadas sem data. Volte quando fizer sentido.</p>
@@ -81,7 +97,7 @@ export function Tasks() {
         </section>
       )}
 
-      {!state.recovery && done.length > 0 && (
+      {!calm && done.length > 0 && (
         <details className="mt-8">
           <summary className="tap cursor-pointer font-bold text-lg flex items-center">Feitas ({done.length})</summary>
           <ul className="space-y-3 mt-2">{done.map((t) => <TaskItem key={t.id} t={t} patch={patch} setMsg={setMsg} />)}</ul>
@@ -132,18 +148,24 @@ function TaskItem({ t, patch, setMsg }: { t: Task; patch: (id: string, fn: (t: T
         </div>
       </div>
 
+      {!t.done && !edit && (
+        <p className="mt-3"><span className="font-semibold">Primeiro passo:</span> {t.steps.find((x) => !x.done)?.text ?? splitTask(t.title)[0]}</p>
+      )}
       {t.steps.length > 0 && !t.done && !edit && (
-        <ol className="mt-3 space-y-1">
-          {t.steps.map((s, i) => (
-            <li key={s.id}>
-              <label className="tap flex items-start gap-3 py-1 cursor-pointer">
-                <input type="checkbox" className="w-6 h-6 mt-0.5 accent-[var(--brand)] shrink-0" checked={s.done}
-                  onChange={() => patch(t.id, (x) => ({ ...x, steps: x.steps.map((y) => (y.id === s.id ? { ...y, done: !y.done } : y)) }))} />
-                <span className={s.done ? 'text-muted line-through decoration-1' : ''}><span className="text-muted">{i + 1}. </span>{s.text}</span>
-              </label>
-            </li>
-          ))}
-        </ol>
+        <details className="mt-2">
+          <summary className="tap cursor-pointer text-muted flex items-center">Ver os {t.steps.length} passos</summary>
+          <ol className="mt-1 space-y-1">
+            {t.steps.map((s, i) => (
+              <li key={s.id}>
+                <label className="tap flex items-start gap-3 py-1 cursor-pointer">
+                  <input type="checkbox" className="w-6 h-6 mt-0.5 accent-[var(--brand)] shrink-0" checked={s.done}
+                    onChange={() => patch(t.id, (x) => ({ ...x, steps: x.steps.map((y) => (y.id === s.id ? { ...y, done: !y.done } : y)) }))} />
+                  <span className={s.done ? 'text-muted line-through decoration-1' : ''}><span className="text-muted">{i + 1}. </span>{s.text}</span>
+                </label>
+              </li>
+            ))}
+          </ol>
+        </details>
       )}
 
       {edit && (
@@ -160,10 +182,15 @@ function TaskItem({ t, patch, setMsg }: { t: Task; patch: (id: string, fn: (t: T
 
       {!t.done && !edit && (
         <div className="mt-4 flex flex-wrap gap-2">
-          {t.steps.length === 0
-            ? <><Button kind="primary" onClick={split}>Dividir em passos</Button>{iaLigada(state.settings) && iaTemConta() && <Button disabled={busy} onClick={splitIA}>{busy ? 'Pensando…' : 'Dividir com IA'}</Button>}</>
-            : <Button kind="primary" onClick={() => go(`/tarefas?foco=${t.id}`)}>Primeiro passo de 2 minutos</Button>}
-          <Button aria-expanded={more} onClick={() => setMore(!more)}>{more ? 'Menos opções' : 'Mais opções'}</Button>
+          {t.later
+            ? <Button kind="action" onClick={() => { patch(t.id, (x) => ({ ...x, later: false })); setMsg('Voltou para a lista de agora.'); }}>Trazer para agora</Button>
+            : <>
+                <Button kind="action" onClick={() => go(`/tarefas?foco=${t.id}`)}>Começar</Button>
+                <Button onClick={() => { patch(t.id, (x) => ({ ...x, later: true })); setMsg('Essa tarefa ficou para depois, sem data e sem cobrança. Quer dividi-la em um passo menor?'); }}>Adiar</Button>
+                {t.steps.length === 0 && <Button onClick={split}>Dividir em passos</Button>}
+                {t.steps.length > 3 && <Button onClick={() => { patch(t.id, (x) => ({ ...x, steps: x.steps.slice(0, 3) })); setMsg('Simplificada: ficaram só os 3 primeiros passos. Fazer uma parte já vale.'); }}>Simplificar</Button>}
+              </>}
+          <Button kind="ghost" aria-expanded={more} onClick={() => setMore(!more)}>{more ? 'Menos opções' : 'Mais opções'}</Button>
         </div>
       )}
 
@@ -179,10 +206,7 @@ function TaskItem({ t, patch, setMsg }: { t: Task; patch: (id: string, fn: (t: T
             </Field>
           )}
           <div className="flex flex-wrap gap-2">
-            {!t.done && <Button onClick={() => { patch(t.id, (x) => ({ ...x, later: !x.later })); setMsg(t.later ? 'Voltou para a lista de agora.' : 'Guardada para depois. Sem data e sem cobrança.'); }}>{t.later ? 'Trazer para agora' : 'Deixar para depois'}</Button>}
-            {!t.done && t.steps.length > 3 && (
-              <Button onClick={() => { patch(t.id, (x) => ({ ...x, steps: x.steps.slice(0, 3) })); setMsg('Simplificada: ficaram só os 3 primeiros passos. Fazer uma parte já vale.'); }}>Fazer só uma parte</Button>
-            )}
+            {!t.done && t.steps.length === 0 && iaLigada(state.settings) && iaTemConta() && <Button disabled={busy} onClick={splitIA}>{busy ? 'Pensando…' : 'Dividir com IA'}</Button>}
             {!t.done && t.steps.length > 0 && <Button icon="edit" onClick={() => setEdit(true)}>Editar passos</Button>}
             {!t.done && t.steps.length === 0 && <Button icon="edit" onClick={() => setEdit(true)}>Editar</Button>}
             <ConfirmButton label="Excluir" onConfirm={() => update((s) => ({ ...s, tasks: s.tasks.filter((x) => x.id !== t.id) }))} />
@@ -193,13 +217,20 @@ function TaskItem({ t, patch, setMsg }: { t: Task; patch: (id: string, fn: (t: T
   );
 }
 
-function Focus({ task, onSplit, onStep, onExit, onAdd }: {
+function Focus({ task, onSplit, onStep, onExit, onAdd, onCapture, onSmaller }: {
   task: Task | undefined; onSplit: (t: Task) => void; onStep: (t: Task, stepId: string) => void; onExit: () => void; onAdd: (t: string) => void;
+  onCapture: (t: string) => void; onSmaller: (t: Task, stepId: string) => void;
 }) {
   const { state } = useStore();
-  const [left, setLeft] = useState<number | null>(null); // segundos restantes quando rodando
+  const [dur, setDur] = useState<number>(2); // bloco de tempo em minutos; 0 = sem cronômetro
+  const [left, setLeft] = useState<number | null>(null); // segundos restantes
   const [over, setOver] = useState(false);
+  const [pausaLeft, setPausaLeft] = useState<number | null>(null);
+  const [view, setView] = useState<'agora' | 'depois' | 'ajuda' | 'pausa'>('agora');
   const [draft, setDraft] = useState('');
+  const [captura, setCaptura] = useState('');
+  const [catching, setCatching] = useState(false);
+  const [saved, setSaved] = useState(false);
   const timer = useRef<number>();
 
   useEffect(() => { if (task && task.steps.length === 0) onSplit(task); }, [task?.id, task?.steps.length]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -208,7 +239,7 @@ function Focus({ task, onSplit, onStep, onExit, onAdd }: {
   if (!task) {
     return (
       <>
-        <PageHead title="Primeiro passo de 2 minutos" onBack={onExit} />
+        <PageHead title="Começar" onBack={onExit} />
         <Card>
           <p className="font-semibold mb-2">Ainda não há tarefa para começar.</p>
           <form className="flex gap-2" onSubmit={(e) => { e.preventDefault(); if (draft.trim()) { onAdd(draft.trim()); setDraft(''); } }}>
@@ -221,63 +252,124 @@ function Focus({ task, onSplit, onStep, onExit, onAdd }: {
   }
 
   const next = task.steps.find((s) => !s.done);
-  const why = [...state.profile.values, ...state.profile.wants][Math.abs([...task.id].reduce((a, c) => a + c.charCodeAt(0), 0)) % Math.max(1, state.profile.values.length + state.profile.wants.length)];
+  const why = [...state.profile.values, ...state.profile.wants][[...task.id].reduce((a, c) => a + c.charCodeAt(0), 0) % Math.max(1, state.profile.values.length + state.profile.wants.length)];
   const tips = startTips(state.profile);
-  const start = () => {
-    setOver(false);
-    setLeft(120);
+  const blocos = [2, 10, 25, ...(task.minutes && task.minutes >= 5 && task.minutes <= 60 && ![2, 10, 25].includes(task.minutes) ? [task.minutes] : [])].sort((a, b) => a - b);
+  const stop = () => { window.clearInterval(timer.current); setLeft(null); };
+  const quietVibrate = state.settings.alerts === 'vibrate' && !state.settings.lowStim;
+  const start = (secs: number, onEnd: () => void, set: (v: number | null) => void) => {
     window.clearInterval(timer.current);
+    let rest = secs;
+    set(rest);
     timer.current = window.setInterval(() => {
-      setLeft((v) => {
-        if (v === null) return v;
-        if (v <= 1) {
-          window.clearInterval(timer.current);
-          setOver(true);
-          if (state.settings.alerts === 'vibrate') navigator.vibrate?.(200);
-          return null;
-        }
-        return v - 1;
-      });
+      rest -= 1;
+      if (rest <= 0) { window.clearInterval(timer.current); set(null); if (quietVibrate) navigator.vibrate?.(200); onEnd(); }
+      else set(rest);
     }, 1000);
   };
-  const stop = () => { window.clearInterval(timer.current); setLeft(null); };
   const fmt = (s: number) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
+  // aviso gentil 2 minutos antes do fim (útil para quem precisa de transição previsível)
+  const aviso = left !== null && dur >= 10 && left <= 120 && state.settings.alerts !== 'off' && (has(state.profile, 'autismo') || state.settings.alerts === 'screen');
 
+  if (view === 'pausa') {
+    return (
+      <>
+        <PageHead title="Pausa de 5 minutos" sub="Sem tela, se puder." />
+        <Card className="py-6"><p className="text-lg">Beba água, alongue o corpo, olhe para longe. Não precisa fazer nada produtivo.</p>
+          {pausaLeft !== null && state.settings.showCounts && <p className="text-3xl font-bold mt-3">{fmt(pausaLeft)}</p>}
+          {pausaLeft === null && over && <p role="status" className="mt-3">Os 5 minutos passaram. Quando quiser, volte, ou pare por aqui.</p>}
+        </Card>
+        <div className="mt-4 flex flex-wrap gap-2">
+          {pausaLeft === null && !over && <Button onClick={() => { setOver(false); start(300, () => setOver(true), setPausaLeft); }}>Marcar 5 minutos</Button>}
+          <Button kind="action" onClick={() => { stop(); setPausaLeft(null); setOver(false); setView('agora'); }}>Voltar à tarefa</Button>
+          <Button onClick={() => { stop(); onExit(); }}>Parar por aqui</Button>
+        </div>
+      </>
+    );
+  }
+  if (view === 'depois') {
+    return (
+      <>
+        <PageHead title="Você fez um começo" />
+        <Card className="py-6"><p className="text-lg">Obrigado/a por cuidar disso. {next ? 'Quer continuar, fazer uma pausa ou parar por aqui? Qualquer escolha vale.' : 'Era o último passo desta tarefa. Marque a tarefa como feita quando quiser.'}</p></Card>
+        <div className="mt-4 flex flex-wrap gap-2">
+          {next && <Button kind="action" big onClick={() => { setView('agora'); setOver(false); }}>Continuar</Button>}
+          {next && <Button onClick={() => { setOver(false); setView('pausa'); }}>Fazer uma pausa</Button>}
+          <Button onClick={() => { stop(); onExit(); }}>{next ? 'Parar por aqui' : 'Voltar às tarefas'}</Button>
+        </div>
+      </>
+    );
+  }
   if (!next) {
     return (
       <>
         <PageHead title="Todos os passos feitos" onBack={onExit} />
-        <Card><p className="text-lg">Você completou os passos de “{task.title}”. Marque a tarefa como feita quando quiser.</p>
+        <Card><p className="text-lg">Você fez os passos de “{task.title}”. Marque a tarefa como feita quando quiser.</p>
           <div className="mt-4"><Button kind="primary" onClick={onExit}>Voltar às tarefas</Button></div></Card>
+      </>
+    );
+  }
+
+  if (view === 'ajuda') {
+    return (
+      <>
+        <PageHead title="Tudo bem travar" sub="Escolha o que pode ajudar agora." onBack={() => setView('agora')} />
+        <div className="space-y-2">
+          <Button block onClick={() => { onSmaller(task, next.id); setView('agora'); }}>Dividir este passo em passos menores</Button>
+          <Button block onClick={() => go('/estados/paralisia')}>Entender por que está difícil começar</Button>
+          <Button block onClick={() => { setOver(false); setView('pausa'); }}>Fazer uma pausa de 5 minutos</Button>
+          <Button block onClick={() => go('/apoio-agora')}>Abrir meu plano de apoio</Button>
+          <Button block kind="ghost" onClick={() => { stop(); onExit(); }}>Deixar esta tarefa para depois</Button>
+        </div>
       </>
     );
   }
 
   return (
     <>
-      <PageHead title="Só o primeiro passo" sub={`Tarefa: ${task.title}`} onBack={() => { stop(); onExit(); }} />
+      <PageHead title="Agora" sub={`Tarefa: ${task.title}`} onBack={() => { stop(); onExit(); }} />
       <Card className="text-center py-8">
-        <p className="text-2xl font-bold leading-snug mb-6">{next.text}</p>
-        {left === null && !over && <Button kind="primary" big onClick={start}>Começar 2 minutos</Button>}
-        {left !== null && (
-          <div className="space-y-3">
-            {state.settings.showCounts ? <p className="text-3xl font-bold" aria-label={`Faltam ${Math.ceil(left / 60)} minutos`}>{fmt(left)}</p> : <p className="text-lg text-muted">Cronômetro rodando. A contagem está escondida.</p>}
-            <Button onClick={stop}>Pausar</Button>
-          </div>
-        )}
-        {over && <p role="status" className="text-lg mb-2">Passaram os 2 minutos. Continuar e parar são escolhas boas.</p>}
+        <p className="text-2xl font-bold leading-snug mx-auto">{next.text}</p>
+        <p className="text-muted mt-3">{dur === 0 ? 'Sem cronômetro. No seu tempo.' : `Bloco de ${dur} minutos. Parar antes ou depois é permitido.`}</p>
+        {left !== null && (state.settings.showCounts
+          ? <p className="text-3xl font-bold mt-3" aria-label={`Faltam ${Math.ceil(left / 60)} minutos`}>{fmt(left)}</p>
+          : <p className="text-muted mt-3">O tempo está passando. A contagem está escondida.</p>)}
+        {aviso && <p role="status" className="mt-3 rounded-xl bg-warm p-3">Faltam cerca de 2 minutos. Comece a fechar com calma.</p>}
+        {over && <p role="status" className="text-lg mt-3">O bloco terminou. Continuar, pausar e parar são escolhas boas.</p>}
       </Card>
+      {left === null && (
+        <fieldset className="mt-4">
+          <legend className="font-semibold mb-2">Quanto tempo você topa agora?</legend>
+          <div className="flex flex-wrap gap-2">
+            {blocos.map((m) => <Button key={m} kind={dur === m ? 'primary' : 'secondary'} aria-pressed={dur === m} onClick={() => { setDur(m); setOver(false); }}>{m} min</Button>)}
+            <Button kind={dur === 0 ? 'primary' : 'secondary'} aria-pressed={dur === 0} onClick={() => { setDur(0); setOver(false); }}>Sem cronômetro</Button>
+          </div>
+        </fieldset>
+      )}
       <div className="mt-4 flex flex-wrap gap-2">
-        <Button kind="primary" onClick={() => { stop(); setOver(false); onStep(task, next.id); }}>Fiz este passo</Button>
-        <Button onClick={() => { stop(); onExit(); }}>Parar por aqui</Button>
+        <Button kind="action" big onClick={() => { stop(); setOver(false); onStep(task, next.id); setView('depois'); }}>Feito</Button>
+        <Button onClick={() => setView('ajuda')}>Preciso de ajuda</Button>
+        {dur > 0 && (left !== null ? <Button onClick={stop}>Pausar</Button> : <Button kind="ghost" onClick={() => { setOver(false); start(dur * 60, () => setOver(true), setLeft); }}>Marcar {dur} minutos</Button>)}
       </div>
-      {(why || tips.length > 0) && (
+
+      <div className="mt-5">
+        {!catching
+          ? <Button kind="ghost" onClick={() => { setCatching(true); setSaved(false); }}>Guardei uma distração</Button>
+          : (
+            <form className="flex gap-2 items-end" onSubmit={(e) => { e.preventDefault(); if (captura.trim()) { onCapture(captura.trim()); setCaptura(''); setCatching(false); setSaved(true); } }}>
+              <div className="flex-1"><Field label="O que passou pela cabeça?" hint="Eu guardo na caixa de captura. Você volta para a tarefa."><input autoFocus className={inputCls} value={captura} maxLength={160} onChange={(e) => setCaptura(e.target.value)} /></Field></div>
+              <Button kind="primary" type="submit">Guardar</Button>
+            </form>
+          )}
+        <p role="status" className={saved ? 'mt-2 rounded-xl bg-soft p-3' : 'sr-only'}>{saved ? 'Guardado na caixa de captura. Pode voltar para a tarefa.' : ''}</p>
+      </div>
+
+      {(why || tips.length > 0) && !state.settings.lowStim && (
         <Card className="mt-4 bg-soft border-soft">
           {why && <p className="mb-2"><strong>Por que isso importa para você:</strong> {why}</p>}
           {tips.length > 0 && <><p className="font-semibold">Para o seu jeito</p><ul className="list-disc pl-5">{tips.slice(0, 2).map((t) => <li key={t}>{t}</li>)}</ul></>}
         </Card>
       )}
-      <p className="text-sm text-muted mt-4">Parar depois dos 2 minutos não é falha. Começar já foi o passo mais difícil.</p>
     </>
   );
 }

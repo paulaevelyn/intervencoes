@@ -58,7 +58,7 @@ function nextAt(h: number, m: number) {
 interface Item { at: number; kind: 'daily' | 'routine'; name?: string; id: string }
 export function upcoming(rem: Rem, s: State): Item[] {
   const out: Item[] = [];
-  if (rem.daily) out.push({ at: nextAt(rem.hour, 0), kind: 'daily', id: 'daily' });
+  if (rem.daily && !s.settings.lowStim) out.push({ at: nextAt(rem.hour, 0), kind: 'daily', id: 'daily' });
   for (const r of s.routines) {
     const m = /^(\d{2}):(\d{2})$/.exec(r.remindAt ?? '');
     if (m) out.push({ at: nextAt(Number(m[1]), Number(m[2])), kind: 'routine', name: r.name, id: r.id });
@@ -95,5 +95,5 @@ export function schedule(getState: () => State): () => void {
 export function useReminders(state: State) {
   const ref = useRef(state);
   ref.current = state;
-  useEffect(() => schedule(() => ref.current), [state.routines]);
+  useEffect(() => schedule(() => ref.current), [state.routines, state.settings.lowStim]);
 }

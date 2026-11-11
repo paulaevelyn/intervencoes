@@ -21,7 +21,7 @@ function List() {
   const log = [...state.stateLog].sort((a, b) => b.at - a.at).slice(0, 5);
   return (
     <>
-      <PageHead title="Meus estados" sub="Reconhecer o que está acontecendo e o que fazer com isso." onBack={() => back('/mais')} />
+      <PageHead title="Meus estados" sub="Reconhecer o que está acontecendo e o que fazer com isso." onBack={() => back('/regulacao')} />
       <Button kind="primary" big block onClick={() => go('/entender')}>Não sei o que estou sentindo</Button>
 
       <h2 className="text-xl font-bold mt-7 mb-2">Estados comuns</h2>

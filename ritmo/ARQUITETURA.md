@@ -14,5 +14,7 @@ App web (PWA) para adultos neurodivergentes. React 18 + TypeScript + Tailwind 3,
 - **Rotas:** hash (`#/tarefas`, `#/rotinas/:id`, `#/regulacao/:id`, `#/apoio-agora`…).
 - **Regras sem IA:** `data/split.ts` (divisão de tarefas por palavras-chave), `data/suggest.ts` (sugestões por energia/sobrecarga/necessidade), `pages/Sensory.tsx` (`summarize`, padrões dos últimos 7 dias, só com 3+ registros).
 - **Conteúdo editável:** `data/library.ts` (práticas), `data/templates.ts` (mensagens), `data/sample.ts` (exemplos e modelos de rotina).
+- **Blocos de tempo e captura:** em `#/tarefas?foco=` (blocos de 2/10/25 min ou da tarefa, sem cronômetro opcional, pausa de 5 min, "Guardei uma distração") e `#/tarefas/caixa` (caixa de captura, `state.inbox`).
+- **Marca e diretrizes:** paleta e fontes da Psicoterapia e Afins (Nunito Sans, Fraunces só no nome, Atkinson na fonte de leitura), todas empacotadas localmente. Checklist em `DIRETRIZES.md`.
 - **Acessibilidade:** alvos ≥ 48 px, foco visível, tema claro/escuro/baixo estímulo, texto até 150%, fonte de leitura, espaçamento amplo, sem sons e sem animação automática; verificado com axe (WCAG 2.2 AA) nos temas claro e escuro.
 - **Pendências:** aplicar `supabase/ritmo_ia.sql`, definir o segredo `ANTHROPIC_API_KEY` e implantar `ritmo-ia`; revisar com a profissional os textos de `data/estados.ts` e o aviso de consentimento da IA (LGPD); testes com usuários reais e leitor de tela.

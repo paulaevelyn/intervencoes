@@ -1,40 +1,54 @@
+@import '@fontsource/nunito-sans/latin-400.css';
+@import '@fontsource/nunito-sans/latin-600.css';
+@import '@fontsource/nunito-sans/latin-700.css';
+@import '@fontsource/nunito-sans/latin-800.css';
+@import '@fontsource/fraunces/latin-600.css';
+@import '@fontsource/atkinson-hyperlegible/latin-400.css';
+@import '@fontsource/atkinson-hyperlegible/latin-700.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* ---------- Cores (tema claro) ---------- */
+/* ---------- Marca Psicoterapia e Afins: Nunito Sans (texto), Fraunces (só a marca), Atkinson (leitura) ---------- */
+
+/* ---------- Cores (tema claro): areia, grafite, verde-menta e coral suave da marca ---------- */
 :root {
-  --bg: #f7f4ee;
-  --surface: #ffffff;
-  --ink: #23282b;
-  --muted: #56606a;
+  --bg: #f7f3ef;
+  --surface: #fffefc;
+  --ink: #3f434b;
+  --muted: #5a626b;
   --line: #d9d4c9;
-  --brand: #2f6b62;
+  --brand: #3d5a52;
   --brand-ink: #ffffff;
-  --soft: #e3efeb;
-  --warm: #f6ead6;
-  --c-sage: #4f8a7b;
-  --c-sky: #4f7fa8;
-  --c-sand: #a98443;
-  --c-rose: #b4636b;
-  --c-lilac: #7b6cae;
-  --c-slate: #5f6b76;
+  --soft: #ddeae2;
+  --warm: #fbf0df;
+  --action: #d98e73; /* terracota suave: começar e agir */
+  --action-ink: #3a2a24;
+  --c-sage: #5e7d73;
+  --c-sky: #5b86a6;
+  --c-sand: #b07a2a;
+  --c-rose: #c06f72;
+  --c-lilac: #8b7fb8;
+  --c-slate: #6b7680;
   --fs: 100%;
   --ls: 0;
   --lh: 1.6;
   color-scheme: light;
 }
 :root[data-theme='dark'] {
-  --bg: #171b1e;
-  --surface: #20262a;
-  --ink: #ece9e3;
-  --muted: #b4bcc3;
-  --line: #3a434a;
-  --brand: #8cc4b7;
-  --brand-ink: #10201c;
-  --soft: #273832;
-  --warm: #3a3223;
-  --c-sage: #86c2b2;
+  --bg: #1f2326;
+  --surface: #2a2f33;
+  --ink: #ece8e2;
+  --muted: #b3b9bf;
+  --line: #3d464c;
+  --brand: #8fb3a6;
+  --brand-ink: #14201c;
+  --soft: #2f4039;
+  --warm: #3a2f1f;
+  --action: #e0a68e;
+  --action-ink: #2a1c16;
+  --c-sage: #8fb3a6;
   --c-sky: #8db6dc;
   --c-sand: #d4b26e;
   --c-rose: #e09aa1;
@@ -42,11 +56,15 @@
   --c-slate: #a3afba;
   color-scheme: dark;
 }
-/* Baixo estímulo: tons neutros, sem sombras, sem movimento */
+/* Contraste alto (escolha da pessoa) */
+:root[data-contrast='high'] { --ink: #1c2024; --muted: #3a4148; --line: #6d767e; --brand: #2a463e; --action-ink: #1f130e; }
+:root[data-theme='dark'][data-contrast='high'] { --ink: #ffffff; --muted: #e1e5e8; --line: #8a949c; --brand: #a9cbbf; }
+/* Modo calmo (baixo estímulo): tons neutros, sem sombras, sem movimento, sem enfeites */
 :root[data-lowstim='true'] {
   --brand: #4a5a58;
   --soft: #ececea;
   --warm: #efede9;
+  --action: #cfc8c0;
   --bg: #f3f2ef;
 }
 :root[data-theme='dark'][data-lowstim='true'] {
@@ -54,6 +72,8 @@
   --brand-ink: #14191a;
   --soft: #252b2d;
   --warm: #2a2b2b;
+  --action: #5a615f;
+  --action-ink: #ece8e2;
   --bg: #151819;
 }
 :root[data-lowstim='true'] * {
@@ -62,6 +82,7 @@
   scroll-behavior: auto !important;
   box-shadow: none !important;
 }
+:root[data-lowstim='true'] .deco { display: none !important; }
 @media (prefers-reduced-motion: reduce) {
   * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }
@@ -72,11 +93,11 @@ body {
   color: var(--ink);
   line-height: var(--lh);
   letter-spacing: var(--ls);
-  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family: 'Nunito Sans', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   margin: 0;
 }
 :root[data-font='leitura'] body, :root[data-font='leitura'] button, :root[data-font='leitura'] input, :root[data-font='leitura'] textarea, :root[data-font='leitura'] select {
-  font-family: Verdana, Tahoma, 'DejaVu Sans', sans-serif;
+  font-family: 'Atkinson Hyperlegible', Verdana, Tahoma, sans-serif;
 }
 button, input, textarea, select { font: inherit; letter-spacing: inherit; color: inherit; }
 
@@ -97,3 +118,8 @@ button, input, textarea, select { font: inherit; letter-spacing: inherit; color:
 /* Barra de conta do login compartilhado (fixa no topo à direita): reserva espaço para não cobrir o cabeçalho. */
 body:has(.pea-auth-barra) { --bar: 2.9rem; }
 .app-root { padding-top: var(--bar, 0px); }
+
+/* Marca: só o nome "Ritmo" usa a fonte de destaque da Psicoterapia e Afins */
+.brand-word { font-family: 'Fraunces', Georgia, serif; font-weight: 600; letter-spacing: 0; }
+/* Leitura confortável: 60–75 caracteres por linha */
+main p, main li, main label { max-width: 70ch; }

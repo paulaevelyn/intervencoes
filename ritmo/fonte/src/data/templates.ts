@@ -15,6 +15,10 @@ export const TEMPLATES: Template[] = [
     text: 'Olá, [nome]. Alguns estímulos do ambiente, como [ex.: barulho, luz forte], me deixam sobrecarregado/a e prejudicam meu foco. Poderíamos ajustar [pedido, ex.: mudar de lugar, usar fones, baixar a luz]? Isso me ajuda a trabalhar melhor.',
   },
   {
+    id: 'prioridade', title: 'Pedir prioridades e instruções por escrito', when: 'Quando há muita coisa e pouca clareza do que vem primeiro.',
+    text: 'Olá, [nome]. Para me organizar melhor, eu me beneficio de instruções escritas e de uma lista clara de prioridades. Você poderia me enviar o resultado esperado, o prazo e o que vem primeiro em [tarefa ou projeto]?',
+  },
+  {
     id: 'recusar', title: 'Recusar um convite sem culpa', when: 'Quando você não tem energia para o evento.',
     text: 'Oi, [nome]! Obrigado/a pelo convite. Desta vez não vou conseguir ir. Fico feliz de ter lembrado de mim. Se quiser, podemos combinar algo mais tranquilo em [alternativa].',
   },

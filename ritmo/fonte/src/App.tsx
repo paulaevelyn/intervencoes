@@ -21,13 +21,14 @@ import { Planner } from './pages/Planner';
 import { useReminders } from './reminders';
 
 const NAV = [
-  { to: '/', label: 'Início', icon: 'home', root: '' },
+  { to: '/', label: 'Hoje', icon: 'home', root: '' },
   { to: '/tarefas', label: 'Tarefas', icon: 'tasks', root: 'tarefas' },
   { to: '/rotinas', label: 'Rotinas', icon: 'clock', root: 'rotinas' },
   { to: '/regulacao', label: 'Regulação', icon: 'wind', root: 'regulacao' },
-  { to: '/mais', label: 'Mais', icon: 'more', root: 'mais' },
+  { to: '/mais', label: 'Perfil', icon: 'more', root: 'mais' },
 ];
-const MORE_ROOTS = ['mais', 'plano', 'sensorial', 'comunicacao', 'ajustes', 'sobre', 'energia', 'perfil', 'estados', 'entender'];
+const PERFIL_ROOTS = ['mais', 'ajustes', 'sobre', 'perfil'];
+const REGULACAO_ROOTS = ['regulacao', 'plano', 'sensorial', 'comunicacao', 'energia', 'estados', 'entender'];
 
 function useAppearance() {
   const { state } = useStore();
@@ -45,11 +46,12 @@ function useAppearance() {
     const isDark = s.theme === 'escuro' || (s.theme === 'sistema' && dark);
     r.dataset.theme = isDark ? 'dark' : 'light';
     r.dataset.lowstim = String(s.lowStim);
+    r.dataset.contrast = s.contrast === 'alto' ? 'high' : 'normal';
     r.dataset.font = s.readingFont ? 'leitura' : 'padrao';
     r.style.setProperty('--fs', `${s.fontScale}%`);
     r.style.setProperty('--ls', s.wideSpacing ? '0.04em' : '0');
     r.style.setProperty('--lh', s.wideSpacing ? '1.9' : '1.6');
-    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', isDark ? '#171b1e' : '#2f6b62');
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', isDark ? '#1f2326' : '#3d5a52');
   }, [s, dark]);
 }
 
@@ -99,13 +101,13 @@ export function App() {
         <nav aria-label="Principal" className="fixed bottom-0 inset-x-0 z-20 border-t-2 border-line bg-surface md:sticky md:top-[var(--bar,0px)] md:h-[calc(100vh-var(--bar,0px))] md:w-56 md:shrink-0 md:border-t-0 md:border-r-2 md:pt-20">
           <ul className="grid grid-cols-[repeat(auto-fit,minmax(3.6rem,1fr))] md:grid-cols-1 md:gap-1 md:p-3">
             {NAV.map((n) => {
-              const active = n.to === '/mais' ? MORE_ROOTS.includes(root) : root === n.root;
+              const active = n.to === '/mais' ? PERFIL_ROOTS.includes(root) : n.to === '/regulacao' ? REGULACAO_ROOTS.includes(root) : root === n.root;
               return (
                 <li key={n.to}>
                   <a href={`#${n.to}`} aria-current={active ? 'page' : undefined}
                     className={`tap flex flex-col md:flex-row items-center justify-center md:justify-start gap-0.5 md:gap-3 py-2 md:px-4 md:rounded-xl text-[0.78rem] md:text-base font-semibold min-w-0 break-words text-center md:text-left ${active ? 'text-brand md:bg-soft' : 'text-muted hover:text-ink'}`}>
                     <Icon name={n.icon} className="w-6 h-6" />
-                    <span className={active ? 'underline underline-offset-4 decoration-2' : ''}>{n.label}</span>
+                    <span className={active ? 'font-extrabold' : ''}>{n.label}</span>
                   </a>
                 </li>
               );
@@ -117,7 +119,7 @@ export function App() {
       <div className="flex-1 min-w-0">
         <header className="sticky top-[var(--bar,0px)] z-10 border-b-2 border-line bg-bg/95 backdrop-blur-sm">
           <div className="mx-auto max-w-2xl px-4 py-2 flex items-center justify-between gap-3">
-            <a href="#/" className="text-xl font-bold tracking-tight tap flex items-center">Ritmo</a>
+            <a href="#/" className="brand-word text-2xl tap flex items-center text-brand">Ritmo</a>
             {!simple && (
               <Button icon="heart" onClick={() => go('/apoio-agora')} aria-label="Preciso de apoio agora. Abre o plano de apoio simplificado.">Preciso de apoio agora</Button>
             )}

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useStore, uid } from '../store';
 import { go } from '../router';
-import { Button, Card, PageHead } from '../ui';
+import { Blobs, Button, Card, PageHead } from '../ui';
 import { suggest, type Suggestion } from '../data/suggest';
 import type { Mood } from '../types';
 
@@ -56,9 +56,19 @@ export function Home() {
     );
   }
 
-  const last = state.checkins[state.checkins.length - 1];
+  // Uma única ação sugerida, escolhida pelo que mais pesa no dia (opcional) ou pelo que a pessoa já tem.
+  const w = state.profile.weighs;
+  const temTarefa = state.tasks.some((t) => !t.done && !t.later);
+  const sug =
+    w.includes('sono') ? { q: 'Quer preparar o fim do dia com calma?', l: 'Ver minhas rotinas', to: '/rotinas' }
+    : w.includes('sobrecarga') ? { q: 'Quer uma pausa curta antes de qualquer coisa?', l: 'Ver práticas de regulação', to: '/regulacao' }
+    : w.includes('relacionamentos') || w.includes('trabalho') ? { q: 'Precisa dizer algo sem saber como?', l: 'Ver mensagens prontas', to: '/comunicacao' }
+    : w.includes('rotinas') ? { q: 'Quer seguir uma rotina, um passo de cada vez?', l: 'Ver minhas rotinas', to: '/rotinas' }
+    : temTarefa ? { q: 'Quer começar algo pequeno?', l: 'Ver uma tarefa de 2 minutos', to: '/tarefas?foco=auto' }
+    : { q: 'Quer anotar uma coisa para fazer?', l: 'Abrir minhas tarefas', to: '/tarefas' };
   return (
     <>
+      <Blobs className="w-full max-w-[16rem] mb-1" />
       <PageHead title="Como você está agora?" sub="Escolha o que combina mais. Não existe resposta errada." />
       <div className="space-y-3" role="group" aria-label="Como você está agora?">
         {MOODS.map((m) => (
@@ -69,12 +79,13 @@ export function Home() {
           </button>
         ))}
       </div>
-      <div className="mt-4"><Button kind="ghost" onClick={() => go('/entender')}>Não sei o que estou sentindo</Button></div>
-      {last && (
-        <p className="mt-6 text-sm text-muted">
-          Último registro: {new Date(last.at).toLocaleDateString('pt-BR', { day: '2-digit', month: 'long' })}. Seus dados ficam neste aparelho (e na sua conta, se você entrar).
-        </p>
+      {!state.settings.lowStim && (
+        <Card className="mt-6 bg-soft border-soft">
+          <p className="font-semibold mb-2">{sug.q}</p>
+          <Button kind="action" onClick={() => go(sug.to)}>{sug.l}</Button>
+        </Card>
       )}
+      <div className="mt-4"><Button kind="ghost" onClick={() => go('/entender')}>Não sei o que estou sentindo</Button></div>
     </>
   );
 }

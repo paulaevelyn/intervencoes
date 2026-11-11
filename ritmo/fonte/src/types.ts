@@ -10,6 +10,7 @@ export interface Settings {
   wideSpacing: boolean;
   alerts: AlertMode;
   showCounts: boolean; // mostrar contagens de tempo na tela
+  contrast: 'padrao' | 'alto';
   listen: boolean; // botão "Ouvir" (leitura em voz alta)
   ai: { enabled: boolean; useProfile: boolean; consent?: string }; // ajuda de IA, opt-in
 }
@@ -22,6 +23,7 @@ export interface Profile {
   tone: Tone;
   values: string[]; // o que importa para mim
   wants: string[]; // comportamentos que quero cultivar
+  weighs: string[]; // o que mais pesa no dia (onboarding)
   asked: boolean; // já viu a tela de perfil
 }
 
@@ -34,6 +36,7 @@ export interface StateEntry {
   need?: string;
   note?: string;
 }
+export interface InboxItem { id: string; text: string; at: number; kind: 'ideia' | 'distracao' }
 export interface StateNotes { signs: string[]; helps: string[] }
 
 export interface Step { id: string; text: string; done: boolean }
@@ -111,4 +114,5 @@ export interface State {
   profile: Profile;
   stateLog: StateEntry[];
   stateNotes: Record<string, StateNotes>;
+  inbox: InboxItem[];
 }
