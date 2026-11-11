@@ -10,6 +10,9 @@
    3. Lembrete de pausa: depois de ~20 minutos de uso contínuo, um convite discreto, que não bloqueia
       nada e pode ser dispensado para sempre. Pausa guiada de 1 minuto, sem cobrança.
    4. Menos movimento: segue o sistema (prefers-reduced-motion) e pode ser ligado ou desligado.
+   5. Adicionar à tela inicial: bloco permanente no painel ⚙ (passo a passo certo para iPhone, Android e
+      computador, ou botão "Instalar" quando o navegador permite) e um convite discreto a partir da segunda
+      visita, dispensável. Não aparece em app já instalado nem nos apps que pedem zero interrupção (ver SEM_CONVITE).
 
    Ajustes ficam em localStorage ('pea_bemestar'), compartilhados por todos os apps do mesmo endereço. */
 (function (global) {
@@ -17,6 +20,8 @@
   if (global.PeaBemEstar) return;
 
   var CHAVE = 'pea_bemestar';
+  var SEM_CONVITE = ['ritmo', 'seguranca-interna'];   // sem convite automático: design de baixa estimulação / trauma. O bloco do painel ⚙ continua.
+  var DIAS_ADIAR = 30;                      // "Agora não" some por este tempo
   var MIN_PAUSA = 20;                       // minutos de uso contínuo até o convite de pausa
   var raiz = document.documentElement;
 
@@ -85,7 +90,7 @@
     var cb = el('input', { type: 'checkbox' }); cb.checked = marcado; cb.addEventListener('change', function () { aoMudar(cb.checked); });
     var id = 'pea-aj-' + Math.random().toString(36).slice(2, 7); cb.id = id;
     var lab = el('label', { for: id }, titulo, el('small', {}, dica));
-    return el('div', { class: 'pea-bem-linha' }, lab, cb);
+    return el('div', { class: 'pea-bem-linha' }, '', lab, cb);
   }
   function fechar() { if (ov) { ov.remove(); ov = null; } }
   function abrir() {
@@ -129,7 +134,7 @@
     });
     ap.appendChild(env);
     cx.appendChild(ap);
-
+    cx.appendChild(blocoInstalar());
 
     cx.appendChild(linhaAjuste('Menos movimento', 'Reduz animações e rolagem suave. Segue a configuração do seu aparelho, a menos que você escolha aqui.', movimentoReduzido(), function (v) { cfg.calmo = v; gravar(cfg); aplicarMovimento(); }));
     cx.appendChild(linhaAjuste('Barra de progresso da tela', 'Mostra no topo o quanto você já percorreu, e um botão para voltar ao início.', barraLigada(), function (v) { cfg.barra = v; gravar(cfg); recalcular(); }));
@@ -144,6 +149,85 @@
     document.body.appendChild(ov); fecharBtn.focus();
   }
   function escFecha(e) { if (e.key === 'Escape') { fechar(); document.removeEventListener('keydown', escFecha); } }
+
+  /* ── 4. Adicionar à tela inicial ────────────────────────────────────── */
+  var adiado = null;                         // evento beforeinstallprompt (Chrome, Edge, Android): permite o botão "Instalar"
+  global.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); adiado = e; });
+  global.addEventListener('appinstalled', function () { cfg.instalar = 'feito'; gravar(cfg); adiado = null; fecharConviteInstalar(); fechar(); });
+  function instalado() { return (global.matchMedia && matchMedia('(display-mode: standalone)').matches) || navigator.standalone === true; }
+  function appDeste() { var s = document.querySelector('script[data-app]'); return s ? s.getAttribute('data-app') : ''; }
+  function nomeDoApp() { var s = document.querySelector('script[data-nome]'); return s ? s.getAttribute('data-nome') : ''; }
+  function passosInstalar() {
+    var ua = navigator.userAgent || '';
+    var ios = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    var android = /Android/.test(ua);
+    var firefox = /Firefox|FxiOS/.test(ua);
+    if (ios) return { onde: 'no iPhone ou iPad', passos: ['Toque em Compartilhar (o quadrado com uma seta para cima, na barra do navegador).', 'Role a lista e toque em "Adicionar à Tela de Início".', 'Toque em "Adicionar". O ícone aparece na sua tela inicial.'], nota: 'Se você não encontrar essa opção, abra esta página no Safari.' };
+    if (android) return { onde: 'no Android', passos: firefox
+      ? ['Toque no menu (os três pontinhos).', 'Toque em "Instalar".', 'Confirme. O ícone aparece na sua tela inicial.']
+      : ['Toque no menu do navegador (os três pontinhos).', 'Toque em "Instalar app" ou "Adicionar à tela inicial".', 'Confirme. O ícone aparece na sua tela inicial.'] };
+    if (firefox) return { onde: 'no computador', passos: ['O Firefox no computador não instala aplicativos.', 'Abra esta página no Chrome, no Edge ou no Safari para adicioná-la.'] };
+    if (/Safari/.test(ua) && !/Chrome|Chromium|Edg|OPR/.test(ua)) return { onde: 'no Mac', passos: ['No menu Arquivo do Safari, escolha "Adicionar ao Dock…".', 'Confirme o nome e clique em Adicionar.'] };
+    return { onde: 'no computador', passos: ['Procure o ícone de instalar (um monitor com uma seta) no fim da barra de endereço e clique nele.', 'Se não aparecer, abra o menu (os três pontinhos) e escolha "Instalar…" ou "Transmitir, salvar e compartilhar" e depois "Instalar página como app".', 'Confirme. O app abre em janela própria e fica no seu menu de aplicativos.'] };
+  }
+  function instalarAgora(aposFechar) {
+    if (!adiado) return false;
+    var e = adiado; adiado = null;
+    try { e.prompt(); e.userChoice.then(function (r) { if (r && r.outcome === 'accepted') { cfg.instalar = 'feito'; gravar(cfg); } if (aposFechar) aposFechar(r); }); } catch (x) { return false; }
+    return true;
+  }
+  function blocoInstalar() {
+    var cx = el('div', { class: 'pea-bem-instalar', id: 'pea-bem-instalar' });
+    var nome = nomeDoApp();
+    cx.appendChild(el('strong', {}, 'Adicionar à tela inicial'));
+    if (instalado()) { cx.appendChild(el('small', {}, 'Este app já está na sua tela inicial. Você pode abri-lo por lá.')); return cx; }
+    cx.appendChild(el('small', {}, (nome ? 'Abra o ' + nome : 'Abra este app') + ' com um toque, direto do seu celular ou computador, sem precisar digitar o endereço. Não ocupa quase espaço e não muda nada no que você já registrou.'));
+    if (adiado) {
+      var b = el('button', { class: 'pea-bem-btn', type: 'button' }, 'Instalar agora');
+      b.addEventListener('click', function () { instalarAgora(function () { fechar(); }); });
+      cx.appendChild(b);
+    }
+    var p = passosInstalar();
+    var det = el('details', adiado ? {} : { open: '' });
+    det.appendChild(el('summary', {}, adiado ? 'Prefere fazer manualmente?' : 'Como fazer ' + p.onde));
+    var ol = el('ol'); p.passos.forEach(function (t) { ol.appendChild(el('li', {}, t)); }); det.appendChild(ol);
+    if (p.nota) det.appendChild(el('small', {}, p.nota));
+    cx.appendChild(det);
+    var feito = el('button', { class: 'pea-bem-btn sec', type: 'button' }, 'Já adicionei, não mostrar o convite');
+    feito.addEventListener('click', function () { cfg.instalar = 'feito'; gravar(cfg); feito.textContent = 'Combinado. Não vou mostrar o convite de novo.'; feito.disabled = true; });
+    if (cfg.instalar !== 'feito') cx.appendChild(feito);
+    return cx;
+  }
+
+  /* Convite discreto: só a partir da segunda visita, depois de alguns segundos, e some por 30 dias com "Agora não". */
+  var conviteInst = null, visivelSeg = 0;
+  function contarVisita() {
+    try { if (sessionStorage.getItem('pea_sessao')) return; sessionStorage.setItem('pea_sessao', '1'); } catch (e) { return; }
+    cfg.visitas = (cfg.visitas || 0) + 1; gravar(cfg);
+  }
+  function fecharConviteInstalar() { if (conviteInst) { conviteInst.remove(); conviteInst = null; } }
+  function emAbertura() {   // tela de abertura ou boas-vindas visível: o convite espera, para não cobrir o botão "Continuar"
+    var n = document.querySelector('#splash:not(.out), .ob-slide.on');
+    return !!(n && n.getClientRects().length && getComputedStyle(n).visibility !== 'hidden');
+  }
+  function podeConvidar() {
+    if (conviteInst || emAbertura() || instalado() || cfg.instalar === 'feito') return false;
+    if (!appDeste() || SEM_CONVITE.indexOf(appDeste()) !== -1) return false;
+    if ((cfg.visitas || 0) < 2 || Date.now() < (cfg.instalarAte || 0)) return false;
+    if (document.documentElement.classList.contains('pea-auth-carregando') || document.getElementById('pea-auth-tela') || document.getElementById('pea-bem-ov') || document.getElementById('pea-pausa')) return false;
+    return true;
+  }
+  function mostrarConviteInstalar() {
+    conviteInst = el('div', { id: 'pea-instalar', class: 'on', role: 'status' });
+    conviteInst.appendChild(el('strong', {}, 'Deixe este app à mão'));
+    conviteInst.appendChild(document.createTextNode('Adicione à sua tela inicial para abrir com um toque, sem procurar o endereço. Se preferir, pode ficar como está.'));
+    var b1 = el('button', { class: 'pea-bem-btn', type: 'button' }, adiado ? 'Instalar' : 'Ver como adicionar');
+    var b2 = el('button', { class: 'pea-bem-btn sec', type: 'button' }, 'Agora não');
+    b1.addEventListener('click', function () { fecharConviteInstalar(); if (!instalarAgora()) { abrir(); var x = document.getElementById('pea-bem-instalar'); if (x && x.scrollIntoView) x.scrollIntoView({ block: 'center' }); } });
+    b2.addEventListener('click', function () { cfg.instalarAte = Date.now() + DIAS_ADIAR * 864e5; gravar(cfg); fecharConviteInstalar(); });
+    conviteInst.appendChild(b1); conviteInst.appendChild(b2);
+    document.body.appendChild(conviteInst);
+  }
 
   /* ── 3. Pausa ───────────────────────────────────────────────────────── */
   var convite = null, segundos = 0, avisou = false;
@@ -177,12 +261,14 @@
     // Conta só o tempo com a página visível; cada ida e volta de segundo plano não zera nem acelera o relógio.
     if (document.visibilityState !== 'visible') return;
     segundos++;
+    visivelSeg++; if (visivelSeg >= 12 && visivelSeg % 4 === 0 && podeConvidar()) mostrarConviteInstalar();
     if (!avisou && segundos >= MIN_PAUSA * 60 && pausasLigadas() && !document.documentElement.classList.contains('pea-auth-carregando')) { avisou = true; mostrarConvite(); }
   }
 
   /* ── Partida ────────────────────────────────────────────────────────── */
   function iniciar() {
     aplicarMovimento();
+    contarVisita();
     montarRolagem();
     setInterval(relogio, 1000);
   }

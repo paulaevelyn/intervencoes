@@ -59,3 +59,21 @@ html.pea-calmo .pea-resp { animation: none; transform: scale(.9); }
 .pea-bem-apoio { margin: 12px 0; padding: 12px 14px; border: 1.5px solid rgba(63,67,75,.14); border-radius: 14px; font-size: 14px; }
 .pea-bem-apoio small { display: block; color: var(--muted, #6B7280); font-size: 12.5px; margin: 2px 0 8px; }
 .pea-bem-apoio input, .pea-bem-apoio select { width: 100%; padding: 10px 12px; margin-bottom: 8px; font: inherit; color: inherit; background: transparent; border: 1.5px solid rgba(63,67,75,.2); border-radius: 10px; }
+
+/* ── Adicionar à tela inicial ────────────────────────────────────────── */
+.pea-bem-instalar { margin: 12px 0; padding: 12px 14px; border: 1.5px solid rgba(63,67,75,.14); border-radius: 14px; font-size: 14px; }
+.pea-bem-instalar small { display: block; color: var(--muted, #6B7280); font-size: 12.5px; margin: 2px 0 6px; }
+.pea-bem-instalar details { margin-top: 8px; }
+.pea-bem-instalar summary { cursor: pointer; font-weight: 700; min-height: 32px; display: flex; align-items: center; color: var(--mint-d, var(--primary-d, #3D5A52)); }
+.pea-bem-instalar summary:focus-visible { outline: 3px solid var(--mint, var(--primary, #5E7D73)); outline-offset: 2px; border-radius: 6px; }
+.pea-bem-instalar ol { margin: 6px 0; padding-left: 20px; }
+.pea-bem-instalar li { margin-bottom: 6px; }
+.pea-bem-btn:disabled { opacity: .6; cursor: default; }
+
+/* Convite para adicionar à tela inicial: discreto, sem bloquear nada */
+#pea-instalar { position: fixed; left: 12px; right: 12px; bottom: calc(86px + env(safe-area-inset-bottom, 0px)); z-index: 9340; display: none; max-width: 440px; margin: 0 auto;
+  background: var(--white, #fff); color: var(--graphite, #3F434B); border: 1px solid rgba(63,67,75,.15); border-radius: 18px; padding: 14px 16px; box-shadow: 0 6px 24px rgba(0,0,0,.18);
+  font: 400 14px/1.5 var(--font, 'Nunito Sans', system-ui, sans-serif); }
+#pea-instalar.on { display: block; }
+#pea-instalar strong { display: block; margin-bottom: 2px; }
+#pea-instalar .pea-bem-btn { margin-top: 8px; min-height: 44px; font-size: 14px; }
