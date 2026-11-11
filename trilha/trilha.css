@@ -2,6 +2,8 @@
    Cor própria: azul-petróleo (--tr), com a base da marca (mint, coral, amber, lav, sand). */
 :root{--tr:#2F6F7A;--tr-d:#245860;--tr-l:#DCEBED;--tr-xl:#EEF6F7}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--tr:#7FB6BF;--tr-d:#A5CFD6;--tr-l:#27393D;--tr-xl:#222E31}}
+/* Modo escuro: borda fina clara no logo (a placa verde some no fundo escuro). */
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) :is(.splash-logo,.ob-brand img,.nav-logo img){border-radius:27%;box-shadow:0 0 0 1px rgba(251,247,240,.32)}}
 
 /* Cabeçalho das telas internas e botão voltar */
 .back-btn{display:inline-block;margin:12px 16px 0;padding:10px 14px;font:700 14px inherit;font-family:inherit;color:var(--tr-d);background:transparent;border:1.5px solid rgba(63,67,75,.18);border-radius:99px;cursor:pointer}
