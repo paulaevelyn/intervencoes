@@ -1,10 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&family=Cormorant+Garamond:wght@500;600;700&display=swap');
 
 :root {
-  --primary: #4F6D7A; --primary-d: #38505B; --primary-l: #DCE6E9;
-  --accent: #C97B4A; --accent-d: #A35F35; --accent-l: #F5E2D3;
-  --bg: #F7F4EF; --white: #FFFFFF;
-  --ink: #33312E; --muted: #6B6863; --light: #A9A399; --line: #E5E0D8;
+  --primary: #1B8B6F; --primary-d: #146E57; --primary-l: #D7EEE6;
+  --accent: #BC5821; --accent-d: #9E4719; --accent-l: #FFE6D6;
+  --bg: #F3EDE2; --white: #FFFFFF;
+  --ink: #12372F; --muted: #6B6863; --light: #A9A399; --line: #E5E0D8;
   --ok: #3F7A5C; --ok-l: #E1F0E7;
   --notice: #B8543F; --notice-l: #F7E3DD;
   --radius: 18px;
@@ -17,7 +17,7 @@ html { scroll-behavior: smooth; }
 
 body {
   margin: 0;
-  font-family: 'Quicksand', sans-serif;
+  font-family: 'DM Sans', sans-serif;
   background: var(--bg);
   color: var(--ink);
   line-height: 1.6;
@@ -25,7 +25,7 @@ body {
   padding-bottom: 90px;
 }
 
-h1, h2, h3, h4 { font-family: 'Fraunces', serif; font-weight: 600; margin: 0 0 .5em; color: var(--ink); }
+h1, h2, h3, h4 { font-family: 'Cormorant Garamond', serif; font-size-adjust:.48; font-weight: 600; margin: 0 0 .5em; color: var(--ink); }
 a { color: var(--primary-d); }
 
 .visually-hidden {
@@ -51,7 +51,7 @@ img { max-width: 100%; }
 }
 .nav-brand { display: flex; align-items: center; gap: 10px; }
 .nav-brand img { width: 32px; height: 32px; }
-.nav-brand-name { font-family: 'Fraunces', serif; font-weight: 600; font-size: 1.35rem; color: var(--primary-d); }
+.nav-brand-name { font-family: 'Cormorant Garamond', serif; font-size-adjust:.48; font-weight: 600; font-size: 1.35rem; color: var(--primary-d); }
 .nav-actions { display: flex; gap: 8px; flex-wrap: wrap; }
 
 .nav-btn {

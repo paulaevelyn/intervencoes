@@ -11,13 +11,13 @@
 <meta name="theme-color" content="#5E7D73">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&display=swap" rel="stylesheet">
 <style>
   :root {
-    --pea-coral: #D96C63;
-    --pea-musgo: #5E7D73;
-    --pea-areia: #F5F0E8;
-    --pea-grafite: #2E2E2E;
+    --pea-coral: #BC5821;
+    --pea-musgo: #1B8B6F;
+    --pea-areia: #F3EDE2;
+    --pea-grafite: #12372F;
   }
 
   * { box-sizing: border-box; }
@@ -32,7 +32,7 @@
   body {
     background: var(--pea-areia);
     color: var(--pea-grafite);
-    font-family: 'Lato', Arial, sans-serif;
+    font-family: 'DM Sans', Arial, sans-serif;
     line-height: 1.65;
     -webkit-font-smoothing: antialiased;
   }
@@ -47,7 +47,7 @@
   .pea-marca {
     display: block;
     text-align: center;
-    font-family: 'Playfair Display', serif;
+    font-family: 'Cormorant Garamond', serif; font-size-adjust:.48;
     font-size: 15px;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -109,7 +109,7 @@
   }
 
   .pea-titulo {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Cormorant Garamond', serif; font-size-adjust:.48;
     font-weight: 600;
     font-size: 26px;
     color: var(--pea-grafite);
@@ -177,7 +177,7 @@
   }
 
   .pea-btn {
-    font-family: 'Lato', Arial, sans-serif;
+    font-family: 'DM Sans', Arial, sans-serif;
     font-size: 16px;
     font-weight: 700;
     border: none;
@@ -195,7 +195,7 @@
     background: var(--pea-coral);
     color: #FFFFFF;
     margin-left: auto;
-    box-shadow: 0 4px 14px rgba(217, 108, 99, 0.3);
+    box-shadow: 0 4px 14px rgba(210, 104, 47, 0.3);
   }
 
   .pea-btn-continuar:hover {
@@ -247,6 +247,7 @@
 <!-- LOGIN: estilos e bloqueio do app até a sessão ser verificada -->
 <link rel="stylesheet" href="../auth/auth.css">
 <script>document.documentElement.classList.add("pea-auth-carregando");</script>
+<link rel="stylesheet" href="../shared/marca.css">
 </head>
 <body>
 <div id="pea-auth-aviso">carregando…</div>

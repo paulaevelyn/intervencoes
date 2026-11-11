@@ -33,7 +33,7 @@ const MOODS = [
   { v: 1, e: '😞', l: 'Muito baixo' }, { v: 2, e: '😔', l: 'Baixo' }, { v: 3, e: '😐', l: 'Neutro' },
   { v: 4, e: '🙂', l: 'Bem' },         { v: 5, e: '😊', l: 'Muito bem' }
 ];
-const MOOD_COLORS = ['', '#B85550', '#D96C63', '#C47D2A', '#5E7D73', '#3D5A52'];
+const MOOD_COLORS = ['', '#9E4719', '#BC5821', '#C47D2A', '#1B8B6F', '#146E57'];
 const GREETINGS = [
   'Como você está se sentindo agora?', 'Que bom ter você aqui.', 'Cada dia que você chega aqui conta.', 'Você importa. Como está hoje?'
 ];
@@ -225,7 +225,7 @@ function renderMoodChart() {
   svg.style.display = algum ? '' : 'none'; empty.style.display = algum ? 'none' : '';
   if (!algum) { svg.innerHTML = ''; return; }
   svg.innerHTML = dias.map((x, i) => {
-    const r = h[x.d] && h[x.d].rating, bx = 14 + i * 44, ht = r ? Math.round(r / 5 * 46) : 4, fill = r ? MOOD_COLORS[r] : 'rgba(63,67,75,.12)';
+    const r = h[x.d] && h[x.d].rating, bx = 14 + i * 44, ht = r ? Math.round(r / 5 * 46) : 4, fill = r ? MOOD_COLORS[r] : 'rgba(18,55,47,.12)';
     return `<rect x="${bx}" y="${54 - ht}" width="28" height="${ht}" rx="6" fill="${fill}"/><text x="${bx + 14}" y="68" text-anchor="middle" font-size="9" fill="#6B7280" font-family="inherit">${esc(x.w)}</text>`;
   }).join('');
 }

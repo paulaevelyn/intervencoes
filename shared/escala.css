@@ -1,6 +1,6 @@
 /* escala.css — estilos do módulo de escalas. Usa variáveis do app, com reservas. */
-.esc-form { --e-texto: var(--graphite, #2E2E2E); --e-fraco: var(--muted, #6B7280); --e-borda: var(--border, rgba(63,67,75,.15));
-  --e-acento: var(--mint-d, #3D5A52); --e-fundo: var(--white, #fff); color: var(--e-texto); font-family: var(--font, 'Nunito Sans', system-ui, sans-serif); }
+.esc-form { --e-texto: var(--graphite, #12372F); --e-fraco: var(--muted, #6B7280); --e-borda: var(--border, rgba(18,55,47,.15));
+  --e-acento: var(--mint-d, #146E57); --e-fundo: var(--white, #fff); color: var(--e-texto); font-family: var(--font, 'DM Sans', system-ui, sans-serif); }
 .esc-form * { box-sizing: border-box; }
 .esc-titulo { font-size: 1.25rem; font-weight: 800; color: var(--e-acento); margin: 0 0 8px; }
 .esc-instrucao { font-size: 14.5px; color: var(--e-fraco); margin: 0 0 12px; }

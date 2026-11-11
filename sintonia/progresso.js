@@ -241,7 +241,7 @@ function buildPdf(days) {
   const lib = window.jspdf; if (!lib || !lib.jsPDF) return null;
   const doc = new lib.jsPDF({ unit: 'pt', format: 'a4' });
   const PW = doc.internal.pageSize.getWidth(), PHt = doc.internal.pageSize.getHeight(), M = 44, CW = PW - 2 * M;
-  const ACC = [61, 46, 122], INK = [63, 67, 75], MUTED = [107, 114, 128], LINE = [220, 222, 226];
+  const ACC = [61, 46, 122], INK = [18, 55, 47], MUTED = [107, 114, 128], LINE = [220, 222, 226];
   const PCOL = { 1: [94, 125, 115], 2: [196, 125, 42], 3: [139, 127, 184] };
   const nome = ($('repName').value || '').trim(); const rs = periodRows(days); const since = Date.now() - days * 864e5; const wk = WK.filter(e => e.ts >= since);
   let y = M;

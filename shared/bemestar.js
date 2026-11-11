@@ -143,6 +143,9 @@
     var fecharBtn = el('button', { class: 'pea-bem-btn', type: 'button' }, 'Fechar'); fecharBtn.addEventListener('click', fechar);
     var pausa = el('button', { class: 'pea-bem-btn sec', type: 'button' }, 'Fazer uma pausa de 1 minuto'); pausa.addEventListener('click', function () { fechar(); pausaGuiada(); });
     cx.appendChild(pausa); cx.appendChild(fecharBtn);
+    var cred = el('p', { class: 'pea-bem-cred' }, 'Uma iniciativa do ', el('a', { href: 'https://www.psicoterapiaeafins.com.br', target: '_blank', rel: 'noopener' }, 'Psicoterapia e Afins'));
+    cred.appendChild(document.createTextNode('. © 2026 Psicoterapia e Afins. Todos os direitos reservados.'));   // el() só aceita elementos depois do 1º texto
+    cx.appendChild(cred);
     ov = el('div', { id: 'pea-bem-ov', class: 'on' }, '', cx);
     ov.addEventListener('click', function (e) { if (e.target === ov) fechar(); });
     document.addEventListener('keydown', escFecha);
