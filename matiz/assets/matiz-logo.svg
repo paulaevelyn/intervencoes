@@ -1,7 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Matiz">
-  <circle cx="32" cy="32" r="30" fill="#EDE7DC"/>
-  <path d="M16 26 Q16 15 27 15 H39 Q48 15 48 23 Q48 31 39 31 H26 L17 40 V31 Q16 30 16 26 Z" fill="#4F6D7A"/>
-  <circle cx="26" cy="22" r="6" fill="#C97B4A" opacity="0.85"/>
-  <circle cx="34" cy="20" r="5" fill="#B98A1D" opacity="0.85"/>
-  <circle cx="31" cy="27" r="5.5" fill="#3D7A4E" opacity="0.85"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="512" height="512" role="img" aria-label="Logo Matiz"><title>Matiz</title><rect width="120" height="120" rx="32" fill="#0F3D33"/><g transform="translate(22.8 22.8) scale(0.62)"><g fill="none" stroke-width="11" stroke-linecap="round"><path d="M49.5 25.6 A36 36 0 0 1 70.5 25.6" stroke="#FF7D48"/><path d="M84.6 33.7 A36 36 0 0 1 95.1 51.9" stroke="#E78A7C"/><path d="M95.1 68.1 A36 36 0 0 1 84.6 86.3" stroke="#CE98B1"/><path d="M70.5 94.4 A36 36 0 0 1 49.5 94.4" stroke="#AEAAF7"/><path d="M35.4 86.3 A36 36 0 0 1 24.9 68.1" stroke="#739EC1"/><path d="M24.9 51.9 A36 36 0 0 1 35.4 33.7" stroke="#38918A"/></g><circle cx="60" cy="60" r="10" fill="#FBF7F0"/></g></svg>
