@@ -47,3 +47,21 @@ Legenda: ✅ segue · 🟡 segue em parte · ⚪ diferente de propósito
 | Teclado e leitor de tela | 🟡 | axe sem violações, foco visível, título focado ao trocar de tela. Falta teste com leitor de tela real |
 | Alternativas a arrastar; tempo ajustável; pausar movimento | ✅ | Sem arrastar; estimativas editáveis; nada avança sozinho |
 | Autenticação simples | ✅ | Opcional; login compartilhado do repositório |
+
+## Da evidência à função (conversa do Perplexity, 2026-11-11)
+**Atenção:** as fontes abaixo foram citadas pelo Perplexity. Não consegui abri-las (o ambiente de desenvolvimento não alcança PubMed Central nem Springer), então **não foram conferidas** e nenhuma citação aparece dentro do app. Antes de citar qualquer estudo em texto público, confira cada link.
+
+| Barreira | Função no Ritmo | Status |
+|---|---|---|
+| Iniciar, priorizar, concluir | Tarefas em micro-passos, “Começar”, primeiro passo, adiar sem culpa | ✅ já existia |
+| Memória de trabalho | **Caixa de captura** (nova), lista única, lembretes opcionais | ✅ |
+| Distração e perda do fio | **“Guardei uma distração”** durante a tarefa (novo): salva na caixa e devolve à tarefa | ✅ |
+| Gestão do tempo | **Blocos de tempo flexíveis** (novo): 2, 10, 25 min ou o tempo da tarefa; cronômetro opcional; aviso 2 min antes do fim em blocos longos; pausa de 5 min | ✅ |
+| Passo ainda grande demais | **“Dividir este passo em passos menores”** (novo), em “Preciso de ajuda” | ✅ |
+| Sobrecarga sensorial | Registro sensorial + Modo calmo | ✅ já existia |
+| Instruções vagas, imprevisibilidade | Rotinas visuais com alerta antes da transição | ✅ já existia |
+| Pedir acomodações | Mensagens prontas (novo modelo: prioridades e instruções por escrito) | ✅ |
+| Culpa e autocrítica | Linguagem compassiva, sem streak, ranking ou punição | ✅ |
+| Acessibilidade de texto/contraste | Painel de ajustes | ✅ |
+| Estado atual | Hoje: 3 caminhos; **2 a 3 sugestões**, não 1 (decisão original da profissional) | ⚪ |
+| Testes com pessoas neurodivergentes antes do lançamento | Processo, não função | ❌ ainda não feito |

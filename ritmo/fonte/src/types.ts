@@ -36,6 +36,7 @@ export interface StateEntry {
   need?: string;
   note?: string;
 }
+export interface InboxItem { id: string; text: string; at: number; kind: 'ideia' | 'distracao' }
 export interface StateNotes { signs: string[]; helps: string[] }
 
 export interface Step { id: string; text: string; done: boolean }
@@ -113,4 +114,5 @@ export interface State {
   profile: Profile;
   stateLog: StateEntry[];
   stateNotes: Record<string, StateNotes>;
+  inbox: InboxItem[];
 }

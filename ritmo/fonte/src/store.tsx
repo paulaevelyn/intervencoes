@@ -28,6 +28,7 @@ export const initialState = (): State => ({
   profile: { traits: [], tone: 'acolhedor', values: [], wants: [], weighs: [], asked: false },
   stateLog: [],
   stateNotes: {},
+  inbox: [],
 });
 
 /** Junta o que veio salvo com os padrões, para não quebrar se algum campo faltar. */
@@ -49,6 +50,7 @@ export function normalize(raw: unknown): State {
     templateEdits: r.templateEdits && typeof r.templateEdits === 'object' ? r.templateEdits : {},
     profile: { ...base.profile, ...(r.profile ?? {}) },
     stateLog: arr(r.stateLog),
+    inbox: arr(r.inbox),
     stateNotes: r.stateNotes && typeof r.stateNotes === 'object' ? r.stateNotes : {},
   };
 }
