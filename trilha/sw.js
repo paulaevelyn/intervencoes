@@ -2,7 +2,7 @@
    Offline-first para assets, network-first para HTML.
    Incrementar CACHE_VERSION a cada deploy para forçar atualização.
    Nada de dados da pessoa passa por aqui: só arquivos do app. */
-const CACHE_VERSION = 'trilha-v5';
+const CACHE_VERSION = 'trilha-v6';
 const CORE = [
   './',
   './index.html',

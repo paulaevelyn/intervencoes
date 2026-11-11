@@ -22,6 +22,8 @@ html.pea-auth-carregando body > *:not(#pea-auth-tela):not(#pea-auth-aviso) { dis
 }
 #pea-auth-tela * { box-sizing: border-box; }
 .pea-auth-logo { width: 88px; height: 88px; object-fit: contain; margin: 0 auto 18px; display: block; }
+/* Modo escuro: a placa verde some no fundo escuro; uma borda fina clara devolve o contorno. */
+@media (prefers-color-scheme: dark) { .pea-auth-logo { border-radius:27%; box-shadow:0 0 0 1px rgba(251,247,240,.32); } }
 .pea-auth-cartao {
   width: 100%; max-width: 400px; background: var(--a-cartao); border: 1px solid var(--a-borda);
   border-radius: 18px; padding: 26px 22px; box-shadow: 0 6px 28px rgba(63,67,75,.12);
