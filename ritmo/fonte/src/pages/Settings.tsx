@@ -134,7 +134,7 @@ export function Settings() {
         <Group title="Conta e sincronização">
           <Card>
             <p className="font-semibold">Opcional.</p>
-            <p className="text-muted">Pelo botão de conta, no canto superior direito (“sem conta”, “Entrar” ou “conta”), você entra com e-mail e senha para guardar seus dados na conta e usar o Ritmo em outros aparelhos. As contas seguem o mesmo sistema dos outros apps da Psicoterapia e Afins. Antes de guardar, o aviso de privacidade pede seu consentimento. Seu plano de apoio, seus registros e suas tarefas nunca aparecem no painel da profissional. Os lembretes ficam só no aparelho.</p>
+            <p className="text-muted">Pelo botão de conta, no canto superior direito (“sem conta”, “Entrar” ou “conta”), você entra com e-mail e senha para guardar seus dados na conta e usar o Ritmo em outros aparelhos. As contas seguem o mesmo sistema dos outros apps da Psicoterapia e Afins. Antes de guardar, o aviso de privacidade pede seu consentimento. Se você tem uma profissional vinculada, em “conta” você pode ligar o compartilhamento de números e categorias (check-ins, registros sensoriais, estados marcados e contagens de tarefas). Começa desligado. Seu plano de apoio, seu perfil, seus textos e os títulos das tarefas nunca aparecem no painel dela. Os lembretes ficam só no aparelho.</p>
             <p className="text-muted mt-2">Se o botão não aparecer, o login não carregou (por exemplo, sem internet): o Ritmo segue funcionando só com os dados deste aparelho.</p>
           </Card>
         </Group>

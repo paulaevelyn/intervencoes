@@ -256,4 +256,8 @@ notify pgrst, 'reload schema';
 -- med [ids] } e forcas { top, dev, t só com com_textos }. Nunca projetados: trilha_rev, trilha_recursos, trilha_sos, trilha_agenda.
 
 -- ── 19. Ritmo (migração "ritmo", aplicada em 2026-11-04; arquivo supabase/ritmo.sql) ──
--- app_dados aceita app = 'ritmo' (chave 'ritmo:v1'). Sem projeção e sem painel: nada do Ritmo é visível para a profissional.
+-- app_dados aceita app = 'ritmo' (chave 'ritmo:v1').
+
+-- ── 20. Ritmo no painel (migração "ritmo_painel"; arquivo supabase/ritmo_painel.sql — NÃO APLICADA ainda) ──
+-- projecao_ritmo(chaves, com_textos): só números e categorias (check-ins, sensorial, estados, contagem de tarefas e rotinas).
+-- Nunca projetados, nem com com_textos: plano, perfil, notas, títulos, agenda, caixa de entrada. painel_dados despacha 'ritmo'.
