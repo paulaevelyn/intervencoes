@@ -34,15 +34,15 @@ Legenda: ✅ segue · 🟡 segue em parte · ⚪ diferente de propósito
 | Rotina visual: um passo por vez, ícone, tempo, “Próximo”; sem barras de progresso nem % | ✅ | Mostra “Passo 2 de 5”, nunca porcentagem |
 | Modo Calmo central: na 1ª tela, no menu e nos ajustes | ✅ | Menos cor, sem enfeites, sem movimento, só a próxima tarefa, sem lembrete diário nem vibração |
 | Microcopy sem cobrança | ✅ | Varredura de todas as telas sem “falhou”, “streak”, “complete”, “registre” etc. |
-| Boas-vindas: 1 frase, “Começar”, “Explorar sem criar conta”, privacidade, aviso de não diagnóstico | ✅ | Na primeira visita o app abre direto, sem tela de cadastro (⚪ diferente dos outros apps, que abrem no login). Conta continua opcional em “Entrar” |
+| Boas-vindas: 1 frase, “Começar”, privacidade, aviso de não diagnóstico | ✅ | Como nos outros apps do repositório, o login compartilhado aparece primeiro, com “Continuar sem conta” (⚪ a diretriz pedia abrir sem cadastro; mantido o padrão do repositório). Depois vêm as boas-vindas do Ritmo, com “Começar” e “Pular e explorar” |
 | Onboarding: até 3 telas, puláveis, sem diagnóstico | ✅ | Pesos do dia, jeito de receber apoio, ajustes |
-| Perfil com traços (TDAH, autismo etc.) | ⚪ | A diretriz pede não pedir diagnóstico no onboarding: o perfil existe só em **Perfil**, opcional e autodeclarado, a pedido da profissional |
+| Perfil com traços (TDAH, autismo etc.) | ⚪ | O onboarding não pergunta diagnóstico (diretriz). O perfil existe só em **Perfil**, opcional e autodeclarado, a pedido da profissional |
 | Estado: no máx. 3 perguntas, volta sem perder dados | ✅ | |
 | Regulação por necessidade (inclui “Preciso pedir apoio”) | ✅ | 7 objetivos |
 | Plano de apoio privado + “Preciso de apoio agora” sempre visível | ✅ | |
 | Comunicação assistida (editar e copiar) | ✅ | |
 | Ajustes: tema, baixo estímulo, fonte, contraste, som/vibração, notificações, exportar/apagar, privacidade | ✅ | Contraste: suave ou alto. Som: o app nunca toca som. Vibração: opcional e nunca no Modo calmo |
-| Idioma | ⚪ | Só português do Brasil |
+| Idioma | ⚪ | Só português do Brasil, como os demais apps do repositório (sem seletor de idioma) |
 | Alvos ≥ 44 px | ✅ | Menor medido: 48 px em 19 telas |
 | Teclado e leitor de tela | 🟡 | axe sem violações, foco visível, título focado ao trocar de tela. Falta teste com leitor de tela real |
 | Alternativas a arrastar; tempo ajustável; pausar movimento | ✅ | Sem arrastar; estimativas editáveis; nada avança sozinho |

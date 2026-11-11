@@ -61,7 +61,7 @@ export function Onboarding() {
         </button>
         <div className="mt-6 space-y-3">
           <Button kind="action" big block onClick={() => setStep(1)}>Começar</Button>
-          <Button block onClick={() => void finish(false)}>Explorar sem criar conta</Button>
+          <Button block onClick={() => void finish(false)}>Pular e explorar</Button>
           <Button kind="ghost" block onClick={() => void finish(false, true)}>Ver com dados de exemplo</Button>
         </div>
       </main>

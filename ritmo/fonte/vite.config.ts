@@ -15,8 +15,6 @@ const login = (): Plugin => ({
       if (ctx.server) return [];
       return [
         { tag: 'link', attrs: { rel: 'stylesheet', href: '../auth/auth.css' }, injectTo: 'head' },
-        // Primeira visita: abre direto no app (sem tela de cadastro). Conta continua opcional, pelo botão "Entrar".
-        { tag: 'script', children: `try{if(!localStorage.getItem('ritmo:visitou')){localStorage.setItem('ritmo:visitou','1');if(!localStorage.getItem('pea_sem_conta_ritmo'))localStorage.setItem('pea_sem_conta_ritmo','1');}}catch(e){}`, injectTo: 'head' },
         { tag: 'script', children: `document.documentElement.classList.add('pea-auth-carregando');
 (function () {
   var n = 0, t = setInterval(function () {
