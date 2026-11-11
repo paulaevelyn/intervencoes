@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Segurança Interna</title>
 <link rel="icon" href="assets/seguranca-interna-icon.svg" type="image/svg+xml">
 <link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
@@ -327,7 +327,7 @@
     flex: 1;
   }
 
-  .pea-link-discreto {
+  .pea-link-discreto { min-height:44px;
     display: block;
     text-align: center;
     background: none;
@@ -383,11 +383,11 @@
 
   <img src="assets/seguranca-interna-icon.svg" alt="" width="64" height="64" style="display:block;margin:0 auto 10px">
   <div class="pea-marca">Segurança Interna</div>
-  <a href="meu-painel.html" style="display:block;text-align:center;font-size:13px;font-weight:700;color:inherit;opacity:.75;margin-top:-6px">Meu painel</a>
-  <a id="pea-link-pre" href="escala.html?momento=pre" style="display:none;text-align:center;font-size:13px;font-weight:700;color:inherit;opacity:.75;margin-top:2px">Questionários opcionais (4 min)</a>
+  <a href="meu-painel.html" style="display:block;padding:11px 0;text-align:center;font-size:13px;font-weight:700;color:inherit;opacity:.75;margin-top:-6px">Meu painel</a>
+  <a id="pea-link-pre" href="escala.html?momento=pre" style="padding:11px 0;display:none;text-align:center;font-size:13px;font-weight:700;color:inherit;opacity:.75;margin-top:2px">Questionários opcionais (4 min)</a>
   <script>try{var _e=JSON.parse(localStorage.getItem("seguranca_escalas_v1")||"{}");if(!(_e.pre&&_e.pre.eplo)){document.getElementById("pea-link-pre").style.display="block";}}catch(x){document.getElementById("pea-link-pre").style.display="block";}</script>
-  <a href="diario.html" style="display:block;text-align:center;font-size:13px;font-weight:700;color:inherit;opacity:.75;margin-top:2px">Diário de segurança</a>
-  <a id="pea-link-ob" href="bem-vindo.html" style="display:none;text-align:center;font-size:13px;font-weight:700;color:inherit;opacity:.75;margin-top:2px">Primeira vez aqui? Veja como funciona (1 min)</a>
+  <a href="diario.html" style="display:block;padding:11px 0;text-align:center;font-size:13px;font-weight:700;color:inherit;opacity:.75;margin-top:2px">Diário de segurança</a>
+  <a id="pea-link-ob" href="bem-vindo.html" style="padding:11px 0;display:none;text-align:center;font-size:13px;font-weight:700;color:inherit;opacity:.75;margin-top:2px">Primeira vez aqui? Veja como funciona (1 min)</a>
   <script>try{var _o=JSON.parse(localStorage.getItem("seguranca_ob_v1")||"null");if(!(_o&&_o.feito)){document.getElementById("pea-link-ob").style.display="block";}}catch(x){document.getElementById("pea-link-ob").style.display="block";}</script>
 
   <div class="pea-progresso" id="pea-progresso">

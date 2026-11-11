@@ -200,3 +200,12 @@ html.pea-calmo .resp-circ,html.pea-calmo .resp-circ.in,html.pea-calmo .resp-circ
 .ar{background:var(--white);border-radius:var(--rs);margin:0 var(--pg) 8px;padding:12px 14px;box-shadow:var(--shadow)}
 .ar summary em{font-weight:700;font-style:normal;color:var(--mint-d);font-size:12px}
 .ar p{margin-top:8px;font-size:14px;line-height:1.55}
+
+/* Alvos de toque de pelo menos 44px (WCAG 2.5.5); o desenho continua o mesmo. */
+.tr-btn{min-height:44px;display:inline-flex;align-items:center;justify-content:center}
+.back-btn{min-height:44px;display:inline-flex;align-items:center}
+.chip{min-height:44px;display:inline-flex;align-items:center}
+.esc-b{min-height:44px}
+.brand-link{min-height:44px}
+.btn{min-height:44px}
+.ar summary{min-height:44px;display:flex;align-items:center}

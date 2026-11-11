@@ -312,3 +312,9 @@ body.pref-reduced-motion *, body.pref-reduced-motion *::before, body.pref-reduce
 
 .fade-in { animation: fadeIn .4s ease-in; }
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+/* Alvos de toque de pelo menos 44px (WCAG 2.5.5); o desenho continua o mesmo. */
+.nav-btn{min-height:44px}
+details > summary{padding:12px 0}
+#matiz-escala-link a{display:inline-block;padding:10px 0}
+a[href*="psicoterapiaeafins"]{display:inline-block;padding:14px 4px}
