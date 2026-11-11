@@ -1,20 +1,23 @@
+import { useStore } from '../store';
 import { PageHead, Icon, Card } from '../ui';
 
 const ITEMS = [
-  { to: '/estados', icon: 'eye', title: 'Meus estados', text: 'Reconhecer emoções, sobrecarga, meltdown, shutdown e o que fazer.' },
   { to: '/perfil', icon: 'heart', title: 'Meu perfil', text: 'Como você funciona. O Ritmo se adapta ao seu jeito.' },
-  { to: '/plano', icon: 'heart', title: 'Meu plano de apoio', text: 'Sinais, o que ajuda e quem chamar. Fica só neste aparelho.' },
-  { to: '/sensorial', icon: 'eye', title: 'Registro sensorial', text: 'Anote o que pesou e o que ajudou. Veja padrões da semana.' },
-  { to: '/comunicacao', icon: 'chat', title: 'Mensagens prontas', text: 'Modelos curtos para pedir prazo, pausa ou dizer não.' },
-  { to: '/energia', icon: 'note', title: 'Registro de energia', text: 'Energia, sobrecarga e o que você precisa agora.' },
-  { to: '/ajustes', icon: 'sliders', title: 'Ajustes e acessibilidade', text: 'Tema, tamanho do texto, baixo estímulo e seus dados.' },
-  { to: '/sobre', icon: 'info', title: 'Sobre este app', text: 'O que o Ritmo é, o que não é e como cuida dos seus dados.' },
+  { to: '/ajustes', icon: 'sliders', title: 'Ajustes e acessibilidade', text: 'Tema, texto, contraste, avisos, lembretes e seus dados.' },
+  { to: '/sobre', icon: 'info', title: 'Privacidade e sobre o Ritmo', text: 'O que o app é, o que não é e como cuida dos seus dados.' },
 ];
 
 export function More() {
+  const { state, update } = useStore();
+  const on = state.settings.lowStim;
   return (
     <>
-      <PageHead title="Mais" />
+      <PageHead title="Perfil" sub="Acessibilidade, lembretes, dados e privacidade." />
+      <button type="button" role="switch" aria-checked={on} onClick={() => update((s) => ({ ...s, settings: { ...s.settings, lowStim: !on } }))}
+        className="tap w-full text-left flex flex-wrap items-center justify-between gap-2 rounded-2xl border-2 border-line bg-surface p-4 mb-4 hover:border-brand">
+        <span className="min-w-0 flex-1 basis-48"><span className="block font-bold text-lg">Modo calmo</span><span className="block text-muted text-sm">Menos cores, sem enfeites nem movimento, uma coisa de cada vez.</span></span>
+        <span className={`shrink-0 rounded-full px-3 py-1 font-bold text-sm border-2 ${on ? 'bg-brand text-brand-ink border-brand' : 'border-line'}`}>{on ? 'Ligado' : 'Desligado'}</span>
+      </button>
       <ul className="space-y-3">
         {ITEMS.map((i) => (
           <li key={i.to}>

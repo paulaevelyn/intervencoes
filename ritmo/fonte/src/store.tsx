@@ -15,6 +15,7 @@ export const initialState = (): State => ({
     wideSpacing: false,
     alerts: 'screen',
     showCounts: true,
+    contrast: 'padrao',
     listen: false,
     ai: { enabled: false, useProfile: false },
   },
@@ -24,7 +25,7 @@ export const initialState = (): State => ({
   sensory: [],
   plan: { signals: [], helps: [], contacts: [], phrases: [], reduce: [], minimum: [] },
   templateEdits: {},
-  profile: { traits: [], tone: 'acolhedor', values: [], wants: [], asked: false },
+  profile: { traits: [], tone: 'acolhedor', values: [], wants: [], weighs: [], asked: false },
   stateLog: [],
   stateNotes: {},
 });

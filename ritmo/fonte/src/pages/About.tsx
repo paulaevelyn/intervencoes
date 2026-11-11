@@ -31,6 +31,11 @@ export function About() {
           <h2 className="font-bold mb-1">Esta é uma versão de testes</h2>
           <p>Algumas coisas podem mudar com o que aprendermos com quem usa.</p>
         </Card>
+        <Card>
+          <h2 className="font-bold mb-1">Quem faz</h2>
+          <p>O Ritmo é um app da Psicoterapia e Afins, feito por uma psicóloga clínica, com abordagem de neurodiversidade afirmativa.</p>
+          <p className="mt-2"><a className="font-semibold underline" href="https://www.psicoterapiaeafins.com.br" target="_blank" rel="noopener">psicoterapiaeafins.com.br</a> · <a className="font-semibold underline" href="https://www.instagram.com/psicoterapiaeafins" target="_blank" rel="noopener">@psicoterapiaeafins</a></p>
+        </Card>
         <CrisisBox />
       </div>
     </>

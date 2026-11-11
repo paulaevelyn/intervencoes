@@ -38,12 +38,13 @@ export function Settings() {
       <div className="space-y-8">
         <Group title="Aparência">
           <Choice<ThemePref> legend="Tema" value={s.theme} onChange={(v) => set({ theme: v })} cols={3} options={[{ v: 'sistema', label: 'Do aparelho' }, { v: 'claro', label: 'Claro' }, { v: 'escuro', label: 'Escuro' }]} />
-          <Toggle label="Modo baixo estímulo" help="Cores neutras, sem sombras e sem nenhuma animação." on={s.lowStim} onChange={(v) => set({ lowStim: v })} />
+          <Toggle label="Modo calmo (baixo estímulo)" help="Cores neutras, sem enfeites, sem sombras e sem movimento. Mostra só a próxima tarefa e não envia o lembrete diário." on={s.lowStim} onChange={(v) => set({ lowStim: v })} />
         </Group>
 
         <Group title="Leitura">
+          <Choice<'padrao' | 'alto'> legend="Contraste" value={s.contrast} onChange={(v) => set({ contrast: v })} cols={2} options={[{ v: 'padrao', label: 'Suave (padrão)' }, { v: 'alto', label: 'Alto' }]} />
           <Choice<FontScale> legend="Tamanho do texto" value={s.fontScale} onChange={(v) => set({ fontScale: v })} cols={4} options={[{ v: 100, label: 'Padrão' }, { v: 115, label: 'Grande' }, { v: 130, label: 'Maior' }, { v: 150, label: 'Muito grande' }]} />
-          <Toggle label="Fonte de leitura facilitada" help="Usa uma fonte mais aberta e fácil de distinguir letras." on={s.readingFont} onChange={(v) => set({ readingFont: v })} />
+          <Toggle label="Fonte de leitura facilitada" help="Usa a fonte Atkinson Hyperlegible, criada para ficar fácil de distinguir letras." on={s.readingFont} onChange={(v) => set({ readingFont: v })} />
           <Toggle label="Espaçamento amplo" help="Mais espaço entre letras e linhas." on={s.wideSpacing} onChange={(v) => set({ wideSpacing: v })} />
           <Toggle label="Botão “Ouvir”" help="Lê os textos em voz alta com a voz do seu aparelho." on={s.listen} onChange={(v) => set({ listen: v })} />
           <Toggle label="Mostrar contagens de tempo" help="Desligue se contagem regressiva deixa você tenso/a." on={s.showCounts} onChange={(v) => set({ showCounts: v })} />
@@ -51,7 +52,7 @@ export function Settings() {
 
         <Group title="Avisos de transição">
           <Choice<AlertMode> legend="Como avisar" value={s.alerts} onChange={(v) => set({ alerts: v })} cols={3} options={[{ v: 'off', label: 'Sem avisos' }, { v: 'screen', label: 'Só na tela' }, { v: 'vibrate', label: 'Tela + vibração leve' }]} />
-          <Note>O Ritmo não usa sons, nem notificações fora do app, nem lembretes diários. Os avisos só aparecem enquanto você segue uma rotina.</Note>
+          <Note>O Ritmo não usa sons, nem notificações fora do app, nem lembretes diários. Os avisos só aparecem enquanto você segue uma rotina. Som: o Ritmo nunca toca sons. Vibração: só se você escolher acima, e nunca no modo calmo.</Note>
         </Group>
 
         {IA_DISPONIVEL && <Group title="Ajuda de IA (opcional)">

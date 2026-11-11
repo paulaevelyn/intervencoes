@@ -26,7 +26,7 @@ const P: Record<string, ReactNode> = {
 
 export function Icon({ name, className = 'w-6 h-6' }: { name: keyof typeof P | string; className?: string }) {
   return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden="true" focusable="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden="true" focusable="false">
       {P[name]}
     </svg>
   );
@@ -34,7 +34,7 @@ export function Icon({ name, className = 'w-6 h-6' }: { name: keyof typeof P | s
 
 /* ---------- Botões ---------- */
 type BtnProps = ButtonHTMLAttributes<HTMLButtonElement> & {
-  kind?: 'primary' | 'secondary' | 'ghost' | 'danger';
+  kind?: 'primary' | 'action' | 'secondary' | 'ghost' | 'danger';
   icon?: string;
   block?: boolean;
   big?: boolean;
@@ -43,6 +43,7 @@ export function Button({ kind = 'secondary', icon, block, big, className = '', c
   const base = 'tap inline-flex items-center justify-center gap-2 rounded-xl px-4 font-semibold border-2 transition-colors select-none disabled:opacity-50 disabled:cursor-not-allowed';
   const k = {
     primary: 'bg-brand text-brand-ink border-brand hover:opacity-90',
+    action: 'bg-action text-action-ink border-action hover:opacity-90',
     secondary: 'bg-surface text-ink border-line hover:border-brand',
     ghost: 'bg-transparent text-ink border-transparent hover:bg-soft',
     danger: 'bg-surface text-ink border-line hover:border-ink',
@@ -219,4 +220,16 @@ export function Listen({ text, label = 'Ouvir' }: { text: string; label?: string
     synth.speak(u);
   };
   return <Button icon="wind" aria-pressed={on} onClick={toggle}>{on ? 'Parar áudio' : label}</Button>;
+}
+
+/** Ilustração abstrata e inclusiva (formas orgânicas suaves). Decorativa: some no modo calmo. */
+export function Blobs({ className = '' }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 240 120" className={`deco ${className}`} aria-hidden="true" focusable="false">
+      <ellipse cx="70" cy="70" rx="62" ry="44" fill="var(--soft)" />
+      <ellipse cx="150" cy="58" rx="54" ry="40" fill="var(--warm)" />
+      <ellipse cx="196" cy="84" rx="30" ry="24" fill="var(--soft)" opacity=".7" />
+      <path d="M30 78c24-20 44 14 70-6s46 8 70-8 40 4 44-4" fill="none" stroke="var(--brand)" strokeWidth="3" strokeLinecap="round" opacity=".55" />
+    </svg>
+  );
 }

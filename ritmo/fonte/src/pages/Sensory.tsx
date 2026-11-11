@@ -51,7 +51,7 @@ export function Sensory() {
 
   return (
     <>
-      <PageHead title="Registro sensorial" sub="Anotar ajuda a ver padrões sem depender da memória." onBack={() => back('/mais')} />
+      <PageHead title="Registro sensorial" sub="Anotar ajuda a ver padrões sem depender da memória." onBack={() => back('/regulacao')} />
       <Button kind="primary" big block icon="plus" onClick={() => setOpen(true)}>Novo registro</Button>
 
       <section className="mt-6" aria-labelledby="h-padroes">

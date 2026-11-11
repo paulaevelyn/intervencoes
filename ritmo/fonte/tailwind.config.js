@@ -13,6 +13,8 @@ export default {
         'brand-ink': 'var(--brand-ink)',
         soft: 'var(--soft)',
         warm: 'var(--warm)',
+        action: 'var(--action)',
+        'action-ink': 'var(--action-ink)',
       },
       borderRadius: { xl: '1rem', '2xl': '1.25rem' },
     },

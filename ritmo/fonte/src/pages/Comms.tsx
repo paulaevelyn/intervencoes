@@ -12,7 +12,7 @@ export function Comms() {
   if (t) return <Editor t={t} onBack={() => setOpen(null)} />;
   return (
     <>
-      <PageHead title="Mensagens prontas" sub="Modelos curtos. Preencha os campos e ajuste do seu jeito." onBack={() => back('/mais')} />
+      <PageHead title="Mensagens prontas" sub="Modelos curtos. Preencha os campos e ajuste do seu jeito." onBack={() => back('/regulacao')} />
       <ul className="space-y-3">
         {TEMPLATES.map((x) => (
           <li key={x.id}>

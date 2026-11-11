@@ -17,7 +17,7 @@ export function Energy() {
     const items = suggest({ energy, overload, need });
     return (
       <>
-        <PageHead title="Registrado. O que pode ajudar" sub="Com base no que você contou. Você escolhe se quer fazer." />
+        <PageHead title="O que pode ajudar agora" sub="Com base no que você contou. Você escolhe se quer fazer." />
         <Suggestions items={items} />
         <div className="mt-5"><Button onClick={() => { setDone(false); }}>Ajustar minhas respostas</Button></div>
       </>
@@ -27,7 +27,7 @@ export function Energy() {
   const ready = energy || overload || need;
   return (
     <>
-      <PageHead title="Registro de energia" sub="Responda só o que quiser. Leva menos de 1 minuto." onBack={() => back('/mais')} />
+      <PageHead title="Como está sua energia hoje?" sub="Responda só o que quiser. Leva menos de 1 minuto." onBack={() => back('/regulacao')} />
       <div className="space-y-6">
         <Choice legend="Energia" value={energy} onChange={setEnergy} cols={3}
           options={[{ v: 'baixa', label: 'Baixa' }, { v: 'media', label: 'Média' }, { v: 'alta', label: 'Alta' }]} />

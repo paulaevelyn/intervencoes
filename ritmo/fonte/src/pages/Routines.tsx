@@ -210,7 +210,7 @@ function Run({ r }: { r: Routine }) {
   const alertOn = state.settings.alerts !== 'off' && r.alertBefore > 0 && planned > 0 && remaining <= r.alertBefore * 60 && remaining > 0;
 
   useEffect(() => {
-    if (alertOn && state.settings.alerts === 'vibrate' && buzzed.current !== i) { buzzed.current = i; navigator.vibrate?.(150); }
+    if (alertOn && state.settings.alerts === 'vibrate' && !state.settings.lowStim && buzzed.current !== i) { buzzed.current = i; navigator.vibrate?.(150); }
   }, [alertOn, i, state.settings.alerts]);
 
   if (r.steps.length === 0) {

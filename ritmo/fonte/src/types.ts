@@ -10,6 +10,7 @@ export interface Settings {
   wideSpacing: boolean;
   alerts: AlertMode;
   showCounts: boolean; // mostrar contagens de tempo na tela
+  contrast: 'padrao' | 'alto';
   listen: boolean; // botão "Ouvir" (leitura em voz alta)
   ai: { enabled: boolean; useProfile: boolean; consent?: string }; // ajuda de IA, opt-in
 }
@@ -22,6 +23,7 @@ export interface Profile {
   tone: Tone;
   values: string[]; // o que importa para mim
   wants: string[]; // comportamentos que quero cultivar
+  weighs: string[]; // o que mais pesa no dia (onboarding)
   asked: boolean; // já viu a tela de perfil
 }
 
