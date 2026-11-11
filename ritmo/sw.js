@@ -1,5 +1,5 @@
 /* Ritmo — Service Worker: funciona offline. Aumente CACHE a cada publicação. */
-const CACHE = 'ritmo-v8';
+const CACHE = 'ritmo-v9';
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(['./', './index.html', './manifest.webmanifest', './icon.svg', './icon-192.png', './icon-512.png'])).then(() => self.skipWaiting()));
 });

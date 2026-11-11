@@ -1,15 +1,1 @@
-<svg width="320" height="88" viewBox="0 0 320 88" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <!-- Ícone (mesmo desenho do sintonia-icon.svg) + wordmark -->
-  <g transform="translate(2,2) scale(0.84)">
-    <circle cx="50" cy="50" r="42" fill="#EEE9FB"/>
-    <circle cx="50" cy="50" r="30" stroke="#8B7FB8" stroke-width="2.500" opacity=".55"/>
-    <circle cx="50" cy="50" r="17" stroke="#8B7FB8" stroke-width="2.500" opacity=".85"/>
-    <circle cx="50" cy="50" r="6" fill="#3D2E7A"/>
-    <circle cx="50" cy="20" r="5.500" fill="#C47D2A"/>
-    <circle cx="76" cy="38" r="4.500" fill="#5E7D73"/>
-    <circle cx="68" cy="73" r="4.500" fill="#5E7D73"/>
-    <circle cx="32" cy="73" r="4.500" fill="#5E7D73"/>
-    <circle cx="24" cy="38" r="4.500" fill="#5E7D73"/>
-  </g>
-  <text x="96" y="58" font-family="Nunito Sans, Quicksand, -apple-system, sans-serif" font-size="42" font-weight="800" letter-spacing="-1" fill="#3D2E7A">Sintonia</text>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="512" height="512" role="img" aria-label="Logo Sintonia"><title>Sintonia</title><rect width="120" height="120" rx="32" fill="#0F3D33"/><g transform="translate(22.8 22.8) scale(0.62)"><circle cx="60" cy="60" r="9" fill="#FF7D48"/><g fill="none" stroke-width="8" stroke-linecap="round"><path d="M75.3 47.1 A20 20 0 0 1 75.3 72.9" stroke="#AEAAF7"/><path d="M86 38.1 A34 34 0 0 1 86 81.9" stroke="#649AB3"/><path d="M96.8 29.1 A48 48 0 0 1 96.8 90.9" stroke="#38918A"/><path d="M44.7 47.1 A20 20 0 0 0 44.7 72.9" stroke="#AEAAF7"/><path d="M34 38.1 A34 34 0 0 0 34 81.9" stroke="#649AB3"/><path d="M23.2 29.1 A48 48 0 0 0 23.2 90.9" stroke="#38918A"/></g></g></svg>
