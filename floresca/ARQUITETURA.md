@@ -27,7 +27,7 @@ se explica/ilustra → superficial (adaptar à vontade).
 | Planos "quando-então" | Frases específicas dos planos | Formato implementation intention (Gollwitzer, 1999): gatilho situacional + ação específica |
 | Registro de Momentos | Chips, emojis, textos do formulário | Registro escrito + nomeação da emoção + intensidade (dose recebida / estado) |
 | Dose Cultivada | Tags, pergunta, visual do card | Auto-relato SEMANAL de prática ativa (dose cultivada ≠ dose recebida); não bloqueante; dispensável |
-| Laboratório | Banco de 12 experimentos, títulos, emojis | Ciclo do experimento comportamental: **previsão registrada ANTES → teste → observação → comparação** (TCC) |
+| Laboratório | Banco de 13 experimentos, títulos, emojis | Ciclo do experimento comportamental: **previsão registrada ANTES → teste → observação → comparação** (TCC) |
 | SPANE + escala de crenças | Telas, cores, ordem das fases | Itens e escala de resposta do SPANE (Diener et al., 2009) — não parafrasear (perde validade); crenças: manter pré/pós idênticos |
 | Tailoring (3 caminhos) | Textos das opções do onboarding | m1/m2 sempre primeiros; caminho 2 (medo do prazer): sistema calmante e teste de crenças ANTES de gratidão |
 
@@ -104,3 +104,9 @@ violação da abstinência); (f) variedade contra adaptação (Lyubomirsky).
 
 ---
 © 2026 Psicoterapia e Afins · Documento técnico interno
+
+## Linguagem sobre evidência
+Os efeitos das intervenções em psicologia positiva são **pequenos a moderados** (ver White, Uttl & Holder, 2019, e as meta-análises por prática). No texto do app:
+- não dizer "mais evidência", "comprovado" nem "publicado em centenas de estudos"; dizer "estudada", "com base em pesquisa" e o tamanho do efeito quando houver;
+- gratidão complementa o cuidado, não substitui tratamento (Cregg & Cheavens, 2021: efeito pequeno em depressão e ansiedade);
+- "Melhor eu possível" (e13): King (2001); Carrillo et al. (2019, d≈0,33 em bem-estar e otimismo); efeito se perde se feito uma só vez, por isso a instrução de repetir semanalmente.
