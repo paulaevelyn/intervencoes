@@ -31,7 +31,7 @@ const BRAND_FOOTER_HTML = `
     <a href="https://www.instagram.com/psicoterapiaeafins" target="_blank" style="color:#9E4719;font-weight:700;text-decoration:none">@psicoterapiaeafins</a>
   </div>
 </div>
-<div style="font-size:12px;color:#5F646C;text-align:center;padding:8px 0 4px;line-height:1.6">
+<div style="font-size:12px;color:#3E5C54;text-align:center;padding:8px 0 4px;line-height:1.6">
   © 2026 Psicoterapia e Afins · Todos os direitos reservados<br>
   Proibida a reprodução sem autorização prévia
 </div>`;
@@ -290,24 +290,24 @@ function calcTotalDays(){
    registra, em dias diferentes, um momento com aquela emoção
    (no máximo um avanço por dia). Nada encolhe nem murcha.
    ══════════════════════════════════ */
-const PLANT_SPEC = {
-  alegria:    { t:'daisy',  c1:'#D96C63', c2:'#7A9A8E' },
-  gratidao:   { t:'tulip',  c1:'#E9A39C', c2:'#7A9A8E' },
-  serenidade: { t:'bell',   c1:'#9DBBB0', c2:'#5E7D73' },
-  interesse:  { t:'berry',  c1:'#E08780', c2:'#7A9A8E' },
-  esperanca:  { t:'leafy',  c1:'#E9A39C', c2:'#5E7D73' },
-  orgulho:    { t:'tulip',  c1:'#D96C63', c2:'#5E7D73' },
-  diversao:   { t:'daisy',  c1:'#EFBDB3', c2:'#7A9A8E' },
-  inspiracao: { t:'bell',   c1:'#E9A39C', c2:'#7A9A8E' },
-  admiracao:  { t:'berry',  c1:'#9DBBB0', c2:'#5E7D73' },
-  amor:       { t:'daisy',  c1:'#E08780', c2:'#5E7D73' },
+const PLANT_SPEC = {   // cores da marca unificada (shared/marca.css): teal, salmão e lavanda
+  alegria:    { t:'daisy',  c1:'#FFAF7F', c2:'#1B8B6F' },
+  gratidao:   { t:'tulip',  c1:'#AEAAF7', c2:'#1B8B6F' },
+  serenidade: { t:'bell',   c1:'#AEAAF7', c2:'#146E57' },
+  interesse:  { t:'berry',  c1:'#BC5821', c2:'#1B8B6F' },
+  esperanca:  { t:'leafy',  c1:'#FFAF7F', c2:'#146E57' },
+  orgulho:    { t:'tulip',  c1:'#BC5821', c2:'#146E57' },
+  diversao:   { t:'daisy',  c1:'#7A74D6', c2:'#1B8B6F' },
+  inspiracao: { t:'bell',   c1:'#FFAF7F', c2:'#1B8B6F' },
+  admiracao:  { t:'berry',  c1:'#7A74D6', c2:'#146E57' },
+  amor:       { t:'daisy',  c1:'#BC5821', c2:'#146E57' },
 };
 function plantSVG(t,c1,c2,w){
   const h = Math.round(w*1.25);
   const st = `stroke="${c2}" stroke-width="3" stroke-linecap="round" fill="none"`;
   let body = '';
   if(t==='sprout') body = `<path d="M40 98 V70" ${st}/><path d="M40 74 Q22 70 20 54 Q36 56 40 74Z" fill="${c2}"/><path d="M40 70 Q58 66 60 50 Q44 52 40 70Z" fill="${c2}"/>`;
-  else if(t==='daisy') body = `<path d="M40 98 V44" ${st}/><path d="M40 80 Q24 78 20 64 Q36 64 40 80Z" fill="${c2}"/><ellipse cx="40" cy="34" rx="6" ry="15" fill="${c1}"/><ellipse cx="40" cy="34" rx="6" ry="15" fill="${c1}" transform="rotate(60 40 34)"/><ellipse cx="40" cy="34" rx="6" ry="15" fill="${c1}" transform="rotate(120 40 34)"/><circle cx="40" cy="34" r="6" fill="#F7F3EF"/>`;
+  else if(t==='daisy') body = `<path d="M40 98 V44" ${st}/><path d="M40 80 Q24 78 20 64 Q36 64 40 80Z" fill="${c2}"/><ellipse cx="40" cy="34" rx="6" ry="15" fill="${c1}"/><ellipse cx="40" cy="34" rx="6" ry="15" fill="${c1}" transform="rotate(60 40 34)"/><ellipse cx="40" cy="34" rx="6" ry="15" fill="${c1}" transform="rotate(120 40 34)"/><circle cx="40" cy="34" r="6" fill="#FBF7F0"/>`;
   else if(t==='tulip') body = `<path d="M40 98 V50" ${st}/><path d="M40 84 Q22 82 18 64 Q36 66 40 84Z" fill="${c2}"/><path d="M26 22 Q26 48 40 48 Q54 48 54 22 L47 30 L40 18 L33 30 Z" fill="${c1}"/>`;
   else if(t==='berry') body = `<path d="M40 98 Q40 60 48 40" ${st}/><path d="M42 82 Q26 80 22 66 Q38 66 42 82Z" fill="${c2}"/><circle cx="48" cy="32" r="9" fill="${c1}"/><circle cx="34" cy="44" r="8" fill="${c1}"/><circle cx="56" cy="48" r="7" fill="${c1}"/>`;
   else if(t==='bell') body = `<path d="M40 98 Q40 50 30 34" ${st}/><path d="M40 84 Q56 82 60 66 Q44 68 40 84Z" fill="${c2}"/><path d="M14 38 Q16 18 30 18 Q44 18 46 38 Q30 44 14 38Z" fill="${c1}"/><circle cx="30" cy="46" r="3" fill="${c1}"/>`;

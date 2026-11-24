@@ -10,7 +10,7 @@
   --lav:      #7A74D6; --lav-l:   #EEEDFD;
   --amber:    #C47D2A; --amber-l: #FBF0DF;
   --sand:     #F3EDE2; --white: #FFFFFF;
-  --graphite: #12372F; --muted: #5A5F68; --light: #5F646C;
+  --graphite: #12372F; --muted: #3E5C54; --light: #4F6A62;
   --border:   rgba(18,55,47,.09);
   --shadow:   0 2px 16px rgba(18,55,47,.07);
   --shadow-md:0 6px 28px rgba(18,55,47,.12);
@@ -353,7 +353,7 @@ html,body{height:100%;font-family:var(--font);background:var(--sand);color:var(-
   text-align:center;transition:background .15s,transform .1s;
   font-family:var(--font)
 }
-.btn:active{transform:scale(.98);background:#8A403B}
+.btn:active{transform:scale(.98);background:#7A3913}
 .btn.ghost{background:transparent;color:var(--coral-d);border:1.5px solid var(--coral-d)}
 .btn.ghost:active{background:var(--coral-xl)}
 .btn.mint{background:var(--mint);color:white}
@@ -1265,7 +1265,7 @@ input[type=range]::-moz-range-thumb{
    v5 — Revisão UX / bem-estar / mudança de comportamento
    Alinhado ao design system Psicoterapia e Afins
    ═════════════════════════════════════════════ */
-:root{ --focus:#9B4842; --dur:240ms; --ease:cubic-bezier(.22,1,.36,1) }
+:root{ --focus:#9E4719; --dur:240ms; --ease:cubic-bezier(.22,1,.36,1) }
 h1,h2,h3,.ob-title,.hdr h1{font-weight:300;letter-spacing:-.02em}
 .ob-title{font-weight:300}
 .sr-only{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
@@ -1278,9 +1278,9 @@ button.chip,button.ob-opt,button.row-link,button.link-btn{font-family:var(--font
 
 /* ícones decorativos vazios somem em vez de deixar espaço */
 .ob-icon:empty,.nudge-icon:empty,.quick-icon:empty,.emo-emoji:empty,.lab-emoji:empty,.consent-item-icon:empty,.ob-banner-icon:empty,.legal-item-icon:empty,.mod-status:empty{display:none}
-.nudge .nudge-btn{background:#4B665E;color:#fff}
-.nudge.lav .nudge-btn{background:#5C5290}
-.nudge.amber .nudge-btn{background:#8A5410}
+.nudge .nudge-btn{background:var(--mint-d);color:#fff}
+.nudge.lav .nudge-btn{background:#3D2E7A}
+.nudge.amber .nudge-btn{background:#7A4A10}
 .nudge.coral .nudge-btn{background:var(--coral-d)}
 
 /* cartão do próximo passo (Home) */
@@ -1295,7 +1295,7 @@ button.chip,button.ob-opt,button.row-link,button.link-btn{font-family:var(--font
 
 /* jardim */
 .garden{position:relative;height:170px;background:var(--mint-xl);border-radius:var(--r);overflow:hidden;display:flex;align-items:flex-end;justify-content:center}
-.g-ground{position:absolute;left:0;right:0;bottom:0;height:40px;background:#EFE8E0;border-radius:24px 24px 0 0}
+.g-ground{position:absolute;left:0;right:0;bottom:0;height:40px;background:#E9E0CF;border-radius:24px 24px 0 0}
 .g-row{position:relative;display:flex;align-items:flex-end;justify-content:center;gap:0;padding:0 8px 18px;flex-wrap:nowrap;max-width:100%}
 .g-plant{display:flex;align-items:flex-end;margin:0 -3px}
 .g-seed{width:14px;height:14px;border-radius:50%;background:#B8A892;margin-bottom:22px}
@@ -1362,13 +1362,13 @@ button.chip,button.ob-opt,button.row-link,button.link-btn{font-family:var(--font
 .ico{display:block;flex-shrink:0}
 .ob-icon{color:var(--mint-d);margin-bottom:20px;line-height:0}
 .ob-step-icon{color:var(--mint-d);display:flex;align-items:center;justify-content:center}
-.ob-step-icon.coral{color:var(--coral-d)}.ob-step-icon.lav{color:#5C5290}.ob-step-icon.amber{color:#8A5410}
+.ob-step-icon.coral{color:var(--coral-d)}.ob-step-icon.lav{color:#3D2E7A}.ob-step-icon.amber{color:#7A4A10}
 .ob-banner-icon,.consent-item-icon,.legal-item-icon{color:var(--mint-d);line-height:0}
 .nudge-icon{color:var(--mint-d);line-height:0}
-.nudge.lav .nudge-icon{color:#5C5290}.nudge.amber .nudge-icon{color:#8A5410}.nudge.coral .nudge-icon{color:var(--coral-d)}
+.nudge.lav .nudge-icon{color:#3D2E7A}.nudge.amber .nudge-icon{color:#7A4A10}.nudge.coral .nudge-icon{color:var(--coral-d)}
 .crisis-res span{color:var(--coral-d);line-height:0;display:flex}
 .mod-emoji{display:flex;align-items:center;justify-content:center;color:var(--mint-d)}
-.mod-emoji.coral{color:var(--coral-d)}.mod-emoji.lav{color:#5C5290}.mod-emoji.amber{color:#8A5410}
+.mod-emoji.coral{color:var(--coral-d)}.mod-emoji.lav{color:#3D2E7A}.mod-emoji.amber{color:#7A4A10}
 .lab-emoji{color:var(--mint-d)}
 .emo-emoji{color:var(--mint-d);line-height:0;margin-top:2px}
 .celebrate-emoji{color:var(--mint-d);display:flex;justify-content:center;line-height:0}
@@ -1403,8 +1403,8 @@ button.chip,button.ob-opt,button.row-link,button.link-btn{font-family:var(--font
 .lab-card .lab-btn.ghost{background:transparent;color:var(--muted)}
 .nb.on,.nb.on span,.nb:active span{color:var(--mint-d)}
 .copyright-block a,.brand-link.mint{color:var(--mint-d)}
-.brand-footer .brand-footer-sub{color:#4F555D}
+.brand-footer .brand-footer-sub{color:#3E5C54}
 .brand-footer .brand-footer-sub{opacity:1}
 .guia-row.ok{opacity:1}
-.guia-row.ok .guia-tx small,.guia-row.ok .guia-tx strong{opacity:1;color:#4F555D}
+.guia-row.ok .guia-tx small,.guia-row.ok .guia-tx strong{opacity:1;color:#3E5C54}
 .guia-tx small{opacity:1}
