@@ -1229,3 +1229,27 @@ input[type=range]::-moz-range-thumb{
 .tj-dot.livre{border-color:var(--mint);color:var(--mint-d)}
 .tj-dot.trava{border-style:dashed;opacity:.6}
 .tj-leg{font-size:12.5px;line-height:1.5;color:var(--muted);margin:10px 0 0}
+
+/* ── Módulos ↔ experimentos e insights do diário ── */
+.teste-pratica{margin:14px 0 12px;padding:14px;text-align:left;background:var(--mint-xl);border-radius:var(--rs);border:1.5px solid var(--mint-l)}
+.tp-h{font-size:14px;font-weight:800;color:var(--mint-d);margin-bottom:2px}
+.tp-h small{font-weight:600;color:var(--muted)}
+.tp-p{font-size:12.5px;line-height:1.5;color:var(--muted);margin:2px 0 8px}
+.tp-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid var(--mint-l)}
+.tp-em{flex:none;font-size:22px}
+.tp-tx{flex:1;min-width:0;display:flex;flex-direction:column}
+.tp-tx strong{font-size:14px;font-weight:800;color:var(--graphite)}
+.tp-tx small{font-size:12px;line-height:1.4;color:var(--muted)}
+.tp-btn{flex:none;min-height:44px;padding:0 16px;border:0;border-radius:var(--rs);cursor:pointer;background:var(--mint-d);color:#fff;font:800 14px var(--font)}
+.sug-tag{display:inline-block;margin-bottom:8px;padding:3px 10px;border-radius:99px;background:var(--lav-l);color:#3D2E7A;font-size:11.5px;font-weight:800}
+.lab-mod{margin:8px 0 2px;font-size:12.5px;color:var(--muted)}
+.lab-link,.di-link{min-height:44px;padding:0 2px;border:0;background:none;cursor:pointer;color:var(--mint-d);font:700 12.5px var(--font);text-decoration:underline;text-underline-offset:3px;text-align:left}
+.di-link{font-size:14px;min-height:36px}
+.d-insight{display:flex;align-items:flex-start;gap:8px;margin:0 0 10px;padding:12px 8px 12px 14px;background:var(--lav-l);border-radius:var(--rs);font-size:14px;line-height:1.55;color:var(--graphite)}
+.di-tx{flex:1;min-width:0}
+.di-x{flex:none;width:44px;height:44px;margin:-10px 0 0 0;border:0;background:none;cursor:pointer;font-size:22px;line-height:1;color:var(--muted)}
+.tp-btn:focus-visible,.lab-link:focus-visible,.di-link:focus-visible,.di-x:focus-visible{outline:3px solid var(--mint);outline-offset:2px}
+
+/* O cartão de fim de módulo cresceu com o "Teste na prática": em telas baixas ele precisa rolar para o botão Continuar continuar alcançável. */
+.celebrate-card{max-height:calc(100vh - 32px);max-height:calc(100dvh - 32px);overflow-y:auto;-webkit-overflow-scrolling:touch}
+

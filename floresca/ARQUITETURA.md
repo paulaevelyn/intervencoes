@@ -110,3 +110,11 @@ Os efeitos das intervenções em psicologia positiva são **pequenos a moderados
 - não dizer "mais evidência", "comprovado" nem "publicado em centenas de estudos"; dizer "estudada", "com base em pesquisa" e o tamanho do efeito quando houver;
 - gratidão complementa o cuidado, não substitui tratamento (Cregg & Cheavens, 2021: efeito pequeno em depressão e ansiedade);
 - "Melhor eu possível" (e13): King (2001); Carrillo et al. (2019, d≈0,33 em bem-estar e otimismo); efeito se perde se feito uma só vez, por isso a instrução de repetir semanalmente.
+
+## Módulos ↔ laboratório ↔ diário
+- **Mapa módulo → experimentos** (`EXP_DO_MODULO` em `app.js`): cada canteiro sugere 1 a 3 experimentos que testam, na vida real, o que ele ensina. É a única tabela a editar para mudar as sugestões. A sugestão é sempre opcional.
+- **Fim do módulo:** bloco "Teste na prática (opcional)" no cartão de conclusão; o botão abre o laboratório com a previsão daquele experimento já aberta.
+- **Laboratório:** os experimentos dos canteiros que a pessoa já concluiu ou começou aparecem primeiro ("Sugeridos pelos seus canteiros"); cada cartão mostra "Do canteiro: X", com link quando o canteiro está aberto.
+- **Revisão do experimento:** compara com a última vez no mesmo experimento; só com 5 ou mais experimentos concluídos mostra um padrão geral, em tom de convite ("Parece que…"). Atalhos: registrar no diário (com o que a pessoa notou e a emoção já marcadas) e rever o canteiro.
+- **Insights ao salvar um momento:** no máximo 2, dispensáveis, calculados só a partir do que a pessoa **escolheu** (emoções, técnicas de saborear, intensidade). O texto livre não é lido. Tudo é calculado no aparelho e não entra na sincronização da pesquisa.
+- Padrões ao longo do tempo (horário, dia da semana, emoções ausentes) ficam para a segunda rodada, com mínimo de 5 registros.
