@@ -447,7 +447,7 @@ ${emoGridHTML()}
         type:'info', typeLabel:'📖 Psicoeducação',
         title:'O que você procura, você encontra',
         content:`<p class="step-text">A atenção funciona como um holofote: ilumina uma coisa e deixa o resto no escuro. O viés de negatividade aponta esse holofote para problemas — <strong>automaticamente</strong>.</p>
-<p class="step-text" style="margin-top:10px">Mas holofotes podem ser redirecionados. A prática mais estudada para isso chama-se <strong>Três Coisas Boas</strong> (Seligman): anotar, no fim do dia, 3 coisas que foram bem — e <em>por que</em> foram bem.</p>
+<p class="step-text" style="margin-top:10px">Mas holofotes podem ser redirecionados. Uma das práticas mais estudadas para isso chama-se <strong>Três Coisas Boas</strong> (Seligman): anotar, no fim do dia, 3 coisas que foram bem — e <em>por que</em> foram bem.</p>
 <div class="tip amber"><strong>📊 A evidência:</strong> No estudo original, uma semana desta prática aumentou felicidade e reduziu sintomas depressivos por até <strong>6 meses</strong>. Não porque o dia melhora — mas porque o radar aprende a captar o que antes passava batido.</div>
 <div style="display:flex;flex-direction:column;gap:8px;margin:14px 0">
   <div class="tip mint" style="margin:0"><strong>🔍 Vale notar:</strong> o café que estava bom · o ônibus que passou na hora · a mensagem de alguém · 10 minutos de silêncio · você ter feito algo apesar do cansaço</div>
@@ -526,7 +526,7 @@ ${emoGridHTML()}
         instruction:'Diante de um momento bom, cada reação amplifica o sabor ou apaga. Classifique:',
         btnA:'🍯 Amplifica', btnB:'🧯 Apaga',
         items:[
-          { text:'Contar a novidade boa para alguém querido', cat:'u', label:'Amplifica — capitalização comprovada' },
+          { text:'Contar a novidade boa para alguém querido', cat:'u', label:'Amplifica — capitalização, com respaldo em pesquisa' },
           { text:'"Foi só sorte, não conta"', cat:'n', label:'Apaga — desqualifica a experiência' },
           { text:'Fechar os olhos para ouvir a música favorita', cat:'u', label:'Amplifica — absorção sensorial' },
           { text:'Checar e-mails durante o jantar especial', cat:'n', label:'Apaga — atenção dividida mata o sabor' },
@@ -551,18 +551,19 @@ ${emoGridHTML()}
     id:'m5', color:'mint', emoji:'🙏',
     levelTag:'Nível 3 — Aprofundar',
     title:'Gratidão que Transforma',
-    tagline:'A prática com mais evidência da área',
+    tagline:'Bem estudada, com efeitos modestos',
     porque:'A gratidão funciona melhor quando é específica e genuína. Se hoje não surgir, tudo bem: você pode voltar quando quiser.',
     xp:70, badgeId:'b_m5', unlockAfter:'m4',
     steps:[
       {
         type:'info', typeLabel:'📖 Psicoeducação',
         title:'Por que gratidão funciona (quando bem feita)',
-        content:`<p class="step-text">Gratidão é a emoção positiva <strong>mais estudada</strong> da psicologia. Nos estudos de <strong>Emmons & McCullough</strong>, quem registrava motivos de gratidão semanalmente dormia melhor, sentia mais bem-estar e até se exercitava mais do que os grupos de comparação.</p>
+        content:`<p class="step-text">Gratidão é uma das emoções positivas <strong>mais estudadas</strong>. No estudo clássico de <strong>Emmons & McCullough</strong> (2003), quem registrava motivos de gratidão semanalmente relatou mais bem-estar e otimismo, menos queixas físicas e mais exercício do que os grupos de comparação.</p>
+<p class="step-text" style="margin-top:10px">Vale saber o <strong>tamanho</strong> disso: nas revisões de muitos estudos, os efeitos são <strong>pequenos a moderados</strong> e nem sempre se repetem. Para depressão e ansiedade, o efeito é pequeno (Cregg & Cheavens, 2021). A gratidão pode somar ao seu cuidado, mas não substitui acompanhamento profissional.</p>
 <p class="step-text" style="margin-top:10px">O mecanismo tem duas engrenagens:</p>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0">
   <div class="tip mint" style="margin:0"><strong>👁️ Atenção</strong><br>Gratidão obriga o radar a varrer o que foi <em>recebido</em> — que o viés de negatividade esconde.</div>
-  <div class="tip coral" style="margin:0"><strong>🤝 Vínculo</strong><br>Reconhecer quem nos fez bem fortalece os laços — o maior preditor de bem-estar que existe.</div>
+  <div class="tip coral" style="margin:0"><strong>🤝 Vínculo</strong><br>Reconhecer quem nos fez bem fortalece os laços — um dos preditores mais consistentes de bem-estar.</div>
 </div>
 <div style="display:flex;flex-direction:column;gap:8px;margin:14px 0">
   <div class="tip amber" style="margin:0"><strong>O que gratidão NÃO é:</strong><br>• Dívida ("agora tenho que retribuir") — isso é peso, não gratidão.<br>• Obrigação de estar grato/a por tudo, sempre.<br>• Anular queixas legítimas ("seja grato/a e não reclame").</div>
@@ -740,7 +741,7 @@ ${svgThreeSystems()}
 <div class="emo-grid" style="grid-template-columns:1fr">
   <div class="emo-cell"><span class="emo-emoji">😊</span><div><div class="emo-name">P — Emoções Positivas</div><div class="emo-desc">Tudo que você treinou até aqui: notar, saborear, gratidão</div></div></div>
   <div class="emo-cell"><span class="emo-emoji">🌊</span><div><div class="emo-name">E — Engajamento</div><div class="emo-desc">Atividades que te absorvem por inteiro (flow)</div></div></div>
-  <div class="emo-cell"><span class="emo-emoji">🤝</span><div><div class="emo-name">R — Relacionamentos</div><div class="emo-desc">O maior preditor de bem-estar em todos os estudos</div></div></div>
+  <div class="emo-cell"><span class="emo-emoji">🤝</span><div><div class="emo-name">R — Relacionamentos</div><div class="emo-desc">Um dos preditores mais consistentes de bem-estar nos estudos</div></div></div>
   <div class="emo-cell"><span class="emo-emoji">🧭</span><div><div class="emo-name">M — Significado (Meaning)</div><div class="emo-desc">Fazer parte de algo maior que você</div></div></div>
   <div class="emo-cell"><span class="emo-emoji">🏔️</span><div><div class="emo-name">A — Realização (Accomplishment)</div><div class="emo-desc">Progredir em algo que importa — e reconhecer o progresso</div></div></div>
 </div>
@@ -844,6 +845,9 @@ const EXPERIMENTS = [
   { id:'e12', emoji:'☕', title:'Micro-momento de conexão',   emotion:'Amor',        time:'5 min',
     desc:'Tenha hoje UMA conversa de verdade — olho no olho ou voz — com alguém: um colega, o porteiro, um familiar. Pergunte e ouça de verdade.',
     belief:'"Conversa pequena é vazia, ninguém liga de verdade."' },
+  { id:'e13', emoji:'🌅', title:'Melhor eu possível',         emotion:'Esperança',   time:'15 min',
+    desc:'Reserve 15 minutos e escreva, sem parar, sobre a sua vida daqui a alguns anos <em>indo bem, de um jeito realista</em>: relações, trabalho, saúde, o que lhe faz bem. Descreva como se já fosse real. Depois releia e circule UM passo que dá para dar esta semana. Se doer comparar com o agora, pare: tudo bem. Uma vez só costuma não durar; repita uma vez por semana, por algumas semanas. <small>Base: King (2001); Carrillo e cols. (2019). Os efeitos são pequenos.</small>',
+    belief:'"Imaginar o futuro que quero só vai me frustrar."' },
 ];
 
 /* ══════════════════════════════════
