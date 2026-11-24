@@ -2055,6 +2055,107 @@ function skipDose(){
 /* ══════════════════════════════════
    PROGRESS
    ══════════════════════════════════ */
+/* ══════════════════════════════════
+   PADRÕES PROVISÓRIOS (tela Progresso)
+   Pistas ao longo do tempo a partir do que a pessoa ESCOLHEU: horário do registro, emoções, técnicas de saborear e
+   intensidade. Nunca leem o texto livre. Mínimo de 5 registros, tom de convite ("parece que…"), cada um dispensável
+   (D.padroesOff). Ficam só no aparelho e não entram na sincronização da pesquisa.
+   ══════════════════════════════════ */
+// Limites dos padrões. Mais baixo = aparece mais cedo, mas com mais chance de ser acaso.
+// Padrões DESCRITIVOS (só contam fatos: quando registra, que emoções faltam, que técnica usa) têm limites soltos.
+// Padrões que COMPARAM intensidade (período do dia; fim de semana x dias úteis) precisam, além disso, de uma diferença grande
+// frente à variação dos próprios registros (teste t de Welch), porque comparar médias de poucos registros numa escala de 1 a 5
+// inventa "padrões" do acaso com muita facilidade (ver ARQUITETURA.md).
+const PADROES_MIN = 4;   // registros no total para começar a mostrar padrões
+const PADROES_LIM = {
+  horaFreqMin: 3,    // descritivo: registros no mesmo período do dia para dizer "você costuma registrar…" (e pelo menos metade do total)
+  horaFreqPct: 0.5,
+  tecnicaMin: 2,     // descritivo: usos de uma técnica de saborear para destacá-la
+  grupoMin: 3,       // comparativo: registros em cada grupo comparado
+  horaDif: 0.8,      // comparativo: diferença mínima de intensidade média entre períodos...
+  semanaDif: 0.8,    // ...e entre fim de semana e dias úteis
+  tHoraInt: 3,       // comparativo: |t| mínimo entre períodos (alto, porque se escolhe o par mais extremo)
+  tSemana: 2.5       // comparativo: |t| mínimo entre fim de semana e dias úteis
+};
+function tWelch(a, b){   // |t| da diferença entre duas médias; Infinity se os dois grupos não variam nada e as médias diferem
+  const m = x => x.reduce((s,v)=>s+v,0)/x.length;
+  const v = (x,mx) => x.reduce((s,y)=>s+(y-mx)*(y-mx),0)/(x.length-1);
+  const ma = m(a), mb = m(b), den = Math.sqrt(v(a,ma)/a.length + v(b,mb)/b.length);
+  return den === 0 ? (ma === mb ? 0 : Infinity) : Math.abs(ma-mb)/den;
+}
+const NOME_PERIODO = { madrugada:'de madrugada', manhã:'de manhã', tarde:'à tarde', noite:'à noite' };
+function periodoDoDia(h){ return h<5?'madrugada':h<12?'manhã':h<18?'tarde':'noite'; }
+function calcularPadroes(){
+  const E = D.entries, out = [];
+  if(E.length < PADROES_MIN) return out;
+  const media = a => a.reduce((s,x)=>s+x,0)/a.length;
+  const f1 = n => n.toFixed(1).replace('.',',');
+
+  // 1. em que período do dia a pessoa mais registra, e em qual a intensidade é maior
+  const porPeriodo = {};
+  E.forEach(e=>{ const p = periodoDoDia(new Date(e.ts).getHours()); (porPeriodo[p] = porPeriodo[p] || []).push(e); });
+  const ord = Object.entries(porPeriodo).sort((x,y)=>y[1].length-x[1].length);
+  if(ord[0][1].length >= PADROES_LIM.horaFreqMin && ord[0][1].length/E.length >= PADROES_LIM.horaFreqPct){
+    out.push({ id:'hora-freq', ic:'🕒', t:'Quando você costuma registrar',
+      b:`Parece que ${ord[0][1].length} dos seus ${E.length} momentos foram registrados <strong>${NOME_PERIODO[ord[0][0]]}</strong>. Pode ser um bom horário para uma pausa de notar o que foi bom.` });
+  }
+  const fortes = Object.entries(porPeriodo).filter(([,l])=>l.length>=PADROES_LIM.grupoMin).map(([p,l])=>({ p, m:media(l.map(e=>e.intensity||3)), v:l.map(e=>e.intensity||3) })).sort((x,y)=>y.m-x.m);
+  if(fortes.length>=2 && fortes[0].m - fortes[fortes.length-1].m >= PADROES_LIM.horaDif && tWelch(fortes[0].v, fortes[fortes.length-1].v) >= PADROES_LIM.tHoraInt){
+    const alto = fortes[0], baixo = fortes[fortes.length-1];
+    out.push({ id:'hora-int', ic:'🌤️', t:'Quando os momentos são mais intensos',
+      b:`Pelo horário dos registros, a intensidade costuma ser maior <strong>${NOME_PERIODO[alto.p]}</strong> (média ${f1(alto.m)}) do que <strong>${NOME_PERIODO[baixo.p]}</strong> (${f1(baixo.m)}). É só uma pista: o horário do registro nem sempre é o do momento.` });
+  }
+
+  // 2. fim de semana × dias úteis
+  const fds = E.filter(e=>[0,6].includes(new Date(e.date+'T12:00').getDay())), util = E.filter(e=>![0,6].includes(new Date(e.date+'T12:00').getDay()));
+  if(fds.length>=PADROES_LIM.grupoMin && util.length>=PADROES_LIM.grupoMin){
+    const mf = media(fds.map(e=>e.intensity||3)), mu = media(util.map(e=>e.intensity||3));
+    if(Math.abs(mf-mu) >= PADROES_LIM.semanaDif && tWelch(fds.map(e=>e.intensity||3), util.map(e=>e.intensity||3)) >= PADROES_LIM.tSemana){
+      out.push({ id:'semana', ic:'📅', t:'Fim de semana e dias úteis',
+        b: mf>mu
+          ? `Seus momentos de fim de semana têm intensidade média <strong>${f1(mf)}</strong>, contra <strong>${f1(mu)}</strong> nos dias úteis. Pode valer plantar um momento pequeno no meio da semana: um café saboreado, um minuto de céu.`
+          : `Seus momentos dos dias úteis têm intensidade média <strong>${f1(mu)}</strong>, contra <strong>${f1(mf)}</strong> no fim de semana. Fins de semana não precisam ser grandiosos: um momento pequeno já conta.` });
+    }
+  }
+
+  // 3. emoções que ainda não apareceram, com o experimento de cada uma
+  const sentidas = new Set(E.flatMap(e=>e.emotions||[]));
+  const faltam = EMOTIONS.filter(x=>!sentidas.has(x.id));
+  if(faltam.length && faltam.length < EMOTIONS.length){
+    const sug = faltam.map(em=>({ em, exp: EXPERIMENTS.find(x=>x.emotion===em.name && !expJaFeito(x.id)) })).filter(x=>x.exp).slice(0,2);
+    out.push({ id:'faltam', ic:'🧭', t:'Emoções que ainda não apareceram',
+      b:`No seu repertório ainda não apareceu: ${faltam.slice(0,3).map(x=>x.emoji+' '+x.name).join(', ')}${faltam.length>3?' e mais '+(faltam.length-3):''}.`
+        + (sug.length && !expAtivo() ? ' Experimentos para começar a notá-las: ' + sug.map(x=>`<button type="button" class="di-link" onclick="abrirNoLab('${x.exp.id}')">${x.exp.title}</button>`).join(' · ') + '.' : '') });
+  }
+
+  // 4. técnicas de saborear mais usadas e ainda não tentadas
+  const usos = {};
+  E.forEach(e=>(e.savoring||[]).filter(s=>s!=='Ainda não saboreei').forEach(s=>{ usos[s]=(usos[s]||0)+1; }));
+  const top = Object.entries(usos).sort((x,y)=>y[1]-x[1])[0];
+  const naoTentadas = SAVORING_CHIPS.filter(s=>s!=='Ainda não saboreei' && !usos[s]);
+  if(top && top[1]>=PADROES_LIM.tecnicaMin && naoTentadas.length){
+    out.push({ id:'tecnica', ic:'🍯', t:'Seu jeito de saborear',
+      b:`Você mais usa <strong>“${top[0]}”</strong> (${top[1]} vezes). Ainda não tentou: ${naoTentadas.slice(0,2).map(s=>'“'+s+'”').join(' e ')}. Pode valer experimentar uma delas no próximo momento.` });
+  }
+  return out;
+}
+function htmlPadroes(){
+  const todos = calcularPadroes(), off = D.padroesOff || {};
+  if(!todos.length){
+    if(D.entries.length>0 && D.entries.length<PADROES_MIN)
+      return `<div class="insight-c pad"><div class="insight-t">🔎 Padrões</div><div class="insight-b">Com ${PADROES_MIN} momentos registrados, começo a mostrar pistas sobre horários, emoções e jeitos de saborear. Faltam ${PADROES_MIN-D.entries.length}.</div></div>`;
+    return '';
+  }
+  const vis = todos.filter(p=>!off[p.id]), ocultos = todos.length - vis.length;
+  if(!vis.length && !ocultos) return '';
+  return `<div class="sdiv">Padrões provisórios</div>
+    <p class="pad-aviso">Com ${D.entries.length} registros. São pistas, não conclusões: mudam conforme você registra mais.</p>`
+    + vis.map(p=>`<div class="insight-c pad"><div class="insight-t">${p.ic} ${p.t}</div><div class="insight-b">${p.b}</div><button type="button" class="pad-x" onclick="dispensarPadrao('${p.id}')">Não quero ver este</button></div>`).join('')
+    + (ocultos ? `<button type="button" class="pad-restaurar" onclick="restaurarPadroes()">Mostrar ${ocultos===1?'o que escondi':'os '+ocultos+' que escondi'}</button>` : '');
+}
+function dispensarPadrao(id){ D.padroesOff = D.padroesOff || {}; D.padroesOff[id] = true; save(); renderProgress(); }
+function restaurarPadroes(){ D.padroesOff = {}; save(); renderProgress(); }
+
 function renderProgress(){
   const el=document.getElementById('progress-content');
   const lv=getLevel(D.xp), pct=getLevelPct(D.xp);
@@ -2125,6 +2226,7 @@ function renderProgress(){
       ${repHTML}
     </div>
     ${insights.map(i=>`<div class="insight-c ${i.c}"><div class="insight-t">${i.t}</div><div class="insight-b">${i.b}</div></div>`).join('')}
+    ${htmlPadroes()}
     <div class="sdiv">Seus registros</div>
     <div id="p-registros" style="margin:0 16px 12px"></div>
     <div class="sdiv">Marcas do caminho</div>
