@@ -2061,7 +2061,28 @@ function skipDose(){
    intensidade. Nunca leem o texto livre. Mínimo de 5 registros, tom de convite ("parece que…"), cada um dispensável
    (D.padroesOff). Ficam só no aparelho e não entram na sincronização da pesquisa.
    ══════════════════════════════════ */
-const PADROES_MIN = 5;
+// Limites dos padrões. Mais baixo = aparece mais cedo, mas com mais chance de ser acaso.
+// Padrões DESCRITIVOS (só contam fatos: quando registra, que emoções faltam, que técnica usa) têm limites soltos.
+// Padrões que COMPARAM intensidade (período do dia; fim de semana x dias úteis) precisam, além disso, de uma diferença grande
+// frente à variação dos próprios registros (teste t de Welch), porque comparar médias de poucos registros numa escala de 1 a 5
+// inventa "padrões" do acaso com muita facilidade (ver ARQUITETURA.md).
+const PADROES_MIN = 4;   // registros no total para começar a mostrar padrões
+const PADROES_LIM = {
+  horaFreqMin: 3,    // descritivo: registros no mesmo período do dia para dizer "você costuma registrar…" (e pelo menos metade do total)
+  horaFreqPct: 0.5,
+  tecnicaMin: 2,     // descritivo: usos de uma técnica de saborear para destacá-la
+  grupoMin: 3,       // comparativo: registros em cada grupo comparado
+  horaDif: 0.8,      // comparativo: diferença mínima de intensidade média entre períodos...
+  semanaDif: 0.8,    // ...e entre fim de semana e dias úteis
+  tHoraInt: 3,       // comparativo: |t| mínimo entre períodos (alto, porque se escolhe o par mais extremo)
+  tSemana: 2.5       // comparativo: |t| mínimo entre fim de semana e dias úteis
+};
+function tWelch(a, b){   // |t| da diferença entre duas médias; Infinity se os dois grupos não variam nada e as médias diferem
+  const m = x => x.reduce((s,v)=>s+v,0)/x.length;
+  const v = (x,mx) => x.reduce((s,y)=>s+(y-mx)*(y-mx),0)/(x.length-1);
+  const ma = m(a), mb = m(b), den = Math.sqrt(v(a,ma)/a.length + v(b,mb)/b.length);
+  return den === 0 ? (ma === mb ? 0 : Infinity) : Math.abs(ma-mb)/den;
+}
 const NOME_PERIODO = { madrugada:'de madrugada', manhã:'de manhã', tarde:'à tarde', noite:'à noite' };
 function periodoDoDia(h){ return h<5?'madrugada':h<12?'manhã':h<18?'tarde':'noite'; }
 function calcularPadroes(){
@@ -2074,12 +2095,12 @@ function calcularPadroes(){
   const porPeriodo = {};
   E.forEach(e=>{ const p = periodoDoDia(new Date(e.ts).getHours()); (porPeriodo[p] = porPeriodo[p] || []).push(e); });
   const ord = Object.entries(porPeriodo).sort((x,y)=>y[1].length-x[1].length);
-  if(ord[0][1].length >= 4 && ord[0][1].length/E.length >= 0.5){   // pelo menos 4 registros no período: 3 de 5 seria pista fraca demais
+  if(ord[0][1].length >= PADROES_LIM.horaFreqMin && ord[0][1].length/E.length >= PADROES_LIM.horaFreqPct){
     out.push({ id:'hora-freq', ic:'🕒', t:'Quando você costuma registrar',
       b:`Parece que ${ord[0][1].length} dos seus ${E.length} momentos foram registrados <strong>${NOME_PERIODO[ord[0][0]]}</strong>. Pode ser um bom horário para uma pausa de notar o que foi bom.` });
   }
-  const fortes = Object.entries(porPeriodo).filter(([,l])=>l.length>=3).map(([p,l])=>({ p, m:media(l.map(e=>e.intensity||3)), n:l.length })).sort((x,y)=>y.m-x.m);
-  if(fortes.length>=2 && fortes[0].m - fortes[fortes.length-1].m >= 1){
+  const fortes = Object.entries(porPeriodo).filter(([,l])=>l.length>=PADROES_LIM.grupoMin).map(([p,l])=>({ p, m:media(l.map(e=>e.intensity||3)), v:l.map(e=>e.intensity||3) })).sort((x,y)=>y.m-x.m);
+  if(fortes.length>=2 && fortes[0].m - fortes[fortes.length-1].m >= PADROES_LIM.horaDif && tWelch(fortes[0].v, fortes[fortes.length-1].v) >= PADROES_LIM.tHoraInt){
     const alto = fortes[0], baixo = fortes[fortes.length-1];
     out.push({ id:'hora-int', ic:'🌤️', t:'Quando os momentos são mais intensos',
       b:`Pelo horário dos registros, a intensidade costuma ser maior <strong>${NOME_PERIODO[alto.p]}</strong> (média ${f1(alto.m)}) do que <strong>${NOME_PERIODO[baixo.p]}</strong> (${f1(baixo.m)}). É só uma pista: o horário do registro nem sempre é o do momento.` });
@@ -2087,9 +2108,9 @@ function calcularPadroes(){
 
   // 2. fim de semana × dias úteis
   const fds = E.filter(e=>[0,6].includes(new Date(e.date+'T12:00').getDay())), util = E.filter(e=>![0,6].includes(new Date(e.date+'T12:00').getDay()));
-  if(fds.length>=3 && util.length>=3){
+  if(fds.length>=PADROES_LIM.grupoMin && util.length>=PADROES_LIM.grupoMin){
     const mf = media(fds.map(e=>e.intensity||3)), mu = media(util.map(e=>e.intensity||3));
-    if(Math.abs(mf-mu) >= 0.8){
+    if(Math.abs(mf-mu) >= PADROES_LIM.semanaDif && tWelch(fds.map(e=>e.intensity||3), util.map(e=>e.intensity||3)) >= PADROES_LIM.tSemana){
       out.push({ id:'semana', ic:'📅', t:'Fim de semana e dias úteis',
         b: mf>mu
           ? `Seus momentos de fim de semana têm intensidade média <strong>${f1(mf)}</strong>, contra <strong>${f1(mu)}</strong> nos dias úteis. Pode valer plantar um momento pequeno no meio da semana: um café saboreado, um minuto de céu.`
@@ -2112,7 +2133,7 @@ function calcularPadroes(){
   E.forEach(e=>(e.savoring||[]).filter(s=>s!=='Ainda não saboreei').forEach(s=>{ usos[s]=(usos[s]||0)+1; }));
   const top = Object.entries(usos).sort((x,y)=>y[1]-x[1])[0];
   const naoTentadas = SAVORING_CHIPS.filter(s=>s!=='Ainda não saboreei' && !usos[s]);
-  if(top && top[1]>=3 && naoTentadas.length){
+  if(top && top[1]>=PADROES_LIM.tecnicaMin && naoTentadas.length){
     out.push({ id:'tecnica', ic:'🍯', t:'Seu jeito de saborear',
       b:`Você mais usa <strong>“${top[0]}”</strong> (${top[1]} vezes). Ainda não tentou: ${naoTentadas.slice(0,2).map(s=>'“'+s+'”').join(' e ')}. Pode valer experimentar uma delas no próximo momento.` });
   }
