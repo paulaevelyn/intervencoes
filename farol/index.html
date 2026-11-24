@@ -305,7 +305,10 @@
     <div class="home-sub"  id="h-sub"></div>
   </div>
   <div id="h-nudge"></div>
+  <div id="h-path"></div>
+  <div id="h-tip"></div>
   <div id="h-dose"></div>
+  <div id="h-numbers">
   <div id="h-xp"></div>
   <div class="stats">
     <div class="stat"><div class="stat-n" style="color:var(--mint)"  id="hs-mod">0</div><div class="stat-l">módulos</div></div>
@@ -317,7 +320,8 @@
     <svg class="chart-svg" id="h-chart" viewBox="0 0 320 72"></svg>
     <div id="h-chart-empty" style="display:none;font-size:13px;color:var(--muted);text-align:center;padding:14px 0">Registre no diário para ver seu gráfico.</div>
   </div>
-  <div class="sdiv">Acesso rápido</div>
+  </div>
+  <div class="sdiv">Explorar</div>
   <div class="quick-grid">
     <div class="quick-card" onclick="goTo('modules')">
       <div class="quick-icon">📚</div>
@@ -380,6 +384,7 @@
 <div class="scr" id="scr-diary">
   <div class="hdr"><h1>Diário</h1><p>Registre sem julgamento.</p></div>
   <div id="diary-form" style="padding:0 16px"></div>
+  <div id="d-insight" role="status" aria-live="polite" style="padding:0 16px"></div>
   <div id="diary-hist"></div>
 </div>
 

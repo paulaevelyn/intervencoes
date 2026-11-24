@@ -919,6 +919,7 @@ function pretestBack(){
 
 function pretestLater(){
   trackAppEvent('pretest_postponed');
+  D.pretestAdiado = Date.now(); save();
   toast('Sem problema — a pré-avaliação fica à sua espera. 🧭');
   goTo('home');
 }
@@ -1644,7 +1645,10 @@ function nextGuided(idx, total){
 let _selType=null;
 function renderDiary(){ renderDiaryForm(); renderDiaryHist(); }
 
+const BODY_CHIPS = ['Tensão muscular','Aperto no peito','Frio na barriga','Coração acelerado','Cabeça pesada','Inquietação','Cansaço','Outro'];
+const STRAT_CHIPS = ['Respirei','Questionei o pensamento','Falei com alguém','Me distraí','Escrevi','Me mexi','Deixei passar','Nada ainda'];
 function renderDiaryForm(){
+  const di=document.getElementById('d-insight'); if(di) di.innerHTML='';
   _selType=null;
   document.getElementById('diary-form').innerHTML=
     `<div style="margin-bottom:20px">
@@ -1663,11 +1667,11 @@ function renderDiaryForm(){
     </div>
     <div style="margin-bottom:20px">
       <label class="form-lbl">Reação no corpo</label>
-      <div class="chips" id="d-body">${['Tensão muscular','Aperto no peito','Frio na barriga','Coração acelerado','Cabeça pesada','Inquietação','Cansaço','Outro'].map(c=>`<span class="chip" onclick="toggleChip(this)">${c}</span>`).join('')}</div>
+      <div class="chips" id="d-body">${BODY_CHIPS.map(c=>`<span class="chip" onclick="toggleChip(this)">${c}</span>`).join('')}</div>
     </div>
     <div style="margin-bottom:20px">
       <label class="form-lbl">O que tentei</label>
-      <div class="chips" id="d-strat">${['Respirei','Questionei o pensamento','Falei com alguém','Me distraí','Escrevi','Me mexi','Deixei passar','Nada ainda'].map(c=>`<span class="chip" onclick="toggleChip(this)">${c}</span>`).join('')}</div>
+      <div class="chips" id="d-strat">${STRAT_CHIPS.map(c=>`<span class="chip" onclick="toggleChip(this)">${c}</span>`).join('')}</div>
     </div>
     <div style="margin-bottom:24px">
       <label class="form-lbl">Como ficou depois</label>
@@ -1689,8 +1693,31 @@ function saveDiary(){
   D.entries.unshift({id:Date.now().toString(),ts:Date.now(),date:today(),worry:w,type:_selType||'u',bodyReactions:body,strategies:strats,after});
   save(); checkBadges(); trackDiaryEvent(); checkPosttestTrigger(); toast('Registro salvo! 📔');
   renderDiaryForm(); renderDiaryHist();
+  mostrarInsightDiario(D.entries[0]);
   setTimeout(maybeShowIfThen, 900);
   scheduleLocalReminder(); // já praticou hoje → empurra lembrete para amanhã
+}
+
+/* Insights do registro que a pessoa acabou de salvar. Só usam o que ela escolheu (tipo, estratégias, "como ficou depois"),
+   nunca o texto livre. Sempre como convite, no máximo dois, e dispensáveis. Ficam só no aparelho. */
+function linkModulo(id, rotulo){
+  const m = MODULES.find(x=>x.id===id);
+  return m && isUnlocked(m) ? ' O módulo <button type="button" class="di-link" onclick="openModule(\''+id+'\')">'+rotulo+'</button> tem mais.' : '';
+}
+function nomeModulo(id, rotulo){   // o nome do módulo vira o link quando ele já está aberto; senão fica só o texto
+  const m = MODULES.find(x=>x.id===id);
+  return m && isUnlocked(m) ? '<button type="button" class="di-link" onclick="openModule(\''+id+'\')">'+rotulo+'</button>' : rotulo;
+}
+function mostrarInsightDiario(novo){
+  const el = document.getElementById('d-insight'); if(!el) return;
+  const itens = [];
+  const strats = (novo.strategies||[]).filter(s=>s!=='Nada ainda');
+  if(novo.after>=4) itens.push('🌿 <strong>Nem toda vez alivia na hora, e tudo bem.</strong> Notar e registrar já é parte do treino.');
+  if(!strats.length) itens.push('🌬️ <strong>Que tal uma pausa de 1 minuto?</strong> Respire devagar 3 vezes e solte os ombros.'+linkModulo('m5','Regulação pelo Corpo'));
+  if(novo.type==='n') itens.push('🌊 <strong>Quando não depende de você,</strong> pode ajudar aceitar o pensamento e se afastar dele, em vez de tentar resolvê-lo.'+linkModulo('m7','Desfusão e Aceitação'));
+  if(novo.after<=2 && strats.length) itens.push('✨ <strong>Você registrou alívio depois de '+strats.map(s=>'“'+s+'”').join(', ')+'.</strong> Pode valer lembrar dessa ferramenta na próxima vez.');
+  if(!itens.length){ el.innerHTML=''; return; }
+  el.innerHTML = itens.slice(0,2).map(t=>`<div class="d-insight"><div class="di-tx">${t}</div><button type="button" class="di-x" aria-label="Fechar" onclick="this.closest('.d-insight').remove()">×</button></div>`).join('');
 }
 
 function renderDiaryHist(){
@@ -1750,6 +1777,106 @@ function skipDose(){
 /* ══════════════════════════════════
    PROGRESS
    ══════════════════════════════════ */
+/* ══════════════════════════════════
+   PADRÕES PROVISÓRIOS (tela Progresso)
+   Pistas ao longo do tempo a partir do que a pessoa ESCOLHEU: horário do registro, tipo da preocupação, reação no corpo,
+   estratégias e "como ficou depois". Nunca leem o texto livre. Em tom de convite ("parece que…"), cada um dispensável
+   (D.padroesOff). Ficam só no aparelho e não entram na sincronização da pesquisa.
+   Padrões DESCRITIVOS (só contam fatos) têm limites soltos. O padrão que COMPARA ("depois" com e sem uma estratégia) exige,
+   além de uma diferença mínima, que ela seja grande frente à variação dos registros (teste t de Welch), porque comparar
+   médias de poucos registros numa escala de 1 a 5 inventa "padrões" do acaso com muita facilidade (ver ARQUITETURA.md).
+   ══════════════════════════════════ */
+const PADROES_MIN = 4;   // registros no total para começar a mostrar padrões
+const PADROES_LIM = {
+  horaFreqMin: 3, horaFreqPct: 0.5,   // descritivo: registros no mesmo período do dia (e pelo menos metade do total)
+  tipoMin: 3, tipoPct: 0.6,           // descritivo: um tipo de preocupação em pelo menos 60% dos registros com tipo
+  corpoMin: 3, corpoPct: 0.4,         // descritivo: uma reação no corpo em pelo menos 40% dos registros
+  tecnicaMin: 2,                      // descritivo: usos de uma estratégia para destacá-la
+  grupoMin: 4,                        // comparativo: registros com e sem a estratégia
+  difEstrategia: 0.8,                 // comparativo: diferença mínima no "depois"...
+  tEstrategia: 3.5                    // ...e |t| mínimo (alto, porque se escolhe a estratégia mais extrema entre até 7)
+};
+const NOME_PERIODO = { madrugada:'de madrugada', manhã:'de manhã', tarde:'à tarde', noite:'à noite' };
+function periodoDoDia(h){ return h<5?'madrugada':h<12?'manhã':h<18?'tarde':'noite'; }
+function tWelch(a, b){   // |t| da diferença entre duas médias; Infinity se os dois grupos não variam nada e as médias diferem
+  const m = x => x.reduce((s,v)=>s+v,0)/x.length;
+  const v = (x,mx) => x.reduce((s,y)=>s+(y-mx)*(y-mx),0)/(x.length-1);
+  const ma = m(a), mb = m(b), den = Math.sqrt(v(a,ma)/a.length + v(b,mb)/b.length);
+  return den === 0 ? (ma === mb ? 0 : Infinity) : Math.abs(ma-mb)/den;
+}
+function calcularPadroes(){
+  const E = D.entries, out = [], L = PADROES_LIM;
+  if(E.length < PADROES_MIN) return out;
+  const media = a => a.reduce((s,x)=>s+x,0)/a.length;
+  const f1 = n => n.toFixed(1).replace('.',',');
+
+  // 1. em que período do dia a pessoa mais registra
+  const porPeriodo = {};
+  E.forEach(e=>{ const p = periodoDoDia(new Date(e.ts).getHours()); porPeriodo[p] = (porPeriodo[p]||0)+1; });
+  const topP = Object.entries(porPeriodo).sort((x,y)=>y[1]-x[1])[0];
+  if(topP[1] >= L.horaFreqMin && topP[1]/E.length >= L.horaFreqPct){
+    out.push({ id:'hora-freq', ic:'🕒', t:'Quando as preocupações aparecem',
+      b:`Parece que ${topP[1]} das suas ${E.length} preocupações foram registradas <strong>${NOME_PERIODO[topP[0]]}</strong>. Se elas se concentram nesse período, pode valer conhecer o ${nomeModulo('m4','Tempo de Preocupação')}, que reserva um horário só para elas.` });
+  }
+  // 2. tipo de preocupação
+  const comTipo = E.filter(e=>e.type==='c'||e.type==='n'), nN = comTipo.filter(e=>e.type==='n').length, nC = comTipo.length-nN;
+  if(comTipo.length >= PADROES_MIN){
+    if(nN >= L.tipoMin && nN/comTipo.length >= L.tipoPct)
+      out.push({ id:'tipo', ic:'🌊', t:'O tipo das suas preocupações', b:`Em ${nN} de ${comTipo.length} registros você marcou <strong>“Não depende de mim”</strong>. Para esse tipo, o app sugere ${nomeModulo('m7','Desfusão e Aceitação')}.` });
+    else if(nC >= L.tipoMin && nC/comTipo.length >= L.tipoPct)
+      out.push({ id:'tipo', ic:'🔧', t:'O tipo das suas preocupações', b:`Em ${nC} de ${comTipo.length} registros você marcou <strong>“Posso agir agora”</strong>. Para esse tipo, o app sugere Resolução de Problemas: escolher UM primeiro passo pequeno e marcar quando fazer.` });
+  }
+  // 3. reação no corpo mais frequente
+  const corpo = {};
+  E.forEach(e=>(e.bodyReactions||[]).filter(r=>r!=='Outro').forEach(r=>{ corpo[r]=(corpo[r]||0)+1; }));
+  const topC = Object.entries(corpo).sort((x,y)=>y[1]-x[1])[0];
+  if(topC && topC[1] >= L.corpoMin && topC[1]/E.length >= L.corpoPct){
+    out.push({ id:'corpo', ic:'🫀', t:'O que o corpo mostra',
+      b:`A reação no corpo que mais aparece é <strong>“${topC[0]}”</strong> (${topC[1]} de ${E.length} registros).`+linkModulo('m5','Regulação pelo Corpo') });
+  }
+  // 4. estratégias mais usadas e ainda não tentadas
+  const usos = {};
+  E.forEach(e=>(e.strategies||[]).filter(s=>s!=='Nada ainda').forEach(s=>{ usos[s]=(usos[s]||0)+1; }));
+  const topS = Object.entries(usos).sort((x,y)=>y[1]-x[1])[0];
+  const naoTentadas = STRAT_CHIPS.filter(s=>s!=='Nada ainda' && !usos[s]);
+  if(topS && topS[1] >= L.tecnicaMin && naoTentadas.length){
+    out.push({ id:'tecnica', ic:'🔧', t:'Seu jeito de lidar',
+      b:`Você mais usa <strong>“${topS[0]}”</strong> (${topS[1]} vezes). Ainda não marcou: ${naoTentadas.slice(0,2).map(s=>'“'+s+'”').join(' e ')}. Pode valer experimentar uma delas na próxima vez.` });
+  }
+  // 5. COMPARATIVO: com qual estratégia o "depois" costuma ficar melhor (1 = muito melhor, 5 = igual ou pior)
+  let melhor = null;
+  STRAT_CHIPS.filter(s=>s!=='Nada ainda').forEach(s=>{
+    const com = E.filter(e=>(e.strategies||[]).includes(s)).map(e=>e.after), sem = E.filter(e=>!(e.strategies||[]).includes(s)).map(e=>e.after);
+    if(com.length>=L.grupoMin && sem.length>=L.grupoMin){
+      const t = tWelch(com, sem), dif = media(com)-media(sem);
+      if(Math.abs(dif)>=L.difEstrategia && t>=L.tEstrategia && (!melhor || t>melhor.t)) melhor = { s, t, dif, mc:media(com), ms:media(sem), nc:com.length, ns:sem.length };
+    }
+  });
+  if(melhor){
+    out.push({ id:'estrategia', ic:'🔎', t:'O que costuma aliviar',
+      b: melhor.dif < 0
+        ? `Nos ${melhor.nc} registros em que você marcou <strong>“${melhor.s}”</strong>, o “depois” ficou em média <strong>${f1(melhor.mc)}</strong> (1 = muito melhor), contra ${f1(melhor.ms)} nos outros ${melhor.ns}. É uma pista, não prova de que foi isso que ajudou.`
+        : `Nos ${melhor.nc} registros em que você marcou <strong>“${melhor.s}”</strong>, o “depois” ficou mais alto (média ${f1(melhor.mc)}, contra ${f1(melhor.ms)}). Pode ser que você recorra a isso nos momentos mais difíceis, e não que atrapalhe: vale observar.` });
+  }
+  return out;
+}
+function htmlPadroes(){
+  const todos = calcularPadroes(), off = D.padroesOff || {};
+  if(!todos.length){
+    if(D.entries.length>0 && D.entries.length<PADROES_MIN)
+      return `<div class="insight-c pad"><div class="insight-t">🔎 Padrões</div><div class="insight-b">Com ${PADROES_MIN} registros, começo a mostrar pistas sobre horários, reações no corpo e o que costuma aliviar. Faltam ${PADROES_MIN-D.entries.length}.</div></div>`;
+    return '';
+  }
+  const vis = todos.filter(p=>!off[p.id]), ocultos = todos.length - vis.length;
+  if(!vis.length && !ocultos) return '';
+  return `<div class="sdiv">Padrões provisórios</div>
+    <p class="pad-aviso">Com ${D.entries.length} registros. São pistas, não conclusões: mudam conforme você registra mais.</p>`
+    + vis.map(p=>`<div class="insight-c pad"><div class="insight-t">${p.ic} ${p.t}</div><div class="insight-b">${p.b}</div><button type="button" class="pad-x" onclick="dispensarPadrao('${p.id}')">Não quero ver este</button></div>`).join('')
+    + (ocultos ? `<button type="button" class="pad-restaurar" onclick="restaurarPadroes()">Mostrar ${ocultos===1?'o que escondi':'os '+ocultos+' que escondi'}</button>` : '');
+}
+function dispensarPadrao(id){ D.padroesOff = D.padroesOff || {}; D.padroesOff[id] = true; save(); renderProgress(); }
+function restaurarPadroes(){ D.padroesOff = {}; save(); renderProgress(); }
+
 function renderProgress(){
   const el=document.getElementById('progress-content');
   const lv=getLevel(D.xp), pct=getLevelPct(D.xp);
@@ -1799,6 +1926,7 @@ function renderProgress(){
       <div id="p-chart-e" style="display:none;font-size:13px;color:var(--muted);text-align:center;padding:10px 0">Sem dados suficientes.</div>
     </div>
     ${insights.map(i=>`<div class="insight-c ${i.c}"><div class="insight-t">${i.t}</div><div class="insight-b">${i.b}</div></div>`).join('')}
+    ${htmlPadroes()}
     <div class="sdiv">Seus registros de preocupação</div>
     <div id="p-worries" style="margin:0 16px 12px"></div>
     <div class="sdiv">Marcas do caminho</div>
@@ -2136,76 +2264,130 @@ function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg
    INIT
    ══════════════════════════════════ */
 /* ══════════════════════════════════
-   NUDGES COMPORTAMENTAIS (home)
-   Prioridade: pós-teste pendente > retorno após pausa (autocompaixão)
-   > módulo a meio (efeito Zeigarnik) > plano se-então (Gollwitzer)
+   PRÓXIMO PASSO (home)
+   Um único passo em destaque, para ninguém se perder. Ordem:
+   primeiros passos (quem está começando) > módulo a meio > próximo módulo do caminho > manter a prática.
+   Abaixo dele: o caminho dos módulos ("você está aqui") e, só depois dos primeiros passos, os avisos
+   secundários (pré-avaliação pendente, instalar, lembretes, dias de prática). Sem pontos a perder e sem sequência a manter.
    ══════════════════════════════════ */
-function renderNudge(){
-  const el = document.getElementById('h-nudge');
-  if(!el) return;
+function escAttr(s){ return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
+function ultimaAtividade(){
+  const ts = [].concat(D.entries.map(e=>e.ts), D.doseRecords.map(e=>e.ts)).filter(Boolean);
+  return ts.length ? Math.max.apply(null, ts) : null;
+}
+function modulosNaOrdem(){ return effectivePath().map(id=>MODULES.find(m=>m.id===id)).filter(Boolean); }
+function comecouAlgumModulo(){
+  return MODULES.some(m=>{ const mp=D.moduleProgress[m.id]; return mp && (mp.done || (mp.steps||[]).some(Boolean)); });
+}
+function primeirosPassos(){   // null quando os três já foram feitos ou quando a pessoa já está dentro de um módulo
+  if(comecouAlgumModulo()) return null;
+  const m1 = modulosNaOrdem()[0];
+  const passos = [
+    { id:'pre', ok:!!D.pretest, ic:'🧭', t:'Pré-avaliação', sub:'5 min · o ponto de partida da sua travessia', go:"goTo('pretest')" },
+    { id:'mod', ok:false, ic:m1?m1.emoji:'🧠', t:'Primeiro módulo', sub: m1 ? m1.title : 'Módulos', go: m1 ? "openModule('"+m1.id+"')" : "goTo('modules')" },
+    { id:'dia', ok:D.entries.length>0, ic:'📔', t:'Um registro no diário', sub:'Anote uma preocupação, sem julgamento', go:"goTo('diary')" }
+  ];
+  return passos.every(p=>p.ok) ? null : passos;
+}
+function htmlCaminho(){
+  const ord = modulosNaOrdem();
+  const feitos = ord.filter(m=>D.moduleProgress[m.id]?.done).length;
+  const atual = ord.find(m=>!D.moduleProgress[m.id]?.done && isUnlocked(m));
+  const dots = ord.map((m,i)=>{
+    const feito = !!D.moduleProgress[m.id]?.done, livre = isUnlocked(m), aqui = !!atual && atual.id===m.id;
+    const est = feito ? 'feito' : aqui ? 'atual' : livre ? 'livre' : 'trava';
+    const rot = 'Módulo '+(i+1)+': '+m.title+'. '+(feito?'Concluído.':aqui?'Você está aqui.':livre?'Disponível.':'Abre ao concluir o módulo anterior.');
+    const clique = livre ? "openModule('"+m.id+"')" : "toast('Este módulo abre ao concluir o anterior. Sem pressa. ⚓')";
+    return '<li><button type="button" class="tj-dot '+est+'" onclick="'+clique+'" aria-label="'+escAttr(rot)+'"'+(aqui?' aria-current="step"':'')+'><span aria-hidden="true">'+(feito?'✓':(i+1))+'</span></button></li>';
+  }).join('');
+  const onde = atual ? 'Você está no módulo '+(ord.indexOf(atual)+1)+': '+atual.title+'.' : 'Todos os módulos estão concluídos.';
+  return '<section class="tj" aria-labelledby="tj-t"><div class="tj-head"><h2 id="tj-t">Sua travessia</h2><span>'+feitos+' de '+ord.length+' módulos</span></div>'
+    + '<ol class="tj-dots">'+dots+'</ol><p class="tj-leg">'+onde+' Cada módulo abre ao concluir o anterior, sem pressa.</p></section>';
+}
+function dicaSecundaria(){
   const streak = calcStreak();
-  const lastEntry = D.entries.length ? [...D.entries].sort((a,b)=>b.ts-a.ts)[0] : null;
-  const daysSince = lastEntry ? Math.floor((Date.now()-lastEntry.ts)/864e5) : null;
-  const halfMod = MODULES.find(m=>{ const mp=D.moduleProgress[m.id]; return mp && !mp.done && mp.steps?.some(Boolean); });
-
-  let html = '';
-
-  // 0. Pré-avaliação pendente — caminho de volta para quem adiou
-  if(!D.pretest && D.obDone){
-    html = `<div class="nudge mint">
+  // pré-avaliação ainda pendente, para quem já começou um módulo sem ela: um lembrete, não o destaque
+  if(!D.pretest && D.obDone && !D.pretestAdiado){
+    return `<div class="nudge mint">
       <div class="nudge-icon">🧭</div>
       <div class="nudge-body"><strong>Pré-avaliação pendente.</strong>
       São ~5 minutos e é o ponto de partida para medir o seu progresso na travessia.</div>
-      <button class="nudge-btn" onclick="goTo('pretest')">Responder agora</button>
+      <button class="nudge-btn" onclick="goTo('pretest')">Responder</button>
     </div>`;
   }
-  // 1. Instalar na tela de início (uma vez, se ainda não instalou)
-  else if(!isInstalled() && !D.installSeen){
-    html = `<div class="nudge lav">
+  if(!isInstalled() && !D.installSeen){
+    return `<div class="nudge lav">
       <div class="nudge-icon">📲</div>
       <div class="nudge-body"><strong>Leve o Farol com você.</strong>
       Adicione à tela de início para abrir como um app — com o ícone do farol e funcionando offline.</div>
       <button class="nudge-btn" onclick="showInstallModal()">Ver como</button>
     </div>`;
   }
-  // 2. Convite para lembretes — uma vez, só depois da primeira prática (valor antes do pedido)
-  else if(('Notification' in window) && !D.reminders.enabled && !D.notifPromptSeen && D.pretest
-          && (D.entries.length >= 1 || MODULES.some(m=>D.moduleProgress[m.id]?.done))){
-    html = `<div class="nudge mint">
+  if(('Notification' in window) && !D.reminders.enabled && !D.notifPromptSeen && D.pretest
+     && (D.entries.length >= 1 || MODULES.some(m=>D.moduleProgress[m.id]?.done))){
+    return `<div class="nudge mint">
       <div class="nudge-icon">🔔</div>
       <div class="nudge-body"><strong>Quer um lembrete gentil por dia?</strong>
       Um toque leve para manter a prática viva — no seu horário, no seu tom.</div>
       <button class="nudge-btn" onclick="showNotifModal()">Ver como funciona</button>
     </div>`;
   }
-  // 3. Retorno após pausa — acolher sem culpa (evita o efeito "estraguei tudo")
-  else if(daysSince !== null && daysSince >= 3){
-    html = `<div class="nudge lav">
-      <div class="nudge-icon">🤗</div>
-      <div class="nudge-body"><strong>Que bom ter você de volta.</strong>
-      Pausas fazem parte de qualquer travessia — o que importa é que o farol continua aceso. Um registro pequeno hoje já recomeça o caminho.</div>
-      <button class="nudge-btn" onclick="goTo('diary')">Registrar agora</button>
-    </div>`;
-  }
-  // 2. Módulo a meio — tarefas incompletas pedem fecho (Zeigarnik)
-  else if(halfMod){
-    const pct = modProgress(halfMod);
-    html = `<div class="nudge mint">
-      <div class="nudge-icon">📖</div>
-      <div class="nudge-body"><strong>${halfMod.title}</strong> está ${pct}% completo.
-      Faltam só alguns passos para fechar este capítulo.</div>
-      <button class="nudge-btn" onclick="openModule('${halfMod.id}')">Continuar</button>
-    </div>`;
-  }
-  // 3. Streak ativo — reforço do progresso (sem pressão)
-  else if(streak >= 2){
-    html = `<div class="nudge amber">
+  if(streak >= 2){
+    return `<div class="nudge amber">
       <div class="nudge-icon">🌱</div>
       <div class="nudge-body"><strong>Você praticou em ${streak} dias nas últimas duas semanas.</strong>
       Voltar, no seu ritmo, é o que treina o cérebro. Os intervalos fazem parte.</div>
     </div>`;
   }
-  el.innerHTML = html;
+  return '';
+}
+function renderNudge(){
+  const el = document.getElementById('h-nudge');
+  if(!el) return;
+  const path = document.getElementById('h-path'), tip = document.getElementById('h-tip');
+  const passos = primeirosPassos();
+  let guia = '';
+  if(passos){
+    // quem adiou a pré-avaliação não é cobrado: o destaque passa para o próximo passo
+    let prim = passos.findIndex(p=>!p.ok && !(p.id==='pre' && D.pretestAdiado));
+    if(prim < 0) prim = passos.findIndex(p=>!p.ok);
+    guia = `<section class="guia" aria-labelledby="guia-t">
+      <div class="guia-eyebrow">Primeiros passos</div>
+      <h2 class="guia-h" id="guia-t">Vamos começar com calma</h2>
+      <p class="guia-p">Três passos pequenos, na ordem que fizer sentido para você. Dá para parar quando quiser.</p>
+      <ol class="guia-lista">${passos.map((p,i)=> p.ok
+        ? `<li class="guia-row ok"><span class="guia-ic" aria-hidden="true">✓</span><span class="guia-tx"><strong>${p.t}</strong><small>Feito</small></span></li>`
+        : `<li><button class="guia-row${i===prim?' prim':''}" type="button" onclick="${p.go}"><span class="guia-ic" aria-hidden="true">${p.ic}</span><span class="guia-tx"><strong>${p.t}</strong><small>${p.sub}</small></span><span class="guia-go" aria-hidden="true">→</span></button></li>`).join('')}
+      </ol></section>`;
+  } else {
+    const ult = ultimaAtividade(), dias = ult ? Math.floor((Date.now()-ult)/864e5) : null;
+    const volta = dias !== null && dias >= 3
+      ? '<p class="guia-volta"><strong>Que bom ter você de volta.</strong> Pausas fazem parte de qualquer travessia: o farol continua aceso. Um passo pequeno já recomeça.</p>' : '';
+    const halfMod = MODULES.find(m=>{ const mp=D.moduleProgress[m.id]; return mp && !mp.done && (mp.steps||[]).some(Boolean); });
+    const proxMod = modulosNaOrdem().find(m=>!D.moduleProgress[m.id]?.done && isUnlocked(m));
+    let em, tit, txt, btn, go, linkTxt = 'Ou registrar uma preocupação agora', linkGo = "goTo('diary')";
+    if(halfMod){
+      const feitosP = (D.moduleProgress[halfMod.id].steps||[]).filter(Boolean).length, faltam = halfMod.steps.length - feitosP;
+      em=halfMod.emoji; tit='Continue: '+halfMod.title; txt=modProgress(halfMod)+'% concluído. '+(faltam===1?'Falta 1 passo':'Faltam '+faltam+' passos')+' para fechar este módulo.'; btn='Continuar'; go="openModule('"+halfMod.id+"')";
+    } else if(proxMod){
+      em=proxMod.emoji; tit='Próximo módulo: '+proxMod.title; txt=proxMod.tagline||''; btn='Começar'; go="openModule('"+proxMod.id+"')";
+    } else {
+      em='⚓'; tit='Você percorreu a travessia'; txt='Agora é manter: registre quando uma preocupação aparecer, ou volte a um módulo que quiser rever.'; btn='Registrar agora'; go="goTo('diary')"; linkTxt='Ou rever um módulo'; linkGo="goTo('modules')";
+    }
+    guia = `<section class="guia" aria-labelledby="guia-t">
+      <div class="guia-eyebrow">Seu próximo passo</div>${volta}
+      <h2 class="guia-h" id="guia-t"><span aria-hidden="true">${em}</span> ${tit}</h2>
+      <p class="guia-p">${txt}</p>
+      <button class="guia-btn" type="button" onclick="${go}">${btn}</button>
+      <button class="guia-link" type="button" onclick="${linkGo}">${linkTxt}</button>
+    </section>`;
+  }
+  el.innerHTML = guia;
+  if(path) path.innerHTML = htmlCaminho();
+  if(tip) tip.innerHTML = passos ? '' : dicaSecundaria();
+  // números (XP, módulos, gráfico) só aparecem quando há o que mostrar: zeros em tudo desanimam
+  const num = document.getElementById('h-numbers');
+  if(num) num.style.display = (D.xp>0 || D.entries.length || comecouAlgumModulo()) ? '' : 'none';
 }
 
 /* Intenção de implementação (Gollwitzer, 1999) — "quando X, então Y"
