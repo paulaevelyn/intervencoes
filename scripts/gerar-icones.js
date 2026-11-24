@@ -8,11 +8,14 @@
    (apple-touch-icon) e favicon PNG (Safari).
 
    COMO USAR
-     node scripts/gerar-icones.js            gera os PNGs de todos os apps
-     node scripts/gerar-icones.js farol      só de um app
+     node scripts/gerar-icones.js                         gera os PNGs de todos os apps
+     node scripts/gerar-icones.js farol                   só de um app
+     node scripts/gerar-icones.js farol aurora --subir-cache   também aumenta o cache offline (sw.js) desses apps
+   Na prática isso roda sozinho: o workflow .github/workflows/gerar-icones.yml chama este script quando um
+   logos/*.svg muda na main.
    Precisa do Playwright (npm i -D playwright, e npx playwright install chromium) ou do que já vem no ambiente.
-   Depois de rodar, faça commit dos PNGs junto com o SVG e aumente a versão do cache (CACHE_VERSION) em sw.js
-   dos apps que mudaram, para os aparelhos pegarem o ícone novo. Ver logos/LEIA-ME.md. */
+   Rodando à mão: faça commit dos PNGs junto com o SVG (e use --subir-cache para os aparelhos pegarem o ícone
+   novo). Ver logos/LEIA-ME.md. */
 const fs = require('fs'); const path = require('path');
 const { chromium } = require('playwright');
 const RAIZ = path.resolve(__dirname, '..');
@@ -22,6 +25,17 @@ const APPS = {
   farol: ['farol'], floresca: ['floresca'], aurora: ['aurora'], sintonia: ['sintonia'], trilha: ['trilha'],
   matiz: ['matiz'], 'seguranca-interna': ['seguranca-interna'], ritmo: ['ritmo', 'ritmo/fonte/public']
 };
+// service workers de cada app (Matiz e Segurança Interna não têm)
+const SW = { ritmo: ['ritmo/sw.js', 'ritmo/fonte/public/sw.js'] };
+function swsDe(a) { return (SW[a] || [a + '/sw.js']).filter((f) => fs.existsSync(path.join(RAIZ, f))); }
+// "const CACHE_VERSION = 'farol-v15'" (ou "const CACHE = 'ritmo-v11'") -> sobe o número
+function subirCache(arquivo) {
+  const p = path.join(RAIZ, arquivo); const s = fs.readFileSync(p, 'utf8');
+  const m = s.match(/(CACHE_VERSION|CACHE)(\s*=\s*')([a-z-]+-v)(\d+)(')/);
+  if (!m) { console.error('cache não encontrado em', arquivo); return; }
+  fs.writeFileSync(p, s.replace(m[0], m[1] + m[2] + m[3] + (Number(m[4]) + 1) + m[5]));
+  console.log('cache', arquivo, m[3] + m[4], '->', m[3] + (Number(m[4]) + 1));
+}
 // o Ritmo não usa apple-touch-icon
 const SEM_APPLE = new Set(['ritmo']);
 
@@ -32,7 +46,8 @@ function corDaPlaca(svg) {
 }
 
 (async () => {
-  const pedidos = process.argv.slice(2); const alvo = pedidos.length ? pedidos : Object.keys(APPS);
+  const args = process.argv.slice(2); const subir = args.includes('--subir-cache');
+  const pedidos = args.filter((x) => !x.startsWith('--')); const alvo = pedidos.length ? pedidos : Object.keys(APPS);
   for (const a of alvo) if (!APPS[a]) { console.error('app desconhecido:', a, '| válidos:', Object.keys(APPS).join(', ')); process.exit(1); }
   const b = await chromium.launch(); const p = await b.newPage();
   async function png(svg, saida, n, fundo) {
@@ -52,6 +67,7 @@ function corDaPlaca(svg) {
       await png(svg, path.join(dir, 'favicon-32.png'), 32);
       if (!SEM_APPLE.has(a)) await png(svg, path.join(dir, 'apple-touch-icon.png'), 180, fundo);   // o iPhone não aceita transparência
     }
+    if (subir) swsDe(a).forEach(subirCache);
     console.log('ok', a);
   }
   await b.close();

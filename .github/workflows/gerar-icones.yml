@@ -1,0 +1,98 @@
+# Gera sozinho os ícones PNG dos apps quando um logo muda.
+#
+# Os SVGs de logos/ são a fonte única (ver logos/LEIA-ME.md). O navegador não aceita SVG em alguns lugares
+# (ícone de instalação do Android, ícone da tela inicial do iPhone, favicon do Safari), então este workflow
+# roda scripts/gerar-icones.js, aumenta o cache offline dos apps que mudaram (para os aparelhos pegarem o
+# logo novo) e faz o commit dos PNGs na própria main.
+#
+# Também pode ser rodado à mão: aba Actions > "Gerar ícones dos apps" > Run workflow.
+name: Gerar ícones dos apps
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'logos/*.svg'
+      - 'scripts/gerar-icones.js'
+  workflow_dispatch:
+    inputs:
+      apps:
+        description: 'Apps a refazer, separados por espaço (ex.: farol aurora). Vazio = todos.'
+        required: false
+        default: ''
+      subir_cache:
+        description: 'Aumentar também o cache offline (sw.js) dos apps?'
+        type: boolean
+        default: false
+
+permissions:
+  contents: write      # só para commitar os PNGs e o sw.js
+
+concurrency:
+  group: gerar-icones
+  cancel-in-progress: false
+
+jobs:
+  icones:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Descobrir quais apps refazer
+        id: apps
+        env:
+          EVENTO: ${{ github.event_name }}
+          APPS_ENTRADA: ${{ inputs.apps }}
+          CACHE_ENTRADA: ${{ inputs.subir_cache }}
+          ANTES: ${{ github.event.before }}
+          DEPOIS: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          if [ "$EVENTO" = "workflow_dispatch" ]; then
+            APPS="$APPS_ENTRADA"; SUBIR="$CACHE_ENTRADA"
+          else
+            # push: refaz só os apps cujo logo mudou; se só o script mudou, refaz todos sem mexer no cache
+            if [ "$ANTES" = "0000000000000000000000000000000000000000" ]; then ANTES="${DEPOIS}^"; fi
+            APPS=$(git diff --name-only "$ANTES" "$DEPOIS" -- 'logos/*.svg' | sed 's#^logos/##; s#\.svg$##' | tr '\n' ' ')
+            if [ -n "${APPS// /}" ]; then SUBIR=true; else SUBIR=false; fi
+          fi
+          # só nomes de app: letras minúsculas, hífen e espaço
+          if [[ ! "$APPS" =~ ^[a-z\ -]*$ ]]; then echo "Nomes de app inválidos: $APPS"; exit 1; fi
+          echo "apps=$APPS" >> "$GITHUB_OUTPUT"
+          echo "subir=$SUBIR" >> "$GITHUB_OUTPUT"
+          echo "Apps: ${APPS:-todos} | subir cache: $SUBIR"
+
+      - name: Instalar o Playwright (Chromium)
+        run: |
+          npm install --no-save --no-package-lock playwright
+          npx playwright install --with-deps chromium
+
+      - name: Gerar os ícones
+        env:
+          APPS: ${{ steps.apps.outputs.apps }}
+          SUBIR: ${{ steps.apps.outputs.subir }}
+        run: |
+          set -euo pipefail
+          FLAG=""; if [ "$SUBIR" = "true" ]; then FLAG="--subir-cache"; fi
+          # shellcheck disable=SC2086
+          node scripts/gerar-icones.js $APPS $FLAG
+
+      - name: Commitar o que mudou
+        run: |
+          set -euo pipefail
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A -- '*.png' '*/sw.js' 'ritmo/fonte/public/sw.js'
+          if git diff --cached --quiet; then
+            echo "Nada mudou: os ícones já estão em dia."
+          else
+            git commit -m "Ícones dos apps gerados a partir de logos/ [automático]"
+            git push
+          fi
