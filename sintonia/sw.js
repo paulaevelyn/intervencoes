@@ -1,7 +1,7 @@
 /* Sintonia — Service Worker
    Offline-first para assets, network-first para HTML.
    Incrementar CACHE_VERSION a cada deploy para forçar atualização. */
-const CACHE_VERSION = 'sintonia-v7';
+const CACHE_VERSION = 'sintonia-v8';
 const CORE = [
   './',
   './index.html',
@@ -12,8 +12,7 @@ const CORE = [
   './toques.js',
   './progresso.js',
   './manifest.json',
-  './assets/sintonia-logo.svg',
-  './assets/sintonia-icon.svg',
+  '../logos/sintonia.svg',
   './icon-192.png',
   './icon-512.png',
   './apple-touch-icon.png',

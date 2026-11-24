@@ -6,7 +6,7 @@
 
 <!-- PWA / Atalho na home screen -->
 <link rel="manifest" href="manifest.json">
-<link rel="icon" href="assets/sintonia-icon.svg" type="image/svg+xml">
+<link rel="icon" href="../logos/sintonia.svg" type="image/svg+xml">
 <link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
 <meta name="theme-color" content="#146E57">
 <meta name="application-name" content="Sintonia">
@@ -33,7 +33,7 @@
 <!-- SPLASH SCREEN -->
 <div id="splash">
   <div class="splash-inner">
-    <img src="assets/sintonia-logo.svg" alt="Sintonia" class="splash-logo">
+    <img src="../logos/sintonia.svg" alt="Sintonia" class="splash-logo">
     <div class="splash-dots"><span></span><span></span><span></span></div>
   </div>
 </div>
@@ -46,7 +46,7 @@
   <!-- 0: Acolhimento -->
   <div class="ob-slide on" id="obs0">
     <div class="ob-top">
-      <div class="ob-brand"><img src="assets/sintonia-logo.svg" alt="Sintonia" width="200"></div>
+      <div class="ob-brand"><img src="../logos/sintonia.svg" alt="Sintonia" width="200"></div>
       <div class="ob-icon">🎧</div>
       <div class="ob-title">Escolher para onde<br>levar a atenção.</div>
       <div class="ob-body">Quando a mente fica presa em preocupações, em lembranças ou em vigiar o próprio corpo, ela parece não ter escolha. Este exercício treina o contrário: você ouve sons ao seu redor e leva a atenção de um para outro, de propósito.</div>
@@ -603,7 +603,7 @@
 
 <!-- NAV -->
 <nav id="nav" aria-label="Seções">
-  <div class="nav-logo"><img src="assets/sintonia-icon.svg" alt="Sintonia"></div>
+  <div class="nav-logo"><img src="../logos/sintonia.svg" alt="Sintonia"></div>
   <button class="nb on" id="nb-home" type="button" onclick="goTo('home')">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 18v-6a9 9 0 0118 0v6"/><path d="M21 19a2 2 0 01-2 2h-1a2 2 0 01-2-2v-3a2 2 0 012-2h3zM3 19a2 2 0 002 2h1a2 2 0 002-2v-3a2 2 0 00-2-2H3z"/></svg><span>Treinar</span>
   </button>
@@ -633,6 +633,6 @@
 <script src="progresso.js"></script>
 
 <!-- LOGIN: camada compartilhada (../auth/). Contas só por convite. -->
-<script type="module" src="../auth/auth.js" data-app="sintonia" data-nome="Sintonia" data-logo="assets/sintonia-logo.svg" data-pesquisa="nao" data-storage-keys="sintonia_sessoes,sintonia_semanal,sintonia_ob"></script>
+<script type="module" src="../auth/auth.js" data-app="sintonia" data-nome="Sintonia" data-logo="../logos/sintonia.svg" data-pesquisa="nao" data-storage-keys="sintonia_sessoes,sintonia_semanal,sintonia_ob"></script>
 </body>
 </html>

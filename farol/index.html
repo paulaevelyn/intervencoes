@@ -6,7 +6,7 @@
 
 <!-- PWA / Atalho na home screen -->
 <link rel="manifest" href="manifest.json">
-<link rel="icon" href="assets/farol-icon.svg" type="image/svg+xml">
+<link rel="icon" href="../logos/farol.svg" type="image/svg+xml">
 <link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
 <meta name="theme-color" content="#146E57">
 <meta name="application-name" content="Farol">
@@ -31,7 +31,7 @@
 <!-- SPLASH SCREEN -->
 <div id="splash">
   <div class="splash-inner">
-    <img src="assets/farol-logo.svg" alt="Farol" class="splash-logo">
+    <img src="../logos/farol.svg" alt="Farol" class="splash-logo">
     <div class="splash-dots">
       <span></span><span></span><span></span>
     </div>
@@ -47,7 +47,7 @@
   <div class="ob-slide on" id="obs0">
     <div class="ob-top">
       <div class="ob-brand">
-        <img src="assets/farol-logo.svg" alt="Farol" width="180">
+        <img src="../logos/farol.svg" alt="Farol" width="180">
       </div>
       <div class="ob-icon">🌊</div>
       <div class="ob-title">Você chegou aqui.<br>Isso já diz muito.</div>
@@ -64,7 +64,7 @@
   <!-- 1: O Farol (metáfora storytelling) -->
   <div class="ob-slide" id="obs1">
     <div class="ob-top">
-      <div class="ob-icon"><img src="assets/farol-icon.svg" alt="" width="64"></div>
+      <div class="ob-icon"><img src="../logos/farol.svg" alt="" width="64"></div>
       <div class="ob-title">Deixa eu te contar sobre um farol.</div>
       <div class="ob-body">Um farol não acalma o mar. Ele não impede que as ondas batam nas rochas nem que o vento uive na noite.<br><br>Mas ele faz algo muito mais poderoso: <em>ele ilumina</em>. Mostra onde estão os perigos, aponta o rumo seguro, e lembra ao navegador que há terra firme — mesmo quando tudo parece escuridão.</div>
       <div class="ob-quote">
@@ -512,7 +512,7 @@
 
 <!-- BOTTOM NAV -->
 <nav id="nav">
-  <div class="nav-logo"><img src="assets/farol-icon.svg" alt="Farol"></div>
+  <div class="nav-logo"><img src="../logos/farol.svg" alt="Farol"></div>
   <button class="nb on" id="nb-home" onclick="goTo('home')">
     <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg><span>Início</span>
   </button>
@@ -558,6 +558,6 @@
 <script src="../shared/farol-painel.js"></script>
 <script src="app.js"></script>
 <!-- LOGIN: camada compartilhada (../auth/). Contas só por convite. -->
-<script type="module" src="../auth/auth.js" data-app="farol" data-storage-keys="np_v4" data-nome="Farol" data-logo="assets/farol-logo.svg"></script>
+<script type="module" src="../auth/auth.js" data-app="farol" data-storage-keys="np_v4" data-nome="Farol" data-logo="../logos/farol.svg"></script>
 </body>
 </html>

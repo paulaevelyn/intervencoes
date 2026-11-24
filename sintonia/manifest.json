@@ -29,7 +29,7 @@
       "purpose": "maskable"
     },
     {
-      "src": "assets/sintonia-icon.svg",
+      "src": "../logos/sintonia.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any"

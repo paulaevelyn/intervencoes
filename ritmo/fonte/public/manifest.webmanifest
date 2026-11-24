@@ -28,7 +28,7 @@
       "purpose": "maskable"
     },
     {
-      "src": "icon.svg",
+      "src": "../logos/ritmo.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any"

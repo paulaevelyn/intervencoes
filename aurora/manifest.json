@@ -29,7 +29,7 @@
       "purpose": "maskable"
     },
     {
-      "src": "assets/aurora-icon.svg",
+      "src": "../logos/aurora.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any"
