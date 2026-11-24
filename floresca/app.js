@@ -1769,14 +1769,10 @@ function buildEntry(e){
    MODULE LIST
    ══════════════════════════════════ */
 function isUnlocked(mod){
-  // Autonomia: todos os módulos podem ser lidos quando a pessoa quiser.
-  // A ordem só é protegida onde há razão clínica: no caminho 2 (medo do prazer),
-  // a gratidão (m5) só abre depois do sistema calmante (m6) e do teste de crenças (m7).
-  const p = D.userProfile && D.userProfile.onboardingPath;
-  if(p === 2 && mod.id === 'm5'){
-    return D.moduleProgress['m6']?.done === true && D.moduleProgress['m7']?.done === true;
-  }
-  return true;
+  const path = modulePath();
+  const idx = path.indexOf(mod.id);
+  if(idx <= 0) return true;                      // m1 (ou fora do caminho) sempre aberto
+  return D.moduleProgress[path[idx-1]]?.done === true;
 }
 function modProgress(mod){
   const mp = D.moduleProgress[mod.id];
@@ -1798,7 +1794,7 @@ function renderModuleList(){
     const done = D.moduleProgress[m.id]?.done;
     const pct  = modProgress(m);
     const statusIcon = done ? ico('check',22) : unlocked ? ico('chevron',22) : ico('lock',20);
-    html += `<div class="mod-card ${unlocked?'':'locked'}" onclick="${unlocked?'openModule(\''+m.id+'\')':'void 0'}">
+    html += `<div class="mod-card ${unlocked?'':'locked'}" ${unlocked?'':'aria-disabled="true"'} onclick="${unlocked?'openModule(\''+m.id+'\')':'void 0'}">
       <div class="mod-card-inner">
         <div class="mod-emoji ${m.color}" aria-hidden="true">${ico(m.ico,24)}</div>
         <div class="mod-info">
@@ -1809,7 +1805,7 @@ function renderModuleList(){
         </div>
         <div class="mod-status">${statusIcon}</div>
       </div>
-      ${!unlocked?`<div class="mod-lock-overlay"><span class="mod-lock-msg">Este canteiro fica mais seguro depois de cuidar do calmante e das crenças</span></div>`:''}
+      ${!unlocked?`<div class="mod-lock-overlay"><span class="mod-lock-msg">Complete o canteiro anterior</span></div>`:''}
     </div>`;
   });
   document.getElementById('modules-list').innerHTML = html;
