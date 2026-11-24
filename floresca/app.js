@@ -851,6 +851,57 @@ const EXPERIMENTS = [
 ];
 
 /* ══════════════════════════════════
+   MÓDULOS ↔ EXPERIMENTOS
+   Cada canteiro sugere 1 a 3 experimentos que testam, na vida real, o que ele ensina.
+   Para mudar uma sugestão, edite só esta tabela. A sugestão é sempre opcional.
+   ══════════════════════════════════ */
+const EXP_DO_MODULO = {
+  m1:['e12'],            // Por que cultivar → um micro-momento de conexão (5 min, fácil de começar)
+  m2:['e4','e6'],        // Repertório de emoções → admiração e diversão (as que mais costumam faltar)
+  m3:['e7','e8'],        // Notar → beleza do dia, dez minutos de céu
+  m4:['e2','e3','e10'],  // Saborear → refeição, boa notícia compartilhada, antecipação
+  m5:['e1'],             // Gratidão → mensagem de gratidão
+  m6:['e11','e5'],       // Contentamento e segurança (TFC) → descanso declarado, gentileza anônima
+  m7:['e9','e3'],        // Crenças que bloqueiam a alegria → orgulho, falar do que é bom
+  m8:['e13','e10']       // Um jardim que dura → melhor eu possível, antecipação
+};
+function expDoModulo(modId){ return (EXP_DO_MODULO[modId]||[]).map(id=>EXPERIMENTS.find(e=>e.id===id)).filter(Boolean); }
+function moduloDoExp(expId){   // primeiro canteiro, na ordem do caminho da pessoa, que sugere este experimento
+  return orderedModules().find(m=>(EXP_DO_MODULO[m.id]||[]).includes(expId)) || MODULES.find(m=>(EXP_DO_MODULO[m.id]||[]).includes(expId)) || null;
+}
+function expJaFeito(expId){ return D.experiments.some(e=>e.expId===expId && e.status==='done'); }
+function expAtivo(){ return D.experiments.find(e=>e.status==='active'); }
+function expSugeridos(){   // dos canteiros que a pessoa já concluiu ou começou, e que ela ainda não testou
+  const ids=[];
+  orderedModules().forEach(m=>{
+    const mp=D.moduleProgress[m.id];
+    if(mp && (mp.done || (mp.steps||[]).some(Boolean))) (EXP_DO_MODULO[m.id]||[]).forEach(id=>{ if(!ids.includes(id) && !expJaFeito(id)) ids.push(id); });
+  });
+  return ids.slice(0,3);
+}
+function abrirNoLab(expId){   // vai ao laboratório com a previsão deste experimento já aberta
+  goTo('lab');
+  setTimeout(()=>{
+    if(expAtivo()) return;
+    openPredict(expId);
+    const c=document.getElementById('lab-'+expId); if(c && c.scrollIntoView) c.scrollIntoView({block:'center'});
+  },150);
+}
+function irAoTeste(expId){ closeCelebrate(); abrirNoLab(expId); }
+function renderTesteNaPratica(mod){   // fim do módulo: sugestão opcional
+  const el=document.getElementById('cel-teste'); if(!el) return;
+  const lista=expDoModulo(mod.id).filter(e=>!expJaFeito(e.id)).slice(0,2);
+  if(!lista.length){ el.innerHTML=''; return; }
+  const ativo=expAtivo();
+  el.innerHTML=`<div class="teste-pratica">
+    <div class="tp-h">🧪 Teste na prática <small>(opcional)</small></div>
+    <p class="tp-p">Para ver o que este canteiro muda na vida real:</p>
+    ${lista.map(e=>`<div class="tp-row"><span class="tp-em" aria-hidden="true">${e.emoji}</span><span class="tp-tx"><strong>${e.title}</strong><small>${e.time} · testa a crença ${e.belief}</small></span>${ativo?'':`<button type="button" class="tp-btn" onclick="irAoTeste('${e.id}')">Testar</button>`}</div>`).join('')}
+    ${ativo?'<p class="tp-p">Você já tem um experimento em andamento. Conclua-o no Laboratório para começar outro.</p>':''}
+  </div>`;
+}
+
+/* ══════════════════════════════════
    NAVIGATION
    ══════════════════════════════════ */
 const SCREENS = ['home','modules','module','diary','lab','progress','assess','dados','pretest'];
@@ -1492,9 +1543,10 @@ function showCelebrate(mod){
   document.getElementById('cel-xp').textContent     = '+'+mod.xp+' pontos de cultivo registrados';
   document.getElementById('cel-sub').textContent    = 'Seu progresso foi salvo. Continue para o próximo canteiro ou registre um momento bom!';
   const w = document.getElementById('cel-word'); if(w) w.value='';
+  renderTesteNaPratica(mod);
   document.getElementById('celebrate-card').classList.add('show');
 }
-function closeCelebrate(){
+function closeCelebrate(dest){
   const word = (document.getElementById('cel-word')?.value||'').trim();
   if(word){
     D.moduleFeedback.push({ ts:Date.now(), date:today(), moduleId:_curModId, word });
@@ -1503,7 +1555,7 @@ function closeCelebrate(){
     toast('Obrigada por compartilhar 💚');
   }
   document.getElementById('celebrate-card').classList.remove('show');
-  goTo('modules');
+  goTo(typeof dest==='string' ? dest : 'modules');
 }
 
 /* ── Quiz step ── */
@@ -1695,6 +1747,7 @@ function nextGuided(idx, total){
 function renderDiary(){ renderDiaryForm(); renderDiaryHist(); }
 
 function renderDiaryForm(){
+  const di=document.getElementById('d-insight'); if(di) di.innerHTML='';
   document.getElementById('diary-form').innerHTML=
     `<div style="margin-bottom:20px">
       <label class="form-lbl" for="dw">O que aconteceu de bom?</label>
@@ -1731,8 +1784,32 @@ function saveDiary(){
   D.entries.unshift({id:Date.now().toString(),ts:Date.now(),date:today(),moment:w,emotions,savoring,intensity});
   save(); checkBadges(); trackDiaryEvent(); checkPosttestTrigger(); toast('Momento guardado! 🌸');
   renderDiaryForm(); renderDiaryHist();
+  mostrarInsightDiario(D.entries[0], D.entries.slice(1));
   setTimeout(maybeShowIfThen, 900);
   scheduleLocalReminder();
+}
+
+/* Insights do momento que a pessoa acabou de registrar. Só usam o que ela escolheu (emoções, técnicas, intensidade),
+   nunca o texto livre. Sempre como convite, no máximo dois, e dispensáveis. Ficam só no aparelho. */
+function mostrarInsightDiario(novo, antes){
+  const el = document.getElementById('d-insight'); if(!el) return;
+  const itens = [];
+  const jaSentidas = new Set(antes.flatMap(e=>e.emotions||[]));
+  const novas = (novo.emotions||[]).filter(id=>!jaSentidas.has(id));
+  if(novas.length && antes.length){
+    const em = EMOTIONS.find(x=>x.id===novas[0]);
+    if(em){
+      const exp = EXPERIMENTS.find(e=>e.emotion===em.name && !expJaFeito(e.id));
+      itens.push(em.emoji+' <strong>Primeira vez que você registra '+em.name+'.</strong> Seu repertório está crescendo.'
+        + (exp && !expAtivo() ? ' Existe um experimento para ela: <button type="button" class="di-link" onclick="abrirNoLab(\''+exp.id+'\')">'+exp.title+'</button>.' : ''));
+    }
+  }
+  const sav = (novo.savoring||[]).filter(s=>s!=='Ainda não saboreei');
+  if(!sav.length) itens.push('🍯 <strong>Que tal prolongar este momento?</strong> Por 30 segundos, fique com a sensação, respire devagar e note onde ela aparece no corpo.');
+  else if(novo.intensity>=4 && !sav.includes('Revivi mais tarde')) itens.push('✨ <strong>Você deu espaço a um momento forte.</strong> Voltar a ele mais tarde, em uma frase ou só lembrando, ajuda a prolongá-lo.');
+  if(novo.intensity<=2 && itens.length<2) itens.push('🌱 <strong>Momentos pequenos também contam.</strong> Notar o pequeno é justamente o treino.');
+  if(!itens.length){ el.innerHTML=''; return; }
+  el.innerHTML = itens.slice(0,2).map(t=>`<div class="d-insight"><div class="di-tx">${t}</div><button type="button" class="di-x" aria-label="Fechar" onclick="this.closest('.d-insight').remove()">×</button></div>`).join('');
 }
 
 function renderDiaryHist(){
@@ -1789,12 +1866,27 @@ function renderLab(){
     </div>`;
   }
 
-  html += `<div class="sdiv">${active?'Outros experimentos':'Escolha um experimento'}</div>`;
+  const sug = expSugeridos();
+  const lista = EXPERIMENTS.filter(e=>!(active && e.id===active.expId));
+  const grupoSug = lista.filter(e=>sug.includes(e.id)), resto = lista.filter(e=>!sug.includes(e.id));
+  if(grupoSug.length){
+    html += `<div class="sdiv">Sugeridos pelos seus canteiros</div>`;
+    grupoSug.forEach(exp=>{ html += cartaoExp(exp, active, true); });
+  }
+  html += `<div class="sdiv">${active?'Outros experimentos':grupoSug.length?'Mais experimentos':'Escolha um experimento'}</div>`;
+  resto.forEach(exp=>{ html += cartaoExp(exp, active, false); });
 
-  EXPERIMENTS.forEach(exp=>{
-    if(active && exp.id===active.expId) return;
-    const doneRuns = D.experiments.filter(e=>e.expId===exp.id && e.status==='done').length;
-    html += `<div class="lab-card ${doneRuns?'done-before':''}" id="lab-${exp.id}">
+  el.innerHTML = html;
+}
+
+function cartaoExp(exp, active, sugerido){
+  const doneRuns = D.experiments.filter(e=>e.expId===exp.id && e.status==='done').length;
+  const mod = moduloDoExp(exp.id);
+  const modLinha = mod ? `<div class="lab-mod">🌱 Do canteiro: ${isUnlocked(mod)
+      ? `<button type="button" class="lab-link" onclick="openModule('${mod.id}')">${mod.title}</button>`
+      : `<span>${mod.title}</span> <small>(abre ao concluir o anterior)</small>`}</div>` : '';
+  return `<div class="lab-card ${doneRuns?'done-before':''}" id="lab-${exp.id}">
+      ${sugerido?'<div class="sug-tag">Sugerido pelo seu caminho</div>':''}
       <div class="lab-card-head">
         <div class="lab-emoji">${exp.emoji}</div>
         <div style="flex:1">
@@ -1804,15 +1896,13 @@ function renderLab(){
       </div>
       <div class="lab-desc">${exp.desc}</div>
       <div class="lab-belief">🔬 Testa a crença: <strong>${exp.belief}</strong></div>
+      ${modLinha}
       ${doneRuns?`<span class="lab-done-tag">✓ Feito ${doneRuns}×</span>`:''}
       <div id="lab-panel-${exp.id}"></div>
       <div class="lab-actions" id="lab-btnrow-${exp.id}">
         <button class="lab-btn" ${active?'disabled':''} onclick="openPredict('${exp.id}')">${active?'Conclua o experimento ativo':'Iniciar experimento'}</button>
       </div>
     </div>`;
-  });
-
-  el.innerHTML = html;
 }
 
 function openPredict(expId){
@@ -1875,6 +1965,16 @@ function completeExperiment(){
   else if(delta === 0) insight = `Você previu <strong>${run.predicted}/5</strong> e sentiu <strong>${actual}/5</strong>. Previsão precisa! O valor está no dado: agora você sabe por experiência, não por suposição.`;
   else insight = `Você previu <strong>${run.predicted}/5</strong> e sentiu <strong>${actual}/5</strong>. Nem todo experimento floresce — e isso também é dado. Contexto, dia e cansaço contam. Vale repetir em outro momento antes de concluir.`;
 
+  // comparação com o que a própria pessoa já fez (convite, nunca interpretação sobre ela)
+  let comparacao = '';
+  const antes = D.experiments.filter(e=>e.expId===run.expId && e.status==='done' && e.id!==run.id).sort((x,y)=>y.tsDone-x.tsDone);
+  if(antes.length) comparacao += `<br><br>📈 <strong>Da última vez</strong> neste experimento, você previu ${antes[0].predicted}/5 e sentiu ${antes[0].actual}/5.`;
+  const feitos = D.experiments.filter(e=>e.status==='done');
+  if(feitos.length >= 5){
+    const dif = feitos.reduce((s,e)=>s+(e.actual-e.predicted),0)/feitos.length;
+    if(dif >= 0.5) comparacao += `<br><br>🔎 <strong>Parece que</strong>, nos seus ${feitos.length} experimentos, o que você sentiu costuma ficar acima do que previu (em média ${dif.toFixed(1).replace('.',',')} ponto${dif>=1.5?'s':''}). Pode valer lembrar disso na próxima previsão.`;
+  }
+  const modExp = moduloDoExp(run.expId);
   document.getElementById('modal-title').textContent = '🔬 Revisão do experimento';
   document.getElementById('modal-body').innerHTML =
     `<div class="predict-vs" style="margin:0 0 10px">
@@ -1882,11 +1982,26 @@ function completeExperiment(){
       <div style="font-size:20px">→</div>
       <div style="text-align:center"><div style="font-size:11px;color:var(--muted)">Sentido</div><div class="pv-num" style="color:${delta>=0?'var(--mint-d)':'var(--coral-d)'}">${actual}</div></div>
     </div>
-    ${insight}<br><br><span style="font-size:12px;color:var(--light)">${exp?('Crença testada: '+exp.belief):''}</span>`;
+    ${insight}${comparacao}<br><br><span style="font-size:12px;color:var(--light)">${exp?('Crença testada: '+exp.belief):''}</span>`;
   document.getElementById('modal-actions').innerHTML =
-    '<button class="btn mint" onclick="closeModal();renderLab()">Continuar 🌱</button>';
+    '<button class="btn mint" onclick="closeModal();renderLab()">Continuar 🌱</button>'
+    + `<button class="btn ghost" onclick="registrarDoExperimento('${run.id}')">Registrar no diário</button>`
+    + (modExp && isUnlocked(modExp) ? `<button class="btn ghost" onclick="closeModal();openModule('${modExp.id}')">Rever o canteiro desta prática</button>` : '');
   document.getElementById('modal-ov').classList.add('on');
   renderLab();
+}
+
+function registrarDoExperimento(runId){   // leva o que a pessoa notou para o diário, já com a emoção marcada
+  const run = D.experiments.find(e=>e.id===runId); if(!run) return;
+  const exp = EXPERIMENTS.find(x=>x.id===run.expId) || {};
+  closeModal(); goTo('diary');
+  setTimeout(()=>{
+    const t = document.getElementById('dw');
+    if(t && run.noticed){ t.value = run.noticed.slice(0,300); const c=document.getElementById('dcc'); if(c) c.textContent = t.value.length; }
+    const em = EMOTIONS.find(x=>x.name===exp.emotion);
+    if(em){ const chip=document.querySelector('#d-emo .chip[data-emo="'+em.id+'"]'); if(chip) chip.classList.add('sel'); }
+    if(t) t.focus();
+  },80);
 }
 
 function cancelExperiment(){
