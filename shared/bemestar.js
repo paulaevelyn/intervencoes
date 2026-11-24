@@ -216,6 +216,7 @@
   function podeConvidar() {
     if (conviteInst || emAbertura() || instalado() || cfg.instalar === 'feito') return false;
     if (!appDeste() || SEM_CONVITE.indexOf(appDeste()) !== -1) return false;
+    if (typeof global.showInstallModal === 'function') return false;   // o app já tem o próprio convite na tela inicial: não duplicar
     if ((cfg.visitas || 0) < 2 || Date.now() < (cfg.instalarAte || 0)) return false;
     if (document.documentElement.classList.contains('pea-auth-carregando') || document.getElementById('pea-auth-tela') || document.getElementById('pea-bem-ov') || document.getElementById('pea-pausa')) return false;
     return true;

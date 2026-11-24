@@ -1041,6 +1041,7 @@ function pretestBack(){
 
 function pretestLater(){
   trackAppEvent('pretest_postponed');
+  D.pretestAdiado = Date.now(); save();
   toast('Sem problema — a pré-avaliação fica à sua espera. 🌱');
   goTo('home');
 }
@@ -2328,86 +2329,133 @@ function deleteAll(){
 function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('on'); clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('on'),2800); }
 
 /* ══════════════════════════════════
-   NUDGES COMPORTAMENTAIS (home)
-   Prioridade: pré-teste pendente > experimento ativo >
-   retorno após pausa (autocompaixão) > módulo a meio (Zeigarnik) > streak
+   PRÓXIMO PASSO (home)
+   Um único passo em destaque, para ninguém se perder. Ordem:
+   primeiros passos (quem está começando) > experimento em andamento > módulo a meio >
+   próximo canteiro > laboratório. Abaixo dele: o caminho dos canteiros ("você está aqui") e,
+   só depois dos primeiros passos, os avisos secundários (instalar, lembretes, dias de prática).
+   Sem pontos a perder e sem sequência a manter.
    ══════════════════════════════════ */
-function renderNudge(){
-  const el = document.getElementById('h-nudge');
-  if(!el) return;
+function escAttr(s){ return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
+function ultimaAtividade(){
+  const ts = [].concat(D.entries.map(e=>e.ts), D.experiments.map(e=>e.tsDone||e.ts), D.doseRecords.map(e=>e.ts)).filter(Boolean);
+  return ts.length ? Math.max.apply(null, ts) : null;
+}
+function comecouAlgumModulo(){
+  return MODULES.some(m=>{ const mp=D.moduleProgress[m.id]; return mp && (mp.done || (mp.steps||[]).some(Boolean)); });
+}
+function primeirosPassos(){   // null quando os três já foram feitos ou quando a pessoa já está dentro de um canteiro
+  if(comecouAlgumModulo()) return null;
+  const m1 = orderedModules()[0];
+  const passos = [
+    { id:'pre', ok:!!D.pretest, ic:'🧭', t:'Pré-avaliação', sub:'3 min · o ponto de partida do seu jardim', go:"goTo('pretest')" },
+    { id:'mod', ok:comecouAlgumModulo(), ic:'🌱', t:'Primeiro canteiro', sub: m1 ? m1.title : 'Módulos', go: m1 ? "openModule('"+m1.id+"')" : "goTo('modules')" },
+    { id:'dia', ok:D.entries.length>0, ic:'☀️', t:'Um momento bom', sub:'Registre algo agradável de hoje', go:"goTo('diary')" }
+  ];
+  return passos.every(p=>p.ok) ? null : passos;
+}
+function htmlCaminho(){
+  const ord = orderedModules();
+  const feitos = ord.filter(m=>D.moduleProgress[m.id]?.done).length;
+  const atual = ord.find(m=>!D.moduleProgress[m.id]?.done && isUnlocked(m));
+  const dots = ord.map((m,i)=>{
+    const feito = !!D.moduleProgress[m.id]?.done, livre = isUnlocked(m), aqui = !!atual && atual.id===m.id;
+    const est = feito ? 'feito' : aqui ? 'atual' : livre ? 'livre' : 'trava';
+    const rot = 'Canteiro '+(i+1)+': '+m.title+'. '+(feito?'Concluído.':aqui?'Você está aqui.':livre?'Disponível.':'Abre ao concluir o canteiro anterior.');
+    const clique = livre ? "openModule('"+m.id+"')" : "toast('Este canteiro abre ao concluir o anterior. Sem pressa. 🌱')";
+    return '<li><button type="button" class="tj-dot '+est+'" onclick="'+clique+'" aria-label="'+escAttr(rot)+'"'+(aqui?' aria-current="step"':'')+'><span aria-hidden="true">'+(feito?'✓':(i+1))+'</span></button></li>';
+  }).join('');
+  const onde = atual ? 'Você está no canteiro '+(ord.indexOf(atual)+1)+': '+atual.title+'.' : 'Todos os canteiros estão concluídos.';
+  return '<section class="tj" aria-labelledby="tj-t"><div class="tj-head"><h2 id="tj-t">Seu jardim</h2><span>'+feitos+' de '+ord.length+' canteiros</span></div>'
+    + '<ol class="tj-dots">'+dots+'</ol><p class="tj-leg">'+onde+' Cada canteiro abre ao concluir o anterior, sem pressa.</p></section>';
+}
+function dicaSecundaria(){
   const streak = calcStreak();
-  const lastEntry = D.entries.length ? [...D.entries].sort((a,b)=>b.ts-a.ts)[0] : null;
-  const daysSince = lastEntry ? Math.floor((Date.now()-lastEntry.ts)/864e5) : null;
-  const halfMod = MODULES.find(m=>{ const mp=D.moduleProgress[m.id]; return mp && !mp.done && mp.steps?.some(Boolean); });
-  const activeExp = D.experiments.find(e=>e.status==='active');
-
-  let html = '';
-
-  // 0. Pré-avaliação pendente
-  if(!D.pretest && D.obDone){
-    html = `<div class="nudge mint">
+  // pré-avaliação ainda pendente, para quem já começou um canteiro sem ela: um lembrete, não o destaque
+  if(!D.pretest && D.obDone && !D.pretestAdiado){
+    return `<div class="nudge mint">
       <div class="nudge-icon">🧭</div>
       <div class="nudge-body"><strong>Pré-avaliação pendente.</strong>
       São ~3 minutos e é o ponto de partida para medir o crescimento do seu jardim.</div>
-      <button class="nudge-btn" onclick="goTo('pretest')">Responder agora</button>
+      <button class="nudge-btn" onclick="goTo('pretest')">Responder</button>
     </div>`;
   }
-  // 1. Instalar na tela de início (uma vez, se ainda não instalou)
-  else if(!isInstalled() && !D.installSeen){
-    html = `<div class="nudge lav">
+  if(!isInstalled() && !D.installSeen){
+    return `<div class="nudge lav">
       <div class="nudge-icon">📲</div>
       <div class="nudge-body"><strong>Leve o Floresça com você.</strong>
       Adicione à tela de início para abrir como um app — com o ícone da flor e funcionando offline.</div>
       <button class="nudge-btn" onclick="showInstallModal()">Ver como</button>
     </div>`;
   }
-  // 1b. Ativar lembretes (uma vez, depois de conhecer a instalação)
-  else if(D.installSeen && !D.notifSeen && !D.reminders.enabled && ('Notification' in window) && Notification.permission==='default'){
-    html = `<div class="nudge mint">
+  if(D.installSeen && !D.notifSeen && !D.reminders.enabled && ('Notification' in window) && Notification.permission==='default'){
+    return `<div class="nudge mint">
       <div class="nudge-icon">🔔</div>
       <div class="nudge-body"><strong>Jardim se rega todo dia.</strong>
       Um lembrete gentil por dia — só se você ainda não tiver regado — ajuda muito a criar o hábito.</div>
       <button class="nudge-btn" onclick="showNotifModal()">Ver como funciona</button>
     </div>`;
   }
-  // 2. Experimento ativo aguardando conclusão
-  else if(activeExp){
-    const exp = EXPERIMENTS.find(x=>x.id===activeExp.expId);
-    html = `<div class="nudge amber">
-      <div class="nudge-icon">🧪</div>
-      <div class="nudge-body"><strong>Experimento em andamento:</strong> ${exp?exp.title:''}.
-      Já fez? Volte ao laboratório para comparar previsão e realidade.</div>
-      <button class="nudge-btn" onclick="goTo('lab')">Ir ao laboratório</button>
-    </div>`;
-  }
-  // 2. Retorno após pausa — acolher sem culpa
-  else if(daysSince !== null && daysSince >= 3){
-    html = `<div class="nudge lav">
-      <div class="nudge-icon">🤗</div>
-      <div class="nudge-body"><strong>Que bom ter você de volta.</strong>
-      Jardins sobrevivem a dias sem rega — o que importa é regar hoje. Um momento pequeno já recomeça o cultivo.</div>
-      <button class="nudge-btn" onclick="goTo('diary')">Registrar agora</button>
-    </div>`;
-  }
-  // 3. Módulo a meio (Zeigarnik)
-  else if(halfMod){
-    const pct = modProgress(halfMod);
-    html = `<div class="nudge mint">
-      <div class="nudge-icon">📖</div>
-      <div class="nudge-body"><strong>${halfMod.title}</strong> está ${pct}% completo.
-      Faltam só alguns passos para fechar este canteiro.</div>
-      <button class="nudge-btn" onclick="openModule('${halfMod.id}')">Continuar</button>
-    </div>`;
-  }
-  // 4. Streak ativo — reforço sem pressão
-  else if(streak >= 2){
-    html = `<div class="nudge amber">
+  if(streak >= 2){
+    return `<div class="nudge amber">
       <div class="nudge-icon">🌱</div>
       <div class="nudge-body"><strong>Você cultivou em ${streak} dias nas últimas duas semanas.</strong>
       Voltar, no seu ritmo, é o que treina o radar. Os intervalos fazem parte.</div>
     </div>`;
   }
-  el.innerHTML = html;
+  return '';
+}
+function renderNudge(){
+  const el = document.getElementById('h-nudge');
+  if(!el) return;
+  const path = document.getElementById('h-path'), tip = document.getElementById('h-tip');
+  const passos = primeirosPassos();
+  let guia = '';
+  if(passos){
+    // quem adiou a pré-avaliação não é cobrado: o destaque passa para o próximo passo
+    let prim = passos.findIndex(p=>!p.ok && !(p.id==='pre' && D.pretestAdiado));
+    if(prim < 0) prim = passos.findIndex(p=>!p.ok);
+    guia = `<section class="guia" aria-labelledby="guia-t">
+      <div class="guia-eyebrow">Primeiros passos</div>
+      <h2 class="guia-h" id="guia-t">Vamos começar com calma</h2>
+      <p class="guia-p">Três passos pequenos, na ordem que fizer sentido para você. Dá para parar quando quiser.</p>
+      <ol class="guia-lista">${passos.map((p,i)=> p.ok
+        ? `<li class="guia-row ok"><span class="guia-ic" aria-hidden="true">✓</span><span class="guia-tx"><strong>${p.t}</strong><small>Feito</small></span></li>`
+        : `<li><button class="guia-row${i===prim?' prim':''}" type="button" onclick="${p.go}"><span class="guia-ic" aria-hidden="true">${p.ic}</span><span class="guia-tx"><strong>${p.t}</strong><small>${p.sub}</small></span><span class="guia-go" aria-hidden="true">→</span></button></li>`).join('')}
+      </ol></section>`;
+  } else {
+    const ult = ultimaAtividade(), dias = ult ? Math.floor((Date.now()-ult)/864e5) : null;
+    const volta = dias !== null && dias >= 3
+      ? '<p class="guia-volta"><strong>Que bom ter você de volta.</strong> Jardins sobrevivem a dias sem rega: um passo pequeno já recomeça.</p>' : '';
+    const activeExp = D.experiments.find(e=>e.status==='active');
+    const halfMod = MODULES.find(m=>{ const mp=D.moduleProgress[m.id]; return mp && !mp.done && (mp.steps||[]).some(Boolean); });
+    const proxMod = orderedModules().find(m=>!D.moduleProgress[m.id]?.done && isUnlocked(m));
+    let em, tit, txt, btn, go;
+    if(activeExp){
+      const exp = EXPERIMENTS.find(x=>x.id===activeExp.expId);
+      em='🧪'; tit='Experimento em andamento'; txt=(exp?exp.title+'. ':'')+'Já fez? Volte ao laboratório para comparar previsão e realidade.'; btn='Ir ao laboratório'; go="goTo('lab')";
+    } else if(halfMod){
+      const feitosP = (D.moduleProgress[halfMod.id].steps||[]).filter(Boolean).length, faltam = halfMod.steps.length - feitosP;
+      em=halfMod.emoji; tit='Continue: '+halfMod.title; txt=modProgress(halfMod)+'% concluído. '+(faltam===1?'Falta 1 passo':'Faltam '+faltam+' passos')+' para fechar este canteiro.'; btn='Continuar'; go="openModule('"+halfMod.id+"')";
+    } else if(proxMod){
+      em=proxMod.emoji; tit='Próximo canteiro: '+proxMod.title; txt=proxMod.tagline||''; btn='Começar'; go="openModule('"+proxMod.id+"')";
+    } else {
+      em='🌳'; tit='Você percorreu o caminho'; txt='Agora o jardim é seu: experimente o laboratório ou registre um momento bom.'; btn='Ir ao laboratório'; go="goTo('lab')";
+    }
+    guia = `<section class="guia" aria-labelledby="guia-t">
+      <div class="guia-eyebrow">Seu próximo passo</div>${volta}
+      <h2 class="guia-h" id="guia-t"><span aria-hidden="true">${em}</span> ${tit}</h2>
+      <p class="guia-p">${txt}</p>
+      <button class="guia-btn" type="button" onclick="${go}">${btn}</button>
+      <button class="guia-link" type="button" onclick="goTo('diary')">Ou registrar um momento bom agora</button>
+    </section>`;
+  }
+  el.innerHTML = guia;
+  if(path) path.innerHTML = htmlCaminho();
+  if(tip) tip.innerHTML = passos ? '' : dicaSecundaria();
+  // números (XP, canteiros, gráfico) só aparecem quando há o que mostrar: zeros em tudo desanimam
+  const num = document.getElementById('h-numbers');
+  if(num) num.style.display = (D.xp>0 || D.entries.length || comecouAlgumModulo()) ? '' : 'none';
 }
 
 /* Intenção de implementação (Gollwitzer, 1999) */
