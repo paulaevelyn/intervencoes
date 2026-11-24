@@ -1,7 +1,7 @@
 /* Aurora — Service Worker
    Offline-first para assets, network-first para HTML.
    Incrementar CACHE_VERSION a cada deploy para forçar atualização. */
-const CACHE_VERSION = 'aurora-v8';
+const CACHE_VERSION = 'aurora-v9';
 const CORE = [
   './',
   './index.html',
@@ -11,8 +11,7 @@ const CORE = [
   './data.js',
   './app.js',
   './manifest.json',
-  './assets/aurora-logo.svg',
-  './assets/aurora-icon.svg',
+  '../logos/aurora.svg',
   './icon-192.png',
   './icon-512.png',
   './apple-touch-icon.png',

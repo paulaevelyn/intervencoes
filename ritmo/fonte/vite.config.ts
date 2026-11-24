@@ -29,7 +29,7 @@ const login = (): Plugin => ({
   }, 750);
 })();`, injectTo: 'head' },
         { tag: 'div', attrs: { id: 'pea-auth-aviso' }, children: 'carregando…', injectTo: 'body-prepend' },
-        { tag: 'script', attrs: { type: 'module', src: '../auth/auth.js', 'data-app': 'ritmo', 'data-nome': 'Ritmo', 'data-logo': 'icon.svg', 'data-pesquisa': 'nao', 'data-storage-keys': 'ritmo:v1' }, injectTo: 'body' },
+        { tag: 'script', attrs: { type: 'module', src: '../auth/auth.js', 'data-app': 'ritmo', 'data-nome': 'Ritmo', 'data-logo': '../logos/ritmo.svg', 'data-pesquisa': 'nao', 'data-storage-keys': 'ritmo:v1' }, injectTo: 'body' },
       ];
     },
   },

@@ -22,7 +22,7 @@ const RESEARCH_ENDPOINT = "https://script.google.com/macros/s/AKfycbyfdve1eTq55r
 const BRAND_FOOTER_HTML = `
 <div style="margin:8px 0 0;background:#EDF7F3;border-radius:14px;padding:16px 18px;border:1px solid rgba(27,139,111,.12)">
   <div style="margin-bottom:12px">
-    <img src="assets/floresca-logo.svg" alt="Floresça" width="150" style="display:block">
+    <img src="../logos/floresca.svg" alt="Floresça" width="150" style="display:block">
   </div>
   <div style="font-size:12px;color:#5A6B65;line-height:1.65;border-top:1px solid rgba(27,139,111,.15);padding-top:10px">
     ⚕️ <strong>Recurso psicoeducativo</strong> — não substitui acompanhamento psicológico profissional.<br>

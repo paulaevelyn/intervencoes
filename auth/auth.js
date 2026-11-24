@@ -12,7 +12,7 @@
    COMO CADA APP USA (uma linha, no fim do <body>):
      <script type="module" src="../auth/auth.js"
              data-app="farol" data-storage-keys="np_v4"
-             data-nome="Farol" data-logo="assets/farol-logo.svg"></script>
+             data-nome="Farol" data-logo="../logos/farol.svg"></script>
    e, no <head>, os dois itens marcados com "LOGIN:" em INTEGRACAO.md.
 
    SEGURANÇA — o que vale saber

@@ -29,7 +29,7 @@
       "purpose": "maskable"
     },
     {
-      "src": "assets/trilha-icon.svg",
+      "src": "../logos/trilha.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any"

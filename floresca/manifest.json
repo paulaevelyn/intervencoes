@@ -29,7 +29,7 @@
       "purpose": "maskable"
     },
     {
-      "src": "assets/floresca-icon.svg",
+      "src": "../logos/floresca.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any"

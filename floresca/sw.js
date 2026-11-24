@@ -1,7 +1,7 @@
 /* Floresça — Service Worker
    Offline-first para assets, network-first para HTML.
    Incrementar CACHE_VERSION a cada deploy para forçar atualização. */
-const CACHE_VERSION = 'floresca-v14';
+const CACHE_VERSION = 'floresca-v15';
 const CORE = [
   './',
   './index.html',
@@ -9,8 +9,7 @@ const CORE = [
   './extra.css',
   './app.js',
   './manifest.json',
-  './assets/floresca-logo.svg',
-  './assets/floresca-icon.svg',
+  '../logos/floresca.svg',
   './icon-192.png',
   './icon-512.png',
   './apple-touch-icon.png',
