@@ -1,4 +1,4 @@
-/* matiz-progresso.css — cartão de nível, XP e medalhas do Matiz */
+/* matiz-progresso.css — cartão do mapa pessoal e marcas do caminho do Matiz */
 .mp { background: var(--white, #fff); border: 1px solid var(--border, #E5E0D8); border-radius: 18px; padding: 16px; font-family: var(--font, 'DM Sans', system-ui, sans-serif); color: var(--graphite, #12372F); }
 .mp * { box-sizing: border-box; }
 .mp-topo { display: flex; justify-content: space-between; gap: 8px; font-weight: 800; }

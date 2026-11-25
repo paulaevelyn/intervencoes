@@ -54,7 +54,7 @@ depende de texto, tom e decisões de cada app.
 6. **Pertencimento:** no painel ⚙ "Quem caminha com você": nome opcional de uma pessoa de apoio (só no aparelho) e mensagens prontas, enviadas pela própria pessoa (compartilhar ou copiar). Nada é enviado pelo app.
 
 ## Sugestões ainda não aplicadas (dependem de decisão da profissional)
-1. **Matiz e Segurança Interna:** acrescentar um botão visível "Preciso de ajuda agora" (como no Aurora).
+1. **Segurança Interna:** acrescentar um botão visível "Preciso de ajuda agora" (como no Aurora). O Matiz já tem o botão "Preciso de ajuda" no topo.
 2. **Modo escuro** e **ajuste de tamanho do texto** nos apps (hoje seguem o zoom do navegador).
 3. **Testes com pessoas reais**, incluindo quem usa leitor de tela e quem está em sofrimento.
 

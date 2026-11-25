@@ -27,6 +27,7 @@
 <script src="../shared/matiz-progresso.js"></script>
 <script>document.documentElement.classList.add("pea-auth-carregando");</script>
 <link rel="stylesheet" href="../shared/marca.css">
+<link rel="stylesheet" href="revisao.css">
 </head>
 <body>
 <div id="pea-auth-aviso">carregando…</div>
@@ -44,6 +45,7 @@
     <button id="data-btn" class="nav-btn">Meus dados</button>
     <button id="back-btn" class="nav-btn">← Voltar</button>
     <button id="home-btn" class="nav-btn primary">Início</button>
+    <button id="ajuda-btn" class="nav-btn ajuda" type="button">Preciso de ajuda</button>
   </div>
 </nav>
 
@@ -60,10 +62,10 @@
       <script>try{var _m=JSON.parse(localStorage.getItem("matiz_escalas_v1")||"{}");if(!(_m.pre&&_m.pre.tas20)){document.getElementById("matiz-escala-link").style.display="block";}}catch(x){document.getElementById("matiz-escala-link").style.display="block";}</script>
       <p id="matiz-nivel" style="display:none;margin:0 0 14px;font-size:13px;font-weight:800"><a href="painel.html" style="color:inherit;text-decoration:none" id="matiz-nivel-txt"></a></p>
       <script>try{var _p=MatizProgresso.calcular(MatizProgresso.estadoLocal());if(_p.xp>0){MatizProgresso.resumo(document.getElementById("matiz-nivel-txt"));document.getElementById("matiz-nivel").style.display="block";}}catch(x){}</script>
-      <details style="max-width:640px;margin:0 auto 18px;text-align:left;font-size:13.5px"><summary style="cursor:pointer;font-weight:700">Como seus dados são tratados</summary><ul style="margin:8px 0 0;padding-left:20px"><li>Sem conta: tudo fica só neste aparelho. Ninguém vê.</li><li>Com conta (por convite): seu progresso fica guardado nela, e só você vê, a menos que escolha compartilhar com a sua profissional em "Minha conta".</li><li>O Matiz não envia seus dados para nenhuma pesquisa. Os pontos e as medalhas só medem o quanto você usou o app.</li></ul></details>
+      <details style="max-width:640px;margin:0 auto 18px;text-align:left;font-size:13.5px"><summary style="cursor:pointer;font-weight:700">Como seus dados são tratados</summary><ul style="margin:8px 0 0;padding-left:20px"><li>Sem conta: tudo fica só neste aparelho. Ninguém vê.</li><li>Com conta (por convite): seu progresso fica guardado nela, e só você vê, a menos que escolha compartilhar com a sua profissional em "Minha conta".</li><li>O Matiz não envia seus dados para nenhuma pesquisa. As marcas do caminho só medem o quanto você usou o app.</li></ul></details>
 
       <div id="resume-banner" class="card hidden" style="max-width:640px;margin:0 auto 20px;text-align:left">
-        <p style="margin:0 0 12px"><strong>Você tem uma sessão em andamento.</strong> Sem problema nenhum ter pausado — quer continuar de onde parou ou começar de novo?</p>
+        <p style="margin:0 0 12px"><strong>Você tem uma sessão em andamento.</strong> Sem problema ter pausado — quer continuar de onde parou ou começar de novo?</p>
         <div style="display:flex;gap:10px;flex-wrap:wrap">
           <button id="resume-btn" class="btn-cta" style="font-size:1rem;padding:12px 24px">Continuar de onde parei</button>
           <button id="fresh-start-btn" class="btn-cta secondary" style="font-size:1rem;padding:12px 24px">Começar do zero</button>
@@ -72,7 +74,7 @@
 
       <div id="dose-card" class="card hidden" style="max-width:640px;margin:0 auto 20px;text-align:left">
         <h3 style="margin-bottom:6px">Sua prática essa semana (opcional)</h3>
-        <p style="color:var(--muted);margin-top:0">Sem problema nenhum se não rolou nada — isso aqui é só pra quem quiser registrar.</p>
+        <p style="color:var(--muted);margin-top:0">Sem problema se não houve prática. Registrar é opcional.</p>
         <div id="dose-tags" class="chip-row"></div>
         <textarea id="dose-text" class="plan-input" style="min-height:60px" placeholder="Quer contar algo a mais? (opcional)"></textarea>
         <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:14px">
@@ -88,7 +90,7 @@
 
         <div class="rationale-box">
           <h3>Por que nomear com precisão importa</h3>
-          <p style="margin:0">Pesquisas sobre <strong>granularidade emocional</strong> (Lisa Feldman Barrett) mostram que nomear o que sentimos com precisão — não só "bem" ou "mal" — ajuda a regular melhor as emoções. É como o paladar: quem só reconhece "doce e salgado" sente menos nuances do que quem reconhece sabores específicos. O Matiz existe pra ampliar esse vocabulário, começando pelo corpo.</p>
+          <p style="margin:0">Pesquisas sobre <strong>granularidade emocional</strong> (Lisa Feldman Barrett) sugerem que nomear o que sentimos com precisão — não só "bem" ou "mal" — pode ajudar a regular melhor as emoções. É como o paladar: quem só reconhece "doce e salgado" sente menos nuances do que quem reconhece sabores específicos. O Matiz existe para ampliar esse vocabulário, começando pelo corpo.</p>
         </div>
 
         <div class="about-list">
@@ -98,7 +100,7 @@
           </div>
           <div class="about-item">
             <div class="about-icon" aria-hidden="true">🧩</div>
-            <p>O check-in começa numa <strong>sensação do corpo</strong>, sugere famílias de emoção compatíveis (nunca uma pergunta aberta) e termina num plano pra vida real — sem pontuação, sem certo/errado, e você pode pausar e continuar depois.</p>
+            <p>O check-in começa numa <strong>sensação do corpo</strong>, sugere famílias de emoção compatíveis (nunca uma pergunta aberta) e termina num plano para vida real — sem pontuação, sem certo/errado, e você pode pausar e continuar depois.</p>
           </div>
           <div class="about-item">
             <div class="about-icon" aria-hidden="true">🌐</div>
@@ -322,7 +324,7 @@
   <section id="scr-ifthen" class="hidden fade-in">
     <div class="card" style="max-width:640px;margin:0 auto">
       <h2>Um plano para o dia a dia</h2>
-      <p style="color:var(--muted)">Isso é opcional. A ideia é criar um lembrete simples: quando um sinal aparecer, você tenta nomear o que sente. Toque num exemplo abaixo pra começar, ou escreva do seu jeito.</p>
+      <p style="color:var(--muted)">Isso é opcional. A ideia é criar um lembrete simples: quando um sinal aparecer, você tenta nomear o que sente. Toque num exemplo abaixo para começar, ou escreva do seu jeito.</p>
       <div id="ifthen-chips" class="chip-row"></div>
       <textarea id="ifthen-input" class="plan-input" placeholder="Quando eu perceber ___, vou tentar nomear o que sinto."></textarea>
       <p class="info-note">Esse formato ("quando ___, então ___") vem da pesquisa sobre intenções de implementação (Gollwitzer, 1999) — planos assim dobram a chance de a gente realmente agir no momento certo.</p>
@@ -344,7 +346,7 @@
       <p>Agora você tem mais uma peça no seu mapa pessoal. Pode fechar esta página quando quiser — tudo já está salvo neste dispositivo.</p>
 
       <div class="disclaimer-box">
-        Se quiser, use os resultados abaixo como ponto de partida numa conversa com seu/sua psicólogo/a. Tudo fica salvo só neste dispositivo — nada é enviado automaticamente.
+        Se quiser, use os resultados abaixo como ponto de partida numa conversa com quem acompanha você na terapia. Tudo fica salvo só neste dispositivo — nada é enviado automaticamente.
       </div>
 
       <div class="export-row">
@@ -413,7 +415,10 @@
 
 <div class="overall-progress"><div id="overall-progress-bar" class="overall-progress-bar" style="width:0%"></div></div>
 
+<script src="../shared/icones.js"></script>
 <script src="app.js"></script>
+<dialog id="ajuda-dlg" aria-labelledby="ajuda-t"><h2 id="ajuda-t">Se hoje estiver muito difícil</h2><p>Você não precisa atravessar isso sem apoio. As ligações são gratuitas.</p><p><a class="ajuda-tel" href="tel:188"><strong>188</strong> CVV, 24 horas</a></p><p><a class="ajuda-tel" href="tel:192"><strong>192</strong> SAMU, emergência</a></p><button type="button" class="nav-btn primary" id="ajuda-fechar">Fechar</button></dialog>
+<script>(function(){var d=document.getElementById("ajuda-dlg");document.getElementById("ajuda-btn").addEventListener("click",function(){if(d.showModal)d.showModal();else d.setAttribute("open","")});document.getElementById("ajuda-fechar").addEventListener("click",function(){if(d.close)d.close();else d.removeAttribute("open")})})();</script>
 <!-- LOGIN: camada compartilhada (../auth/). Contas só por convite. -->
 <script type="module" src="../auth/auth.js" data-app="matiz" data-storage-keys="matiz_prefs_v1,matiz_progress_v1,matiz_dose_v1,matiz_bodymap_v1,matiz_vocab_v1,matiz_escalas_v1" data-nome="Matiz" data-logo="../logos/matiz.svg" data-pesquisa="nao"></script>
 </body>

@@ -1,0 +1,32 @@
+/* revisao.css — revisão de design e bem-estar do Matiz (mesma linha do Floresça, Aurora e Farol).
+   Carregado por último: paleta e fonte do design system Psicoterapia e Afins, ícones no lugar de emoji.
+   Mantém o jeito calmo e de baixo estímulo do app (as preferências de texto, contraste e movimento seguem valendo). */
+:root{
+  --primary:#5E7D73; --primary-d:#4B665E; --primary-l:#DDEAE2;
+  --accent:#BE5A52;  --accent-d:#9B4842;  --accent-l:#FBEFEC;
+  --bg:#F7F3EF; --ink:#2B2E34; --muted:#5A5F68; --line:#E1D7CC;
+  --font-corpo:'Poppins',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --font:var(--font-corpo);
+  --radius:20px;
+  --shadow:0 8px 20px rgba(63,67,75,.07);
+}
+body,button,input,select,textarea{font-family:var(--font-corpo)}
+h1,h2,h3,h4,.nav-brand-name{font-family:var(--font-corpo);font-weight:400;letter-spacing:-.015em}
+h1{font-weight:300}
+.nav-brand-name{font-weight:500}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+
+/* ícones lineares */
+.ic{width:1em;height:1em;flex:none;display:inline-block;vertical-align:-.14em;fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+.about-icon,.concept-icon,.mp-emoji{color:var(--primary-d)}
+.emotion-badge .ic,.emoji-circle .ic{width:1.15em;height:1.15em;stroke-width:1.6}
+
+/* botão de ajuda sempre à mão */
+.nav-btn.ajuda{background:var(--accent-l);color:var(--accent-d);border-color:transparent;min-height:44px}
+#ajuda-dlg{border:0;border-radius:28px;padding:28px;max-width:min(92vw,420px);color:var(--ink);box-shadow:0 20px 40px rgba(63,67,75,.2)}
+#ajuda-dlg::backdrop{background:rgba(63,67,75,.45)}
+#ajuda-dlg h2{font-size:1.3rem;margin:0 0 8px}
+#ajuda-dlg p{margin:0 0 10px}
+.ajuda-tel{display:flex;align-items:center;gap:12px;min-height:56px;padding:8px 18px;border-radius:18px;background:var(--accent-l);color:var(--accent-d);text-decoration:none}
+.ajuda-tel strong{font-size:1.3rem}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}

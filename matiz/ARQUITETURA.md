@@ -180,3 +180,11 @@ prender atenção além do necessário para o objetivo educativo.
 ---
 
 © 2026 Psicoterapia e Afins · psicoterapiaeafins.com.br
+
+## Revisão de design e bem-estar (como no Floresça, Aurora e Farol)
+- `revisao.css` (carregado por último): tokens do design system Psicoterapia e Afins e fonte **Poppins** (também nos títulos, que usavam Cormorant).
+- `../shared/icones.js`: ícones lineares no lugar dos emoji, inclusive **rostos próprios para as seis emoções** (alegria, tristeza, raiva, medo, nojo, surpresa), feitos só com sobrancelhas e boca.
+- `shared/matiz-progresso.js`: sem XP, níveis nem "faltam X pontos". Mostra "Seu mapa" (contagem de check-ins e palavras) e só as marcas já ganhas, sem cadeado. O cálculo interno continua igual.
+- Botão **"Preciso de ajuda"** (188, 192) no topo, sempre visível (pendência registrada em `shared/PRINCIPIOS.md`).
+- Linguagem: "pra" virou "para", sem formas com barra, "pesquisas sugerem" no lugar de "mostram".
+- Pendente: revisão visual em aparelho real, principalmente os rostos das emoções e a leitura por narração.

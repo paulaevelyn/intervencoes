@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
     },
     {
       icon: '⚡', title: 'Tendência de ação',
-      text: 'Cada emoção vem com um "programa" pronto: um impulso específico do que fazer — o medo empurra pra fugir, a raiva empurra pra enfrentar, o nojo empurra pra afastar. Isso se chama <strong>tendência de ação</strong>. Reconhecer esse impulso não significa obedecer a ele automaticamente — significa ganhar a escolha de segui-lo ou não.'
+      text: 'Cada emoção vem com um "programa" pronto: um impulso específico do que fazer — o medo empurra para fugir, a raiva empurra para enfrentar, o nojo empurra para afastar. Isso se chama <strong>tendência de ação</strong>. Reconhecer esse impulso não significa obedecer a ele automaticamente — significa ganhar a escolha de segui-lo ou não.'
     },
     {
       icon: '🧠', title: 'Seu cérebro emocional',
@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', function () {
     },
     {
       icon: '🧭', title: 'Emoção como informação (Terapia Focada nas Emoções)',
-      text: 'Na Terapia Focada nas Emoções (Leslie Greenberg), a emoção não é vista como "problema" a ser eliminado, mas como uma <strong>fonte de informação</strong> sobre o que importa pra você — o trabalho é <strong>chegar até ela</strong>, sentir o que realmente está ali, e usar essa informação, em vez de evitá-la ou ser dominado por ela. Nem toda emoção que aparece, porém, é o retrato mais direto do que está acontecendo — e é isso que vamos ver a seguir.'
+      text: 'Na Terapia Focada nas Emoções (Leslie Greenberg), a emoção não é vista como "problema" a ser eliminado, mas como uma <strong>fonte de informação</strong> sobre o que importa para você — o trabalho é <strong>chegar até ela</strong>, sentir o que realmente está ali, e usar essa informação, em vez de evitá-la ou ser dominado por ela. Nem toda emoção que aparece, porém, é o retrato mais direto do que está acontecendo — e é isso que vamos ver a seguir.'
     }
   ];
 
@@ -73,14 +73,14 @@ document.addEventListener('DOMContentLoaded', function () {
     {
       icon: '🎭', title: 'Emoção instrumental',
       text: 'Expressa — nem sempre de forma consciente — para produzir um efeito em alguém, mais do que sentida de forma genuína naquele momento.',
-      example: 'Um choro ou uma irritação usados (mesmo sem perceber) pra conseguir atenção ou fazer o outro ceder.'
+      example: 'Um choro ou uma irritação usados (mesmo sem perceber) para conseguir atenção ou fazer o outro ceder.'
     }
   ];
 
   // ---------------------------------------------------------------
   // Conteúdo das emoções — linguagem simples e âncoras concretas de
   // corpo/pensamento, mais origem evolutiva, tendência de ação,
-  // sinais visíveis em outras pessoas e uma cena do dia a dia pra
+  // sinais visíveis em outras pessoas e uma cena do dia a dia para
   // conectar com a realidade. Cada emoção carrega uma frase-gatilho
   // curta usada no plano "quando eu perceber ___". Fonte de conteúdo
   // reaproveitada pela Biblioteca e pela tela de Ação do check-in.
@@ -91,10 +91,10 @@ document.addEventListener('DOMContentLoaded', function () {
       definition: 'Uma sensação boa que aparece quando algo dá certo ou é agradável.',
       origin: 'Evoluiu porque nos aproxima do que é bom — comida, companhia, segurança. Quem sentia prazer em se conectar e explorar tinha mais chances de sobreviver e prosperar.',
       actionTendency: ['Dá vontade de se aproximar', 'Compartilhar com alguém', 'Continuar fazendo aquilo'],
-      thoughts: ['"Isso é bom."', '"Quero repetir isso."', '"Quero contar pra alguém."'],
+      thoughts: ['"Isso é bom."', '"Quero repetir isso."', '"Quero contar para alguém."'],
       physical: ['Mais energia no corpo', 'Sorriso que vem sem esforço', 'Sensação de leveza'],
       recognizeOthers: ['Sorriso que chega aos olhos', 'Postura mais aberta e solta', 'Fala mais leve e mais rápida'],
-      scenario: 'Você recebe uma notícia boa e sente vontade de contar pra alguém na mesma hora — é a alegria empurrando você a compartilhar e fortalecer vínculos.',
+      scenario: 'Você recebe uma notícia boa e sente vontade de contar para alguém na mesma hora — é a alegria empurrando você a compartilhar e fortalecer vínculos.',
       applyPrompt: 'Da próxima vez: nomeie em voz alta e aproveite 10 segundos antes de seguir em frente.',
       healthy: ['Aproveitar o momento', 'Agradecer', 'Compartilhar com alguém de confiança'],
       unhealthy: ['Buscar só prazer rápido o tempo todo', 'Depender da aprovação dos outros para se sentir bem'],
@@ -104,14 +104,14 @@ document.addEventListener('DOMContentLoaded', function () {
     {
       name: 'Tristeza', emoji: '😢', accent: 'sad', trigger: 'um nó na garganta',
       definition: 'Aparece quando perdemos algo ou alguém, ou vivemos uma decepção.',
-      origin: 'Evoluiu como resposta à perda — de pessoas, vínculos, recursos. Ela reduz nossa energia pra pedir ajuda e reavaliar o que realmente importa.',
+      origin: 'Evoluiu como resposta à perda — de pessoas, vínculos, recursos. Ela reduz nossa energia para pedir ajuda e reavaliar o que realmente importa.',
       actionTendency: ['Dá vontade de se recolher', 'Ficar quieto por um tempo', 'Buscar conforto'],
       thoughts: ['"Sinto falta disso."', '"Isso é difícil."', '"Preciso de um tempo."'],
       physical: ['Peito mais pesado', 'Menos energia', 'Vontade de chorar'],
       recognizeOthers: ['Cantos da boca caídos', 'Olhar baixo, ombros curvados', 'Fala mais devagar e mais baixa'],
       scenario: 'Um amigo se muda de cidade e você sente um vazio quando pensa nele — a tristeza está sinalizando o quanto esse vínculo importava.',
       applyPrompt: 'Da próxima vez: permita-se sentir por alguns minutos antes de tentar "resolver" — a tristeza pede tempo, não solução imediata.',
-      healthy: ['Permitir-se sentir', 'Pedir apoio', 'Dar tempo pra si mesmo'],
+      healthy: ['Permitir-se sentir', 'Pedir apoio', 'Dar tempo para si mesmo'],
       unhealthy: ['Esconder o que sente', 'Se isolar completamente', 'Ficar remoendo sem buscar ajuda'],
       fn: 'Ajuda a processar perdas e avisa às pessoas ao redor que precisamos de cuidado.',
       science: 'Áreas do cérebro ligadas ao processamento emocional (como a amígdala) ficam mais ativas.'
@@ -128,7 +128,7 @@ document.addEventListener('DOMContentLoaded', function () {
       applyPrompt: 'Da próxima vez: nomeie "estou com raiva" antes de agir — isso já cria uma pausa entre sentir e fazer.',
       healthy: ['Reconhecer o que sente', 'Falar de forma direta e respeitosa', 'Colocar limites'],
       unhealthy: ['Explodir sem pensar', 'Agredir com palavras ou ações', 'Engolir tudo por dentro'],
-      fn: 'Ajuda a enfrentar obstáculos e proteger o que é importante pra gente.',
+      fn: 'Ajuda a enfrentar obstáculos e proteger o que é importante para gente.',
       science: 'O corpo entra em alerta e libera adrenalina, preparando uma reação rápida.'
     },
     {
@@ -153,7 +153,7 @@ document.addEventListener('DOMContentLoaded', function () {
       actionTendency: ['Dá vontade de se afastar', 'Rejeitar', 'Expelir ou evitar contato'],
       thoughts: ['"Isso é repulsivo."', '"Preciso me afastar."', '"Isso pode me fazer mal."'],
       physical: ['Enjoo', 'Nariz franzido', 'Vontade de se afastar'],
-      recognizeOthers: ['Nariz enrugado, lábio superior levantado', 'Cabeça ou corpo virado pra longe', 'Expressão de repulsa no rosto'],
+      recognizeOthers: ['Nariz enrugado, lábio superior levantado', 'Cabeça ou corpo virado para longe', 'Expressão de repulsa no rosto'],
       scenario: 'Você abre a geladeira e sente um cheiro estranho — o nojo faz você recuar antes de qualquer risco real.',
       applyPrompt: 'Da próxima vez: repare se o nojo é sobre algo concreto (comida, cheiro) ou um julgamento moral — parecem iguais, mas pedem respostas diferentes.',
       healthy: ['Reconhecer o incômodo', 'Se afastar quando faz sentido', 'Questionar reações exageradas'],
@@ -164,13 +164,13 @@ document.addEventListener('DOMContentLoaded', function () {
     {
       name: 'Surpresa', emoji: '😲', accent: 'surprise', trigger: 'uma reação rápida a algo inesperado',
       definition: 'Uma reação rápida a algo inesperado, que interrompe o que estávamos pensando ou fazendo.',
-      origin: 'Evoluiu pra interromper o que estávamos fazendo e redirecionar toda a atenção pro que é novo — antes mesmo de sabermos se é bom ou ruim.',
+      origin: 'Evoluiu para interromper o que estávamos fazendo e redirecionar toda a atenção pro que é novo — antes mesmo de sabermos se é bom ou ruim.',
       actionTendency: ['Dá vontade de parar', 'Olhar e prestar atenção', 'Entender rápido o que aconteceu'],
       thoughts: ['"Não esperava por isso!"', '"O que está acontecendo?"', '"Preciso entender rápido."'],
       physical: ['Sobrancelhas sobem', 'Olhos arregalam', 'Respiração muda de repente'],
       recognizeOthers: ['Sobrancelhas erguidas, olhos arregalados', 'Boca aberta', 'Corpo momentaneamente parado'],
       scenario: 'Alguém aparece de surpresa numa festa — antes de sentir alegria ou susto, o corpo já reagiu à surpresa em si.',
-      applyPrompt: 'Da próxima vez: dê um segundo pra deixar a surpresa passar antes de decidir como reagir ao que veio depois dela.',
+      applyPrompt: 'Da próxima vez: dê um segundo para deixar a surpresa passar antes de decidir como reagir ao que veio depois dela.',
       healthy: ['Ficar aberto ao novo', 'Se adaptar com calma à mudança'],
       unhealthy: ['Travar diante do inesperado', 'Reagir de forma exagerada a pequenas mudanças'],
       fn: 'Ajuda a redirecionar rápido nossa atenção para o que é novo, preparando uma resposta.',
@@ -220,7 +220,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Mapeamentos de sensação → famílias emocionais compatíveis (2-3 cada).
   // São heurísticas psicoeducativas, não um instrumento diagnóstico —
-  // servem pra oferecer reconhecimento assistido, nunca recall livre.
+  // servem para oferecer reconhecimento assistido, nunca recall livre.
   var sensationToFamilies = {
     aperto: ['anger', 'fear', 'sad'],
     calor: ['anger', 'joy'],
@@ -242,7 +242,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var ALL_ACCENTS = ['joy', 'sad', 'anger', 'fear', 'disgust', 'surprise'];
 
   // Variações de intensidade dentro de cada família — descritas, não
-  // numéricas (0-10 é frio demais pra quem está começando a perceber
+  // numéricas (0-10 é frio demais para quem está começando a perceber
   // o que sente).
   var intensityLevels = {
     joy: [
@@ -253,7 +253,7 @@ document.addEventListener('DOMContentLoaded', function () {
     ],
     sad: [
       { label: 'Incômodo leve', text: 'Um mal-estar discreto, quase passageiro.' },
-      { label: 'Melancolia', text: 'Uma tristeza mais silenciosa, meio pra dentro.' },
+      { label: 'Melancolia', text: 'Uma tristeza mais silenciosa, meio para dentro.' },
       { label: 'Tristeza', text: 'O peso mais claro, com vontade de se recolher.' },
       { label: 'Angústia', text: 'Uma dor mais funda, difícil de sustentar sozinho.' }
     ],
@@ -561,7 +561,7 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   // ---------------------------------------------------------------
-  // Dose Cultivada: check-in semanal leve e opcional, só aparece pra
+  // Dose Cultivada: check-in semanal leve e opcional, só aparece para
   // quem já tem pelo menos um registro no mapa. Nunca bloqueia, nunca
   // cobra — "dispensar essa semana" é uma opção tão válida quanto
   // registrar.
@@ -758,7 +758,7 @@ document.addEventListener('DOMContentLoaded', function () {
   // ---------------------------------------------------------------
   function resetMoodPad() {
     el.moodMarker.classList.add('hidden');
-    el.moodFeedback.innerHTML = '<p class="empty-note">Toque em qualquer ponto do quadrado pra marcar como você está se sentindo agora.</p>';
+    el.moodFeedback.innerHTML = '<p class="empty-note">Toque em qualquer ponto do quadrado para marcar como você está se sentindo agora.</p>';
   }
 
   function handleMoodPadPick(clientX, clientY) {
@@ -766,7 +766,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var x = Math.min(1, Math.max(0, (clientX - rect.left) / rect.width));
     var y = Math.min(1, Math.max(0, (clientY - rect.top) / rect.height));
     var valence = x; // 0 = desagradável, 1 = agradável
-    var arousal = 1 - y; // 0 = pouca energia, 1 = muita energia (y cresce pra baixo)
+    var arousal = 1 - y; // 0 = pouca energia, 1 = muita energia (y cresce para baixo)
 
     el.moodMarker.style.left = (x * 100) + '%';
     el.moodMarker.style.top = (y * 100) + '%';
@@ -814,7 +814,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function buildSpeechText(e) {
-    return e.name + '. ' + e.definition + ' No corpo, em você, pode parecer: ' + e.physical.join(', ') + '. Nos outros, dá pra notar: ' + e.recognizeOthers.join(', ') + '. Dá vontade de: ' + e.actionTendency.join(', ');
+    return e.name + '. ' + e.definition + ' No corpo, em você, pode parecer: ' + e.physical.join(', ') + '. Nos outros, dá para notar: ' + e.recognizeOthers.join(', ') + '. Dá vontade de: ' + e.actionTendency.join(', ');
   }
 
   var BODY_FIRST_LIBRARY_ORDER = ['fear', 'anger', 'disgust', 'sad', 'joy', 'surprise'];
@@ -865,7 +865,7 @@ document.addEventListener('DOMContentLoaded', function () {
           '<button type="button" class="science-toggle" id="science-toggle" aria-expanded="false">Quer saber mais? (camada científica)</button>' +
           '<p class="science-note hidden" id="science-note"><strong>Curiosidade:</strong> ' + e.science + '</p>' +
           '<div class="vocab-row">' +
-            '<label for="vocab-input">Qual palavra você usaria pra isso, no seu dia a dia? <span style="font-weight:400;color:var(--muted)">(opcional)</span></label>' +
+            '<label for="vocab-input">Qual palavra você usaria para isso, no seu dia a dia? <span style="font-weight:400;color:var(--muted)">(opcional)</span></label>' +
             '<input type="text" id="vocab-input" placeholder="ex.: irritado, com raiva, puto..." value="' + savedWord.replace(/"/g, '&quot;') + '">' +
           '</div>' +
         '</div>' +
