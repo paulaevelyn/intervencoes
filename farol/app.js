@@ -329,7 +329,7 @@ const MODULES = [
       {
         type:'info', typeLabel:'📖 Psicoeducação',
         title:'O que são preocupações?',
-        content:`<p class="step-text">Preocupações são <strong>pensamentos verbais sobre ameaças futuras</strong> — o cérebro tentando antecipar e resolver problemas. Isso é evolutivamente inteligente.</p>
+        content:`<p class="step-text">Preocupações são <strong>pensamentos verbais sobre ameaças futuras</strong> — o cérebro tentando antecipar e resolver problemas. Isso tem uma função: ajudar a antecipar e resolver problemas.</p>
 <p class="step-text" style="margin-top:10px">O problema aparece quando o sistema de alerta fica <strong>hipersensível</strong>, disparando alarmes mesmo sem perigo real. O pensamento cria tensão no corpo — que o cérebro lê como "confirmação" do perigo.</p>
 ${svgCycleWorry()}
 <div class="tip mint">🔑 <strong>Ideia central:</strong> Não é falta de força de vontade. É biologia. E biologia pode ser re-treinada.</div>`
@@ -371,7 +371,7 @@ ${svgCycleWorry()}
       {
         type:'info', typeLabel:'📖 Psicoeducação',
         title:'Dois tipos de preocupação',
-        content:`<p class="step-text">O pesquisador Borkovec identificou uma distinção crucial entre dois tipos de preocupação:</p>
+        content:`<p class="step-text">O pesquisador Borkovec propôs uma distinção útil entre dois tipos de preocupação:</p>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0">
   <div class="tip mint" style="margin:0"><strong>✅ Produtiva</strong><br>Leva a uma ação. Tem fim. Ex.: "Tenho uma reunião amanhã — vou preparar os pontos principais."</div>
   <div class="tip coral" style="margin:0"><strong>🔄 Ruminação</strong><br>Circular, sem progresso. Ex.: "E se eu fizer feio? E se me julgarem? E se...?"</div>
@@ -429,7 +429,7 @@ ${svgCycleWorry()}
         type:'info', typeLabel:'📖 Psicoeducação',
         title:'O que são metacognições?',
         content:`<p class="step-text">Metacognições são <strong>crenças sobre os seus próprios pensamentos</strong>. São o motor da preocupação crônica.</p>
-<p class="step-text" style="margin-top:10px">Adrian Wells, criador da Terapia Metacognitiva (MCT), mostrou que não é o <em>conteúdo</em> da preocupação que causa mais sofrimento — é a <em>relação</em> que você tem com ela.</p>
+<p class="step-text" style="margin-top:10px">Adrian Wells, criador da Terapia Metacognitiva (MCT), propõe que o sofrimento vem menos do <em>conteúdo</em> da preocupação e mais da <em>relação</em> que você tem com ela.</p>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0">
   <div class="tip lav" style="margin:0"><strong>Crenças positivas</strong><br>"Preocupar me ajuda a estar preparada"<br>"Se eu pensar em tudo, evito o pior"</div>
   <div class="tip coral" style="margin:0"><strong>Crenças negativas</strong><br>"Não consigo controlar meus pensamentos"<br>"Me preocupar pode me deixar louca"</div>
@@ -644,7 +644,7 @@ ${svgANS()}`
       {
         type:'info', typeLabel:'📖 Psicoeducação',
         title:'Os três sistemas de Gilbert',
-        content:`<p class="step-text">Paul Gilbert identificou três sistemas emocionais que todo ser humano possui. Na ansiedade, o sistema de <strong style="color:var(--coral-d)">Ameaça</strong> domina — é hiperativo, exigindo atenção constante.</p>
+        content:`<p class="step-text">Paul Gilbert propôs um modelo com três sistemas emocionais que todos temos. Na ansiedade, o sistema de <strong style="color:var(--coral-d)">Ameaça</strong> costuma dominar: fica hiperativo e pede atenção o tempo todo.</p>
 ${svgThreeSystems()}
 <p class="step-text">A Terapia Focada na Compaixão (TFC/CFT) não tenta eliminar o sistema de Ameaça — ele é necessário. O objetivo é <strong>fortalecer o sistema Calmante</strong>, criando equilíbrio.</p>
 <div class="tip mint">O sistema calmante é ativado por: calor humano, toque gentil, respiração lenta, presença segura e — crucialmente — por como <strong>você fala consigo mesmo/a</strong>.</div>`

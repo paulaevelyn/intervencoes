@@ -20,11 +20,11 @@ document.addEventListener('DOMContentLoaded', function () {
   var concepts = [
     {
       icon: '🧩', title: 'O que é uma emoção?',
-      text: 'Não é "coisa da cabeça" nem fraqueza — é informação rápida. Toda emoção tem três partes que acontecem quase juntas: <strong>uma mudança no corpo</strong> (coração, respiração, tensão), <strong>um sentimento</strong> (o jeito como isso é vivido por dentro) e <strong>uma vontade de agir</strong> específica. Quando você sente antes de "pensar", é essa engrenagem funcionando.'
+      text: 'Não é "coisa da cabeça" nem fraqueza — é informação rápida. Toda emoção tem três partes que acontecem quase juntas: <strong>uma mudança no corpo</strong> (coração, respiração, tensão), <strong>um sentimento</strong> (o jeito como isso é vivido por dentro) e <strong>uma vontade de agir</strong> específica. Quando você sente antes de "pensar", é essa engrenagem funcionando, e isso é normal.'
     },
     {
       icon: '🛡️', title: 'Pra que servem as emoções',
-      text: 'Cada uma das seis emoções básicas existe porque, ao longo da nossa história como espécie, ela resolveu um problema real: fugir de perigo, notar uma perda, defender um limite, se aproximar do que é bom. <strong>Não existe emoção "errada"</strong> — existe emoção incômoda de sentir. O objetivo aqui não é eliminar nenhuma delas, é entender o recado que cada uma traz.'
+      text: 'Cada uma das seis emoções básicas parece ter ajudado, ao longo da nossa história como espécie, a lidar com algo real: fugir de perigo, notar uma perda, defender um limite, se aproximar do que é bom. <strong>Não existe emoção "errada"</strong> — existe emoção incômoda de sentir. Aqui o objetivo não é eliminar nenhuma delas: é entender o recado que cada uma traz.'
     },
     {
       icon: '⚡', title: 'Tendência de ação',
@@ -32,19 +32,19 @@ document.addEventListener('DOMContentLoaded', function () {
     },
     {
       icon: '🧠', title: 'Seu cérebro emocional',
-      text: 'Quando algo acontece, a <strong>amígdala</strong> dá o alarme rápido, antes de qualquer análise consciente. A <strong>ínsula</strong> lê os sinais do corpo (é ela que te avisa do coração acelerado, do nó na garganta). O <strong>córtex pré-frontal</strong> é o "painel de controle" mais lento e mais reflexivo — é ele que avalia, pondera e ajuda a escolher a resposta, e é a conexão entre ele e a amígdala que fica mais forte quando a gente pratica nomear emoções. Por baixo disso tudo, o <strong>sistema nervoso autônomo</strong> funciona como acelerador (sistema simpático, prepara ação) e freio (sistema parassimpático, traz calma) — as sensações do corpo que você percebe em cada emoção são esse sistema em ação.'
+      text: 'Você não precisa saber nomes de áreas do cérebro para usar o Matiz, mas ajuda ter uma imagem. Uma parte do cérebro (a <strong>amígdala</strong>) dá o alarme rápido, antes de qualquer análise consciente. Outra (a <strong>ínsula</strong>) lê os sinais do corpo, como o coração acelerado ou o nó na garganta. Outra (o <strong>córtex pré-frontal</strong>) é mais lenta e reflexiva: avalia e ajuda a escolher a resposta. Pesquisas sugerem que nomear o que sentimos pode ajudar essas partes a "conversar" melhor. Por baixo disso, o sistema nervoso funciona como acelerador (prepara a ação) e freio (traz calma), e as sensações que você percebe no corpo são esse sistema em ação.'
     },
     {
       icon: '🎛️', title: 'O que é regulação emocional',
-      text: 'Regular uma emoção <strong>não é reprimir</strong> nem "ficar bem" o tempo todo. É um processo de três passos: <strong>perceber</strong> o que está acontecendo no corpo, <strong>nomear</strong> a emoção com precisão, e só então <strong>escolher</strong> a resposta — em vez de reagir no piloto automático. Regular bem não significa nunca sentir raiva ou medo; significa ter mais opções quando eles aparecerem.'
+      text: 'Regular uma emoção <strong>não é reprimir</strong> nem "ficar bem" o tempo todo. É um processo de três passos: <strong>perceber</strong> o que está acontecendo no corpo, <strong>nomear</strong> a emoção com precisão, e só então <strong>escolher</strong> a resposta — em vez de reagir no piloto automático. Regular bem não significa nunca sentir raiva ou medo; significa ter mais opções quando eles aparecerem, no seu tempo.'
     },
     {
       icon: '👥', title: 'Reconhecer em você e nos outros',
-      text: 'Existem dois radares: um <strong>interno</strong> (interocepção) — os sinais do seu próprio corpo — e um <strong>externo</strong> — expressões faciais e de postura que, segundo o pesquisador Paul Ekman, se repetem de forma parecida em culturas bem diferentes. Treinar os dois radares é a base do que costuma ser chamado de inteligência emocional.'
+      text: 'Existem dois radares: um <strong>interno</strong> (interocepção) — os sinais do seu próprio corpo — e um <strong>externo</strong> — expressões faciais e de postura que, segundo o pesquisador Paul Ekman, se repetem de forma parecida em culturas bem diferentes (um ponto que ainda é debatido entre pesquisadores). Praticar os dois radares ajuda no que costuma ser chamado de inteligência emocional, e cada pessoa expressa e percebe emoções de um jeito próprio.'
     },
     {
       icon: '🧭', title: 'Emoção como informação (Terapia Focada nas Emoções)',
-      text: 'Na Terapia Focada nas Emoções (Leslie Greenberg), a emoção não é vista como "problema" a ser eliminado, mas como uma <strong>fonte de informação</strong> sobre o que importa para você — o trabalho é <strong>chegar até ela</strong>, sentir o que realmente está ali, e usar essa informação, em vez de evitá-la ou ser dominado por ela. Nem toda emoção que aparece, porém, é o retrato mais direto do que está acontecendo — e é isso que vamos ver a seguir.'
+      text: 'Na Terapia Focada nas Emoções (Leslie Greenberg), a emoção não é vista como "problema" a ser eliminado, mas como uma <strong>fonte de informação</strong> sobre o que importa para você — o trabalho é <strong>chegar até ela</strong>, sentir o que realmente está ali, e usar essa informação, em vez de evitá-la ou ser tomado por ela. Nem toda emoção que aparece, porém, é o retrato mais direto do que está acontecendo — e é isso que vamos ver a seguir.'
     }
   ];
 
@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function () {
     },
     {
       icon: '🕰️', title: 'Emoção primária mal-adaptativa',
-      text: 'Um padrão antigo, aprendido em outro momento da vida, que continua sendo ativado mesmo quando não cabe mais na situação atual.',
+      text: 'Um padrão antigo, aprendido em outro momento da vida, que continua sendo ativado mesmo quando já não combina com a situação de hoje. Não é falha sua: foi uma forma de se proteger.',
       example: 'Uma vergonha profunda ativada por uma crítica pequena — como se ainda fosse aquela criança sendo julgada.'
     },
     {
@@ -72,8 +72,8 @@ document.addEventListener('DOMContentLoaded', function () {
     },
     {
       icon: '🎭', title: 'Emoção instrumental',
-      text: 'Expressa — nem sempre de forma consciente — para produzir um efeito em alguém, mais do que sentida de forma genuína naquele momento.',
-      example: 'Um choro ou uma irritação usados (mesmo sem perceber) para conseguir atenção ou fazer o outro ceder.'
+      text: 'Uma emoção que aparece, muitas vezes sem a pessoa perceber, para pedir atenção ou cuidado, mais do que como reação direta ao que está acontecendo. Não é fingimento: costuma ser um jeito que aprendemos de pedir o que precisamos.',
+      example: 'Uma irritação ou um choro que surgem para chamar atenção ou fazer o outro ceder, sem que a pessoa perceba que é isso que está pedindo.'
     }
   ];
 
@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', function () {
     {
       name: 'Alegria', emoji: '😊', accent: 'joy', trigger: 'uma sensação de leveza no corpo',
       definition: 'Uma sensação boa que aparece quando algo dá certo ou é agradável.',
-      origin: 'Evoluiu porque nos aproxima do que é bom — comida, companhia, segurança. Quem sentia prazer em se conectar e explorar tinha mais chances de sobreviver e prosperar.',
+      origin: 'Uma das explicações é que ela nos aproxima do que é bom: comida, companhia, segurança. Sentir prazer em se conectar e explorar provavelmente ajudou nossa espécie a sobreviver.',
       actionTendency: ['Dá vontade de se aproximar', 'Compartilhar com alguém', 'Continuar fazendo aquilo'],
       thoughts: ['"Isso é bom."', '"Quero repetir isso."', '"Quero contar para alguém."'],
       physical: ['Mais energia no corpo', 'Sorriso que vem sem esforço', 'Sensação de leveza'],
@@ -99,27 +99,27 @@ document.addEventListener('DOMContentLoaded', function () {
       healthy: ['Aproveitar o momento', 'Agradecer', 'Compartilhar com alguém de confiança'],
       unhealthy: ['Buscar só prazer rápido o tempo todo', 'Depender da aprovação dos outros para se sentir bem'],
       fn: 'Nos motiva a repetir o que faz bem e fortalece nossos laços com as pessoas.',
-      science: 'O cérebro libera dopamina e serotonina — substâncias ligadas a prazer e bem-estar.'
+      science: 'Substâncias do cérebro ligadas a prazer e bem-estar, como a dopamina e a serotonina, costumam estar envolvidas.'
     },
     {
       name: 'Tristeza', emoji: '😢', accent: 'sad', trigger: 'um nó na garganta',
       definition: 'Aparece quando perdemos algo ou alguém, ou vivemos uma decepção.',
-      origin: 'Evoluiu como resposta à perda — de pessoas, vínculos, recursos. Ela reduz nossa energia para pedir ajuda e reavaliar o que realmente importa.',
+      origin: 'Uma das explicações é que ela surge como resposta à perda, de pessoas, vínculos ou recursos. Ela baixa nossa energia, o que abre espaço para pedir ajuda e rever o que realmente importa.',
       actionTendency: ['Dá vontade de se recolher', 'Ficar quieto por um tempo', 'Buscar conforto'],
       thoughts: ['"Sinto falta disso."', '"Isso é difícil."', '"Preciso de um tempo."'],
       physical: ['Peito mais pesado', 'Menos energia', 'Vontade de chorar'],
       recognizeOthers: ['Cantos da boca caídos', 'Olhar baixo, ombros curvados', 'Fala mais devagar e mais baixa'],
       scenario: 'Um amigo se muda de cidade e você sente um vazio quando pensa nele — a tristeza está sinalizando o quanto esse vínculo importava.',
       applyPrompt: 'Da próxima vez: permita-se sentir por alguns minutos antes de tentar "resolver" — a tristeza pede tempo, não solução imediata.',
-      healthy: ['Permitir-se sentir', 'Pedir apoio', 'Dar tempo para si mesmo'],
+      healthy: ['Permitir-se sentir', 'Pedir apoio', 'Dar tempo a si'],
       unhealthy: ['Esconder o que sente', 'Se isolar completamente', 'Ficar remoendo sem buscar ajuda'],
       fn: 'Ajuda a processar perdas e avisa às pessoas ao redor que precisamos de cuidado.',
-      science: 'Áreas do cérebro ligadas ao processamento emocional (como a amígdala) ficam mais ativas.'
+      science: 'Áreas do cérebro ligadas ao processamento emocional (como a amígdala) costumam ficar mais ativas.'
     },
     {
       name: 'Raiva', emoji: '😠', accent: 'anger', trigger: 'o coração acelerado e músculos tensos',
       definition: 'Surge quando algo parece injusto, quando somos frustrados ou nos sentimos ameaçados.',
-      origin: 'Evoluiu para nos defender quando algo importante é violado — nossos limites, nosso espaço, nossa dignidade.',
+      origin: 'Uma das explicações é que ela nos ajuda a defender o que importa quando algo é violado: nossos limites, nosso espaço, nossa dignidade.',
       actionTendency: ['Dá vontade de enfrentar', 'Corrigir a injustiça', 'Se impor'],
       thoughts: ['"Isso é injusto."', '"Não vou aceitar isso."', '"Preciso me defender."'],
       physical: ['Coração acelera', 'Músculos tensos', 'Sensação de calor'],
@@ -129,12 +129,12 @@ document.addEventListener('DOMContentLoaded', function () {
       healthy: ['Reconhecer o que sente', 'Falar de forma direta e respeitosa', 'Colocar limites'],
       unhealthy: ['Explodir sem pensar', 'Agredir com palavras ou ações', 'Engolir tudo por dentro'],
       fn: 'Ajuda a enfrentar obstáculos e proteger o que é importante para gente.',
-      science: 'O corpo entra em alerta e libera adrenalina, preparando uma reação rápida.'
+      science: 'O corpo costuma entrar em alerta e liberar adrenalina, preparando uma reação rápida.'
     },
     {
       name: 'Medo', emoji: '😨', accent: 'fear', trigger: 'o coração disparado e a respiração rápida',
       definition: 'Aparece quando algo parece uma ameaça à nossa segurança, física ou emocional.',
-      origin: 'Evoluiu para nos manter vivos diante de ameaças reais — é um dos sistemas mais antigos e mais rápidos do cérebro.',
+      origin: 'Uma das explicações é que ela nos protege diante de ameaças reais. É um dos sistemas mais antigos e mais rápidos do cérebro.',
       actionTendency: ['Dá vontade de fugir', 'Se esconder', 'Congelar no lugar'],
       thoughts: ['"Isso é perigoso."', '"Algo ruim pode acontecer."', '"Preciso me proteger."'],
       physical: ['Coração dispara', 'Pupilas dilatam', 'Respiração rápida'],
@@ -142,14 +142,14 @@ document.addEventListener('DOMContentLoaded', function () {
       scenario: 'Um carro freia bruscamente perto de você — o coração dispara antes mesmo de "pensar" no perigo. É o medo te protegendo.',
       applyPrompt: 'Da próxima vez: pergunte-se "esse perigo é real e imediato, ou é só uma possibilidade?" — ajuda a calibrar a resposta.',
       healthy: ['Avaliar o perigo com calma', 'Se proteger quando necessário', 'Encarar aos poucos o que assusta'],
-      unhealthy: ['Evitar tudo que dá medo', 'Entrar em pânico', 'Viver preocupado com coisas pouco prováveis'],
+      unhealthy: ['Evitar tudo que dá medo', 'Entrar em pânico', 'Viver em alerta por coisas pouco prováveis'],
       fn: 'Nos protege de perigos reais, preparando o corpo para agir rápido.',
       science: 'A amígdala detecta ameaças e aciona uma resposta antes mesmo de "pensarmos" conscientemente.'
     },
     {
       name: 'Nojo', emoji: '🤢', accent: 'disgust', trigger: 'vontade de me afastar de algo ou alguém',
       definition: 'Uma reação de rejeição a algo que parece contaminado, nocivo ou que fere nossos valores.',
-      origin: 'Evoluiu para nos afastar do que pode contaminar ou adoecer — comida estragada, doenças e, mais tarde, também violações morais.',
+      origin: 'Uma das explicações é que ela nos afasta do que pode contaminar ou adoecer, como comida estragada, e que depois passou a aparecer também diante de situações que ferem nossos valores.',
       actionTendency: ['Dá vontade de se afastar', 'Rejeitar', 'Expelir ou evitar contato'],
       thoughts: ['"Isso é repulsivo."', '"Preciso me afastar."', '"Isso pode me fazer mal."'],
       physical: ['Enjoo', 'Nariz franzido', 'Vontade de se afastar'],
@@ -164,14 +164,14 @@ document.addEventListener('DOMContentLoaded', function () {
     {
       name: 'Surpresa', emoji: '😲', accent: 'surprise', trigger: 'uma reação rápida a algo inesperado',
       definition: 'Uma reação rápida a algo inesperado, que interrompe o que estávamos pensando ou fazendo.',
-      origin: 'Evoluiu para interromper o que estávamos fazendo e redirecionar toda a atenção pro que é novo — antes mesmo de sabermos se é bom ou ruim.',
+      origin: 'Uma das explicações é que ela interrompe o que estávamos fazendo e leva a atenção para o que é novo, antes mesmo de sabermos se é bom ou ruim.',
       actionTendency: ['Dá vontade de parar', 'Olhar e prestar atenção', 'Entender rápido o que aconteceu'],
       thoughts: ['"Não esperava por isso!"', '"O que está acontecendo?"', '"Preciso entender rápido."'],
       physical: ['Sobrancelhas sobem', 'Olhos arregalam', 'Respiração muda de repente'],
       recognizeOthers: ['Sobrancelhas erguidas, olhos arregalados', 'Boca aberta', 'Corpo momentaneamente parado'],
       scenario: 'Alguém aparece de surpresa numa festa — antes de sentir alegria ou susto, o corpo já reagiu à surpresa em si.',
       applyPrompt: 'Da próxima vez: dê um segundo para deixar a surpresa passar antes de decidir como reagir ao que veio depois dela.',
-      healthy: ['Ficar aberto ao novo', 'Se adaptar com calma à mudança'],
+      healthy: ['Abrir-se ao novo', 'Se adaptar com calma à mudança'],
       unhealthy: ['Travar diante do inesperado', 'Reagir de forma exagerada a pequenas mudanças'],
       fn: 'Ajuda a redirecionar rápido nossa atenção para o que é novo, preparando uma resposta.',
       science: 'Ativa por um instante o sistema de alerta do cérebro, pausando o que estava em andamento.'
@@ -866,7 +866,7 @@ document.addEventListener('DOMContentLoaded', function () {
           '<p class="science-note hidden" id="science-note"><strong>Curiosidade:</strong> ' + e.science + '</p>' +
           '<div class="vocab-row">' +
             '<label for="vocab-input">Qual palavra você usaria para isso, no seu dia a dia? <span style="font-weight:400;color:var(--muted)">(opcional)</span></label>' +
-            '<input type="text" id="vocab-input" placeholder="ex.: irritado, com raiva, puto..." value="' + savedWord.replace(/"/g, '&quot;') + '">' +
+            '<input type="text" id="vocab-input" placeholder="ex.: irritação, impaciência, raiva..." value="' + savedWord.replace(/"/g, '&quot;') + '">' +
           '</div>' +
         '</div>' +
       '</div>';
