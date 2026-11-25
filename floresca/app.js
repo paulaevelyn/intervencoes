@@ -2954,7 +2954,7 @@ function copyParticipantId(){
   } else { toast('Selecione o código e copie manualmente.'); }
 }
 /* Versão do app: mesma numeração do cache do service worker (sw.js) */
-const APP_VERSION = '25';
+const APP_VERSION = '26';
 async function renderAppVersion(){
   const el = document.getElementById('app-version-box'); if(!el) return;
   let status = '';
@@ -3147,7 +3147,7 @@ function renderNudge(){
     html = `<div class="nudge lav">
       <div class="nudge-icon">${ico('heart',24)}</div>
       <div class="nudge-body"><strong>Que bom ter você de volta.</strong>
-      Jardins sobrevivem a dias sem rega, o que importa é regar hoje. ${identityLine()?esc(identityLine())+' ':''}Um momento pequeno já recomeça o cultivo.</div>
+      Jardins sobrevivem a dias sem rega. ${identityLine()?esc(identityLine())+' ':''}Muitas vezes basta um momento pequeno hoje para retomar o cultivo.</div>
       <button class="nudge-btn" onclick="goTo('diary')">Registrar agora</button>
     </div>`;
   }

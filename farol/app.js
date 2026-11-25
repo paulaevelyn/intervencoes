@@ -2379,7 +2379,7 @@ function renderNudge(){
     html = `<div class="nudge lav">
       <div class="nudge-icon">${ico('heart',24)}</div>
       <div class="nudge-body"><strong>Que bom ter você de volta.</strong>
-      Pausas fazem parte de qualquer travessia: o farol continua aceso. Um registro pequeno hoje já recomeça o caminho.</div>
+      Pausas fazem parte de qualquer travessia, e o farol continua aceso. Um registro pequeno hoje já retoma o caminho.</div>
       <button class="nudge-btn" onclick="goTo('diary')">Registrar agora</button>
     </div>`;
   }
@@ -2408,7 +2408,7 @@ function renderNextStep(){
   } else if(!doneToday){
     el.innerHTML = `<div class="next-card">
       <div class="next-lbl">Seu próximo passo</div>
-      <div class="next-title">O que te preocupou hoje? Um minuto basta.</div>
+      <div class="next-title">O que ocupou sua cabeça hoje? Um minuto basta.</div>
       <button class="btn next-btn" onclick="goTo('diary')">Registrar em um minuto</button>
     </div>`;
   } else {
