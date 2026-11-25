@@ -1,5 +1,5 @@
 /* data.js — conteúdo do Aurora (atividades, exercícios e artigos).
-   Portado SEM alterações de texto do app anterior em React (aurora/src/utils/activities.js,
+   Portado do app anterior em React (textos sobre evidência e eficácia revisados em 2026, com linguagem mais cuidadosa) (aurora/src/utils/activities.js,
    pages/Emotions.jsx e pages/Learn.jsx). Só foram removidos os campos de cor do Tailwind,
    que não fazem parte do conteúdo. Para editar um texto, edite aqui. */
 
@@ -21,7 +21,7 @@ const ACTIVITIES = [
   { id: 'stretch', category: 'corpo', label: 'Alongamento suave', duration: '10 min', evidence: 'Ativa o sistema nervoso parassimpático' },
   { id: 'dance', category: 'corpo', label: 'Dançar por uma música', duration: '5 min', evidence: 'Eleva dopamina e endorfinas' },
   { id: 'yoga', category: 'corpo', label: 'Yoga ou tai chi', duration: '20 min', evidence: 'Reduz cortisol e melhora humor' },
-  { id: 'bike', category: 'corpo', label: 'Pedalar ou nadar', duration: '30 min', evidence: 'Aeróbico moderado com forte evidência antidepressiva' },
+  { id: 'bike', category: 'corpo', label: 'Pedalar ou nadar', duration: '30 min', evidence: 'Exercício aeróbico moderado é estudado como apoio no cuidado da depressão' },
 
   // Conexão Social (Cacioppo & Patrick, 2008; Holt-Lunstad et al.)
   { id: 'call_friend', category: 'social', label: 'Ligar para um amigo ou familiar', duration: '15 min', evidence: 'Ativação do sistema de recompensa social' },
@@ -72,7 +72,7 @@ const EXERCISES = [
     title: 'Saborear o Momento',
     emoji: '🌸',
     duration: '5 min',
-    theory: 'Saborear (savoring) amplia emoções positivas já presentes, contrabalanceando o viés negativo da depressão. Evidência: Bryant & Veroff (2007).',
+    theory: 'Saborear (savoring) amplia emoções positivas já presentes, contrabalanceando o viés negativo da depressão. Veja: Bryant & Veroff (2007).',
     steps: [
       'Encontre algo agradável ao seu redor — pode ser luz, uma textura, um cheiro, uma lembrança.',
       'Feche os olhos e concentre toda a atenção nessa experiência por 2 minutos.',
@@ -86,7 +86,7 @@ const EXERCISES = [
     title: '3 Coisas Boas',
     emoji: '✨',
     duration: '5-10 min',
-    theory: 'Identificar 3 coisas positivas diariamente por 2 semanas reduz depressão e aumenta bem-estar em estudos de Seligman et al. (2005). O cérebro aprende a notar o positivo.',
+    theory: 'Identificar 3 coisas positivas diariamente por 2 semanas ajudou a reduzir sintomas depressivos e a aumentar o bem-estar em estudos de Seligman et al. (2005), embora o efeito varie de pessoa para pessoa. Com a prática, fica mais fácil notar o positivo.',
     steps: [
       'Pegue papel e caneta (escrever à mão potencializa o efeito).',
       'Pense em 3 coisas boas que aconteceram hoje — podem ser pequenas.',
@@ -114,7 +114,7 @@ const EXERCISES = [
     title: 'Escaneamento Corporal',
     emoji: '🌊',
     duration: '8 min',
-    theory: 'Mindfulness corporal desconecta a ruminação e ativa o sistema nervoso parassimpático. Eficaz como complemento no tratamento da depressão (MBCT — Segal, Williams & Teasdale, 2002).',
+    theory: 'Mindfulness corporal ajuda a se afastar da ruminação e pode favorecer a calma do corpo. É estudado como complemento ao tratamento da depressão (MBCT — Segal, Williams & Teasdale, 2002).',
     steps: [
       'Deite-se ou sente-se confortavelmente. Feche os olhos.',
       'Comece pelos pés: observe qualquer sensação — temperatura, contato, formigamento. Sem julgamento.',
@@ -191,7 +191,7 @@ const ARTICLES = [
     content: [
       {
         heading: 'Uma condição biopsicossocial',
-        text: 'A depressão não é fraqueza, preguiça ou falta de força de vontade. É uma condição médica reconhecida que envolve alterações em neurotransmissores (serotonina, dopamina, noradrenalina), estrutura cerebral e padrões de pensamento.',
+        text: 'A depressão não é fraqueza, preguiça ou falta de força de vontade. É uma condição de saúde reconhecida, com muitos fatores envolvidos: biológicos, emocionais, sociais e de história de vida. Não é algo que você causou.',
       },
       {
         heading: 'Sintomas comuns',
@@ -219,7 +219,7 @@ const ARTICLES = [
       },
       {
         heading: 'A evidência',
-        text: 'Martell, Addis e Jacobson (2001) demonstraram que a BA sozinha é tão eficaz quanto a Terapia Cognitivo-Comportamental completa para depressão moderada a grave. É uma das intervenções com mais suporte empírico disponíveis.',
+        text: 'Martell, Addis e Jacobson (2001) encontraram que a ativação comportamental, sozinha, teve resultados parecidos com os da Terapia Cognitivo-Comportamental completa em um estudo com pessoas com depressão. É uma abordagem bastante estudada.',
       },
       {
         heading: 'Como funciona na prática',
@@ -231,7 +231,7 @@ const ARTICLES = [
       },
       {
         heading: 'A regra dos 5 minutos',
-        text: 'Não espere motivação para começar. Comprometa-se com apenas 5 minutos. Quase sempre, uma vez que você começa, a ativação aumenta. E mesmo que não aumente, 5 minutos já contam.',
+        text: 'Não espere motivação para começar. Comprometa-se com apenas 5 minutos. Muitas vezes, depois que você começa, a energia aumenta um pouco. E se não aumentar, 5 minutos já contam.',
       },
     ],
   },
@@ -251,7 +251,7 @@ const ARTICLES = [
       },
       {
         heading: 'Gratidão funciona?',
-        text: 'Sim, com ressalvas. Estudos (Emmons & McCullough, 2003; Seligman et al., 2005) mostram que escrever 3 coisas boas diariamente por 2 semanas reduz sintomas depressivos e aumenta bem-estar — efeitos que duram meses.',
+        text: 'Pode ajudar, com ressalvas. Estudos (Emmons & McCullough, 2003; Seligman et al., 2005) sugerem que escrever 3 coisas boas por dia, durante 2 semanas, ajuda a reduzir sintomas depressivos e a aumentar o bem-estar, e alguns efeitos duraram meses. Os resultados variam e não é igual para todo mundo.',
       },
       {
         heading: 'Forças de caráter',
@@ -271,7 +271,7 @@ const ARTICLES = [
     content: [
       {
         heading: 'Exercício como antidepressivo',
-        text: 'Uma revisão de 2016 (Kvam et al.) analisou 23 estudos e concluiu que o exercício aeróbico tem eficácia comparável a antidepressivos para depressão leve a moderada. O mecanismo envolve BDNF, serotonina, endorfinas e neurogênese no hipocampo.',
+        text: 'Uma revisão de 2016 (Kvam et al.) analisou 23 estudos e sugeriu que o exercício aeróbico pode trazer um benefício parecido ao de outros tratamentos na depressão leve a moderada. Os mecanismos ainda estão sendo estudados. Não substitui o acompanhamento profissional.',
       },
       {
         heading: 'Quanto exercício?',
@@ -287,15 +287,15 @@ const ARTICLES = [
       },
       {
         heading: 'Luz solar',
-        text: 'Exposição à luz natural pela manhã regula o ritmo circadiano, aumenta serotonina e melatonina. Em países com pouca luz solar no inverno, a Terapia de Luz tem evidência forte para depressão sazonal e benefício geral para depressão.',
+        text: 'Exposição à luz natural pela manhã ajuda a regular o ritmo do sono. Em lugares com pouca luz no inverno, a terapia de luz é estudada para a depressão sazonal e deve ser indicada por um profissional.',
       },
     ],
   },
   {
     id: 'therapy',
     emoji: '💬',
-    title: 'Terapia Baseada em Evidências',
-    subtitle: 'O que a ciência diz sobre tratamento',
+    title: 'Abordagens de tratamento',
+    subtitle: 'O cuidado profissional que existe',
     content: [
       {
         heading: 'Terapia Cognitivo-Comportamental (TCC)',
@@ -303,23 +303,23 @@ const ARTICLES = [
       },
       {
         heading: 'Ativação Comportamental (BA)',
-        text: 'Componente da TCC com eficácia autônoma comprovada. Foca na mudança comportamental sem necessariamente reestruturar cognições. Especialmente útil quando há paralisia e inação.',
+        text: 'Componente da TCC que também foi estudado sozinho. Foca na mudança comportamental sem necessariamente reestruturar cognições. Especialmente útil quando há paralisia e inação.',
       },
       {
         heading: 'Terapia de Aceitação e Compromisso (ACT)',
-        text: 'Baseada em flexibilidade psicológica, aceitação de experiências internas e ação guiada por valores. Evidência crescente para depressão, especialmente para reduzir ruminação e evitação experiencial.',
+        text: 'Baseada em flexibilidade psicológica, aceitação de experiências internas e ação guiada por valores. Vem sendo estudada na depressão, principalmente para lidar com ruminação e evitação.',
       },
       {
         heading: 'Terapia Interpessoal (TIP)',
-        text: 'Foca em relações interpessoais e transições de vida. Eficaz especialmente quando a depressão está ligada a perdas, conflitos ou mudanças de papel social.',
+        text: 'Foca em relações interpessoais e transições de vida. Pode ajudar especialmente quando a depressão está ligada a perdas, conflitos ou mudanças de papel social.',
       },
       {
         heading: 'Medicação',
-        text: 'Antidepressivos (ISRS, IRSN e outros) têm eficácia comprovada para depressão moderada a grave. Combinação de medicação e psicoterapia costuma ter melhores resultados. Sempre com prescrição e acompanhamento médico.',
+        text: 'Antidepressivos (ISRS, IRSN e outros) podem ajudar bastante na depressão moderada a grave. Muitas pessoas se beneficiam de medicação junto com psicoterapia. Sempre com prescrição e acompanhamento médico.',
       },
       {
         heading: 'Este app',
-        text: 'As intervenções neste app são baseadas em evidências e podem ser usadas como autoajuda estruturada ou como complemento ao tratamento profissional. Não substituem diagnóstico nem tratamento especializado.',
+        text: 'As intervenções neste app se inspiram em abordagens estudadas e podem ser usadas como autoajuda estruturada ou como complemento ao tratamento profissional. Não substituem diagnóstico nem tratamento especializado.',
       },
     ],
   },

@@ -320,7 +320,7 @@ const MODULES = [
      ───────────────────────────────────────── */
   {
     id:'m1', color:'mint', emoji:'🧠',
-    levelTag:'Nível 1 — Fundamentos',
+    levelTag:'Etapa 1 — Fundamentos',
     title:'Entendendo as Preocupações',
     tagline:'Como o ciclo da preocupação funciona',
     porque:'Entender como a preocupação funciona ajuda a notar o ciclo em vez de brigar com ele. Você decide o que levar para a sua vida.',
@@ -362,7 +362,7 @@ ${svgCycleWorry()}
      ───────────────────────────────────────── */
   {
     id:'m2', color:'amber', emoji:'🔍',
-    levelTag:'Nível 1 — Fundamentos',
+    levelTag:'Etapa 1 — Fundamentos',
     title:'Preocupação Útil vs. Inútil',
     tagline:'Nem toda preocupação é igual',
     porque:'Nem toda preocupação precisa ser eliminada. Separar o que pede ação do que só gira te devolve escolha sobre onde colocar energia.',
@@ -419,7 +419,7 @@ ${svgCycleWorry()}
      ───────────────────────────────────────── */
   {
     id:'m3', color:'lav', emoji:'💭',
-    levelTag:'Nível 2 — Padrões Internos',
+    levelTag:'Etapa 2 — Padrões Internos',
     title:'Metacognições: Crenças sobre o Pensar',
     tagline:'O verdadeiro motor da preocupação crônica',
     porque:'As crenças sobre o preocupar-se mantêm o ciclo. Olhar para elas com curiosidade, sem julgamento, é o primeiro passo para mudar a relação com elas.',
@@ -464,7 +464,7 @@ ${svgCycleWorry()}
      ───────────────────────────────────────── */
   {
     id:'m4', color:'coral', emoji:'⏰',
-    levelTag:'Nível 2 — Padrões Internos',
+    levelTag:'Etapa 2 — Padrões Internos',
     title:'Tempo de Preocupação',
     tagline:'Aprenda a adiar, não a suprimir',
     porque:'Adiar, e não suprimir, deixa você no comando: a preocupação tem um lugar, e o resto do dia fica mais livre. Teste e ajuste ao seu jeito.',
@@ -507,7 +507,7 @@ ${svgCycleWorry()}
      ───────────────────────────────────────── */
   {
     id:'m5', color:'mint', emoji:'🌬️',
-    levelTag:'Nível 3 — Regulação',
+    levelTag:'Etapa 3 — Regulação',
     title:'Regulação pelo Corpo',
     tagline:'Fisiologia que acalma a ansiedade',
     porque:'Quando o corpo acalma, a mente tem mais espaço para pensar. São recursos para experimentar e ficar com o que funcionar para você.',
@@ -546,7 +546,7 @@ ${svgANS()}`
      ───────────────────────────────────────── */
   {
     id:'m6', color:'amber', emoji:'🔧',
-    levelTag:'Nível 3 — Regulação',
+    levelTag:'Etapa 3 — Regulação',
     title:'Reestruturação Cognitiva',
     tagline:'Questionar pensamentos, não suprimi-los',
     porque:'Questionar um pensamento é olhar para ele de outros ângulos, não forçar pensamento positivo. Você escolhe o que fazer com o que encontrar.',
@@ -593,7 +593,7 @@ ${svgANS()}`
      ───────────────────────────────────────── */
   {
     id:'m7', color:'lav', emoji:'🌊',
-    levelTag:'Nível 4 — Transformação',
+    levelTag:'Etapa 4 — Transformação',
     title:'Desfusão e Aceitação (ACT)',
     tagline:'Mudar a relação com os pensamentos',
     porque:'Pensamentos são eventos mentais, não ordens. Criar distância deles permite agir de acordo com o que importa para você.',
@@ -635,7 +635,7 @@ ${svgANS()}`
      ───────────────────────────────────────── */
   {
     id:'m8', color:'coral', emoji:'💚',
-    levelTag:'Nível 4 — Transformação',
+    levelTag:'Etapa 4 — Transformação',
     title:'Autocompaixão para a Ansiedade',
     tagline:'TFC/CFT — o sistema calmante em ação',
     porque:'A autocrítica ativa o sistema de ameaça. Um tom gentil ativa o sistema calmante, e isso torna o enfrentamento mais possível.',
@@ -1278,7 +1278,7 @@ function renderModuleList(){
   if(personalized){
     html += `<div class="card" style="border:1.5px solid var(--mint-l)">
       <div class="card-lbl">🧭 Travessia personalizada</div>
-      <div style="font-size:13.5px;color:var(--muted);line-height:1.6">A ordem abaixo foi sugerida com base na sua pré-avaliação. Você pode segui-la no seu ritmo — cada parada desbloqueia a próxima.</div>
+      <div style="font-size:13.5px;color:var(--muted);line-height:1.6">A ordem abaixo foi sugerida com base na sua pré-avaliação. Você pode segui-la no seu ritmo — cada módulo abre o seguinte, sem pressa.</div>
       ${(D.userProfile.reasons||[]).map(r=>`<div style="font-size:12.5px;color:var(--muted);line-height:1.55;margin-top:7px">• ${r}</div>`).join('')}
     </div>`;
     path.forEach((id,i)=>{
@@ -1287,7 +1287,7 @@ function renderModuleList(){
       html += modCardHTML(m);
     });
   } else {
-    const levels = ['Nível 1 — Fundamentos','Nível 2 — Padrões Internos','Nível 3 — Regulação','Nível 4 — Transformação'];
+    const levels = ['Etapa 1 — Fundamentos','Etapa 2 — Padrões Internos','Etapa 3 — Regulação','Etapa 4 — Transformação'];
     levels.forEach(lv=>{
       const mods = MODULES.filter(m=>m.levelTag===lv);
       if(!mods.length) return;
@@ -1436,8 +1436,8 @@ function completeModule(){
 function showCelebrate(mod){
   document.getElementById('cel-emoji').textContent  = mod.emoji;
   document.getElementById('cel-title').textContent  = mod.title+' concluído!';
-  document.getElementById('cel-xp').textContent     = '+'+mod.xp+' pontos de progresso registrados';
-  document.getElementById('cel-sub').textContent    = 'Seu progresso foi salvo. Continue para o próximo módulo ou registre no diário!';
+  document.getElementById('cel-xp').textContent     = 'Módulo registrado no seu caminho';
+  document.getElementById('cel-sub').textContent    = 'Seu progresso foi salvo. Quando quiser, siga para o próximo módulo ou registre no diário.';
   const w = document.getElementById('cel-word'); if(w) w.value='';
   document.getElementById('celebrate-card').classList.add('show');
 }
@@ -1835,10 +1835,10 @@ function gadFinish(){ const s=_gadA.reduce((a,b)=>a+b,0); D.assessment={score:s,
 function renderAssessResult(){
   const a=D.assessment;
   const info={
-    low:{title:'Preocupação mínima',icon:'🌱',msg:'Pontuação '+a.score+'/21. As preocupações estão em um nível que não interfere significativamente no dia a dia.',rec:'Continue explorando os módulos e use o diário para monitorar os seus padrões.'},
-    mid:{title:'Preocupação leve',icon:'🌿',msg:'Pontuação '+a.score+'/21. As preocupações têm algum impacto no cotidiano. Há ferramentas eficazes.',rec:'Os módulos 4 (Worry Time) e 6 (Reestruturação) são especialmente indicados.'},
-    hi:{title:'Preocupação moderada',icon:'🌊',msg:'Pontuação '+a.score+'/21. As preocupações parecem causar impacto significativo. Este app pode ser apoio, mas considere consultar um profissional.',rec:'O app pode complementar o atendimento profissional. Módulo 5 (Regulação) e 8 (TFC) podem ajudar agora.'},
-    sev:{title:'Preocupação severa',icon:'🌀',msg:'Pontuação '+a.score+'/21. Este nível sugere um sofrimento intenso — e ninguém deveria atravessá-lo sem apoio.',rec:'Recomendamos fortemente procurar um/a psicólogo/a ou o CAPS da sua cidade. O app continua aqui como complemento — Módulo 5 (Regulação) pode ajudar nos momentos agudos.'},
+    low:{title:'Pouco impacto agora',icon:'🌱',msg:'Pontuação '+a.score+'/21 (não é um diagnóstico). Por ora, as preocupações interferem pouco no dia a dia.',rec:'Continue explorando os módulos e use o diário para monitorar os seus padrões.'},
+    mid:{title:'Algum impacto no dia a dia',icon:'🌿',msg:'Pontuação '+a.score+'/21 (não é um diagnóstico). As preocupações têm algum impacto no cotidiano, e existem ferramentas que podem ajudar.',rec:'Os módulos 4 (Worry Time) e 6 (Reestruturação) são especialmente indicados.'},
+    hi:{title:'Bastante impacto',icon:'🌊',msg:'Pontuação '+a.score+'/21 (não é um diagnóstico). As preocupações parecem pesar bastante. Este app pode ser um apoio, e conversar com um/a profissional também pode ajudar.',rec:'O app pode complementar o atendimento profissional. Módulo 5 (Regulação) e 8 (TFC) podem ajudar agora.'},
+    sev:{title:'Um momento difícil',icon:'🌀',msg:'Pontuação '+a.score+'/21 (não é um diagnóstico). Este resultado sugere muito sofrimento, e ninguém precisa atravessar isso sem apoio.',rec:'Vale muito procurar um/a psicólogo/a ou o CAPS da sua cidade. O app continua aqui como complemento — Módulo 5 (Regulação) pode ajudar nos momentos mais difíceis.'},
   }[a.level] || {title:'Avaliação',icon:'📋',msg:'Pontuação '+a.score+'/21.',rec:''};
   const d=new Date(a.date+'T12:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'});
   document.getElementById('assess-wrap').innerHTML=
