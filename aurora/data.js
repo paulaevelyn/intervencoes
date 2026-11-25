@@ -303,7 +303,7 @@ const ARTICLES = [
       },
       {
         heading: 'Ativação Comportamental (BA)',
-        text: 'Componente da TCC com eficácia autônoma comprovada. Foca na mudança comportamental sem necessariamente reestruturar cognições. Especialmente útil quando há paralisia e inação.',
+        text: 'Componente da TCC com eficácia própria demonstrada em pesquisas. Foca na mudança comportamental sem necessariamente reestruturar cognições. Especialmente útil quando há paralisia e inação.',
       },
       {
         heading: 'Terapia de Aceitação e Compromisso (ACT)',
@@ -315,7 +315,7 @@ const ARTICLES = [
       },
       {
         heading: 'Medicação',
-        text: 'Antidepressivos (ISRS, IRSN e outros) têm eficácia comprovada para depressão moderada a grave. Combinação de medicação e psicoterapia costuma ter melhores resultados. Sempre com prescrição e acompanhamento médico.',
+        text: 'Antidepressivos (ISRS, IRSN e outros) têm eficácia demonstrada em estudos para depressão moderada a grave. Combinação de medicação e psicoterapia costuma ter melhores resultados. Sempre com prescrição e acompanhamento médico.',
       },
       {
         heading: 'Este app',

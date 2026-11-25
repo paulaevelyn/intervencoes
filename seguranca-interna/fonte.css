@@ -1,0 +1,9 @@
+/* Segurança Interna: fonte Poppins, conforme a revisão de design do Floresça.
+   Carregado depois de ../shared/marca.css. As páginas deste app têm o CSS dentro de cada arquivo,
+   com a fonte escrita direto nas regras, por isso o ajuste usa !important: muda só a fonte e o peso
+   dos títulos, sem tocar em cores, espaçamentos ou na ordem das etapas (desenho de baixa estimulação). */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+:root { --font: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; --font-corpo: var(--font); --font-display: var(--font); }
+body, button, input, textarea, select, h1, h2, h3, h4, p, li, label, summary, a, span, div, small, strong, em { font-family: var(--font) !important; font-size-adjust: none !important; }
+h1, h2, h3, h4 { font-weight: 400 !important; letter-spacing: -.01em !important; }
+h1 { font-weight: 300 !important; letter-spacing: -.02em !important; }
