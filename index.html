@@ -51,9 +51,22 @@ header.top img{height:48px;width:auto;display:block}
 section.bloco{padding-top:88px;display:flex;flex-direction:column;gap:32px}
 .bloco .cab{display:flex;flex-direction:column;gap:12px;max-width:640px}
 .bloco h2{font-size:32px;line-height:1.2;font-weight:300;letter-spacing:-.02em}
-.chips{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:12px}
-.chips a{display:inline-flex;align-items:center;min-height:48px;padding:0 22px;border-radius:999px;background:#fff;border:1px solid var(--mint-200);color:var(--mint-700);font-size:15px}
-.chips a:hover{background:var(--mint-50)}
+
+.chips{display:flex;flex-wrap:wrap;gap:12px}
+.chip{display:inline-flex;align-items:center;min-height:48px;padding:0 22px;border-radius:999px;background:#fff;border:1px solid var(--mint-200);color:var(--mint-700);font:400 15px var(--font);cursor:pointer}
+.chip:hover{background:var(--mint-50)}
+.chip[aria-pressed=true]{background:var(--mint-600);border-color:var(--mint-600);color:#fff}
+.sugestao{background:var(--mint-100);border-radius:28px;padding:28px 32px;display:flex;flex-wrap:wrap;align-items:center;gap:20px 28px}
+.sugestao[hidden]{display:none}
+.sugestao img{width:64px;height:64px;border-radius:18px;flex:none}
+.sugestao .t{flex:1 1 320px;min-width:0}
+.sugestao h3{font-size:20px;font-weight:500;margin-bottom:6px}
+.sugestao p{font-size:15px;line-height:1.7;max-width:560px}
+.sugestao .acoes{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.sugestao .btn{min-height:48px;padding:0 24px;font-size:15px;background:var(--coral-600);color:#fff}
+.sugestao .btn:hover{background:var(--coral-700);color:#fff}
+.sugestao .ver{display:inline-flex;align-items:center;min-height:48px;padding:0 12px;font-size:14px;font-weight:500;color:var(--mint-700);text-decoration:underline;text-underline-offset:3px}
+.card.destaque{box-shadow:0 0 0 2.5px var(--mint-600),var(--shadow)}
 
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(340px,100%),1fr));gap:24px;margin-top:24px}
 .card{background:var(--sand-50);border-radius:28px;box-shadow:var(--shadow);padding:32px;display:flex;flex-direction:column;gap:16px;scroll-margin-top:24px}
@@ -104,7 +117,7 @@ footer.foot .links a{padding:10px 0}
   .pill.cuidado span{display:none}
 }
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-@media (prefers-reduced-motion:no-preference){.btn,.card .go,.chips a{transition:background .24s cubic-bezier(.22,1,.36,1)}}
+@media (prefers-reduced-motion:no-preference){.btn,.card .go,.chip{transition:background .24s cubic-bezier(.22,1,.36,1)}}
 </style>
 <link rel="stylesheet" href="shared/bemestar.css">
 <script src="shared/bemestar.js" defer></script>
@@ -138,18 +151,20 @@ footer.foot .links a{padding:10px 0}
     <h2>Escolha pelo que está precisando</h2>
     <p>Não existe resposta certa. Se mudar de ideia amanhã, tudo bem: você pode trocar de programa quando quiser.</p>
   </div>
-  <ul class="chips">
-    <li><a href="#farol">Me preocupo demais</a></li>
-    <li><a href="#aurora">Falta energia para começar</a></li>
-    <li><a href="#floresca">Quero mais momentos bons</a></li>
-    <li><a href="#matiz">Não sei nomear o que sinto</a></li>
-    <li><a href="#seguranca-interna">Quero sentir segurança no corpo</a></li>
-    <li><a href="#ritmo">Preciso de calma e pouco estímulo</a></li>
-    <li><a href="#sintonia">Quero treinar a atenção</a></li>
-  </ul>
+  <div class="chips" role="group" aria-label="Como você está hoje?" id="escolhas">
+    <button type="button" class="chip" data-k="farol" aria-pressed="false">Me preocupo demais</button>
+    <button type="button" class="chip" data-k="aurora" aria-pressed="false">Falta energia para começar</button>
+    <button type="button" class="chip" data-k="floresca" aria-pressed="false">Quero mais momentos bons</button>
+    <button type="button" class="chip" data-k="matiz" aria-pressed="false">Não sei nomear o que sinto</button>
+    <button type="button" class="chip" data-k="seguranca-interna" aria-pressed="false">Quero sentir segurança no corpo</button>
+    <button type="button" class="chip" data-k="ritmo" aria-pressed="false">Preciso de calma e pouco estímulo</button>
+    <button type="button" class="chip" data-k="sintonia" aria-pressed="false">Quero treinar a atenção</button>
+    <button type="button" class="chip" data-k="nao-sei" aria-pressed="false">Ainda não sei</button>
+  </div>
+  <div id="sugestao" class="sugestao" aria-live="polite" hidden></div>
 </section>
 
-<main>
+<main id="programas">
 <div class="grid">
 
 <article class="card" id="farol">
@@ -281,5 +296,31 @@ footer.foot .links a{padding:10px 0}
 </footer>
 
 </div>
+<script>
+(function(){
+  var S={
+    'farol':{n:'Farol',l:'farol/',i:'logos/farol.svg',t:'O Farol ajuda a olhar para as preocupações com mais distância, em oito módulos curtos, no seu ritmo.'},
+    'aurora':{n:'Aurora',l:'aurora/',i:'logos/aurora.svg',t:'A Aurora propõe passos pequenos, escolhidos por você, para os dias em que falta energia. Marcar pela metade também conta.'},
+    'floresca':{n:'Floresça',l:'floresca/',i:'logos/floresca.svg',t:'O Floresça convida a notar e cultivar o que já é bom, com práticas curtas e sem cobrança.'},
+    'matiz':{n:'Matiz',l:'matiz/',i:'logos/matiz.svg',t:'O Matiz começa pelo corpo para ajudar a reconhecer e nomear o que você sente, sem certo nem errado.'},
+    'seguranca-interna':{n:'Segurança Interna',l:'seguranca-interna/',i:'logos/seguranca-interna.svg',t:'Cinco etapas, sem pressa, para regular o corpo e recuperar a sensação de segurança. Você pode parar quando precisar.'},
+    'ritmo':{n:'Ritmo',l:'ritmo/',i:'logos/ritmo.svg',t:'O Ritmo tem baixo estímulo, não tem metas nem cobrança e dá para usar sem cadastro.'},
+    'sintonia':{n:'Sintonia',l:'sintonia/',i:'logos/sintonia.svg',t:'A Sintonia é um treino de atenção de cerca de 12 minutos, com fones de ouvido.'},
+    'nao-sei':{n:'Matiz',l:'matiz/',i:'logos/matiz.svg',t:'Tudo bem não saber. Você pode olhar os programas abaixo com calma, ou começar pelo Matiz, que ajuda a reconhecer o que você sente.',pre:'Sem pressa'}
+  };
+  var box=document.getElementById('sugestao'),chips=document.querySelectorAll('#escolhas .chip');
+  function esc(s){return s.replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+  chips.forEach(function(c){c.addEventListener('click',function(){
+    var k=c.getAttribute('data-k'),d=S[k],on=c.getAttribute('aria-pressed')==='true';
+    chips.forEach(function(x){x.setAttribute('aria-pressed','false')});
+    document.querySelectorAll('.card.destaque').forEach(function(x){x.classList.remove('destaque')});
+    if(on||!d){box.hidden=true;box.innerHTML='';return}
+    c.setAttribute('aria-pressed','true');
+    box.innerHTML='<img src="'+d.i+'" alt="" width="64" height="64"><div class="t"><h3>'+esc(d.pre||('Pode começar pelo '+d.n))+'</h3><p>'+esc(d.t)+'</p></div><div class="acoes"><a class="btn" href="'+d.l+'">Abrir o '+esc(d.n)+'</a><a class="ver" href="#'+(k==='nao-sei'?'programas':k)+'">Ver o programa</a></div>';
+    box.hidden=false;
+    var card=document.getElementById(k);if(card)card.classList.add('destaque');
+  })});
+})();
+</script>
 </body>
 </html>
