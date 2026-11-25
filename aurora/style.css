@@ -1190,3 +1190,179 @@ input[type=range]::-moz-range-thumb{
 
   /* nothing extra needed for toast/celebrate at 1024px+ */
 }
+/* Alvos de toque de pelo menos 44px (WCAG 2.5.5); o desenho continua o mesmo. */
+.pt-link{min-height:44px}
+.demo-input{min-height:44px}
+.btn{min-height:44px}
+
+
+/* ═════════════════════════════════════════════
+   v5 — Revisão UX / bem-estar / mudança de comportamento
+   Alinhado ao design system Psicoterapia e Afins
+   ═════════════════════════════════════════════ */
+:root{ --focus:#9B4842; --dur:240ms; --ease:cubic-bezier(.22,1,.36,1) }
+h1,h2,h3,.ob-title,.hdr h1{font-weight:300;letter-spacing:-.02em}
+.ob-title{font-weight:300}
+.sr-only{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* foco visível (nunca removido) */
+:focus-visible{outline:2px solid var(--focus);outline-offset:3px;border-radius:6px}
+button,[role=button]{font-family:var(--font)}
+button.chip,button.ob-opt,button.row-link,button.link-btn{font-family:var(--font)}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+
+/* ícones decorativos vazios somem em vez de deixar espaço */
+.ob-icon:empty,.nudge-icon:empty,.quick-icon:empty,.emo-emoji:empty,.lab-emoji:empty,.consent-item-icon:empty,.ob-banner-icon:empty,.legal-item-icon:empty,.mod-status:empty{display:none}
+.nudge .nudge-btn{background:#4B665E;color:#fff}
+.nudge.lav .nudge-btn{background:#5C5290}
+.nudge.amber .nudge-btn{background:#8A5410}
+.nudge.coral .nudge-btn{background:var(--coral-d)}
+
+/* cartão do próximo passo (Home) */
+.next-card{margin:0 var(--pg) var(--gap);background:var(--mint-d);color:#fff;border-radius:var(--r);padding:24px;display:flex;flex-direction:column;gap:10px}
+.next-card.done{background:var(--mint-l);color:var(--graphite)}
+.next-lbl{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;opacity:.9}
+.next-title{font-size:20px;font-weight:300;line-height:1.35}
+.next-sub{font-size:14px;opacity:.95}
+.next-btn{margin:6px 0 0;width:auto;align-self:flex-start;background:#fff;color:var(--mint-d);border-radius:999px;padding:12px 24px;font-size:14px;font-weight:600}
+.next-btn:active{background:var(--mint-xl)}
+.next-card.done .next-btn,.next-btn.ghost-light{background:var(--mint-d);color:#fff}
+
+/* jardim */
+.garden{position:relative;height:170px;background:var(--mint-xl);border-radius:var(--r);overflow:hidden;display:flex;align-items:flex-end;justify-content:center}
+.g-ground{position:absolute;left:0;right:0;bottom:0;height:40px;background:#EFE8E0;border-radius:24px 24px 0 0}
+.g-row{position:relative;display:flex;align-items:flex-end;justify-content:center;gap:0;padding:0 8px 18px;flex-wrap:nowrap;max-width:100%}
+.g-plant{display:flex;align-items:flex-end;margin:0 -3px}
+.g-seed{width:14px;height:14px;border-radius:50%;background:#B8A892;margin-bottom:22px}
+.g-desc{font-size:14px;line-height:1.55;color:var(--muted);margin:12px 0 0}
+.g-meta{display:flex;flex-direction:column;gap:6px;margin-top:12px;font-size:13px;color:var(--muted)}
+.garden-card{padding:20px}
+.milestones{list-style:none;margin:14px 0 0;padding:0;display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--muted)}
+.milestones li.on{color:var(--mint-d);font-weight:600}
+
+/* linhas de ação e links */
+.row-link{display:flex;width:100%;align-items:center;justify-content:space-between;gap:12px;background:none;border:none;border-bottom:1px solid var(--border);padding:16px 18px;text-align:left;cursor:pointer;color:var(--graphite);font-size:14px;min-height:56px}
+.row-link:last-child{border-bottom:none}
+.row-link strong{display:block;font-weight:600;font-size:14px}
+.row-link small{display:block;font-size:12px;color:var(--muted);margin-top:2px}
+.link-btn{background:none;border:none;color:var(--mint-d);text-decoration:underline;text-underline-offset:3px;cursor:pointer;font-size:13px;padding:8px 2px;min-height:44px}
+.support-line{text-align:center;margin:8px var(--pg) 24px}
+.plan-box{background:var(--mint-xl);border-radius:var(--rs);padding:12px 14px;font-size:14px;line-height:1.55;margin-bottom:16px;color:var(--graphite)}
+.more-details{margin:0 0 20px;border:1px solid var(--border);border-radius:var(--rs);padding:4px 14px;background:var(--white)}
+.more-details>summary{cursor:pointer;font-size:14px;font-weight:600;color:var(--mint-d);padding:12px 0;min-height:44px;list-style:none}
+.more-details>summary::-webkit-details-marker{display:none}
+.more-details[open]>summary{border-bottom:1px solid var(--border);margin-bottom:12px}
+
+/* modal rolável (cartão de apoio é longo) */
+.modal-box{max-height:88vh;overflow-y:auto}
+.mod-emoji{font-family:var(--font);font-weight:500;font-size:20px}
+
+/* respiro: ajustes da revisão */
+.hdr{margin-bottom:20px}
+.hdr h1{margin-bottom:4px}
+.pt-scale{flex-direction:column;gap:10px}
+.scale-btn{width:100%;flex:none;text-align:left;padding:16px 18px;font-size:14px;font-weight:500;min-height:52px;line-height:1.4}
+.pt-section-lbl{justify-content:space-between;gap:16px;align-items:flex-start;line-height:1.5}
+.pt-section-lbl span{white-space:nowrap;flex-shrink:0}
+.step-body{padding-left:20px;padding-right:20px}
+.next-sub{font-size:14px;opacity:.95;line-height:1.5}
+
+.nudge{margin-bottom:var(--gap)}
+.sdiv{margin-top:8px}
+.ob-slide .btn,.pretest-wrap .btn{width:100%;margin-left:0;margin-right:0}
+.ob-top{padding-bottom:24px}
+
+/* Dados: seções agrupadas e recolhíveis */
+.dados-group{margin:0 var(--pg) var(--gap);background:var(--white);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden}
+.dados-group>summary{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 20px;cursor:pointer;list-style:none;min-height:64px}
+.dados-group>summary::-webkit-details-marker{display:none}
+.dados-group>summary::after{content:'';width:8px;height:8px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg);transition:transform var(--dur) var(--ease);flex-shrink:0;margin-right:4px}
+.dados-group[open]>summary::after{transform:rotate(-135deg)}
+.dados-group>summary strong{display:block;font-size:15px;font-weight:600;color:var(--graphite)}
+.dados-group>summary small{display:block;font-size:12px;color:var(--muted);margin-top:2px}
+.dados-group[open]>summary{border-bottom:1px solid var(--border)}
+.dados-group .sdiv{padding-left:20px}
+.dados-group .set-group,.dados-group .legal-card,.dados-group .priv{margin-left:12px;margin-right:12px;box-shadow:none}
+.dados-group .copyright-block{padding:16px 20px 20px}
+
+/* acessibilidade: piso de 14px para texto de leitura e de ação (12px só em rótulos e legendas) */
+.ob-step-text strong,.ob-banner-text,.ob-num-step-body span,.ob-step-text span,.demo-label,.demo-pill,.crisis-body,.crisis-res strong,.crisis-res small,
+.nudge-body,.nudge-btn,.priv-body,.pt-link,.gp-next,.celebrate-sub,.form-hint,.chip,.type-btn,.insight-t,.disclaimer-box,.legal-item,.legal-item strong,
+.consent-item,.consent-check-lbl,.delta-lbl,.delta-vals,.set-desc,#toast,.result-hero p,.g-meta,.milestones,.row-link small,.link-btn,
+.dados-group>summary small,.emo-cell .emo-name,.emo-cell .emo-desc,.lab-intro,.lab-meta,.lab-desc,.lab-belief,.lab-btn,.predict-lbl,.predict-vs,
+.quick-sub,.mod-xp,.mod-lock-msg,.pt-q-hint,.rep-item,.entry-dt,.brand-link,.flipcard .fc-front,.flipcard .fc-back,.breath-label,.scale-btn{font-size:14px}
+.nudge-btn{padding:10px 16px;min-height:44px}
+
+/* ícones de traço fino */
+.ico{display:block;flex-shrink:0}
+.ob-icon{color:var(--mint-d);margin-bottom:20px;line-height:0}
+.ob-step-icon{color:var(--mint-d);display:flex;align-items:center;justify-content:center}
+.ob-step-icon.coral{color:var(--coral-d)}.ob-step-icon.lav{color:#5C5290}.ob-step-icon.amber{color:#8A5410}
+.ob-banner-icon,.consent-item-icon,.legal-item-icon{color:var(--mint-d);line-height:0}
+.nudge-icon{color:var(--mint-d);line-height:0}
+.nudge.lav .nudge-icon{color:#5C5290}.nudge.amber .nudge-icon{color:#8A5410}.nudge.coral .nudge-icon{color:var(--coral-d)}
+.crisis-res span{color:var(--coral-d);line-height:0;display:flex}
+.mod-emoji{display:flex;align-items:center;justify-content:center;color:var(--mint-d)}
+.mod-emoji.coral{color:var(--coral-d)}.mod-emoji.lav{color:#5C5290}.mod-emoji.amber{color:#8A5410}
+.lab-emoji{color:var(--mint-d)}
+.emo-emoji{color:var(--mint-d);line-height:0;margin-top:2px}
+.celebrate-emoji{color:var(--mint-d);display:flex;justify-content:center;line-height:0}
+.result-title{display:flex;align-items:center;gap:10px}
+.result-ico{line-height:0}
+.row-link .rl-ico{color:var(--mint-d);line-height:0;flex-shrink:0}
+.row-link .rl-txt{flex:1;min-width:0}
+.row-link{justify-content:flex-start}
+.row-link .set-arr{margin-left:auto}
+.mod-status{color:var(--muted);line-height:0;display:flex;align-items:center}
+.mod-card .mod-status .ico{display:block}
+.mod-card:has(.mod-prog-fill[style*="width:100%"]) .mod-status{color:var(--mint-d)}
+
+/* resumo semanal e frases de identidade */
+.week-card .wk-text{font-size:15px;line-height:1.65;color:var(--graphite);margin:0 0 10px}
+.week-card .wk-id{font-size:14px;line-height:1.6;color:var(--mint-d);margin:4px 0 0}
+.wk-quote{margin:14px 0 4px;font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-weight:500;font-size:20px;line-height:1.4;color:var(--graphite)}
+.wk-quote-by{font-size:12px;color:var(--muted);margin-bottom:8px}
+.wk-actions{display:flex;gap:18px;flex-wrap:wrap;margin-top:6px}
+
+/* compartilhar e porquê */
+.share-offer{background:var(--mint-xl);border-radius:var(--r);padding:20px;margin:0 0 20px}
+.share-offer .so-text{font-size:14px;line-height:1.6;color:var(--graphite);margin:0 0 6px}
+.entry-why{font-size:14px;line-height:1.55;color:var(--muted);margin:4px 0 8px}
+.entry-why span{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--mint-d);margin-right:6px}
+.entry-share{margin-top:4px;padding-left:0}
+#toast{white-space:normal;max-width:calc(100% - 32px);text-align:center;line-height:1.4}
+
+
+/* ── Recursos do Floresça (intervencoes): insight do diário, padrões provisórios, teste na prática ── */
+/* ── Módulos ↔ experimentos e insights do diário ── */
+.teste-pratica{margin:14px 0 12px;padding:14px;text-align:left;background:var(--mint-xl);border-radius:var(--rs);border:1.5px solid var(--mint-l)}
+.tp-h{font-size:14px;font-weight:800;color:var(--mint-d);margin-bottom:2px}
+.tp-h small{font-weight:600;color:var(--muted)}
+.tp-p{font-size:12.5px;line-height:1.5;color:var(--muted);margin:2px 0 8px}
+.tp-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid var(--mint-l)}
+.tp-em{flex:none;font-size:22px}
+.tp-tx{flex:1;min-width:0;display:flex;flex-direction:column}
+.tp-tx strong{font-size:14px;font-weight:800;color:var(--graphite)}
+.tp-tx small{font-size:12px;line-height:1.4;color:var(--muted)}
+.tp-btn{flex:none;min-height:44px;padding:0 16px;border:0;border-radius:var(--rs);cursor:pointer;background:var(--mint-d);color:#fff;font:800 14px var(--font)}
+.sug-tag{display:inline-block;margin-bottom:8px;padding:3px 10px;border-radius:99px;background:var(--lav-l);color:#3D2E7A;font-size:11.5px;font-weight:800}
+.lab-mod{margin:8px 0 2px;font-size:12.5px;color:var(--muted)}
+.lab-link,.di-link{min-height:44px;padding:0 2px;border:0;background:none;cursor:pointer;color:var(--mint-d);font:700 12.5px var(--font);text-decoration:underline;text-underline-offset:3px;text-align:left}
+.di-link{font-size:14px;min-height:36px}
+.d-insight{display:flex;align-items:flex-start;gap:8px;margin:0 0 10px;padding:12px 8px 12px 14px;background:var(--lav-l);border-radius:var(--rs);font-size:14px;line-height:1.55;color:var(--graphite)}
+.di-tx{flex:1;min-width:0}
+.di-x{flex:none;width:44px;height:44px;margin:-10px 0 0 0;border:0;background:none;cursor:pointer;font-size:22px;line-height:1;color:var(--muted)}
+.tp-btn:focus-visible,.lab-link:focus-visible,.di-link:focus-visible,.di-x:focus-visible{outline:3px solid var(--mint);outline-offset:2px}
+/* ── Padrões provisórios (Progresso) ── */
+.pad-aviso{margin:-4px 16px 10px;font-size:12.5px;line-height:1.5;color:var(--muted)}
+.insight-c.pad{border-left-color:var(--lav)}
+.pad-x,.pad-restaurar{min-height:44px;padding:0 4px;border:0;background:none;cursor:pointer;color:var(--muted);font:600 12.5px var(--font);text-decoration:underline;text-underline-offset:3px}
+.pad-restaurar{display:block;margin:0 16px 12px;color:var(--mint-d);font-weight:700}
+.pad-x:focus-visible,.pad-restaurar:focus-visible{outline:3px solid var(--mint);outline-offset:2px}
+
+/* ── Cartão de dose compacto: uma linha, abre ao tocar ── */
+.dose-compacta{border:1.5px solid var(--mint-l)}
+.dose-linha{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.dose-sub{font-size:14px;line-height:1.5;color:var(--graphite)}
+.dose-btn{flex:none;min-height:44px;padding:0 18px;border:0;border-radius:var(--rs);cursor:pointer;background:var(--mint-d);color:#fff;font:600 14px var(--font)}
+.dose-btn:focus-visible{outline:3px solid var(--mint);outline-offset:2px}
