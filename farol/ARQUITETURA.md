@@ -165,3 +165,12 @@ de revisão teórica antes de ir para o código.
 
 *Documento gerado a partir do conteúdo real de `app.js` (v4) em 2026-07-12.
 Manter sincronizado a cada mudança de módulo ou componente transversal.*
+
+## Revisão de design e bem-estar (como no Floresça e no Aurora)
+- `revisao.css` (carregado por último) aplica os tokens do design system Psicoterapia e Afins e a fonte **Poppins**.
+- `../shared/icones.js` troca os emoji por ícones lineares sozinho (HTML e textos escritos depois pelo app); emoji só de enfeite (👋 🎉) somem.
+- Onboarding de 9 para **6 telas**: as quatro de narrativa viraram uma ("Como o Farol funciona"), com etapas e técnicas em seções recolhíveis. Pergunta de nível, pesquisa, consentimento e perfil seguem como estavam.
+- Hoje: **próximo passo** primeiro; "Seu caminho" (módulos concluídos) no lugar da barra de XP e de níveis; estatísticas e gráfico em "Ver meu caminho"; botão "Preciso de ajuda" (188, 192) no topo.
+- Progresso: sem níveis nem XP na tela; a contagem passa a ser de marcas do caminho. Os pontos continuam sendo guardados internamente (`D.xp`), sem aparecer.
+- `sw.js`: cache `farol-v16`.
+- Pendente: revisão visual em aparelho real; texto dos módulos (ainda fala em "evidência" em alguns pontos) e ícones fixos em `dashboard.html`.

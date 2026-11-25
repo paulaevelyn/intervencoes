@@ -190,7 +190,7 @@ function getLevelPct(xp){
 }
 function awardXP(amount, msg){
   D.xp += amount; save();
-  toast('Registrado: '+ msg +' (+'+ amount +' pontos de progresso)');
+  toast('Registrado: '+ msg);
 }
 
 /* ══════════════════════════════════
@@ -716,7 +716,7 @@ function goTo(s){
    ══════════════════════════════════ */
 let _obSel=-1;
 let _obDemo={};   // temp demographics before saving
-function obNext(n){ document.getElementById('obs'+(n-1)).classList.remove('on'); document.getElementById('obs'+n).classList.add('on'); }
+function obNext(n){ document.querySelectorAll('.ob-slide.on').forEach(e=>e.classList.remove('on')); document.getElementById('obs'+n).classList.add('on'); }
 function obSelect(el,v){
   _obSel=v;
   document.querySelectorAll('.ob-opt').forEach(o=>o.classList.remove('sel'));
@@ -1160,21 +1160,18 @@ function renderHome(){
   const now=new Date(), h=now.getHours();
   const gr = h<12?'Bom dia':h<18?'Boa tarde':'Boa noite';
   document.getElementById('h-date').textContent = DIAS[now.getDay()]+', '+now.getDate()+' de '+MESES[now.getMonth()];
-  document.getElementById('h-hi').textContent   = D.nickname ? gr+', '+D.nickname+' 👋' : gr+' 👋';
+  document.getElementById('h-hi').textContent   = D.nickname ? gr+', '+D.nickname : gr;
   document.getElementById('h-sub').textContent  = SUBS[now.getDate()%SUBS.length];
   renderNudge();
   renderDoseCard();
 
-  // XP bar
-  const lv = getLevel(D.xp), pct = getLevelPct(D.xp), nextLv = LEVELS[lv.n] || lv;
+  // Caminho: progresso gentil, sem níveis, sem pontos e sem ranking
+  const doneN = MODULES.filter(m=>D.moduleProgress[m.id]?.done).length;
   document.getElementById('h-xp').innerHTML =
-    `<div class="xp-wrap">
-      <div class="xp-head">
-        <span class="xp-level">${lv.emoji} Nível ${lv.n} — ${lv.name}</span>
-        <span class="xp-val">${D.xp} XP</span>
-      </div>
-      <div class="xp-bar-bg"><div class="xp-bar" style="width:${pct}%"></div></div>
-      <div class="xp-label" style="margin-top:5px">${lv.n<5?'Para o próximo nível: '+(nextLv.min-D.xp)+' XP restantes':'🏆 Nível máximo atingido!'}</div>
+    `<div class="xp-wrap caminho-prog">
+      <div class="xp-head"><span class="xp-level">Seu caminho</span><span class="xp-val" style="color:var(--mint-d)">${doneN} de ${MODULES.length} módulos</span></div>
+      <div class="xp-bar-bg"><div class="xp-bar" style="width:${Math.round(doneN/MODULES.length*100)}%"></div></div>
+      <div class="xp-label" style="margin-top:5px">Sem pressa: cada passo conta, mesmo os pequenos.</div>
     </div>`;
 
   // Stats
@@ -1182,12 +1179,15 @@ function renderHome(){
   const streak = calcStreak();
   document.getElementById('hs-mod').textContent = done+'/'+MODULES.length;
   document.getElementById('hs-str').textContent = streak;
-  document.getElementById('hs-xp').textContent  = D.xp;
+  document.getElementById('hs-xp').textContent  = D.badges.length;
   document.getElementById('h-assess-sub').textContent = D.assessment?'Refazer avaliação':'GAD-7 · Conheça seu padrão';
 
   // Next module — segue o caminho recomendado
   const next = effectivePath().map(id=>MODULES.find(m=>m.id===id))
     .find(m=>!D.moduleProgress[m.id]?.done && isUnlocked(m));
+  document.getElementById('h-next').innerHTML = next
+    ? `<div class="next-card"><div class="nx-lbl">Seu próximo passo</div><div class="nx-t">${next.title}</div><div class="nx-m">${next.steps.length} etapas. Dá para parar no meio e continuar depois.</div><button class="btn" onclick="openModule('${next.id}')">Continuar</button><button class="btn ghost" onclick="goTo('diary')">Prefiro só registrar uma preocupação</button></div>`
+    : '';
   document.getElementById('h-mod-sub').textContent = next ? '▶ '+next.title : done===MODULES.length ? '✅ Todos concluídos!' : 'Continue aprendendo';
 
   renderMiniChart('h-chart','h-chart-empty');
@@ -1782,16 +1782,13 @@ function renderProgress(){
     const practicedWeeks = new Set(D.doseRecords.map(r=>r.weekStart)).size;
     insights.push({c:'l',t:'⚓ Dose praticada',b:`Semanas com prática registrada: <strong>${practicedWeeks} de ${totalWeeks}</strong> desde o início. A dose que importa é a praticada, não a recebida.`});
   }
-  insights.push({c:'s',t:'📚 Módulos concluídos',b:`<strong>${doneMods.length} de ${MODULES.length}</strong> módulos concluídos · <strong>${D.xp} de ${totalXP} XP</strong> totais registrados.`});
+  insights.push({c:'s',t:'📚 Módulos concluídos',b:`<strong>${doneMods.length} de ${MODULES.length}</strong> módulos concluídos, no seu ritmo.`});
 
   el.innerHTML=
-    `<div class="xp-wrap" style="margin:0 16px 12px">
-      <div class="xp-head">
-        <span class="xp-level">${lv.emoji} Nível ${lv.n} — ${lv.name}</span>
-        <span class="xp-val">${D.xp} XP</span>
-      </div>
-      <div class="xp-bar-bg"><div class="xp-bar" style="width:${pct}%"></div></div>
-      <div class="xp-label" style="margin-top:5px">${lv.n<5?'Para o próximo nível: '+(LEVELS[lv.n].min-D.xp)+' XP restantes':'🏆 Nível máximo!'}</div>
+    `<div class="xp-wrap caminho-prog" style="margin:0 16px 12px">
+      <div class="xp-head"><span class="xp-level">Seu caminho</span><span class="xp-val" style="color:var(--mint-d)">${doneMods.length} de ${MODULES.length} módulos</span></div>
+      <div class="xp-bar-bg"><div class="xp-bar" style="width:${Math.round(doneMods.length/MODULES.length*100)}%"></div></div>
+      <div class="xp-label" style="margin-top:5px">Sem níveis nem ranking: você só se compara com você mesmo/a.</div>
     </div>
     <div class="card">
       <div class="card-lbl">Intensidade — 7 dias</div>
@@ -1905,7 +1902,7 @@ table{width:100%;border-collapse:collapse;background:white;border-radius:12px;ov
   <div class="stat"><div class="stat-n">${days}d</div><div class="stat-l">período de uso</div></div>
   <div class="stat"><div class="stat-n">${pct}%</div><div class="stat-l">com melhoria após registro</div></div>
   <div class="stat"><div class="stat-n">${avg}</div><div class="stat-l">intensidade média (1-5)</div></div>
-  <div class="stat"><div class="stat-n">${D.xp}</div><div class="stat-l">XP · Nível ${lv.n} ${lv.name}</div></div>
+  <div class="stat"><div class="stat-n">${D.badges.length}</div><div class="stat-l">marcas do caminho</div></div>
   <div class="stat"><div class="stat-n">${doneMods.length}/${MODULES.length}</div><div class="stat-l">módulos concluídos</div></div>
 </div>
 ${doneMods.length?`<h2>Módulos concluídos</h2><div class="ins"><div class="ins-b">${doneMods.map(m=>`<span class="pill">${m}</span>`).join('')}</div></div>`:''}
@@ -2100,6 +2097,12 @@ function renderDadosSync(){
 /* ══════════════════════════════════
    MODAL / TOAST
    ══════════════════════════════════ */
+function abrirAjuda(){
+  document.getElementById('modal-title').textContent='Se hoje estiver muito difícil';
+  document.getElementById('modal-body').innerHTML='<p style="text-align:left;margin-bottom:12px">Você não precisa atravessar isso sozinho/a. As ligações são gratuitas.</p><div class="crisis-resources"><a href="tel:188" class="crisis-res"><span>📞</span><div><strong>CVV — 188</strong><small>24 horas, todos os dias</small></div></a><a href="tel:192" class="crisis-res"><span>🚨</span><div><strong>SAMU — 192</strong><small>Em emergência</small></div></a><div class="crisis-res"><span>🏥</span><div><strong>CAPS ou UBS</strong><small>Atendimento gratuito pelo SUS</small></div></div></div>';
+  document.getElementById('modal-actions').innerHTML='<button class="btn ghost" onclick="closeModal()">Fechar</button>';
+  document.getElementById('modal-ov').classList.add('on');
+}
 function openModal(id){
   if(id==='del'){
     document.getElementById('modal-title').textContent='Apagar todos os dados?';

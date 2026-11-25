@@ -24,6 +24,7 @@
 <link rel="stylesheet" href="../shared/farol-painel.css">
 <script>document.documentElement.classList.add("pea-auth-carregando");</script>
 <link rel="stylesheet" href="../shared/marca.css">
+<link rel="stylesheet" href="revisao.css">
 </head>
 <body>
 <div id="pea-auth-aviso">carregando…</div>
@@ -56,51 +57,34 @@
         "A preocupação não é fraqueza. É biologia. E biologia pode ser retrainada."
       </div>
     </div>
-    <div class="ob-dots"><div class="ob-dot on"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div></div>
+    <div class="ob-dots"><div class="ob-dot on"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div></div>
     <button class="btn" onclick="obNext(1)">Continuar</button>
     <button class="btn ghost" onclick="obSkip()" style="margin-top:0">Já conheço o app</button>
   </div>
 
-  <!-- 1: O Farol (metáfora storytelling) -->
+  <!-- 1: Como o Farol funciona (junta metáfora, ciência, etapas e uso) -->
   <div class="ob-slide" id="obs1">
     <div class="ob-top">
       <div class="ob-icon"><img src="../logos/farol.svg" alt="" width="64"></div>
-      <div class="ob-title">Deixa eu te contar sobre um farol.</div>
-      <div class="ob-body">Um farol não acalma o mar. Ele não impede que as ondas batam nas rochas nem que o vento uive na noite.<br><br>Mas ele faz algo muito mais poderoso: <em>ele ilumina</em>. Mostra onde estão os perigos, aponta o rumo seguro, e lembra ao navegador que há terra firme — mesmo quando tudo parece escuridão.</div>
-      <div class="ob-quote">
-        "As preocupações são as tempestades costeiras da vida. O problema não é que elas existam — é perder o rumo por causa delas."
+      <div class="ob-title">Um farol não acalma o mar. Ele ilumina o rumo.</div>
+      <div class="ob-body">Aqui você aprende a <strong>navegar com mais segurança</strong> pelas preocupações, no seu ritmo, sem prometer céu limpo.</div>
+      <div class="ob-num-steps">
+        <div class="ob-num-step">
+          <div class="ob-num-circle" style="background:var(--coral-xl);color:var(--coral-d)">1</div>
+          <div class="ob-num-step-body"><strong>Oito módulos curtos</strong><span>Leituras, quizzes e exercícios. Você avança quando quiser e pode pausar a qualquer momento.</span></div>
+        </div>
+        <div class="ob-num-step">
+          <div class="ob-num-circle" style="background:var(--lav-l);color:#3D2E7A">2</div>
+          <div class="ob-num-step-body"><strong>Diário de bordo</strong><span>Registre uma preocupação quando ela surgir. Com o tempo, os padrões aparecem.</span></div>
+        </div>
+        <div class="ob-num-step">
+          <div class="ob-num-circle" style="background:var(--mint-xl);color:var(--mint-d)">3</div>
+          <div class="ob-num-step-body"><strong>Práticas de 3 a 10 minutos</strong><span>Respiração, reflexão e desfusão que cabem na rotina.</span></div>
+        </div>
       </div>
-      <div class="ob-body">Este app é o seu Farol. Não prometemos céu limpo. Prometemos que você vai aprender a <strong>navegar com mais segurança</strong>, mesmo nas noites mais difíceis.</div>
-    </div>
-    <div class="ob-dots"><div class="ob-dot"></div><div class="ob-dot on"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div></div>
-    <button class="btn" onclick="obNext(2)">Faz sentido ⛵</button>
-  </div>
-
-  <!-- 2: O que é esta intervenção -->
-  <div class="ob-slide" id="obs2">
-    <div class="ob-top">
-      <div class="ob-icon">🔬</div>
-      <div class="ob-title">Ciência a serviço do bem-estar.</div>
-      <div class="ob-body">O Farol não foi criado "do zero". Ele reúne décadas de pesquisa em psicologia — as abordagens com <strong>mais evidência</strong> para lidar com preocupação e ansiedade:</div>
-      <div class="ob-pill-row">
-        <div class="ob-pill mint">💭 TCC<span class="ob-pill-sub">Terapia Cognitivo-Comportamental</span></div>
-        <div class="ob-pill lav">🧠 MCT<span class="ob-pill-sub">Terapia Metacognitiva</span></div>
-        <div class="ob-pill amber">🌊 ACT<span class="ob-pill-sub">Terapia de Aceitação e Compromisso</span></div>
-        <div class="ob-pill coral">💚 TFC<span class="ob-pill-sub">Terapia Focada na Compaixão</span></div>
-      </div>
-      <div class="ob-body">Isso significa que cada exercício, cada reflexão, cada técnica aqui tem uma razão de ser — e essa razão está publicada em centenas de estudos científicos.<br><br>Dito isso: <strong>o Farol complementa, não substitui</strong> o trabalho com um/a psicólogo/a. Se você está em sofrimento intenso, por favor busque apoio profissional.</div>
-    </div>
-    <div class="ob-dots"><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot on"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div></div>
-    <button class="btn" onclick="obNext(3)">Entendi</button>
-  </div>
-
-  <!-- 3: Como funciona (a travessia) -->
-  <div class="ob-slide" id="obs3">
-    <div class="ob-top">
-      <div class="ob-icon">🗺️</div>
-      <div class="ob-title">A travessia tem 8 etapas.</div>
-      <div class="ob-body" style="margin-bottom:12px">Cada módulo é uma parada da viagem. Você avança no seu ritmo — sem pressa, sem pressão.</div>
-      <div class="ob-step-list">
+      <details class="ob-mais">
+        <summary>As 8 etapas da travessia</summary>
+<div class="ob-step-list">
         <div class="ob-step-item">
           <div class="ob-step-icon mint">🧠</div>
           <div class="ob-step-text"><strong>Entender o ciclo</strong><span>Como a preocupação funciona e por que o cérebro entra em loop</span></div>
@@ -134,41 +118,18 @@
           <div class="ob-step-text"><strong>Autocompaixão</strong><span>Tratar a si mesmo/a com a gentileza que você daria a um amigo</span></div>
         </div>
       </div>
+    
+      </details>
+      <details class="ob-mais">
+        <summary>De onde vêm as técnicas</summary>
+        <div class="ob-body">O Farol reúne abordagens estudadas para preocupação e ansiedade: TCC (terapia cognitivo-comportamental), terapia metacognitiva, ACT (aceitação e compromisso) e terapia focada na compaixão.</div>
+      </details>
+      <div class="ob-body" style="font-size:14px;margin-top:12px"><strong>O Farol complementa, não substitui</strong> o trabalho com um/a psicólogo/a. Se você está em sofrimento intenso, busque apoio profissional (CVV, 188, 24 horas).</div>
     </div>
-    <div class="ob-dots"><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot on"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div></div>
-    <button class="btn" onclick="obNext(4)">Que travessia incrível!</button>
+    <div class="ob-dots"><div class="ob-dot"></div><div class="ob-dot on"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div></div>
+    <button class="btn" onclick="obNext(5)">Continuar</button>
   </div>
 
-  <!-- 4: Como o app funciona na prática -->
-  <div class="ob-slide" id="obs4">
-    <div class="ob-top">
-      <div class="ob-icon">🎯</div>
-      <div class="ob-title">Como funciona na prática.</div>
-      <div class="ob-body" style="margin-bottom:14px">O Farol é diferente de um app de meditação ou de um chatbot. É mais parecido com um <strong>curso interativo</strong> — mas desenhado para o dia a dia:</div>
-      <div class="ob-num-steps">
-        <div class="ob-num-step">
-          <div class="ob-num-circle" style="background:var(--coral-xl);color:var(--coral-d)">1</div>
-          <div class="ob-num-step-body"><strong>Módulos progressivos</strong><span>Cada módulo tem leituras, quizzes, atividades e exercícios práticos. Você ganha XP ao avançar e desbloqueia novos conteúdos.</span></div>
-        </div>
-        <div class="ob-num-step">
-          <div class="ob-num-circle" style="background:var(--lav-l);color:#3D2E7A">2</div>
-          <div class="ob-num-step-body"><strong>Diário de bordo</strong><span>Sempre que uma preocupação surgir, registe aqui. Com o tempo, você verá padrões — e progressos reais.</span></div>
-        </div>
-        <div class="ob-num-step">
-          <div class="ob-num-circle" style="background:var(--mint-xl);color:var(--mint-d)">3</div>
-          <div class="ob-num-step-body"><strong>Práticas curtas</strong><span>Exercícios de respiração, reflexão e desfusão que cabem na rotina — de 3 a 10 minutos.</span></div>
-        </div>
-        <div class="ob-num-step">
-          <div class="ob-num-circle" style="background:var(--amber-l);color:#7A4A10">4</div>
-          <div class="ob-num-step-body"><strong>Progresso visível</strong><span>Marcas do caminho, dias com prática e gráficos para você ver o quanto caminhou.</span></div>
-        </div>
-      </div>
-    </div>
-    <div class="ob-dots"><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot on"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div></div>
-    <button class="btn" onclick="obNext(5)">Adorei, vamos lá!</button>
-  </div>
-
-  <!-- 5: Como você está? (check-in) -->
   <div class="ob-slide" id="obs5">
     <div class="ob-top">
       <div class="ob-icon">💬</div>
@@ -183,7 +144,7 @@
         </div>
       </div>
     </div>
-    <div class="ob-dots"><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot on"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div></div>
+    <div class="ob-dots"><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot on"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div></div>
     <button class="btn" id="ob-btn3" disabled onclick="obNext(6)" style="opacity:.45">Continuar</button>
   </div>
 
@@ -199,7 +160,7 @@
       </div>
       <div class="ob-body" style="margin-top:10px">Ao participar, você não apenas cuida de si — você <strong>ajuda outras pessoas</strong> que virão depois.</div>
     </div>
-    <div class="ob-dots"><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot on"></div><div class="ob-dot"></div><div class="ob-dot"></div></div>
+    <div class="ob-dots"><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot on"></div><div class="ob-dot"></div><div class="ob-dot"></div></div>
     <button class="btn" onclick="obNext(7)">Quero fazer parte disso</button>
   </div>
 
@@ -223,7 +184,7 @@
         </label>
       </div>
     </div>
-    <div class="ob-dots"><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot on"></div><div class="ob-dot"></div></div>
+    <div class="ob-dots"><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot on"></div><div class="ob-dot"></div></div>
     <button class="btn" id="ob-btn5" onclick="obNext(8)">Continuar →</button>
   </div>
 
@@ -285,8 +246,8 @@
 
       </div>
     </div>
-    <div class="ob-dots"><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot on"></div></div>
-    <button class="btn" onclick="obFinish()">Acender o Farol 🏮</button>
+    <div class="ob-dots"><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot on"></div></div>
+    <button class="btn" onclick="obFinish()">Acender o Farol</button>
     <button class="btn ghost" onclick="obFinish()" style="margin-top:0">Pular esta etapa</button>
   </div>
 
@@ -300,23 +261,30 @@
 <!-- HOME -->
 <div class="scr on" id="scr-home">
   <div class="home-hero">
-    <div class="home-date" id="h-date"></div>
-    <div class="home-hi"   id="h-hi">Olá 👋</div>
+    <div class="home-top">
+      <div class="home-date" id="h-date"></div>
+      <button type="button" class="ajuda-pill" onclick="abrirAjuda()">💛 Preciso de ajuda</button>
+    </div>
+    <div class="home-hi"   id="h-hi">Olá</div>
     <div class="home-sub"  id="h-sub"></div>
   </div>
   <div id="h-nudge"></div>
+  <div id="h-next"></div>
   <div id="h-dose"></div>
   <div id="h-xp"></div>
-  <div class="stats">
-    <div class="stat"><div class="stat-n" style="color:var(--mint)"  id="hs-mod">0</div><div class="stat-l">módulos</div></div>
-    <div class="stat"><div class="stat-n" style="color:var(--coral)" id="hs-str">0</div><div class="stat-l">dias com prática (14 dias)</div></div>
-    <div class="stat"><div class="stat-n" style="color:var(--lav)"   id="hs-xp">0</div><div class="stat-l">XP total</div></div>
-  </div>
-  <div class="card">
-    <div class="card-lbl">Intensidade — 7 dias</div>
-    <svg class="chart-svg" id="h-chart" viewBox="0 0 320 72"></svg>
-    <div id="h-chart-empty" style="display:none;font-size:13px;color:var(--muted);text-align:center;padding:14px 0">Registre no diário para ver seu gráfico.</div>
-  </div>
+  <details class="caminho">
+    <summary>Ver meu caminho</summary>
+    <div class="stats">
+      <div class="stat"><div class="stat-n" style="color:var(--mint)"  id="hs-mod">0</div><div class="stat-l">módulos</div></div>
+      <div class="stat"><div class="stat-n" style="color:var(--coral)" id="hs-str">0</div><div class="stat-l">dias com prática (14 dias)</div></div>
+      <div class="stat"><div class="stat-n" style="color:var(--lav)"   id="hs-xp">0</div><div class="stat-l">marcas do caminho</div></div>
+    </div>
+    <div class="card">
+      <div class="card-lbl">Intensidade — 7 dias</div>
+      <svg class="chart-svg" id="h-chart" viewBox="0 0 320 72"></svg>
+      <div id="h-chart-empty" style="display:none;font-size:13px;color:var(--muted);text-align:center;padding:14px 0">Registre no diário para ver seu gráfico.</div>
+    </div>
+  </details>
   <div class="sdiv">Acesso rápido</div>
   <div class="quick-grid">
     <div class="quick-card" onclick="goTo('modules')">
@@ -556,6 +524,7 @@
 <div id="toast"></div>
 </div>
 <script src="../shared/farol-painel.js"></script>
+<script src="../shared/icones.js"></script>
 <script src="app.js"></script>
 <!-- LOGIN: camada compartilhada (../auth/). Contas só por convite. -->
 <script type="module" src="../auth/auth.js" data-app="farol" data-storage-keys="np_v4" data-nome="Farol" data-logo="../logos/farol.svg"></script>
