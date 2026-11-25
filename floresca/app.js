@@ -2941,7 +2941,7 @@ function copyParticipantId(){
   } else { toast('Selecione o código e copie manualmente.'); }
 }
 /* Versão do app: mesma numeração do cache do service worker (sw.js) */
-const APP_VERSION = '22';
+const APP_VERSION = '23';
 async function renderAppVersion(){
   const el = document.getElementById('app-version-box'); if(!el) return;
   let status = '';
