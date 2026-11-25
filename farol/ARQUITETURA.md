@@ -173,4 +173,4 @@ Manter sincronizado a cada mudança de módulo ou componente transversal.*
 - Hoje: **próximo passo** primeiro; "Seu caminho" (módulos concluídos) no lugar da barra de XP e de níveis; estatísticas e gráfico em "Ver meu caminho"; botão "Preciso de ajuda" (188, 192) no topo.
 - Progresso: sem níveis nem XP na tela; a contagem passa a ser de marcas do caminho. Os pontos continuam sendo guardados internamente (`D.xp`), sem aparecer.
 - `sw.js`: cache `farol-v16`.
-- Pendente: revisão visual em aparelho real; texto dos módulos (ainda fala em "evidência" em alguns pontos) e ícones fixos em `dashboard.html`.
+- Textos com "evidência" suavizados (sem "forte evidência" nem "mais eficaz"); `dashboard.html` também usa os ícones compartilhados. Pendente: revisão visual em aparelho real.

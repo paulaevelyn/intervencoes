@@ -111,6 +111,6 @@ function iniciar(){
     else m.addedNodes.forEach(n => trocar(n));
   })).observe(document.body, {childList:true, subtree:true, characterData:true});
 }
-window.icone = icone; window.iconizar = iconizar;
+if(!window.icone) window.icone = icone; window.iconizar = iconizar;
 if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', iniciar); else iniciar();
 })();

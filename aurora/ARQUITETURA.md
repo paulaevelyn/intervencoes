@@ -89,4 +89,4 @@ Painel (`../shared/aurora-painel.js` + `projecao_aurora`): prazer e domínio, va
 - Onboarding em 3 telas (acolhimento, como funciona e dados, cuidado), com detalhes em `<details>`.
 - Hoje: o **próximo passo** vem primeiro; o humor é opcional; estatísticas e gráfico ficam em "Ver meu caminho"; "Preciso de ajuda" sempre no topo.
 - `sw.js`: cache `aurora-v10`.
-- Pendente: ícones do painel compartilhado (`shared/aurora-painel.js`) e revisão visual em aparelho real.
+- Painel "Cuidado digital" e modais passam pelo `../shared/icones.js` (troca emoji sozinho). Pendente: revisão visual em aparelho real.

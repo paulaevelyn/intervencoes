@@ -474,7 +474,7 @@ ${svgCycleWorry()}
         type:'info', typeLabel:'📖 Psicoeducação',
         title:'A técnica do Worry Time',
         content:`<p class="step-text">Tentar <em>suprimir</em> preocupações faz o oposto — elas voltam mais fortes (efeito rebote, Wegner). A solução não é parar de pensar — é <strong>reorganizar quando você pensa</strong>.</p>
-<p class="step-text" style="margin-top:10px">O Tempo de Preocupação (Borkovec & Costello) é uma técnica com forte evidência científica:</p>
+<p class="step-text" style="margin-top:10px">O Tempo de Preocupação (Borkovec & Costello) é uma técnica estudada em pesquisas sobre preocupação:</p>
 <div style="counter-reset:steps;display:flex;flex-direction:column;gap:8px;margin:14px 0">
   <div class="tip mint" style="margin:0"><strong>1. Defina um horário fixo</strong> — ex.: 17h, por 15-20 minutos. Não antes de dormir.</div>
   <div class="tip mint" style="margin:0"><strong>2. Fora do horário</strong> — quando surgir uma preocupação, diga: "Esse pensamento é válido. Vou guardar para as 17h." Anote brevemente se ajudar.</div>
@@ -1915,7 +1915,7 @@ ${[...D.doseRecords].sort((a,b)=>b.ts-a.ts).map(r=>
 <div class="ft">
   <strong>© 2025 Psicoterapia e Afins · Todos os direitos reservados</strong><br>
   Este relatório contém dados pessoais. Compartilhe somente com seu profissional de saúde mental de confiança.<br>
-  <strong>Recurso psicoeducativo baseado em evidências — não substitui psicoterapia profissional.</strong><br>
+  <strong>Recurso psicoeducativo fundamentado em abordagens estudadas — não substitui psicoterapia profissional.</strong><br>
   🌐 <a href="https://www.psicoterapiaeafins.com.br" style="color:#1B8B6F">psicoterapiaeafins.com.br</a>
   &nbsp;·&nbsp;
   📷 <a href="https://www.instagram.com/psicoterapiaeafins" style="color:#BC5821">@psicoterapiaeafins</a><br>
