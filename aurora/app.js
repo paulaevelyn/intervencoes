@@ -15,6 +15,85 @@
    ═══════════════════════════════════════════════════════════════════════ */
 'use strict';
 
+/* ── Ícones (traço fino, estilo Lucide), no lugar de emojis ───────────
+   Mesmo mecanismo do Farol e do Floresça: ico(nome, tamanho) e [data-ico] no HTML. */
+const ICONS = {
+ "sprout": "<path d=\"M7 20h10\"/><path d=\"M10 20c5.5-2.5.8-6.4 3-10\"/><path d=\"M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4 0 5.5.8z\"/><path d=\"M14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4 1-4.9 2z\"/>",
+ "sun": "<circle cx=\"12\" cy=\"12\" r=\"4\"/><path d=\"M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41\"/>",
+ "search": "<circle cx=\"11\" cy=\"11\" r=\"7\"/><path d=\"m21 21-4.3-4.3\"/>",
+ "heart": "<path d=\"M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z\"/>",
+ "flask": "<path d=\"M9 3h6\"/><path d=\"M10 3v6.6L4.9 18a2 2 0 0 0 1.8 3h10.6a2 2 0 0 0 1.8-3L14 9.6V3\"/><path d=\"M7.5 14h9\"/>",
+ "book": "<path d=\"M4 19.5A2.5 2.5 0 0 1 6.5 17H20\"/><path d=\"M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z\"/>",
+ "leaf": "<path d=\"M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z\"/><path d=\"M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12\"/>",
+ "flower": "<circle cx=\"12\" cy=\"12\" r=\"3\"/><path d=\"M12 16.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 1 1 12 7.5a4.5 4.5 0 1 1 4.5 4.5 4.5 4.5 0 1 1-4.5 4.5\"/><path d=\"M12 7.5V9M7.5 12H9M16.5 12H15M12 16.5V15\"/>",
+ "star": "<path d=\"m12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z\"/>",
+ "gift": "<rect x=\"3\" y=\"8\" width=\"18\" height=\"4\" rx=\"1\"/><path d=\"M12 8v13\"/><path d=\"M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7\"/><path d=\"M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5\"/>",
+ "message": "<path d=\"M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z\"/>",
+ "coffee": "<path d=\"M17 8h1a4 4 0 1 1 0 8h-1\"/><path d=\"M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z\"/><path d=\"M6 2v2M10 2v2M14 2v2\"/>",
+ "eye": "<path d=\"M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z\"/><circle cx=\"12\" cy=\"12\" r=\"3\"/>",
+ "music": "<path d=\"M9 18V5l12-2v13\"/><circle cx=\"6\" cy=\"18\" r=\"3\"/><circle cx=\"18\" cy=\"16\" r=\"3\"/>",
+ "cloud": "<path d=\"M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z\"/>",
+ "award": "<circle cx=\"12\" cy=\"8\" r=\"6\"/><path d=\"M15.48 12.89 17 22l-5-3-5 3 1.52-9.11\"/>",
+ "sunrise": "<path d=\"M12 2v8\"/><path d=\"m4.93 10.93 1.41 1.41\"/><path d=\"M2 18h2M20 18h2\"/><path d=\"m19.07 10.93-1.41 1.41\"/><path d=\"M22 22H2\"/><path d=\"m8 6 4-4 4 4\"/><path d=\"M16 18a4 4 0 0 0-8 0\"/>",
+ "shield": "<path d=\"M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z\"/>",
+ "tree": "<path d=\"M12 22v-7\"/><path d=\"M12 15a6 6 0 1 0-6-6c0 3.3 2.7 6 6 6z\"/><path d=\"M12 15a6 6 0 1 0 6-6\"/>",
+ "palette": "<circle cx=\"13.5\" cy=\"6.5\" r=\".6\"/><circle cx=\"17.5\" cy=\"10.5\" r=\".6\"/><circle cx=\"8.5\" cy=\"7.5\" r=\".6\"/><circle cx=\"6.5\" cy=\"12.5\" r=\".6\"/><path d=\"M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.9 0 1.7-.8 1.7-1.7 0-.4-.2-.8-.5-1.1-.3-.3-.5-.7-.5-1.1 0-.9.8-1.7 1.7-1.7H16c3.1 0 5.5-2.4 5.5-5.5C21.5 6 17.5 2 12 2z\"/>",
+ "lock": "<rect x=\"3\" y=\"11\" width=\"18\" height=\"11\" rx=\"2\"/><path d=\"M7 11V7a5 5 0 0 1 10 0v4\"/>",
+ "trash": "<path d=\"M3 6h18\"/><path d=\"M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6\"/><path d=\"M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2\"/>",
+ "phone": "<path d=\"M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z\"/>",
+ "alert": "<path d=\"m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3\"/><path d=\"M12 9v4M12 17h.01\"/>",
+ "building": "<rect x=\"4\" y=\"3\" width=\"16\" height=\"18\" rx=\"1\"/><path d=\"M12 8v6M9 11h6\"/>",
+ "globe": "<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M2 12h20\"/><path d=\"M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z\"/>",
+ "mobile": "<rect x=\"5\" y=\"2\" width=\"14\" height=\"20\" rx=\"2\"/><path d=\"M12 18h.01\"/>",
+ "bell": "<path d=\"M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9\"/><path d=\"M10.3 21a1.94 1.94 0 0 0 3.4 0\"/>",
+ "compass": "<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"m16.24 7.76-2.12 6.36-6.36 2.12 2.12-6.36z\"/>",
+ "calendar": "<rect x=\"3\" y=\"4\" width=\"18\" height=\"18\" rx=\"2\"/><path d=\"M16 2v4M8 2v4M3 10h18\"/>",
+ "check": "<path d=\"M20 6 9 17l-5-5\"/>",
+ "users": "<path d=\"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2\"/><circle cx=\"9\" cy=\"7\" r=\"4\"/><path d=\"M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75\"/>",
+ "zap": "<path d=\"M13 2 3 14h9l-1 8 10-12h-9l1-8z\"/>",
+ "smile": "<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01\"/>",
+ "moon": "<path d=\"M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z\"/>",
+ "target": "<circle cx=\"12\" cy=\"12\" r=\"10\"/><circle cx=\"12\" cy=\"12\" r=\"6\"/><circle cx=\"12\" cy=\"12\" r=\"2\"/>",
+ "mountain": "<path d=\"m8 3 4 8 5-5 5 15H2L8 3z\"/>",
+ "info": "<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M12 16v-4M12 8h.01\"/>",
+ "chevron": "<path d=\"m9 18 6-6-6-6\"/>",
+ "lifebuoy": "<circle cx=\"12\" cy=\"12\" r=\"10\"/><circle cx=\"12\" cy=\"12\" r=\"4\"/><path d=\"m4.93 4.93 4.24 4.24M14.83 9.17l4.24-4.24M14.83 14.83l4.24 4.24M9.17 14.83l-4.24 4.24\"/>"
+};
+function ico(name,size){
+  size = size || 24;
+  const body = ICONS[name]; if(!body) return '';
+  return '<svg class="ico" viewBox="0 0 24 24" width="'+size+'" height="'+size+'" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">'+body+'</svg>';
+}
+function iconize(root){
+  (root||document).querySelectorAll('[data-ico]:empty').forEach(el=>{ el.innerHTML = ico(el.getAttribute('data-ico'), parseInt(el.getAttribute('data-ico-size')||'0')||undefined); });
+}
+
+/* Ícones que só a Aurora usa (mesmo traço fino, 24x24) */
+Object.assign(ICONS, {
+ "clock": "<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M12 6v6l4 2\"/>",
+ "wind": "<path d=\"M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2\"/><path d=\"M9.6 4.6A2 2 0 1 1 11 8H2\"/><path d=\"M12.6 19.4A2 2 0 1 0 14 16H2\"/>",
+ "waves": "<path d=\"M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1\"/><path d=\"M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1\"/><path d=\"M2 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1\"/>",
+ "clipboard-list": "<rect width=\"8\" height=\"4\" x=\"8\" y=\"2\" rx=\"1\" ry=\"1\"/><path d=\"M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2\"/><path d=\"M12 11h4\"/><path d=\"M12 16h4\"/><path d=\"M8 11h.01\"/><path d=\"M8 16h.01\"/>",
+ "trending-up": "<polyline points=\"22 7 13.5 15.5 8.5 10.5 2 17\"/><polyline points=\"16 7 22 7 22 13\"/>",
+ "camera": "<path d=\"M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z\"/><circle cx=\"12\" cy=\"13\" r=\"3\"/>",
+ "refresh": "<path d=\"M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8\"/><path d=\"M21 3v5h-5\"/><path d=\"M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16\"/><path d=\"M8 16H3v5\"/>",
+ "file-text": "<path d=\"M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z\"/><path d=\"M14 2v4a2 2 0 0 0 2 2h4\"/><path d=\"M10 9H8\"/><path d=\"M16 13H8\"/><path d=\"M16 17H8\"/>",
+ "lightbulb": "<path d=\"M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5\"/><path d=\"M9 18h6\"/><path d=\"M10 22h4\"/>",
+ "bell-off": "<path d=\"M8.7 3A6 6 0 0 1 18 8c0 2.7.5 4.5 1.2 5.8\"/><path d=\"M17 17H3s3-2 3-9a4.67 4.67 0 0 1 .3-1.7\"/><path d=\"M10.3 21a1.94 1.94 0 0 0 3.4 0\"/><path d=\"m2 2 20 20\"/>",
+ "list-checks": "<path d=\"m3 17 2 2 4-4\"/><path d=\"m3 7 2 2 4-4\"/><path d=\"M13 6h8\"/><path d=\"M13 12h8\"/><path d=\"M13 18h8\"/>",
+ "activity": "<path d=\"M22 12h-4l-3 9L9 3l-3 9H2\"/>",
+ "home": "<path d=\"m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z\"/><polyline points=\"9 22 9 12 15 12 15 22\"/>",
+ "briefcase": "<rect width=\"20\" height=\"14\" x=\"2\" y=\"7\" rx=\"2\" ry=\"2\"/><path d=\"M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16\"/>",
+ "ban": "<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"m4.9 4.9 14.2 14.2\"/>",
+ "sparkles": "<path d=\"m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z\"/>",
+ "face-1": "<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M8 18c1-3 7-3 8 0\"/><path d=\"M9 9.5h.01M15 9.5h.01\"/>",
+ "face-2": "<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M8.5 16.5c1-1.5 6-1.5 7 0\"/><path d=\"M9 9.5h.01M15 9.5h.01\"/>",
+ "face-3": "<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M8.5 15.5h7\"/><path d=\"M9 9.5h.01M15 9.5h.01\"/>",
+ "face-4": "<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M8.5 14.5c1 1.5 6 1.5 7 0\"/><path d=\"M9 9.5h.01M15 9.5h.01\"/>",
+ "face-5": "<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M8 13c1 3 7 3 8 0\"/><path d=\"M9 9.5h.01M15 9.5h.01\"/>"
+});
+
+
 /* ── Dados ───────────────────────────────────────────────────────────── */
 const K = {
   mood:  'depressao_app_mood_history',     // { 'AAAA-MM-DD': { rating, note, timestamp } }
@@ -30,8 +109,8 @@ const K = {
   plan:  'depressao_app_planos'             // { 'AAAA-MM-DD': { idAtividade: { quando, onde, se } } }  intenção de implementação (opcional, não vai para a profissional)
 };
 const MOODS = [
-  { v: 1, e: '😞', l: 'Muito baixo' }, { v: 2, e: '😔', l: 'Baixo' }, { v: 3, e: '😐', l: 'Neutro' },
-  { v: 4, e: '🙂', l: 'Bem' },         { v: 5, e: '😊', l: 'Muito bem' }
+  { v: 1, e: ico('face-1',30), l: 'Muito baixo' }, { v: 2, e: ico('face-2',30), l: 'Baixo' }, { v: 3, e: ico('face-3',30), l: 'Neutro' },
+  { v: 4, e: ico('face-4',30), l: 'Bem' },         { v: 5, e: ico('face-5',30), l: 'Muito bem' }
 ];
 const MOOD_COLORS = ['', '#9E4719', '#BC5821', '#C47D2A', '#1B8B6F', '#146E57'];
 const GREETINGS = [
@@ -50,7 +129,7 @@ const PROMPTS = [
 function rd(k, fb) { try { const r = localStorage.getItem(k); return r !== null ? JSON.parse(r) : fb; } catch (e) { return fb; } }
 function wr(k, v) {
   try { localStorage.setItem(k, JSON.stringify(v)); }
-  catch (e) { console.warn('[Aurora] não consegui salvar:', e.message); if (typeof toast === 'function') toast('⚠️ Não foi possível guardar neste aparelho.'); }
+  catch (e) { console.warn('[Aurora] não consegui salvar:', e.message); if (typeof toast === 'function') toast('Não foi possível guardar neste aparelho.'); }
 }
 const getMood = () => rd(K.mood, {});
 const getLog = () => rd(K.log, {});
@@ -194,7 +273,7 @@ function renderStep() {
   const a = lista[(doy + _stepOffset) % lista.length], cat = CATEGORIES[a.category];
   const jaProg = (getSched()[today()] || []).indexOf(a.id) >= 0;
   el.innerHTML = `<div class="step-card"><div class="st-lbl">Um passo pequeno para hoje</div>
-    <div class="st-t">${esc(a.label)}</div><div class="st-m">${cat.emoji} ${esc(cat.label)} · ${esc(a.duration)}</div>
+    <div class="st-t">${esc(a.label)}</div><div class="st-m"><span class="ico-i">${ico(cat.ico,15)}</span> ${esc(cat.label)} · ${esc(a.duration)}</div>
     ${jaProg ? '<button class="btn ghost" disabled style="opacity:.7">Já está na sua lista de hoje ✓</button>' : `<button class="btn" onclick="stepAdd('${a.id}')">Programar para hoje</button>`}
     <button class="btn ghost" style="margin:8px 0 0" onclick="stepOther()">Outra ideia</button></div>`;
 }
@@ -215,7 +294,7 @@ function actRow(id, isDone, fn) {
   const a = activityById(id); if (!a) return '';
   const c = CATEGORIES[a.category];
   return `<div class="act${isDone ? ' done' : ''}"><button class="act-ck" aria-label="${isDone ? 'Desmarcar' : 'Marcar como feito'}: ${esc(a.label)}" onclick="${fn}('${id}')">${isDone ? '✓' : ''}</button>
-    <div class="act-body"><div class="act-t">${esc(a.label)}</div><div class="act-meta"><span class="act-cat">${c.emoji} ${esc(c.label)}</span><span>${esc(a.duration)}</span></div>${ratingLinkHTML(id, isDone)}</div></div>`;
+    <div class="act-body"><div class="act-t">${esc(a.label)}</div><div class="act-meta"><span class="act-cat"><span class="ico-i">${ico(c.ico,15)}</span> ${esc(c.label)}</span><span>${esc(a.duration)}</span></div>${ratingLinkHTML(id, isDone)}</div></div>`;
 }
 
 function renderMoodChart() {
@@ -234,7 +313,7 @@ function renderMoodChart() {
 let _aFilter = 'all', _aOnlyToday = false;
 const _aOpen = new Set();
 function renderActivate() {
-  const chips = [['all', '✨', 'Todas']].concat(Object.keys(CATEGORIES).map(k => [k, CATEGORIES[k].emoji, CATEGORIES[k].label]));
+  const chips = [['all', ico('sparkles',16), 'Todas']].concat(Object.keys(CATEGORIES).map(k => [k, ico(CATEGORIES[k].ico,16), CATEGORIES[k].label]));
   $('a-filters').innerHTML = chips.map(c => `<button class="chip${_aFilter === c[0] ? ' sel' : ''}" onclick="setFilter('${c[0]}')">${c[1]} ${esc(c[2])}</button>`).join('');
   const t = today(), sched = getSched()[t] || [], done = getLog()[t] || [];
   let lista = ACTIVITIES.filter(a => _aFilter === 'all' || a.category === _aFilter);
@@ -246,7 +325,7 @@ function renderActivate() {
     return `<div class="act${isDone ? ' done' : ''}">
       <button class="act-ck" aria-label="${isDone ? 'Desmarcar' : 'Marcar como feito'}: ${esc(a.label)}" onclick="actDone('${a.id}')">${isDone ? '✓' : ''}</button>
       <div class="act-body"><div class="act-t">${esc(a.label)}</div>
-        <div class="act-meta"><span class="act-cat">${c.emoji} ${esc(c.label)}</span><span>${esc(a.duration)}</span></div>
+        <div class="act-meta"><span class="act-cat"><span class="ico-i">${ico(c.ico,15)}</span> ${esc(c.label)}</span><span>${esc(a.duration)}</span></div>
         ${isSched ? planLinhaHTML(a.id) : ''}
         <button class="act-why" aria-expanded="${open}" onclick="toggleWhy('${a.id}')">Por que funciona?</button>${isDone ? '<br>' + ratingLinkHTML(a.id, true) : ''}
         ${open ? `<div class="act-ev">${esc(a.evidence)}</div>` : ''}</div>
@@ -272,12 +351,12 @@ function renderDiary() {
 
   $('d-form').innerHTML = `
     ${!isToday ? `<div class="insight-c l" style="margin:0 0 12px"><div class="insight-t">${esc(fmtDay(_dDate, true))}</div><div class="insight-b">Você está vendo um dia anterior. <a href="#" onclick="event.preventDefault();pickDay('${t}')" style="color:var(--mint-d);font-weight:800">Voltar para hoje</a></div></div>` : ''}
-    <div class="card"><div class="card-lbl">📓 Humor${isToday ? '' : ' desse dia'}</div>
+    <div class="card"><div class="card-lbl"><span class="ico-i">${ico('book',16)}</span> Humor${isToday ? '' : ' desse dia'}</div>
       <div class="mood-row" role="radiogroup" aria-label="Humor">${MOODS.map(x => `<button class="mood-btn" role="radio" aria-checked="${_dRating === x.v}" ${isToday ? `onclick="dMood(${x.v})"` : 'disabled'}><span class="mo-e">${x.e}</span><span class="mo-l">${x.l}</span></button>`).join('')}</div>
       <div class="mood-caption">${mo ? esc(mo.l) : ''}</div>
       <textarea class="d-note" id="d-note" maxlength="500" ${isToday ? '' : 'readonly'} placeholder="${isToday ? 'Como foi o dia? O que estava acontecendo? (opcional)' : 'Sem nota registrada.'}" aria-label="Nota do dia">${esc(m ? m.note : '')}</textarea>
       ${isToday ? `<button class="btn" style="margin-top:10px" ${_dRating ? '' : 'disabled'} onclick="dSaveMood()">${m ? 'Atualizar humor' : 'Salvar humor'}</button>` : ''}</div>
-    <div class="card"><div class="card-lbl">✨ 3 coisas boas</div>
+    <div class="card"><div class="card-lbl"><span class="ico-i">${ico('sparkles',16)}</span> 3 coisas boas</div>
       <div class="as-note" style="margin-bottom:10px">“${esc(prompt)}”</div>
       ${gSaved && !(_gEdit && isToday)
         ? itens.map((x, i) => x.trim() ? `<div class="g-saved"><strong>${i + 1}.</strong> ${esc(x)}</div>` : '').join('') + (isToday ? '<button class="btn ghost" style="margin-top:10px" onclick="gEdit()">Editar</button>' : '')
@@ -315,7 +394,7 @@ function renderFeel() {
     if (open) {
       corpo = `<div class="acc-b"><div class="acc-theory">${esc(ex.theory)}</div>`;
       if (st === 'done') {
-        corpo += `<div class="ex-done"><div style="font-size:1.8rem">🌱</div><div style="font-weight:800;margin:4px 0">Exercício concluído</div><div class="as-note">Cada prática fortalece novos padrões.</div><button class="btn ghost" style="margin-top:10px;width:auto;padding:9px 18px" onclick="exReset('${ex.id}')">Fazer novamente</button></div>`;
+        corpo += `<div class="ex-done"><div class="ex-done-ico">${ico('sprout',34)}</div><div style="font-weight:800;margin:4px 0">Exercício concluído</div><div class="as-note">Cada prática fortalece novos padrões.</div><button class="btn ghost" style="margin-top:10px;width:auto;padding:9px 18px" onclick="exReset('${ex.id}')">Fazer novamente</button></div>`;
       } else if (typeof st === 'number') {
         corpo += `<div class="ex-guide"><div class="as-note">Passo ${st + 1} de ${ex.steps.length}</div><div class="ex-prog">${ex.steps.map((_, i) => `<span class="${i <= st ? 'on' : ''}"></span>`).join('')}</div><div class="ex-cur">${esc(ex.steps[st])}</div><button class="btn" onclick="exNext('${ex.id}')">${st < ex.steps.length - 1 ? 'Próximo passo' : 'Concluir'}</button></div>`;
       } else {
@@ -323,7 +402,7 @@ function renderFeel() {
       }
       corpo += '</div>';
     }
-    return `<div class="acc${open ? ' open' : ''}"><button class="acc-h" aria-expanded="${open}" onclick="exToggle('${ex.id}')"><span class="acc-e">${ex.emoji}</span><span class="acc-tt"><div class="acc-t">${esc(ex.title)}</div><div class="acc-s">${esc(ex.duration)}</div></span><span class="acc-ar">⌄</span></button>${corpo}</div>`;
+    return `<div class="acc${open ? ' open' : ''}"><button class="acc-h" aria-expanded="${open}" onclick="exToggle('${ex.id}')"><span class="acc-e">${ico(ex.ico,22)}</span><span class="acc-tt"><div class="acc-t">${esc(ex.title)}</div><div class="acc-s">${esc(ex.duration)}</div></span><span class="acc-ar">⌄</span></button>${corpo}</div>`;
   }).join('');
 }
 function exToggle(id) { if (_fOpen.has(id)) _fOpen.delete(id); else _fOpen.add(id); renderFeel(); }
@@ -336,7 +415,7 @@ const _lOpen = new Set();
 function renderLearn() {
   $('l-list').innerHTML = ARTICLES.map(a => {
     const open = _lOpen.has(a.id);
-    return `<div class="acc${open ? ' open' : ''}${a.id === 'crisis' ? ' crisis' : ''}"><button class="acc-h" aria-expanded="${open}" onclick="artToggle('${a.id}')"><span class="acc-e">${a.emoji}</span><span class="acc-tt"><div class="acc-t">${esc(a.title)}</div><div class="acc-s">${esc(a.subtitle)}</div></span><span class="acc-ar">⌄</span></button>
+    return `<div class="acc${open ? ' open' : ''}${a.id === 'crisis' ? ' crisis' : ''}"><button class="acc-h" aria-expanded="${open}" onclick="artToggle('${a.id}')"><span class="acc-e">${ico(a.ico,22)}</span><span class="acc-tt"><div class="acc-t">${esc(a.title)}</div><div class="acc-s">${esc(a.subtitle)}</div></span><span class="acc-ar">⌄</span></button>
       ${open ? `<div class="acc-b">${a.content.map(s => `<div class="acc-sec"><h4>${esc(s.heading)}</h4><p>${esc(s.text)}</p></div>`).join('')}</div>` : ''}</div>`;
   }).join('');
 }
@@ -443,7 +522,7 @@ function exportCSV() {
 function planLinhaHTML(id) {
   const p = (rd(K.plan, {})[today()] || {})[id];
   const txt = p ? [p.quando, p.onde].filter(Boolean).join(' · ') : '';
-  return '<div class="act-meta"><button class="act-why" onclick="askPlan(\x27' + id + '\x27)">' + (txt ? '🕒 ' + esc(txt) + ' (mudar)' : 'Definir quando e onde') + '</button></div>';
+  return '<div class="act-meta"><button class="act-why" onclick="askPlan(\x27' + id + '\x27)">' + (txt ? ico('clock',14) + ' ' + esc(txt) + ' (mudar)' : 'Definir quando e onde') + '</button></div>';
 }
 function askPlan(id, date) {
   const a = activityById(id); if (!a) return;
@@ -479,10 +558,10 @@ window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); _insta
 function isInstalled() { return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true; }
 function installApp() { if (!_installPrompt) return; _installPrompt.prompt(); _installPrompt.userChoice.finally(() => { _installPrompt = null; closeModal(); }); }
 function showInstallModal() {
-  if (isInstalled()) { showModal('🌅 Já está instalado.', 'Você já está usando o Aurora como app. É só procurar o ícone do sol nascendo na tela de início.', '<button class="btn mint" onclick="closeModal()">Ótimo</button>'); return; }
-  showModal('📲 Aurora na tela de início',
+  if (isInstalled()) { showModal('Já está instalado.', 'Você já está usando o Aurora como app. É só procurar o ícone do sol nascendo na tela de início.', '<button class="btn mint" onclick="closeModal()">Ótimo</button>'); return; }
+  showModal('Aurora na tela de início',
     '<p style="text-align:left;margin-bottom:10px">Com o atalho, o Aurora abre em tela cheia, como um app, e funciona até sem internet.</p>' +
-    (_installPrompt ? '<p style="font-size:13px;color:var(--muted);text-align:left">Seu navegador instala com um toque. 👇</p>'
+    (_installPrompt ? '<p style="font-size:13px;color:var(--muted);text-align:left">Seu navegador instala com um toque.</p>'
       : '<p style="font-size:13px;color:var(--muted);text-align:left"><strong>iPhone (Safari):</strong> toque em Compartilhar e depois em "Adicionar à Tela de Início".<br><strong>Android (Chrome):</strong> menu ⋮ e depois "Instalar app" ou "Adicionar à tela inicial".</p>'),
     (_installPrompt ? '<button class="btn mint" onclick="installApp()">Instalar agora</button>' : '') + `<button class="btn ${_installPrompt ? 'ghost' : 'mint'}" onclick="closeModal()">Entendi</button>`);
 }
@@ -663,7 +742,7 @@ function renderValues() {
   h += DOMINIOS.map(d => {
     const x = _vDraft[d.id] || {}, im = x.imp, co = x.cons;
     const sl = (k, rot, v) => `<div class="rt-field"><label for="v-${d.id}-${k}">${rot}: <span class="rt-v" id="v-${d.id}-${k}v">${v == null ? '–' : v}</span>/10</label><input type="range" id="v-${d.id}-${k}" min="0" max="10" value="${v == null ? 5 : v}" oninput="vTouch('${d.id}','${k}',this.value)"></div>`;
-    return `<div class="card"><div class="card-lbl">${d.emoji} ${esc(d.titulo)}</div><div class="as-note" style="margin-bottom:8px">${esc(d.dica)}</div>
+    return `<div class="card"><div class="card-lbl"><span class="ico-i">${ico(d.ico,16)}</span> ${esc(d.titulo)}</div><div class="as-note" style="margin-bottom:8px">${esc(d.dica)}</div>
       ${sl('imp', 'O quanto isso importa para mim', im)}${sl('cons', 'O quanto tenho vivido isso nas últimas semanas', co)}
       <label class="form-lbl" for="v-${d.id}-t">O que isso significa para mim (opcional)</label>
       <input class="d-note" style="min-height:0" type="text" id="v-${d.id}-t" maxlength="140" value="${esc(x.texto || '')}" oninput="vText('${d.id}',this.value)" placeholder="Em uma frase"></div>`;
@@ -675,7 +754,7 @@ function renderValues() {
 function valuesSummary(dom) {
   const itens = DOMINIOS.map(d => ({ d, x: dom[d.id] })).filter(o => o.x && o.x.imp != null && o.x.cons != null).map(o => ({ d: o.d, gap: o.x.imp - o.x.cons, x: o.x })).filter(o => o.gap >= 3).sort((a, b) => b.gap - a.gap).slice(0, 2);
   if (!itens.length) return '';
-  return `<div class="sdiv" style="margin:16px 0 8px">Onde há mais distância</div>` + itens.map(o => `<div class="card"><div class="card-lbl">${o.d.emoji} ${esc(o.d.titulo)}</div><div class="as-note">Importa ${o.x.imp} · vivido ${o.x.cons}. Um passo pequeno nessa direção pode ajudar.</div><button class="btn ghost" style="margin-top:8px" onclick="vAtividades('${o.d.id}')">Ver atividades para isso</button></div>`).join('');
+  return `<div class="sdiv" style="margin:16px 0 8px">Onde há mais distância</div>` + itens.map(o => `<div class="card"><div class="card-lbl"><span class="ico-i">${ico(o.d.ico,16)}</span> ${esc(o.d.titulo)}</div><div class="as-note">Importa ${o.x.imp} · vivido ${o.x.cons}. Um passo pequeno nessa direção pode ajudar.</div><button class="btn ghost" style="margin-top:8px" onclick="vAtividades('${o.d.id}')">Ver atividades para isso</button></div>`).join('');
 }
 function vTouch(id, k, v) { _vDraft[id] = _vDraft[id] || {}; _vDraft[id][k] = parseInt(v, 10); $('v-' + id + '-' + k + 'v').textContent = v; }
 function vText(id, v) { _vDraft[id] = _vDraft[id] || {}; _vDraft[id].texto = v; }
@@ -694,9 +773,9 @@ const LEM = 'depressao_app_lembrete';
 const getLem = () => rd(LEM, { enabled: false, hour: 20, visto: false });
 let _remTimer = null;
 const REMINDER_MSGS = [
-  '🌅 Que tal um passo pequeno hoje? Uma atividade de 5 minutos já conta.',
-  '💛 Como você está hoje? Registrar o humor leva 10 segundos.',
-  '🌿 Sem pressão: se hoje está pesado, só marcar o humor já é um bom começo.'
+  'Que tal um passo pequeno hoje? Uma atividade de 5 minutos já conta.',
+  'Como você está hoje? Registrar o humor leva 10 segundos.',
+  'Sem pressão: se hoje está pesado, só marcar o humor já é um bom começo.'
 ];
 function praticouHoje() { return !!getMood()[today()] || (getLog()[today()] || []).length > 0; }
 function scheduleLocalReminder() {
@@ -729,7 +808,7 @@ async function toggleReminders(cb) {
     if (!('Notification' in window)) { toast('Este navegador não suporta notificações.'); cb.checked = false; return; }
     const perm = await Notification.requestPermission();
     if (perm !== 'granted') { toast('Permissão negada. Ative nas configurações do navegador.'); cb.checked = false; return; }
-    l.enabled = true; wr(LEM, l); scheduleLocalReminder(); toast('🔔 Lembrete diário ativado.');
+    l.enabled = true; wr(LEM, l); scheduleLocalReminder(); toast('Lembrete diário ativado.');
   } else { l.enabled = false; wr(LEM, l); if (_remTimer) clearTimeout(_remTimer); toast('Lembrete desativado.'); }
   renderReminderUI();
 }
@@ -738,30 +817,30 @@ function showNotifModal() {
   const l = getLem(); l.visto = true; wr(LEM, l);
   const ios = /iphone|ipad|ipod/i.test(navigator.userAgent);
   if (ios && !isInstalled()) {
-    showModal('📲 Primeiro, instale o app', '<p style="text-align:left">No iPhone, os lembretes só funcionam depois que o Aurora está instalado na tela de início. É uma regra da Apple.</p>',
+    showModal('Primeiro, instale o app', '<p style="text-align:left">No iPhone, os lembretes só funcionam depois que o Aurora está instalado na tela de início. É uma regra da Apple.</p>',
       '<button class="btn mint" onclick="closeModal();showInstallModal()">Ver como instalar</button><button class="btn ghost" onclick="closeModal();renderHome()">Agora não</button>'); return;
   }
   if (!('Notification' in window)) { toast('Este navegador não suporta notificações.'); return; }
   if (Notification.permission === 'denied') {
-    showModal('🔕 Notificações bloqueadas', '<p style="text-align:left">Você bloqueou as notificações do Aurora antes. Para ativar, libere nas configurações do navegador (o cadeado ao lado do endereço, e depois "Notificações").</p>', '<button class="btn mint" onclick="closeModal()">Entendi</button>'); return;
+    showModal('Notificações bloqueadas', '<p style="text-align:left">Você bloqueou as notificações do Aurora antes. Para ativar, libere nas configurações do navegador (o cadeado ao lado do endereço, e depois "Notificações").</p>', '<button class="btn mint" onclick="closeModal()">Entendi</button>'); return;
   }
-  showModal('🔔 Como funcionam os lembretes',
+  showModal('Como funcionam os lembretes',
     `<div style="text-align:left;font-size:13.5px;line-height:1.6">
-      <div style="margin-bottom:10px">🔔 <strong>1 lembrete por dia</strong>, no máximo, no horário que você escolher.</div>
-      <div style="margin-bottom:10px">🤫 <strong>Se você já registrou algo naquele dia</strong>, ele nem aparece.</div>
-      <div style="margin-bottom:10px">💛 O tom é gentil: sem cobrança, sem "você está falhando".</div>
-      <div style="margin-bottom:10px">📲 Funciona melhor com o app <strong>instalado</strong> na tela de início.</div>
-      <div style="margin-bottom:14px">🔕 Você desliga quando quiser, em Dados → Lembretes.</div>
+      <div style="margin-bottom:10px">${ico('bell',16)} <strong>1 lembrete por dia</strong>, no máximo, no horário que você escolher.</div>
+      <div style="margin-bottom:10px">${ico('bell-off',16)} <strong>Se você já registrou algo naquele dia</strong>, ele nem aparece.</div>
+      <div style="margin-bottom:10px">${ico('heart',16)} O tom é gentil: sem cobrança, sem "você está falhando".</div>
+      <div style="margin-bottom:10px">${ico('mobile',16)} Funciona melhor com o app <strong>instalado</strong> na tela de início.</div>
+      <div style="margin-bottom:14px">${ico('bell-off',16)} Você desliga quando quiser, em Dados → Lembretes.</div>
       <label for="notif-hour" style="font-size:12.5px;font-weight:700;color:var(--muted);display:block;margin-bottom:6px">Horário</label>
       <select id="notif-hour" class="demo-input" style="width:auto;padding:8px 12px"><option value="8">08:00</option><option value="10">10:00</option><option value="12">12:00</option><option value="16">16:00</option><option value="18">18:00</option><option value="20" selected>20:00</option></select></div>`,
-    '<button class="btn mint" onclick="activateNotifFromModal()">Ativar lembrete 🔔</button><button class="btn ghost" onclick="closeModal();renderHome()">Agora não</button>');
+    '<button class="btn mint" onclick="activateNotifFromModal()">Ativar lembrete</button><button class="btn ghost" onclick="closeModal();renderHome()">Agora não</button>');
 }
 async function activateNotifFromModal() {
   const hour = parseInt($('notif-hour')?.value || '20', 10), perm = await Notification.requestPermission();
   if (perm !== 'granted') { toast('Permissão negada. Você pode ativar depois em Dados → Lembretes.'); closeModal(); return; }
-  const l = getLem(); l.enabled = true; l.hour = hour; wr(LEM, l); scheduleLocalReminder(); closeModal(); toast('🔔 Lembrete ativado para as ' + pad(hour) + ':00.');
+  const l = getLem(); l.enabled = true; l.hour = hour; wr(LEM, l); scheduleLocalReminder(); closeModal(); toast('Lembrete ativado para as ' + pad(hour) + ':00.');
   try {
-    const reg = await navigator.serviceWorker?.getRegistration(), msg = '🌅 Combinado. Todo dia às ' + pad(hour) + ':00 eu te lembro, só se você ainda não tiver passado por aqui.';
+    const reg = await navigator.serviceWorker?.getRegistration(), msg = 'Combinado. Todo dia às ' + pad(hour) + ':00 eu te lembro, só se você ainda não tiver passado por aqui.';
     if (reg) reg.showNotification('Aurora', { body: msg, icon: 'icon-192.png', badge: 'icon-192.png', tag: 'aurora-welcome' }); else new Notification('Aurora', { body: msg, icon: 'icon-192.png' });
   } catch (e) { /* ok */ }
   renderReminderUI(); renderHome();
@@ -778,6 +857,7 @@ if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catc
 })();
 
 /* ═══════════════ INIT ═══════════════ */
+iconize();
 scheduleLocalReminder();
 (function () {
   const ob = rd(K.ob, null), temDados = daysWithRecord().size > 0;

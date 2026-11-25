@@ -4,13 +4,13 @@
    que não fazem parte do conteúdo. Para editar um texto, edite aqui. */
 
 const CATEGORIES = {
-  corpo: { label: 'Corpo e Movimento', emoji: '🏃', color: 'sage' },
-  social: { label: 'Conexão Social', emoji: '👥', color: 'calm' },
-  natureza: { label: 'Natureza', emoji: '🌿', color: 'sage' },
-  criatividade: { label: 'Criatividade', emoji: '🎨', color: 'purple' },
-  conquista: { label: 'Conquistas', emoji: '✅', color: 'warm' },
-  prazer: { label: 'Prazer e Lazer', emoji: '😊', color: 'rose' },
-  cuidado: { label: 'Autocuidado', emoji: '💛', color: 'warm' },
+  corpo: { label: 'Corpo e Movimento', ico: 'activity', color: 'sage' },
+  social: { label: 'Conexão Social', ico: 'users', color: 'calm' },
+  natureza: { label: 'Natureza', ico: 'leaf', color: 'sage' },
+  criatividade: { label: 'Criatividade', ico: 'palette', color: 'purple' },
+  conquista: { label: 'Conquistas', ico: 'check', color: 'warm' },
+  prazer: { label: 'Prazer e Lazer', ico: 'smile', color: 'rose' },
+  cuidado: { label: 'Autocuidado', ico: 'heart', color: 'warm' },
 }
 
 // Atividades de ativação comportamental (Martell, Addis & Jacobson, 2001; Lewinsohn).
@@ -70,7 +70,7 @@ const EXERCISES = [
   {
     id: 'savor',
     title: 'Saborear o Momento',
-    emoji: '🌸',
+    ico: 'flower',
     duration: '5 min',
     theory: 'Saborear (savoring) amplia emoções positivas já presentes, contrabalanceando o viés negativo da depressão. Evidência: Bryant & Veroff (2007).',
     steps: [
@@ -84,7 +84,7 @@ const EXERCISES = [
   {
     id: 'gratitude_3',
     title: '3 Coisas Boas',
-    emoji: '✨',
+    ico: 'sparkles',
     duration: '5-10 min',
     theory: 'Identificar 3 coisas positivas diariamente por 2 semanas reduz depressão e aumenta bem-estar em estudos de Seligman et al. (2005). O cérebro aprende a notar o positivo.',
     steps: [
@@ -98,7 +98,7 @@ const EXERCISES = [
   {
     id: 'kindness',
     title: 'Ato de Bondade',
-    emoji: '💛',
+    ico: 'heart',
     duration: '10 min',
     theory: 'Praticar atos de bondade aumenta afeto positivo e autoestima (Lyubomirsky, 2005). A conexão com o outro é um dos antidepressivos naturais mais potentes.',
     steps: [
@@ -112,7 +112,7 @@ const EXERCISES = [
   {
     id: 'body_scan',
     title: 'Escaneamento Corporal',
-    emoji: '🌊',
+    ico: 'waves',
     duration: '8 min',
     theory: 'Mindfulness corporal desconecta a ruminação e ativa o sistema nervoso parassimpático. Eficaz como complemento no tratamento da depressão (MBCT, Segal, Williams & Teasdale, 2002).',
     steps: [
@@ -126,7 +126,7 @@ const EXERCISES = [
   {
     id: 'love_kindness',
     title: 'Bondade Amorosa (Metta)',
-    emoji: '💚',
+    ico: 'heart',
     duration: '10 min',
     theory: 'Loving-kindness meditation aumenta emoções positivas, autocompaixão e reduz autocrítica, componente central da depressão (Hofmann et al., 2011).',
     steps: [
@@ -140,7 +140,7 @@ const EXERCISES = [
   {
     id: 'best_self',
     title: 'Melhor Versão de Você',
-    emoji: '🌟',
+    ico: 'star',
     duration: '10 min',
     theory: 'Imaginar o melhor eu possível (Best Possible Self) aumenta otimismo e expectativas positivas, reduz indefensabilidade aprendida associada à depressão (King, 2001).',
     steps: [
@@ -154,7 +154,7 @@ const EXERCISES = [
   {
     id: 'breathing_478',
     title: 'Respiração 4-7-8',
-    emoji: '🌬️',
+    ico: 'wind',
     duration: '5 min',
     theory: 'A respiração controlada ativa o nervo vago e o sistema parassimpático, reduzindo ativação ansiosa que alimenta o ciclo depressivo (Zaccaro et al., 2018).',
     steps: [
@@ -168,7 +168,7 @@ const EXERCISES = [
   {
     id: 'positive_memory',
     title: 'Viagem de Memória Positiva',
-    emoji: '📷',
+    ico: 'camera',
     duration: '8 min',
     theory: 'Revisitar memórias positivas reativa circuitos de recompensa e contrabalança a tendência depressiva de recuperar apenas memórias negativas (Werner-Seidler & Moulds, 2011).',
     steps: [
@@ -185,7 +185,7 @@ const EXERCISES = [
 const ARTICLES = [
   {
     id: 'what_depression',
-    emoji: '🧠',
+    ico: 'lightbulb',
     title: 'O que é depressão?',
     subtitle: 'Muito além de tristeza',
     content: [
@@ -209,7 +209,7 @@ const ARTICLES = [
   },
   {
     id: 'ba_model',
-    emoji: '⚡',
+    ico: 'zap',
     title: 'Ativação Comportamental',
     subtitle: 'A ciência por trás do movimento',
     content: [
@@ -237,7 +237,7 @@ const ARTICLES = [
   },
   {
     id: 'positive_psychology',
-    emoji: '🌻',
+    ico: 'flower',
     title: 'Psicologia Positiva',
     subtitle: 'Não é sobre "pensar positivo"',
     content: [
@@ -265,7 +265,7 @@ const ARTICLES = [
   },
   {
     id: 'mind_body',
-    emoji: '🏃',
+    ico: 'activity',
     title: 'Corpo e Cérebro',
     subtitle: 'Exercício, sono e alimentação',
     content: [
@@ -293,7 +293,7 @@ const ARTICLES = [
   },
   {
     id: 'therapy',
-    emoji: '💬',
+    ico: 'message',
     title: 'Terapia Baseada em Evidências',
     subtitle: 'O que a ciência diz sobre tratamento',
     content: [
@@ -325,7 +325,7 @@ const ARTICLES = [
   },
   {
     id: 'crisis',
-    emoji: '🆘',
+    ico: 'lifebuoy',
     title: 'Em Crise? Aqui Está Ajuda',
     subtitle: 'Recursos de emergência',
     content: [
@@ -353,13 +353,13 @@ const ARTICLES = [
 // atividades" da ativação comportamental; NÃO é uma escala validada). `cats` liga cada área às categorias de
 // atividades, para sugerir passos coerentes com o que importa para a pessoa.
 const DOMINIOS = [
-  { id: 'familia',     emoji: '🏠', titulo: 'Família',                       dica: 'Os vínculos com a sua família e como você gostaria de estar neles.', cats: ['social'] },
-  { id: 'intimidade',  emoji: '💞', titulo: 'Relações próximas e amor',      dica: 'Parceria, intimidade e as pessoas mais próximas de você.',            cats: ['social'] },
-  { id: 'amizades',    emoji: '👥', titulo: 'Amizades e vida social',        dica: 'Estar com amigos, conhecer pessoas, pertencer a grupos.',             cats: ['social', 'prazer'] },
-  { id: 'trabalho',    emoji: '💼', titulo: 'Trabalho e estudos',            dica: 'O que você faz para contribuir, aprender e se sustentar.',            cats: ['conquista'] },
-  { id: 'crescimento', emoji: '🌱', titulo: 'Aprender e crescer',            dica: 'Desenvolver habilidades, curiosidade e novas experiências.',          cats: ['conquista', 'criatividade'] },
-  { id: 'lazer',       emoji: '🎈', titulo: 'Lazer e prazer',                dica: 'Diversão, descanso, hobbies e o que dá gosto de fazer.',              cats: ['prazer', 'criatividade'] },
-  { id: 'saude',       emoji: '💪', titulo: 'Saúde e corpo',                 dica: 'Movimento, sono, alimentação e cuidado com o corpo.',                 cats: ['corpo', 'cuidado'] },
-  { id: 'sentido',     emoji: '🕊️', titulo: 'Sentido, fé ou natureza',       dica: 'Aquilo que dá sentido: espiritualidade, natureza, algo maior.',       cats: ['natureza', 'cuidado'] },
-  { id: 'comunidade',  emoji: '🤝', titulo: 'Comunidade e causas',           dica: 'Contribuir com os outros, voluntariado, causas em que você acredita.', cats: ['social'] }
+  { id: 'familia',     ico: 'home', titulo: 'Família',                       dica: 'Os vínculos com a sua família e como você gostaria de estar neles.', cats: ['social'] },
+  { id: 'intimidade',  ico: 'heart', titulo: 'Relações próximas e amor',      dica: 'Parceria, intimidade e as pessoas mais próximas de você.',            cats: ['social'] },
+  { id: 'amizades',    ico: 'users', titulo: 'Amizades e vida social',        dica: 'Estar com amigos, conhecer pessoas, pertencer a grupos.',             cats: ['social', 'prazer'] },
+  { id: 'trabalho',    ico: 'briefcase', titulo: 'Trabalho e estudos',            dica: 'O que você faz para contribuir, aprender e se sustentar.',            cats: ['conquista'] },
+  { id: 'crescimento', ico: 'sprout', titulo: 'Aprender e crescer',            dica: 'Desenvolver habilidades, curiosidade e novas experiências.',          cats: ['conquista', 'criatividade'] },
+  { id: 'lazer',       ico: 'gift', titulo: 'Lazer e prazer',                dica: 'Diversão, descanso, hobbies e o que dá gosto de fazer.',              cats: ['prazer', 'criatividade'] },
+  { id: 'saude',       ico: 'zap', titulo: 'Saúde e corpo',                 dica: 'Movimento, sono, alimentação e cuidado com o corpo.',                 cats: ['corpo', 'cuidado'] },
+  { id: 'sentido',     ico: 'leaf', titulo: 'Sentido, fé ou natureza',       dica: 'Aquilo que dá sentido: espiritualidade, natureza, algo maior.',       cats: ['natureza', 'cuidado'] },
+  { id: 'comunidade',  ico: 'users', titulo: 'Comunidade e causas',           dica: 'Contribuir com os outros, voluntariado, causas em que você acredita.', cats: ['social'] }
 ];
