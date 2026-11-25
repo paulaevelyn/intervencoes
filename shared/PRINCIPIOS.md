@@ -64,3 +64,12 @@ depende de texto, tom e decisões de cada app.
 - **Sem convite automático no Ritmo e na Segurança Interna** (baixa estimulação e tema de trauma): neles, só o bloco do painel ⚙. A lista é `SEM_CONVITE` em `shared/bemestar.js`.
 - Matiz e Segurança Interna ganharam `manifest.json` e ícones para poderem ser instalados.
 
+
+## Voz da marca nos textos (Psicoterapia e Afins)
+Os textos dos apps seguem o guia de voz do design system: **"Delicadeza com estrutura. Acolhimento com profundidade."**
+- Fala com **você**, em frases claras, sem frieza e sem jargão sem tradução (ex.: "tempo de preocupação" antes de "worry time").
+- **Sem promessas grandiosas** ("transforme sua mente em 7 dias") e sem exclamações em excesso: toasts e títulos terminam com ponto.
+- **Sem formas com barra** ("sozinho/a", "psicólogo/a"): usar construções neutras ("sem apoio", "acompanhamento psicológico", "em segurança").
+- **Sem rótulos de gravidade** nos resultados das escalas; sempre "não é um diagnóstico".
+- **Sem emoji** na interface (ícones lineares no lugar).
+- Os itens das escalas validadas (GAD-7, PHQ-9, MCQ-30, TAS-20 etc.) não são alterados.

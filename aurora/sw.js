@@ -1,7 +1,7 @@
 /* Aurora — Service Worker
    Offline-first para assets, network-first para HTML.
    Incrementar CACHE_VERSION a cada deploy para forçar atualização. */
-const CACHE_VERSION = 'aurora-v12';
+const CACHE_VERSION = 'aurora-v13';
 const CORE = [
   './',
   './index.html',

@@ -135,7 +135,7 @@ const GAD7_LABELS = { low:'Mínima', mid:'Leve', hi:'Moderada', sev:'Severa' };
 function crisisCardHTML(){
   return `
   <div class="crisis-card">
-    <div class="crisis-title">💛 Você não precisa atravessar isso sozinho/a</div>
+    <div class="crisis-title">💛 Você não precisa atravessar isso sem apoio</div>
     <div class="crisis-body">
       A sua pontuação sugere um sofrimento significativo neste momento. Este app é um apoio,
       mas <strong>não substitui ajuda profissional</strong> — e procurá-la é um ato de coragem, não de fraqueza.
@@ -176,7 +176,7 @@ const DIAS_C= ['D','S','T','Q','Q','S','S'];
    XP / LEVEL SYSTEM
    ══════════════════════════════════ */
 const LEVELS = [
-  { n:1, name:'Curioso/a',    emoji:'🌱', min:0,   max:100  },
+  { n:1, name:'Curiosidade',    emoji:'🌱', min:0,   max:100  },
   { n:2, name:'Explorador/a', emoji:'🔍', min:100, max:250  },
   { n:3, name:'Praticante',   emoji:'🌿', min:250, max:430  },
   { n:4, name:'Navegante',    emoji:'⭐', min:430, max:595  },
@@ -197,17 +197,17 @@ function awardXP(amount, msg){
    BADGES
    ══════════════════════════════════ */
 const ALL_BADGES = [
-  { id:'b_m1',   emoji:'🧠', name:'Curioso/a',        desc:'Completou o Módulo 1' },
-  { id:'b_m2',   emoji:'🔍', name:'Detetive',          desc:'Completou o Módulo 2' },
-  { id:'b_m3',   emoji:'💭', name:'Metacognitivo/a',   desc:'Completou o Módulo 3' },
-  { id:'b_m4',   emoji:'⏰', name:'Organizador/a',     desc:'Completou o Módulo 4' },
-  { id:'b_m5',   emoji:'🌬️', name:'Ancorado/a',        desc:'Completou o Módulo 5' },
-  { id:'b_m6',   emoji:'🔧', name:'Reestruturador/a',  desc:'Completou o Módulo 6' },
-  { id:'b_m7',   emoji:'🌊', name:'Desapegado/a',      desc:'Completou o Módulo 7' },
-  { id:'b_m8',   emoji:'💚', name:'Compassivo/a',      desc:'Completou todos os módulos' },
+  { id:'b_m1',   emoji:'🧠', name:'Curiosidade',        desc:'Completou o Módulo 1' },
+  { id:'b_m2',   emoji:'🔍', name:'Olhar atento',          desc:'Completou o Módulo 2' },
+  { id:'b_m3',   emoji:'💭', name:'Pensar sobre o pensar',   desc:'Completou o Módulo 3' },
+  { id:'b_m4',   emoji:'⏰', name:'Organização',     desc:'Completou o Módulo 4' },
+  { id:'b_m5',   emoji:'🌬️', name:'Âncora',        desc:'Completou o Módulo 5' },
+  { id:'b_m6',   emoji:'🔧', name:'Novas perspectivas',  desc:'Completou o Módulo 6' },
+  { id:'b_m7',   emoji:'🌊', name:'Distância dos pensamentos',      desc:'Completou o Módulo 7' },
+  { id:'b_m8',   emoji:'💚', name:'Compaixão',      desc:'Completou todos os módulos' },
   { id:'b_str7', emoji:'🌱', name:'Presença',          desc:'Praticou em 7 dias diferentes' },
-  { id:'b_d10',  emoji:'📔', name:'Diário Regular',    desc:'10+ registros no diário' },
-  { id:'b_xp',   emoji:'⭐', name:'Presença no caminho', desc:'Chegou a 300 pontos de progresso' },
+  { id:'b_d10',  emoji:'📔', name:'Diário em construção', desc:'Dez registros no diário' },
+  { id:'b_xp',   emoji:'⭐', name:'Presença no caminho', desc:'Seguiu em frente ao longo do caminho' },
 ];
 function awardBadge(id){
   if(D.badges.includes(id)) return;
@@ -344,14 +344,14 @@ ${svgCycleWorry()}
           { text:'Ativação corporal', correct:false },
           { text:'Comportamento de evitamento', correct:false },
         ],
-        feedbackOk:'✅ Exato! "E se...?" é a marca do pensamento preocupante — ele antecipa um futuro negativo sem evidência suficiente.',
-        feedbackNo:'Quase! O pensamento "E se eu cometer um erro..." é a fase do <strong>pensamento automático</strong>, não o gatilho (que seria o contexto do trabalho) nem a ativação física.'
+        feedbackOk:'Isso mesmo. "E se...?" é a marca do pensamento preocupante — ele antecipa um futuro negativo sem evidência suficiente.',
+        feedbackNo:'Quase. O pensamento "E se eu cometer um erro..." é a fase do <strong>pensamento automático</strong>, não o gatilho (que seria o contexto do trabalho) nem a ativação física.'
       },
       {
         type:'fill', typeLabel:'✍️ Reflexão pessoal',
         title:'Quando você se preocupa mais?',
         prompt:'Pense nos últimos dias. Que situações ou horários costumam disparar suas preocupações? O que você percebe no seu corpo nesses momentos?',
-        placeholder:'Ex.: À noite, quando fico quieto/a, começo a pensar em... No corpo sinto...',
+        placeholder:'Ex.: À noite, quando fico em silêncio, começo a pensar em... No corpo sinto...',
         minChars:30
       }
     ]
@@ -396,7 +396,7 @@ ${svgCycleWorry()}
         title:'Classifique estas preocupações',
         instruction:'Para cada preocupação, decida: posso agir (Útil/Produtiva) ou é ruminação (Inútil)?',
         items:[
-          { text:'E se eu nunca encontrar um parceiro/a?', cat:'n', label:'Ruminação — futuro hipotético' },
+          { text:'E se eu nunca encontrar alguém para amar?', cat:'n', label:'Ruminação — futuro hipotético' },
           { text:'Preciso agendar uma consulta médica.', cat:'u', label:'Produtiva — tem ação direta' },
           { text:'E se eu ficar doente gravemente?', cat:'n', label:'Ruminação — sem ação específica possível' },
           { text:'Devo estudar mais para a prova de amanhã.', cat:'u', label:'Produtiva — leva a uma ação concreta' },
@@ -446,7 +446,7 @@ ${svgCycleWorry()}
           { text:'Pensamento automático negativo', correct:false },
           { text:'Distorção cognitiva de catastrofização', correct:false },
         ],
-        feedbackOk:'✅ Correto! Esta é uma crença positiva sobre a utilidade da preocupação — ela encoraja mais preocupação voluntária como "estratégia de preparo".',
+        feedbackOk:'Isso. Esta é uma crença positiva sobre a utilidade da preocupação — ela encoraja mais preocupação voluntária como "estratégia de preparo".',
         feedbackNo:'Essa é uma crença metacognitiva <strong>positiva</strong> sobre a preocupação — ela diz que se preocupar é útil/protetor. É diferente de medo de perder o controle (crença negativa).'
       },
       {
@@ -488,14 +488,14 @@ ${svgCycleWorry()}
         title:'Praticando o adiamento',
         phases:[
           { num:'Fase 1', title:'Surgiu uma preocupação', text:'Você percebe um pensamento preocupante. Antes de seguir o fio, pause.<br><br>Respire uma vez. Nomeie: <em>"Estou tendo o pensamento de que..."</em><br><br>Pronto — você acabou de criar 1 segundo de distância. Isso é atenção desapegada.', btn:'Próxima fase' },
-          { num:'Fase 2', title:'Anote e adie', text:'Abra o bloco de notas do celular ou um papel e escreva em <em>uma linha</em> o tema da preocupação. Não desenvolva.<br><br>Diga a si mesmo/a: <em>"Esse pensamento é real e importante. Vou dar atenção a ele às [seu horário]. Agora vou voltar para o que estou fazendo."</em><br><br>Essa frase valida sem alimentar.', btn:'Próxima fase' },
+          { num:'Fase 2', title:'Anote e adie', text:'Abra o bloco de notas do celular ou um papel e escreva em <em>uma linha</em> o tema da preocupação. Não desenvolva.<br><br>Diga para si: <em>"Esse pensamento é real e importante. Vou dar atenção a ele às [seu horário]. Agora vou voltar para o que estou fazendo."</em><br><br>Essa frase valida sem alimentar.', btn:'Próxima fase' },
           { num:'Fase 3', title:'Comprometimento', text:'Defina agora um horário de preocupação para amanhã. Coloque um alarme com o nome "Tempo de Preocupação".<br><br>15-20 minutos. Longe de refeições e do horário de dormir.<br><br>Quando o alarme tocar: sente, pense com intenção, escreva o que surgir. E quando acabar o tempo — encerre.', btn:'Concluído ✓' },
         ]
       },
       {
         type:'fill', typeLabel:'✍️ Comprometimento',
         title:'Meu compromisso com o Worry Time',
-        prompt:'Escreva: Qual horário você escolheu? Onde vai anotar as preocupações durante o dia? O que vai dizer a si mesmo/a quando surgir uma preocupação fora do horário?',
+        prompt:'Escreva: Qual horário você escolheu? Onde vai anotar as preocupações durante o dia? O que você vai dizer a si quando surgir uma preocupação fora do horário?',
         placeholder:'Meu horário será às...\nVou anotar as preocupações em...\nQuando surgir fora do horário, vou dizer...',
         minChars:30
       }
@@ -535,7 +535,7 @@ ${svgANS()}`
           { num:'4 coisas', title:'Que você pode TOCAR agora', text:'Sinta 4 texturas diferentes. A roupa no corpo, a cadeira, a superfície ao redor, a temperatura do ar.<br><br>Descreva mentalmente cada sensação com curiosidade, sem julgamento.', btn:'Fiz isso' },
           { num:'3 sons', title:'Que você pode OUVIR agora', text:'Feche os olhos por alguns segundos. Que sons existem neste momento? Sons de fundo que você estava ignorando.<br><br>Nomeie 3 com a máxima precisão.', btn:'Fiz isso' },
           { num:'2 cheiros', title:'Que você pode CHEIRAR', text:'Identifique 2 odores — os do ambiente, ou imagine os seus favoritos com detalhes sensoriais.<br><br>Cheiros têm uma via direta ao sistema límbico. Isso não é acidente.', btn:'Fiz isso' },
-          { num:'1 sensação', title:'No seu corpo agora', text:'Note 1 sensação interna: o ritmo da respiração, o batimento cardíaco, a posição dos pés no chão.<br><br>Você está aqui. Agora. Seguro/a.<br><br>Respire uma vez longa e lenta.', btn:'Concluído ✓' },
+          { num:'1 sensação', title:'No seu corpo agora', text:'Note 1 sensação interna: o ritmo da respiração, o batimento cardíaco, a posição dos pés no chão.<br><br>Você está aqui. Agora. Em segurança.<br><br>Respire uma vez longa e lenta.', btn:'Concluído ✓' },
         ]
       }
     ]
@@ -575,7 +575,7 @@ ${svgANS()}`
           { text:'Desconto do positivo', correct:false },
           { text:'Previsão do futuro', correct:false },
         ],
-        feedbackOk:'✅ Exato! "Completamente burra" é pensamento tudo-ou-nada, e "nunca vou conseguir nada" é catastrofização. As duas costumam aparecer juntas.',
+        feedbackOk:'Isso mesmo. "Completamente burra" é pensamento tudo-ou-nada, e "nunca vou conseguir nada" é catastrofização. As duas costumam aparecer juntas.',
         feedbackNo:'Aqui há duas distorções combinadas: <strong>tudo ou nada</strong> ("completamente burra") e <strong>catastrofização</strong> ("nunca vou conseguir nada"). Distorções frequentemente aparecem em pares.'
       },
       {
@@ -660,7 +660,7 @@ ${svgThreeSystems()}
         title:'Criando seu lugar seguro interno',
         phases:[
           { num:'Preparação', title:'Postura e intenção', text:'Sente-se confortavelmente. Feche os olhos ou suavize o olhar.<br><br>Respire devagar duas vezes. Com cada expiração, sinta o peso do corpo apoiado na cadeira.<br><br>Intenção: você vai criar um lugar mental de segurança e calor — um recurso que você pode acessar a qualquer momento.', btn:'Estou pronto/a' },
-          { num:'Criando o lugar', title:'Onde você se sente completamente seguro/a?', text:'Pode ser real ou imaginado: uma praia, uma floresta, um quarto aconchegante, um abraço... Deixe uma imagem surgir naturalmente.<br><br>Explore com os sentidos: <em>O que você vê? Que sons existem? Qual é a temperatura? Há algum cheiro?</em><br><br>Não force — deixe se construir aos poucos.', btn:'Próxima fase' },
+          { num:'Criando o lugar', title:'Onde você se sente completamente em segurança?', text:'Pode ser real ou imaginado: uma praia, uma floresta, um quarto aconchegante, um abraço... Deixe uma imagem surgir naturalmente.<br><br>Explore com os sentidos: <em>O que você vê? Que sons existem? Qual é a temperatura? Há algum cheiro?</em><br><br>Não force — deixe se construir aos poucos.', btn:'Próxima fase' },
           { num:'Aprofundando', title:'Registrando a sensação no corpo', text:'Agora, onde no corpo você sente a segurança desse lugar?<br><br>No peito relaxado? No ombro que desce? Na respiração mais suave?<br><br>Foque nessa sensação. Ela é real — você a criou. E seu sistema nervoso não diferencia imagem de realidade nível emocional.<br><br>Fique aqui por 30 segundos.', btn:'Próxima fase' },
           { num:'Ancoragem', title:'Um gesto de retorno', text:'Crie um gesto simples que represente este lugar — como tocar suavemente o peito, ou cruzar as mãos sobre o coração.<br><br>Toda vez que fizer este gesto + respirar uma vez lenta, você está enviando ao sistema nervoso uma mensagem de segurança.<br><br>Este é o seu âncora. Ele fica com você.', btn:'Concluído ✓' },
         ]
@@ -671,7 +671,7 @@ ${svgThreeSystems()}
         phases:[
           { num:'Conceito', title:'Quem é o self compassivo?', text:'Na TFC, desenvolvemos o "self compassivo" — a parte de você que é <strong>sábia, forte e genuinamente cuidadosa</strong> com seu próprio sofrimento.<br><br>Não é perfeccionismo. Não é condescendência. É a mesma qualidade de cuidado que você teria com alguém que ama muito e está sofrendo.<br><br>Essa parte existe em você — às vezes só precisa ser cultivada.', btn:'Próxima fase' },
           { num:'Prática', title:'Ativando o self compassivo', text:'Traga à mente sua ansiedade ou preocupação atual. Sinta-a por um momento.<br><br>Agora imagine que existe dentro de você uma versão muito sábia, calorosa e forte — que observa com gentileza.<br><br>O que essa versão diria para você agora? Com que tom de voz? Com que expressão?<br><br>Não force — deixe surgir. Pode ser uma sensação de calor, uma imagem, uma frase gentil.', btn:'Próxima fase' },
-          { num:'Compaixão na ansiedade', title:'Para o sistema de Ameaça hiperativo', text:'Seu sistema de Ameaça está trabalhando demais — tentando proteger você. Não é seu inimigo.<br><br>O self compassivo reconhece: <em>"Eu vejo que você está com medo. É difícil. Eu estou aqui. Você não está sozinho/a nisto."</em><br><br>Esta não é fraqueza. É o recurso regulatório mais poderoso que a evolução nos deu — o sistema de afiliação e cuidado.', btn:'Concluído ✓' },
+          { num:'Compaixão na ansiedade', title:'Para o sistema de Ameaça hiperativo', text:'Seu sistema de Ameaça está trabalhando demais — tentando proteger você. Não é seu inimigo.<br><br>O self compassivo reconhece: <em>"Eu vejo que você está com medo. É difícil. Eu estou aqui. Você não está só nisto."</em><br><br>Esta não é fraqueza. É o recurso regulatório mais poderoso que a evolução nos deu — o sistema de afiliação e cuidado.', btn:'Concluído ✓' },
         ]
       },
       {
@@ -919,7 +919,7 @@ function pretestBack(){
 
 function pretestLater(){
   trackAppEvent('pretest_postponed');
-  toast('Sem problema — a pré-avaliação fica à sua espera. 🧭');
+  toast('Sem problema, a pré-avaliação fica à sua espera.');
   goTo('home');
 }
 
@@ -1077,7 +1077,7 @@ function checkPosttestTrigger(){
 function showPosttestPrompt(){
   if(document.getElementById('modal-ov').classList.contains('on')) return;
   document.getElementById('modal-title').textContent='📊 Como você está agora?';
-  document.getElementById('modal-body').textContent='Você já percorreu um bom trecho! Que tal uma reavaliação rápida (≈5 min) para ver o quanto progrediu?';
+  document.getElementById('modal-body').textContent='Você já percorreu um bom trecho. Que tal uma reavaliação rápida (≈5 min) para ver o quanto progrediu?';
   document.getElementById('modal-actions').innerHTML=`
     <button class="btn mint" onclick="startPosttest()">Fazer reavaliação</button>
     <button class="btn ghost" onclick="dismissPosttest()">Agora não</button>`;
@@ -1141,7 +1141,7 @@ function showPosttestDelta(){
           <span class="delta-${gadDir==='better'?'better':'worse'}" style="font-size:16px">${post.gad7.score}</span>
         </span>
       </div>
-      ${gadDelta<0?'<div style="font-size:13px;color:var(--mint-d);margin-top:8px">'+Math.abs(gadDelta)+' pontos a menos — isso é significativo! 🎉</div>':''}
+      ${gadDelta<0?'<div style="font-size:13px;color:var(--mint-d);margin-top:8px">'+Math.abs(gadDelta)+' pontos a menos — isso é significativo.</div>':''}
     </div>
     <div class="delta-card">
       <div class="card-lbl" style="margin-bottom:8px">MCQ-30 — Crenças sobre preocupação</div>
@@ -1435,7 +1435,7 @@ function completeModule(){
 
 function showCelebrate(mod){
   document.getElementById('cel-emoji').textContent  = mod.emoji;
-  document.getElementById('cel-title').textContent  = mod.title+' concluído!';
+  document.getElementById('cel-title').textContent  = mod.title+' concluído.';
   document.getElementById('cel-xp').textContent     = 'Módulo registrado no seu caminho';
   document.getElementById('cel-sub').textContent    = 'Seu progresso foi salvo. Quando quiser, siga para o próximo módulo ou registre no diário.';
   const w = document.getElementById('cel-word'); if(w) w.value='';
@@ -1504,7 +1504,7 @@ function classifyItem(idx, cat){
   _classifyDone[idx]=true;
   if(_classifyDone.filter(Boolean).length >= step.items.length){
     const score = step.items.filter((it2,i)=>_classifyDone[i]&&document.getElementById('cli'+i)?.classList.contains('done-u')===( it2.cat==='u')).length;
-    document.getElementById('cl-score').textContent = '✨ Classificação concluída! Você identificou o padrão.';
+    document.getElementById('cl-score').textContent = '✨ Classificação concluída. Você identificou o padrão.';
     document.getElementById('cl-score').classList.add('show');
     enableContinue();
   }
@@ -1596,7 +1596,7 @@ function startBreath(){
         if(_breathCycles >= total){
           stopBreath();
           if(bp)bp.textContent='✅';
-          if(bphase)bphase.textContent='Completo! Muito bem.';
+          if(bphase)bphase.textContent='Completo.';
           if(bcyc)bcyc.textContent=total+' ciclos concluídos';
           enableContinue();
         }
@@ -1687,7 +1687,7 @@ function saveDiary(){
   const strats=[...document.querySelectorAll('#d-strat .chip.sel')].map(c=>c.textContent);
   const after=parseInt(document.getElementById('da')?.value||3);
   D.entries.unshift({id:Date.now().toString(),ts:Date.now(),date:today(),worry:w,type:_selType||'u',bodyReactions:body,strategies:strats,after});
-  save(); checkBadges(); trackDiaryEvent(); checkPosttestTrigger(); toast('Registro salvo! 📔');
+  save(); checkBadges(); trackDiaryEvent(); checkPosttestTrigger(); toast('Registro salvo.');
   renderDiaryForm(); renderDiaryHist();
   setTimeout(maybeShowIfThen, 900);
   scheduleLocalReminder(); // já praticou hoje → empurra lembrete para amanhã
@@ -1837,8 +1837,8 @@ function renderAssessResult(){
   const info={
     low:{title:'Pouco impacto agora',icon:'🌱',msg:'Pontuação '+a.score+'/21 (não é um diagnóstico). Por ora, as preocupações interferem pouco no dia a dia.',rec:'Continue explorando os módulos e use o diário para monitorar os seus padrões.'},
     mid:{title:'Algum impacto no dia a dia',icon:'🌿',msg:'Pontuação '+a.score+'/21 (não é um diagnóstico). As preocupações têm algum impacto no cotidiano, e existem ferramentas que podem ajudar.',rec:'Os módulos 4 (Worry Time) e 6 (Reestruturação) são especialmente indicados.'},
-    hi:{title:'Bastante impacto',icon:'🌊',msg:'Pontuação '+a.score+'/21 (não é um diagnóstico). As preocupações parecem pesar bastante. Este app pode ser um apoio, e conversar com um/a profissional também pode ajudar.',rec:'O app pode complementar o atendimento profissional. Módulo 5 (Regulação) e 8 (TFC) podem ajudar agora.'},
-    sev:{title:'Um momento difícil',icon:'🌀',msg:'Pontuação '+a.score+'/21 (não é um diagnóstico). Este resultado sugere muito sofrimento, e ninguém precisa atravessar isso sem apoio.',rec:'Vale muito procurar um/a psicólogo/a ou o CAPS da sua cidade. O app continua aqui como complemento — Módulo 5 (Regulação) pode ajudar nos momentos mais difíceis.'},
+    hi:{title:'Bastante impacto',icon:'🌊',msg:'Pontuação '+a.score+'/21 (não é um diagnóstico). As preocupações parecem pesar bastante. Este app pode ser um apoio, e conversar com profissionais de saúde mental também pode ajudar.',rec:'O app pode complementar o atendimento profissional. Módulo 5 (Regulação) e 8 (TFC) podem ajudar agora.'},
+    sev:{title:'Um momento difícil',icon:'🌀',msg:'Pontuação '+a.score+'/21 (não é um diagnóstico). Este resultado sugere muito sofrimento, e ninguém precisa atravessar isso sem apoio.',rec:'Vale muito procurar acompanhamento psicológico ou o CAPS da sua cidade. O app continua aqui como complemento — Módulo 5 (Regulação) pode ajudar nos momentos mais difíceis.'},
   }[a.level] || {title:'Avaliação',icon:'📋',msg:'Pontuação '+a.score+'/21.',rec:''};
   const d=new Date(a.date+'T12:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'});
   document.getElementById('assess-wrap').innerHTML=
@@ -1858,7 +1858,7 @@ function renderAssessResult(){
 function exportJSON(){
   if(!D.entries.length){toast('Sem dados para exportar.');return;}
   dl('farol-dados-'+today()+'.json',JSON.stringify({exportedAt:new Date().toISOString(),app:'Farol — Navegando as Preocupações',xp:D.xp,badges:D.badges,modulesCompleted:MODULES.filter(m=>D.moduleProgress[m.id]?.done).map(m=>m.title),assessment:D.assessment,pretest:D.pretest,posttest:D.posttest,userProfile:D.userProfile,entries:D.entries,doseRecords:D.doseRecords,moduleFeedback:D.moduleFeedback,notificationLog:D.notificationLog},null,2),'application/json');
-  toast('Dados exportados!');
+  toast('Dados exportados.');
 }
 function exportHTML(){
   if(!D.entries.length){toast('Faça pelo menos um registro primeiro.');return;}
@@ -1923,7 +1923,7 @@ ${[...D.doseRecords].sort((a,b)=>b.ts-a.ts).map(r=>
 </div>
 </div></body></html>`;
   dl('farol-relatorio-'+today()+'.html',html,'text/html;charset=utf-8');
-  toast('Relatório exportado!');
+  toast('Relatório exportado.');
 }
 function exportCSV(){
   const rows = [
@@ -1982,7 +1982,7 @@ function exportCSV(){
   });
   if(rows.length<=1){ toast('Sem dados para exportar.'); return; }
   dl('farol-pesquisa-'+today()+'.csv', '﻿'+rows.join('\n'), 'text/csv;charset=utf-8');
-  toast('CSV exportado! 📊');
+  toast('CSV exportado.');
 }
 
 function dl(name,content,type){ const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([content],{type})); a.download=name; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),1000); }
@@ -2043,7 +2043,7 @@ async function syncToResearch({ silent=false, requirePretest=true }={}){
       save();
       renderDadosSync();
       trackAppEvent('research_sync_ok');
-      toast(silent ? '🔬 Dados enviados para a investigação.' : '✅ Dados enviados! Obrigada pela contribuição.');
+      toast(silent ? '🔬 Dados enviados para a investigação.' : '✅ Dados enviados. Obrigada pela contribuição.');
     } else {
       if(!silent) toast('❌ Erro no servidor: '+(result.error||'resposta inesperada'));
       console.warn('[Farol] sync error:', result.error);
@@ -2060,7 +2060,7 @@ function researchJoin(){
   D.consentGiven = true;
   if(!D.consentDate) D.consentDate = new Date().toISOString();
   save(); renderDadosSync();
-  toast('Obrigada por participar!');
+  toast('Obrigada por participar.');
   syncToResearch({ silent:true, requirePretest:false });
 }
 function researchStop(){
@@ -2099,7 +2099,7 @@ function renderDadosSync(){
    ══════════════════════════════════ */
 function abrirAjuda(){
   document.getElementById('modal-title').textContent='Se hoje estiver muito difícil';
-  document.getElementById('modal-body').innerHTML='<p style="text-align:left;margin-bottom:12px">Você não precisa atravessar isso sozinho/a. As ligações são gratuitas.</p><div class="crisis-resources"><a href="tel:188" class="crisis-res"><span>📞</span><div><strong>CVV — 188</strong><small>24 horas, todos os dias</small></div></a><a href="tel:192" class="crisis-res"><span>🚨</span><div><strong>SAMU — 192</strong><small>Em emergência</small></div></a><div class="crisis-res"><span>🏥</span><div><strong>CAPS ou UBS</strong><small>Atendimento gratuito pelo SUS</small></div></div></div>';
+  document.getElementById('modal-body').innerHTML='<p style="text-align:left;margin-bottom:12px">Você não precisa atravessar isso sem apoio. As ligações são gratuitas.</p><div class="crisis-resources"><a href="tel:188" class="crisis-res"><span>📞</span><div><strong>CVV — 188</strong><small>24 horas, todos os dias</small></div></a><a href="tel:192" class="crisis-res"><span>🚨</span><div><strong>SAMU — 192</strong><small>Em emergência</small></div></a><div class="crisis-res"><span>🏥</span><div><strong>CAPS ou UBS</strong><small>Atendimento gratuito pelo SUS</small></div></div></div>';
   document.getElementById('modal-actions').innerHTML='<button class="btn ghost" onclick="closeModal()">Fechar</button>';
   document.getElementById('modal-ov').classList.add('on');
 }
@@ -2242,7 +2242,7 @@ window.addEventListener('beforeinstallprompt', e => {
 window.addEventListener('appinstalled', () => {
   _installPrompt = null;
   D.installSeen = true; save();
-  toast('🏮 Farol instalado! Procure o farol na tela de início.');
+  toast('Farol instalado. Procure o farol na tela de início.');
   trackAppEvent('pwa_installed');
 });
 
@@ -2332,13 +2332,13 @@ async function enableRemindersFromModal(){
   closeModal();
   const perm = await Notification.requestPermission();
   if(perm !== 'granted'){
-    toast('Sem problema — dá para ativar depois em Dados → Lembretes.');
+    toast('Sem problema, dá para ativar depois em Dados → Lembretes.');
     renderNudge(); return;
   }
   D.reminders.enabled = true; save();
   scheduleLocalReminder();
   renderReminderUI();
-  toast('🔔 Lembrete diário ativado! Ajuste o horário em Dados.');
+  toast('Lembrete diário ativado. Ajuste o horário em Dados.');
   trackAppEvent('reminders_on');
   renderNudge();
 }
@@ -2364,7 +2364,7 @@ async function toggleReminders(cb){
     }
     D.reminders.enabled = true; save();
     scheduleLocalReminder();
-    toast('🔔 Lembrete diário ativado!');
+    toast('Lembrete diário ativado.');
     trackAppEvent('reminders_on');
   } else {
     D.reminders.enabled = false; save();

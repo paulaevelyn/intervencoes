@@ -147,7 +147,7 @@ let _stepOffset = 0;
 function moodPickerHTML(sel) {
   return MOODS.map(m => `<button class="mood-btn" role="radio" aria-checked="${sel === m.v}" onclick="pickMood(${m.v})"><span class="mo-e">${rostoHumor(m.v)}</span><span class="mo-l">${m.l}</span></button>`).join('');
 }
-function pickMood(v) { saveMood(v); toast('Humor registrado. Obrigado/a por contar.'); renderHome(); }
+function pickMood(v) { saveMood(v); toast('Humor registrado. Contar já é um passo.'); renderHome(); }
 
 function renderHome() {
   const now = new Date(), h = now.getHours();
@@ -209,7 +209,7 @@ function renderToday() {
   }
   el.innerHTML = ids.map(id => actRow(id, done.indexOf(id) >= 0, 'homeDone')).join('');
 }
-function homeDone(id) { const f = toggleDone(id); if (f) { toast('Feito. Isso conta!'); renderHome(); askRating(id); } else renderHome(); }
+function homeDone(id) { const f = toggleDone(id); if (f) { toast('Feito. Isso conta.'); renderHome(); askRating(id); } else renderHome(); }
 
 function actRow(id, isDone, fn) {
   const a = activityById(id); if (!a) return '';
@@ -257,7 +257,7 @@ function setFilter(k) { _aFilter = k; renderActivate(); }
 function toggleOnlyToday() { _aOnlyToday = !_aOnlyToday; renderActivate(); }
 function toggleWhy(id) { if (_aOpen.has(id)) _aOpen.delete(id); else _aOpen.add(id); renderActivate(); }
 function actSched(id) { const ja = (getSched()[today()] || []).indexOf(id) >= 0; toggleSched(id); renderActivate(); if (!ja) askPlan(id); }
-function actDone(id) { const f = toggleDone(id); if (f) { toast('Feito. Isso conta!'); renderActivate(); askRating(id); } else renderActivate(); }
+function actDone(id) { const f = toggleDone(id); if (f) { toast('Feito. Isso conta.'); renderActivate(); askRating(id); } else renderActivate(); }
 
 /* ═══════════════ REGISTRAR (humor + 3 coisas boas) ═══════════════ */
 let _dDate = null, _dPage = 0, _dRating;   // _dRating undefined = ainda não carregado do armazenamento
@@ -375,7 +375,7 @@ function renderAssess() {
   const el = $('as-wrap'), e = getEsc(), pre = e.pre && e.pre.phq9, pos = e.pos && e.pos.phq9, ult = pos || pre;
   let h = '';
   if (ult && ult.item9 > 0) h += crisisBoxHTML('Se você precisar de ajuda agora') + '<div style="height:12px"></div>';
-  h += `<div class="as-card"><div class="as-note">Um questionário curto e opcional (uns 3 minutos) sobre como você tem se sentido nas últimas 2 semanas. Serve para você acompanhar a si mesmo/a. <strong>Não é um diagnóstico</strong>, e não há resposta certa. O resultado não é enviado a ninguém, a menos que você compartilhe em "Minha conta".</div></div>`;
+  h += `<div class="as-card"><div class="as-note">Um questionário curto e opcional (uns 3 minutos) sobre como você tem se sentido nas últimas 2 semanas. Serve para você acompanhar a si. <strong>Não é um diagnóstico</strong>, e não há resposta certa. O resultado não é enviado a ninguém, a menos que você compartilhe em "Minha conta".</div></div>`;
   [['Início', pre], ['Depois', pos]].forEach(par => {
     if (par[1]) h += `<div class="as-card"><div class="as-note">${par[0]} · ${esc(fmtDay(par[1].data.slice(0, 10)))}</div><div class="as-big">${par[1].total} de ${par[1].maximo}</div><div class="as-note">Quanto mais alto, mais sintomas nas últimas 2 semanas.</div></div>`;
   });
@@ -407,8 +407,8 @@ function phqConcluir(res, momento, funcional) {
   const el = $('as-wrap'); window.scrollTo(0, 0);
   let h = '';
   if (reg.item9 > 0) {
-    h += `<div class="crisis-box" role="alert"><div class="crisis-title">Obrigado/a por contar o que está sentindo</div>
-      <div>Você marcou que tem pensado em se ferir ou que seria melhor estar morto/a. Esses pensamentos são mais comuns do que parece, e você não precisa passar por isso sozinho/a.<br><br>
+    h += `<div class="crisis-box" role="alert"><div class="crisis-title">Obrigada por contar o que está sentindo</div>
+      <div>Você marcou que tem pensado em se ferir ou que seria melhor morrer. Esses pensamentos são mais comuns do que parece, e você não precisa passar por isso sozinho/a.<br><br>
       Se você está em perigo agora, ligue <a href="tel:192">192 (SAMU)</a> ou vá a um pronto-socorro. Para conversar com alguém agora, ligue <a href="tel:188">188 (CVV, 24 horas, gratuito)</a> ou use o chat em <a href="https://cvv.org.br" target="_blank" rel="noopener">cvv.org.br</a>.<br><br>
       Se você já tem acompanhamento, conte para a sua psicóloga ou psicólogo o quanto antes. <strong>Este aplicativo não envia o seu resultado nem nenhum alerta a ninguém</strong>: só quem você escolher compartilhar em "Minha conta" o vê, e isso não substitui uma conversa.</div></div><div style="height:12px"></div>`;
   }
@@ -479,7 +479,7 @@ window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); _insta
 function isInstalled() { return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true; }
 function installApp() { if (!_installPrompt) return; _installPrompt.prompt(); _installPrompt.userChoice.finally(() => { _installPrompt = null; closeModal(); }); }
 function showInstallModal() {
-  if (isInstalled()) { showModal('Já está instalado!', 'Você já está usando o Aurora como app. É só procurar o ícone do sol nascendo na tela de início.', '<button class="btn mint" onclick="closeModal()">Ótimo!</button>'); return; }
+  if (isInstalled()) { showModal('Já está instalado.', 'Você já está usando o Aurora como app. É só procurar o ícone do sol nascendo na tela de início.', '<button class="btn mint" onclick="closeModal()">Combinado</button>'); return; }
   showModal('Aurora na tela de início',
     '<p style="text-align:left;margin-bottom:10px">Com o atalho, o Aurora abre em tela cheia, como um app, e funciona até sem internet.</p>' +
     (_installPrompt ? '<p style="font-size:13px;color:var(--muted);text-align:left">Seu navegador instala com um toque. </p>'
@@ -582,7 +582,7 @@ function tToggle(id, i) {
   t.passos[i].feito = !t.passos[i].feito;
   const era = t.concluida; t.concluida = t.passos.every(p => p.feito);
   wr(K.task, l);
-  if (t.concluida && !era) toast('Você concluiu uma tarefa. Passo a passo, deu certo.'); else if (t.passos[i].feito) toast('Passo feito. Isso conta!');
+  if (t.concluida && !era) toast('Você concluiu uma tarefa. Passo a passo, deu certo.'); else if (t.passos[i].feito) toast('Passo feito. Isso conta.');
   rerender(); if ($('scr-tasks').classList.contains('on')) renderTasks();
 }
 function tDelete(id) { if (!confirm('Apagar esta tarefa?')) return; wr(K.task, getTasks().filter(t => t.id !== id)); renderTasks(); }
@@ -620,7 +620,7 @@ function renderTrap() {
       ${_tr.passo > 0 ? '<button class="btn ghost" style="margin-top:8px" onclick="trBack()">Voltar</button>' : ''}<button class="btn ghost" style="margin-top:8px" onclick="trCancel()">Cancelar</button></div>`;
     return;
   }
-  let h = `<div class="insight-c"><div class="insight-t">Para que serve?</div><div class="insight-b">Muitas vezes a gente evita o que pesa, e isso alivia na hora, mas pode manter o desânimo. Olhar para <strong>o gatilho</strong>, <strong>a resposta</strong> e <strong>o que fazemos em seguida</strong> (TRAP) ajuda a ver o padrão, e escolher uma <strong>saída diferente</strong> (TRAC). Você não está errado/a por evitar: é só um padrão que dá para notar.</div></div>
+  let h = `<div class="insight-c"><div class="insight-t">Para que serve?</div><div class="insight-b">Muitas vezes a gente evita o que pesa, e isso alivia na hora, mas pode manter o desânimo. Olhar para <strong>o gatilho</strong>, <strong>a resposta</strong> e <strong>o que fazemos em seguida</strong> (TRAP) ajuda a ver o padrão, e escolher uma <strong>saída diferente</strong> (TRAC). Evitar não é um erro seu: é só um padrão que dá para notar.</div></div>
     <button class="btn" onclick="trNew()">Analisar um momento</button>`;
   if (!lista.length) h += `<div class="act-empty">Nenhuma análise ainda.</div>`;
   h += lista.map(t => `<div class="card"><div style="display:flex;justify-content:space-between;gap:8px"><div class="as-note">${esc(fmtDay(t.date))}</div><button class="act-why" style="padding:0" onclick="trDelete('${t.id}')">apagar</button></div>
@@ -761,7 +761,7 @@ async function activateNotifFromModal() {
   if (perm !== 'granted') { toast('Permissão negada. Você pode ativar depois em Dados → Lembretes.'); closeModal(); return; }
   const l = getLem(); l.enabled = true; l.hour = hour; wr(LEM, l); scheduleLocalReminder(); closeModal(); toast('Lembrete ativado para as ' + pad(hour) + ':00.');
   try {
-    const reg = await navigator.serviceWorker?.getRegistration(), msg = 'Combinado! Todo dia às ' + pad(hour) + ':00 eu te lembro, só se você ainda não tiver passado por aqui.';
+    const reg = await navigator.serviceWorker?.getRegistration(), msg = 'Combinado. Todo dia às ' + pad(hour) + ':00 eu te lembro, só se você ainda não tiver passado por aqui.';
     if (reg) reg.showNotification('Aurora', { body: msg, icon: 'icon-192.png', badge: 'icon-192.png', tag: 'aurora-welcome' }); else new Notification('Aurora', { body: msg, icon: 'icon-192.png' });
   } catch (e) { /* ok */ }
   renderReminderUI(); renderHome();
