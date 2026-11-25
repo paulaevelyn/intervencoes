@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════════════
-   Trilha — treino.js  ·  Treino social e de pensamentos
+   Trilha: treino.js  ·  Treino social e de pensamentos
 
    Estratégias (a partir dos jogos do Psicoterapia e Afins, sem a pontuação punitiva):
    • Aprendizagem por problema: situação + contexto + escolha de uma ação ou de um pensamento.

@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════════════
-   Trilha — missoes.js
+   Trilha: missoes.js
    Conteúdo das missões (psicoeducação em formato de aprendizagem). Cada módulo tem 3 etapas:
      • Aprender: micro-aula em cartões (4 cartões curtos)
      • Treinar: 2 questões com feedback imediato (recuperação ativa; entram na Revisão relâmpago)
@@ -83,7 +83,7 @@
         { t: 'Ficar relaxado/a o tempo todo', ok: false, fb: 'Relaxar pode acontecer, mas não é o objetivo. O objetivo é estar presente.' }] },
       { id: 'm4q2', tipo: 'mc', q: 'Na prática, sua mente fugiu 20 vezes. O que isso quer dizer?', ops: [
         { t: 'Que não é para você', ok: false, fb: 'Muito pelo contrário: cada vez que você percebe e volta é uma repetição do treino.' },
-        { t: 'Que você treinou voltar 20 vezes', ok: true, fb: 'Isso! Perceber que a mente foi e voltar é justamente o exercício.' },
+        { t: 'Que você treinou voltar 20 vezes', ok: true, fb: 'Isso mesmo. Perceber que a mente foi e voltar é justamente o exercício.' },
         { t: 'Que precisa tentar com mais força', ok: false, fb: 'Forçar costuma atrapalhar. A atitude é de gentileza e curiosidade.' }] }
     ],
     desafio: { t: 'Faça o aterramento 5-4-3-2-1 em um momento em que a cabeça estiver cheia. Repare no seu corpo antes e depois.', ferramenta: 'aterrar', reflexao: 'O que você percebeu agora que normalmente passa despercebido?' } };
@@ -129,7 +129,7 @@
   M[7] = { hab: ['auto', 'decisao'], medalha: { n: 'Atalhos à vista', e: '🚪' },
     licao: [
       { e: '🚪', t: 'Os atalhos', x: 'Quando sentimos algo difícil, temos atalhos para aliviar: evitar, fugir, se isolar, ficar no celular, deixar para depois. Todo mundo tem os seus, sem culpa.' },
-      { e: '⏱️', t: 'Alívio agora, custo depois', x: 'O atalho funciona na hora (alívio!), mas muitas vezes mantém o problema e o medo cresce. Ver o “preço” de cada atalho é o primeiro passo.' },
+      { e: '⏱️', t: 'Alívio agora, custo depois', x: 'O atalho funciona na hora (alívio), mas muitas vezes mantém o problema e o medo cresce. Ver o “preço” de cada atalho é o primeiro passo.' },
       { e: '🔁', t: 'Ação diferente', x: 'Em vez de lutar contra a emoção, você pode escolher agir de outro jeito: o que a emoção pede é uma coisa, o que combina com o que você quer é outra.' },
       { e: '🌱', t: 'Um por vez', x: 'Não precisa largar todos os atalhos. Escolha um e teste agir diferente numa situação de baixa intensidade, e olhe o que acontece.' }
     ],

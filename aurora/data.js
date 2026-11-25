@@ -74,7 +74,7 @@ const EXERCISES = [
     duration: '5 min',
     theory: 'Saborear (savoring) amplia emoções positivas já presentes, contrabalanceando o viés negativo da depressão. Evidência: Bryant & Veroff (2007).',
     steps: [
-      'Encontre algo agradável ao seu redor — pode ser luz, uma textura, um cheiro, uma lembrança.',
+      'Encontre algo agradável ao seu redor, pode ser luz, uma textura, um cheiro, uma lembrança.',
       'Feche os olhos e concentre toda a atenção nessa experiência por 2 minutos.',
       'Observe cada detalhe: cor, forma, sensação, temperatura.',
       'Deixe a experiência se expandir. Não pressa. Apenas esteja com ela.',
@@ -89,7 +89,7 @@ const EXERCISES = [
     theory: 'Identificar 3 coisas positivas diariamente por 2 semanas reduz depressão e aumenta bem-estar em estudos de Seligman et al. (2005). O cérebro aprende a notar o positivo.',
     steps: [
       'Pegue papel e caneta (escrever à mão potencializa o efeito).',
-      'Pense em 3 coisas boas que aconteceram hoje — podem ser pequenas.',
+      'Pense em 3 coisas boas que aconteceram hoje, podem ser pequenas.',
       'Para cada uma, escreva: O que aconteceu? Por que foi bom? Qual foi seu papel nisso?',
       'Leia o que escreveu em voz alta, lentamente.',
       'Guarde o papel. Ao longo do tempo, você vai acumular evidências de que há coisas boas na vida.',
@@ -102,7 +102,7 @@ const EXERCISES = [
     duration: '10 min',
     theory: 'Praticar atos de bondade aumenta afeto positivo e autoestima (Lyubomirsky, 2005). A conexão com o outro é um dos antidepressivos naturais mais potentes.',
     steps: [
-      'Pense em alguém em sua vida — um familiar, amigo, colega, ou até um desconhecido.',
+      'Pense em alguém em sua vida, um familiar, amigo, colega, ou até um desconhecido.',
       'Escolha um ato de bondade pequeno e concreto: uma mensagem, um elogio genuíno, ajudar em algo.',
       'Faça agora. Não adie. O poder está na ação imediata.',
       'Observe como você se sente durante e após o gesto.',
@@ -114,10 +114,10 @@ const EXERCISES = [
     title: 'Escaneamento Corporal',
     emoji: '🌊',
     duration: '8 min',
-    theory: 'Mindfulness corporal desconecta a ruminação e ativa o sistema nervoso parassimpático. Eficaz como complemento no tratamento da depressão (MBCT — Segal, Williams & Teasdale, 2002).',
+    theory: 'Mindfulness corporal desconecta a ruminação e ativa o sistema nervoso parassimpático. Eficaz como complemento no tratamento da depressão (MBCT, Segal, Williams & Teasdale, 2002).',
     steps: [
       'Deite-se ou sente-se confortavelmente. Feche os olhos.',
-      'Comece pelos pés: observe qualquer sensação — temperatura, contato, formigamento. Sem julgamento.',
+      'Comece pelos pés: observe qualquer sensação, temperatura, contato, formigamento. Sem julgamento.',
       'Suba lentamente: pernas, quadril, abdômen, peito, costas, ombros, braços, mãos.',
       'Observe o rosto: mandíbula, olhos, testa. Permita que se relaxem.',
       'Respire fundo e volte ao seu corpo inteiro. Você está aqui, agora.',
@@ -128,12 +128,12 @@ const EXERCISES = [
     title: 'Bondade Amorosa (Metta)',
     emoji: '💚',
     duration: '10 min',
-    theory: 'Loving-kindness meditation aumenta emoções positivas, autocompaixão e reduz autocrítica — componente central da depressão (Hofmann et al., 2011).',
+    theory: 'Loving-kindness meditation aumenta emoções positivas, autocompaixão e reduz autocrítica, componente central da depressão (Hofmann et al., 2011).',
     steps: [
       'Sente-se confortavelmente e feche os olhos. Respire fundo três vezes.',
       'Visualize a si mesmo. Repita em silêncio: "Que eu esteja bem. Que eu seja feliz. Que eu esteja livre do sofrimento."',
       'Agora visualize alguém que você ama. Repita os mesmos desejos para essa pessoa.',
-      'Visualize alguém neutro — um conhecido, um vizinho. Repita os desejos.',
+      'Visualize alguém neutro: um conhecido, um vizinho. Repita os desejos.',
       'Por fim, expanda para todas as pessoas: "Que todos estejam bem. Que todos sejam felizes."',
     ],
   },
@@ -142,13 +142,13 @@ const EXERCISES = [
     title: 'Melhor Versão de Você',
     emoji: '🌟',
     duration: '10 min',
-    theory: 'Imaginar o melhor eu possível (Best Possible Self) aumenta otimismo e expectativas positivas — reduz indefensabilidade aprendida associada à depressão (King, 2001).',
+    theory: 'Imaginar o melhor eu possível (Best Possible Self) aumenta otimismo e expectativas positivas, reduz indefensabilidade aprendida associada à depressão (King, 2001).',
     steps: [
       'Pegue papel e caneta. Vá a um lugar tranquilo.',
       'Imagine sua vida daqui a 1-2 anos, depois de superar o momento atual.',
       'Escreva sobre essa versão de você: Como você está? O que você faz? Como se relaciona?',
       'Não filtre. Deixe fluir qualquer coisa positiva que vier à mente.',
-      'Leia o que escreveu. Essa versão de você já existe em potência — e está sendo construída agora.',
+      'Leia o que escreveu. Essa versão de você já existe em potência, e está sendo construída agora.',
     ],
   },
   {
@@ -160,7 +160,7 @@ const EXERCISES = [
     steps: [
       'Sente-se ereto, ombros relaxados, mãos sobre as pernas.',
       'Inspire pelo nariz contando mentalmente até 4.',
-      'Segure o ar contando até 7 — sem tensão, apenas retenção suave.',
+      'Segure o ar contando até 7, sem tensão, apenas retenção suave.',
       'Expire pela boca contando até 8, emitindo um som suave de "fsh".',
       'Repita o ciclo 4 vezes. Com a prática, você terá uma ferramenta poderosa de autorregulação.',
     ],
@@ -173,7 +173,7 @@ const EXERCISES = [
     theory: 'Revisitar memórias positivas reativa circuitos de recompensa e contrabalança a tendência depressiva de recuperar apenas memórias negativas (Werner-Seidler & Moulds, 2011).',
     steps: [
       'Feche os olhos e respire fundo. Permita que sua mente vague pelo passado.',
-      'Procure um momento em que você se sentiu bem — paz, alegria, conexão, orgulho.',
+      'Procure um momento em que você se sentiu bem, paz, alegria, conexão, orgulho.',
       'Reviva essa memória em detalhes: onde você estava, quem estava com você, o que sentiu no corpo.',
       'Fique nessa memória por 3-4 minutos. Permita que as emoções retornem.',
       'Ao abrir os olhos, lembre-se: você já viveu momentos bons. E viverá de novo.',
@@ -203,7 +203,7 @@ const ARTICLES = [
       },
       {
         heading: 'Quando buscar ajuda',
-        text: 'Se os sintomas persistem por mais de 2 semanas ou afetam sua função diária, busque um profissional de saúde mental. Este app é um complemento — não substitui tratamento profissional.',
+        text: 'Se os sintomas persistem por mais de 2 semanas ou afetam sua função diária, busque um profissional de saúde mental. Este app é um complemento, não substitui tratamento profissional.',
       },
     ],
   },
@@ -223,7 +223,7 @@ const ARTICLES = [
       },
       {
         heading: 'Como funciona na prática',
-        text: 'Identificamos atividades que trazem prazer e sensação de conquista. Programamos essas atividades mesmo quando o humor está baixo. Registramos o humor antes e depois. Com o tempo, o humor melhora — porque seguiu a ação, não o contrário.',
+        text: 'Identificamos atividades que trazem prazer e sensação de conquista. Programamos essas atividades mesmo quando o humor está baixo. Registramos o humor antes e depois. Com o tempo, o humor melhora, porque seguiu a ação, não o contrário.',
       },
       {
         heading: 'Atividades de maestria vs prazer',
@@ -251,7 +251,7 @@ const ARTICLES = [
       },
       {
         heading: 'Gratidão funciona?',
-        text: 'Sim, com ressalvas. Estudos (Emmons & McCullough, 2003; Seligman et al., 2005) mostram que escrever 3 coisas boas diariamente por 2 semanas reduz sintomas depressivos e aumenta bem-estar — efeitos que duram meses.',
+        text: 'Sim, com ressalvas. Estudos (Emmons & McCullough, 2003; Seligman et al., 2005) mostram que escrever 3 coisas boas diariamente por 2 semanas reduz sintomas depressivos e aumenta bem-estar, efeitos que duram meses.',
       },
       {
         heading: 'Forças de caráter',
@@ -259,7 +259,7 @@ const ARTICLES = [
       },
       {
         heading: 'Autocompaixão',
-        text: 'Kristin Neff demonstrou que a autocompaixão (tratar a si mesmo com a mesma gentileza que trataria um amigo) é superior à autoestima como protetor de saúde mental — e é especialmente importante na depressão, onde a autocrítica é intensa.',
+        text: 'Kristin Neff demonstrou que a autocompaixão (tratar a si mesmo com a mesma gentileza que trataria um amigo) é superior à autoestima como protetor de saúde mental, e é especialmente importante na depressão, onde a autocrítica é intensa.',
       },
     ],
   },
@@ -330,11 +330,11 @@ const ARTICLES = [
     subtitle: 'Recursos de emergência',
     content: [
       {
-        heading: 'CVV — Centro de Valorização da Vida',
+        heading: 'CVV: Centro de Valorização da Vida',
         text: 'Ligue 188 (gratuito, 24h) ou acesse cvv.org.br. Escuta empática e sigilosa para pessoas em sofrimento emocional ou crise suicida.',
       },
       {
-        heading: 'CAPS — Centro de Atenção Psicossocial',
+        heading: 'CAPS: Centro de Atenção Psicossocial',
         text: 'Serviço público gratuito do SUS para saúde mental. Encontre o mais próximo na prefeitura ou secretaria de saúde do seu município.',
       },
       {

@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════════════
-   Sintonia — app.js
+   Sintonia: app.js
    Mesma arquitetura do Farol, do Floresça e do Aurora: HTML/CSS/JS puros (sem build), dados no
    localStorage, SCREENS + goTo(), uma render*() por tela, toast, modal, onboarding e service
    worker. Veja ARQUITETURA.md.
@@ -778,7 +778,7 @@ window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); _insta
 function isInstalled() { return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true; }
 function installApp() { if (!_installPrompt) return; _installPrompt.prompt(); _installPrompt.userChoice.finally(() => { _installPrompt = null; closeModal(); }); }
 function showInstallModal() {
-  if (isInstalled()) { showModal('🎧 Já está instalado!', 'Você já está usando a Sintonia como app. É só procurar o ícone na tela de início.', '<button class="btn mint" onclick="closeModal()">Ótimo!</button>'); return; }
+  if (isInstalled()) { showModal('🎧 Já está instalado.', 'Você já está usando a Sintonia como app. É só procurar o ícone na tela de início.', '<button class="btn mint" onclick="closeModal()">Ótimo</button>'); return; }
   showModal('📲 Sintonia na tela de início',
     '<p style="text-align:left;margin-bottom:10px">Com o atalho, a Sintonia abre em tela cheia, como um app, e funciona até sem internet.</p>' +
     (_installPrompt ? '<p style="font-size:13px;color:var(--muted);text-align:left">Seu navegador instala com um toque. 👇</p>'

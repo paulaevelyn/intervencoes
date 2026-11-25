@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════════════
-   Trilha — cenarios.js
+   Trilha: cenarios.js
    Treino social e de pensamentos. Conteúdo próprio, escrito para adolescentes, a partir das estratégias
    observadas nos jogos do Psicoterapia e Afins (aprendizagem por problema, feedback explicado para CADA opção
    com rótulo do estilo, dica de aprendizagem, glossário das distorções, dificuldade progressiva e

@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════════════
-   Trilha — jogo.js  ·  Expedição (gamificação por domínio, SEM perdas)
+   Trilha: jogo.js  ·  Expedição (gamificação por domínio, SEM perdas)
 
    Regras de projeto (não mudar sem rever o impacto clínico):
    • Energia (pontos) SÓ SOBE. Sem sequência que quebra, sem ranking, sem tempo limite, sem perda por faltar.
@@ -82,7 +82,7 @@ function jogoAtualiza(fn) {
   novas.forEach(m => celebra('Medalha conquistada', `<div style="font-size:64px;line-height:1.1">${esc(m.e)}</div><h3 style="margin:8px 0 4px">${esc(m.n)}</h3><p>${esc(m.d)}</p>`));
   if (n1 > n0) {
     const lv = TRILHA.NIVEIS[n1], pets = TRILHA.COMPANHEIROS.filter(c => c.nivel === n1).map(c => c.e + ' ' + c.nome);
-    celebra('Novo nível!', `<div style="font-size:64px;line-height:1.1">${esc(lv.emoji)}</div><h3 style="margin:8px 0 4px">${esc(lv.nome)}</h3><p>Você avançou na expedição.${pets.length ? ' Novo companheiro disponível: ' + esc(pets.join(', ')) + '.' : ''}</p>`);
+    celebra('Novo nível.', `<div style="font-size:64px;line-height:1.1">${esc(lv.emoji)}</div><h3 style="margin:8px 0 4px">${esc(lv.nome)}</h3><p>Você avançou na expedição.${pets.length ? ' Novo companheiro disponível: ' + esc(pets.join(', ')) + '.' : ''}</p>`);
   }
   if (_cur === 'home') renderHome();
 }
@@ -125,7 +125,7 @@ function renderQuestao(cont, q, cb) {
       box.querySelectorAll('.qz-op').forEach((x, i) => { x.disabled = true; if (ops[i].ok) x.classList.add('ok'); });
       if (!o.ok) b.classList.add('no');
       const fb = box.querySelector('.qz-fb'); fb.hidden = false;
-      fb.innerHTML = (o.ok ? '<strong>Isso!</strong> ' : '<strong>Quase.</strong> ') + esc(o.fb) + (o.ok ? '' : '<br><br><strong>Mais útil:</strong> ' + esc(certa.t) + '. ' + esc(certa.fb));
+      fb.innerHTML = (o.ok ? '<strong>Isso mesmo.</strong> ' : '<strong>Quase.</strong> ') + esc(o.fb) + (o.ok ? '' : '<br><br><strong>Mais útil:</strong> ' + esc(certa.t) + '. ' + esc(certa.fb));
       fb.insertAdjacentHTML('afterend', '<details class="qz-todas"><summary>Ver por que cada opção é assim</summary>' +
         ops.map(x => `<div class="qz-ex${x.ok ? ' ok' : ''}"><strong>${esc(x.t)}</strong><br>${esc(x.fb)}</div>`).join('') + '</details>');
       box.querySelector('.tr-acoes').hidden = false;

@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════════════
-   Aurora — app.js
+   Aurora: app.js
    Mesma arquitetura do Farol e do Floresça: HTML/CSS/JS puros (sem build), dados no
    localStorage, SCREENS + goTo(), uma render*() por tela, toast, modal, onboarding e
    service worker. Veja ARQUITETURA.md.
@@ -44,7 +44,7 @@ const PROMPTS = [
   'O que você fez hoje que levou algum esforço?',
   'O que você notou ao seu redor que foi agradável?',
   'Houve algo que o fez sorrir, mesmo que por pouco?',
-  'Que pensamento gentil você teve hoje — sobre você ou alguém?'
+  'Que pensamento gentil você teve hoje, sobre você ou alguém?'
 ];
 
 function rd(k, fb) { try { const r = localStorage.getItem(k); return r !== null ? JSON.parse(r) : fb; } catch (e) { return fb; } }
@@ -209,7 +209,7 @@ function renderToday() {
   }
   el.innerHTML = ids.map(id => actRow(id, done.indexOf(id) >= 0, 'homeDone')).join('');
 }
-function homeDone(id) { const f = toggleDone(id); if (f) { toast('Feito. Isso conta!'); renderHome(); askRating(id); } else renderHome(); }
+function homeDone(id) { const f = toggleDone(id); if (f) { toast('Feito. Isso conta.'); renderHome(); askRating(id); } else renderHome(); }
 
 function actRow(id, isDone, fn) {
   const a = activityById(id); if (!a) return '';
@@ -257,7 +257,7 @@ function setFilter(k) { _aFilter = k; renderActivate(); }
 function toggleOnlyToday() { _aOnlyToday = !_aOnlyToday; renderActivate(); }
 function toggleWhy(id) { if (_aOpen.has(id)) _aOpen.delete(id); else _aOpen.add(id); renderActivate(); }
 function actSched(id) { const ja = (getSched()[today()] || []).indexOf(id) >= 0; toggleSched(id); renderActivate(); if (!ja) askPlan(id); }
-function actDone(id) { const f = toggleDone(id); if (f) { toast('Feito. Isso conta!'); renderActivate(); askRating(id); } else renderActivate(); }
+function actDone(id) { const f = toggleDone(id); if (f) { toast('Feito. Isso conta.'); renderActivate(); askRating(id); } else renderActivate(); }
 
 /* ═══════════════ REGISTRAR (humor + 3 coisas boas) ═══════════════ */
 let _dDate = null, _dPage = 0, _dRating;   // _dRating undefined = ainda não carregado do armazenamento
@@ -479,7 +479,7 @@ window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); _insta
 function isInstalled() { return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true; }
 function installApp() { if (!_installPrompt) return; _installPrompt.prompt(); _installPrompt.userChoice.finally(() => { _installPrompt = null; closeModal(); }); }
 function showInstallModal() {
-  if (isInstalled()) { showModal('🌅 Já está instalado!', 'Você já está usando o Aurora como app. É só procurar o ícone do sol nascendo na tela de início.', '<button class="btn mint" onclick="closeModal()">Ótimo!</button>'); return; }
+  if (isInstalled()) { showModal('🌅 Já está instalado.', 'Você já está usando o Aurora como app. É só procurar o ícone do sol nascendo na tela de início.', '<button class="btn mint" onclick="closeModal()">Ótimo</button>'); return; }
   showModal('📲 Aurora na tela de início',
     '<p style="text-align:left;margin-bottom:10px">Com o atalho, o Aurora abre em tela cheia, como um app, e funciona até sem internet.</p>' +
     (_installPrompt ? '<p style="font-size:13px;color:var(--muted);text-align:left">Seu navegador instala com um toque. 👇</p>'
@@ -514,7 +514,7 @@ function askRating(id) {
   const a = activityById(id); if (!a) return;
   const cur = rateOf(id), tocados = { p: !!cur, m: !!cur };
   window._rt = { id, tocados };
-  const slider = (k, nome, dica, v) => `<div class="rt-field"><label for="rt-${k}"><strong>${nome}</strong> — ${dica}: <span id="rt-${k}v" class="rt-v">${cur ? v : '–'}</span>/10</label>
+  const slider = (k, nome, dica, v) => `<div class="rt-field"><label for="rt-${k}"><strong>${nome}</strong>, ${dica}: <span id="rt-${k}v" class="rt-v">${cur ? v : '–'}</span>/10</label>
     <input type="range" id="rt-${k}" min="0" max="10" value="${v}" aria-valuetext="${cur ? v : 'ainda não escolhido'}" oninput="rtTouch('${k}',this.value)"></div>`;
   showModal('Como foi?',
     `<p style="text-align:left;margin-bottom:12px;font-weight:700">${esc(a.label)}</p>
@@ -547,7 +547,7 @@ function renderTasks() {
       <div class="form-lbl" style="margin-top:14px">Passos (do mais fácil ao mais difícil)</div>
       ${_tDraft.passos.map((p, i) => `<div class="g-field"><span>${i + 1}.</span><input type="text" id="t-p${i}" maxlength="100" value="${esc(p)}" placeholder="${i === 0 ? 'Um primeiro passo bem pequeno' : 'Próximo passo'}" aria-label="Passo ${i + 1}"></div>`).join('')}
       <button class="btn ghost" style="margin:0 0 10px" onclick="tAddStep()" ${_tDraft.passos.length >= 8 ? 'disabled' : ''}>+ Adicionar passo</button>
-      <div class="as-note" style="margin-bottom:10px"><strong>Exemplo — tomar banho:</strong> 1. Pegar a toalha. 2. Ligar o chuveiro. 3. Entrar e lavar só o rosto. 4. Lavar o resto, no seu tempo.</div>
+      <div class="as-note" style="margin-bottom:10px"><strong>Exemplo (tomar banho):</strong> 1. Pegar a toalha. 2. Ligar o chuveiro. 3. Entrar e lavar só o rosto. 4. Lavar o resto, no seu tempo.</div>
       <button class="btn" onclick="tSave()">Salvar tarefa</button><button class="btn ghost" style="margin-top:8px" onclick="tCancel()">Cancelar</button></div>`;
   } else {
     h += `<button class="btn" onclick="tNew()">+ Nova tarefa</button>`;
@@ -582,7 +582,7 @@ function tToggle(id, i) {
   t.passos[i].feito = !t.passos[i].feito;
   const era = t.concluida; t.concluida = t.passos.every(p => p.feito);
   wr(K.task, l);
-  if (t.concluida && !era) toast('Você concluiu uma tarefa. Passo a passo, deu certo.'); else if (t.passos[i].feito) toast('Passo feito. Isso conta!');
+  if (t.concluida && !era) toast('Você concluiu uma tarefa. Passo a passo, deu certo.'); else if (t.passos[i].feito) toast('Passo feito. Isso conta.');
   rerender(); if ($('scr-tasks').classList.contains('on')) renderTasks();
 }
 function tDelete(id) { if (!confirm('Apagar esta tarefa?')) return; wr(K.task, getTasks().filter(t => t.id !== id)); renderTasks(); }
@@ -761,7 +761,7 @@ async function activateNotifFromModal() {
   if (perm !== 'granted') { toast('Permissão negada. Você pode ativar depois em Dados → Lembretes.'); closeModal(); return; }
   const l = getLem(); l.enabled = true; l.hour = hour; wr(LEM, l); scheduleLocalReminder(); closeModal(); toast('🔔 Lembrete ativado para as ' + pad(hour) + ':00.');
   try {
-    const reg = await navigator.serviceWorker?.getRegistration(), msg = '🌅 Combinado! Todo dia às ' + pad(hour) + ':00 eu te lembro, só se você ainda não tiver passado por aqui.';
+    const reg = await navigator.serviceWorker?.getRegistration(), msg = '🌅 Combinado. Todo dia às ' + pad(hour) + ':00 eu te lembro, só se você ainda não tiver passado por aqui.';
     if (reg) reg.showNotification('Aurora', { body: msg, icon: 'icon-192.png', badge: 'icon-192.png', tag: 'aurora-welcome' }); else new Notification('Aurora', { body: msg, icon: 'icon-192.png' });
   } catch (e) { /* ok */ }
   renderReminderUI(); renderHome();

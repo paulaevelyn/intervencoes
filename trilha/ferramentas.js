@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════════════
-   Trilha — ferramentas.js
+   Trilha: ferramentas.js
    Telas das ferramentas. Formato dos registros (o banco só projeta esta forma, ver
    supabase/trilha.sql): { id, ts, date, f, n:{números}, c:{listas de ids}, t:{textos} }
    Regra: o que é número, escolha (id) ou texto vai em n, c ou t. Texto livre NUNCA vai em n/c,

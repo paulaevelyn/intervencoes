@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════════════
-   Trilha — data.js
+   Trilha: data.js
    Conteúdo da trilha (módulos, emoções, ferramentas). Fonte ÚNICA: o app do adolescente
    e o painel da profissional (editor de orientações) leem este arquivo.
 
