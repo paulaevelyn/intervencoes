@@ -26,6 +26,7 @@
 <link rel="stylesheet" href="../auth/auth.css">
 <script>document.documentElement.classList.add("pea-auth-carregando");</script>
 <link rel="stylesheet" href="../shared/marca.css">
+<link rel="stylesheet" href="fonte.css">
 </head>
 <body>
 <div id="pea-auth-aviso">carregando…</div>
@@ -47,7 +48,7 @@
   <div class="ob-slide on" id="obs0">
     <div class="ob-top">
       <div class="ob-brand"><img src="../logos/sintonia.svg" alt="Sintonia" width="200"></div>
-      <div class="ob-icon">🎧</div>
+      <div class="ob-icon" data-ico="headphones" data-ico-size="56"></div>
       <div class="ob-title">Escolher para onde<br>levar a atenção.</div>
       <div class="ob-body">Quando a mente fica presa em preocupações, em lembranças ou em vigiar o próprio corpo, ela parece não ter escolha. Este exercício treina o contrário: você ouve sons ao seu redor e leva a atenção de um para outro, de propósito.</div>
       <div class="ob-quote">"O objetivo não é esvaziar a mente. É perceber que você pode escolher onde pôr a atenção."</div>
@@ -60,14 +61,14 @@
   <!-- 1: Como é -->
   <div class="ob-slide" id="obs1">
     <div class="ob-top">
-      <div class="ob-icon">🧭</div>
+      <div class="ob-icon" data-ico="compass" data-ico-size="56"></div>
       <div class="ob-title">Como é a sessão</div>
       <div class="ob-list">
-        <div class="ob-li"><span class="ob-li-ic">🎧</span><span><strong>Fones de ouvido</strong>, para sentir de onde vem cada som.</span></div>
-        <div class="ob-li"><span class="ob-li-ic">👁️</span><span><strong>Olhar num ponto fixo</strong> à frente, com os olhos abertos.</span></div>
+        <div class="ob-li"><span class="ob-li-ic" data-ico="headphones" data-ico-size="20"></span><span><strong>Fones de ouvido</strong>, para sentir de onde vem cada som.</span></div>
+        <div class="ob-li"><span class="ob-li-ic" data-ico="eye" data-ico-size="20"></span><span><strong>Olhar num ponto fixo</strong> à frente, com os olhos abertos.</span></div>
         <div class="ob-li"><span class="ob-li-ic">1️⃣</span><span><strong>Um som por vez:</strong> toda a atenção num som indicado.</span></div>
-        <div class="ob-li"><span class="ob-li-ic">🔁</span><span><strong>Troca rápida:</strong> o som indicado muda, e você acompanha.</span></div>
-        <div class="ob-li"><span class="ob-li-ic">🌐</span><span><strong>Todos juntos:</strong> perceber todos os sons ao mesmo tempo.</span></div>
+        <div class="ob-li"><span class="ob-li-ic" data-ico="refresh" data-ico-size="20"></span><span><strong>Troca rápida:</strong> o som indicado muda, e você acompanha.</span></div>
+        <div class="ob-li"><span class="ob-li-ic" data-ico="globe" data-ico-size="20"></span><span><strong>Todos juntos:</strong> perceber todos os sons ao mesmo tempo.</span></div>
       </div>
       <div class="ob-body" style="font-size:13.5px">Dura 12 minutos (ou 6, na versão curta). Se um pensamento aparecer, perceba e volte ao som indicado. Não precisa lutar contra ele.</div>
     </div>
@@ -79,14 +80,14 @@
   <!-- 2: Dados -->
   <div class="ob-slide" id="obs2">
     <div class="ob-top">
-      <div class="ob-icon">🔒</div>
+      <div class="ob-icon" data-ico="lock" data-ico-size="56"></div>
       <div class="ob-title">O que fica guardado, e onde</div>
       <div class="consent-box">
         <div class="consent-items">
-          <div class="consent-item"><span class="consent-item-icon">📱</span><span><strong>Sem conta:</strong> as notas de antes e depois ficam só neste aparelho. Ninguém vê.</span></div>
-          <div class="consent-item"><span class="consent-item-icon">☁️</span><span><strong>Com conta (por convite):</strong> seus registros ficam guardados nela e acompanham você em outros aparelhos. Só você vê.</span></div>
-          <div class="consent-item"><span class="consent-item-icon">🚫</span><span><strong>Sem pesquisa e sem alertas:</strong> a Sintonia não envia seus dados para nenhuma pesquisa e não avisa ninguém sobre o que você registra.</span></div>
-          <div class="consent-item"><span class="consent-item-icon">🗑️</span><span><strong>Você controla:</strong> pode baixar ou apagar seus registros quando quiser, em "Aprender".</span></div>
+          <div class="consent-item"><span class="consent-item-icon" data-ico="mobile" data-ico-size="20"></span><span><strong>Sem conta:</strong> as notas de antes e depois ficam só neste aparelho. Ninguém vê.</span></div>
+          <div class="consent-item"><span class="consent-item-icon" data-ico="cloud" data-ico-size="20"></span><span><strong>Com conta (por convite):</strong> seus registros ficam guardados nela e acompanham você em outros aparelhos. Só você vê.</span></div>
+          <div class="consent-item"><span class="consent-item-icon" data-ico="ban" data-ico-size="20"></span><span><strong>Sem pesquisa e sem alertas:</strong> a Sintonia não envia seus dados para nenhuma pesquisa e não avisa ninguém sobre o que você registra.</span></div>
+          <div class="consent-item"><span class="consent-item-icon" data-ico="trash" data-ico-size="20"></span><span><strong>Você controla:</strong> pode baixar ou apagar seus registros quando quiser, em "Aprender".</span></div>
         </div>
       </div>
     </div>
@@ -98,7 +99,7 @@
   <!-- 3: Cuidado -->
   <div class="ob-slide" id="obs3">
     <div class="ob-top">
-      <div class="ob-icon">🤍</div>
+      <div class="ob-icon" data-ico="heart" data-ico-size="56"></div>
       <div class="ob-title">Um cuidado importante</div>
       <div class="ob-body">A Sintonia é um recurso de apoio e <strong>não substitui</strong> o acompanhamento com um profissional de saúde mental. Comece com o volume baixo. Se você tem zumbido ou sensibilidade a sons, converse com a sua profissional antes de usar. Se o exercício incomodar muito, <strong>pare</strong>: isso também vale como informação para levar à sessão.</div>
       <div class="crisis-box" style="margin-top:14px">
@@ -192,13 +193,13 @@
       <button type="button" id="test" class="btn ghost-mint sm">Testar som</button>
     </div>
     <div class="set-row" style="cursor:default">
-      <div style="flex:1"><div class="set-lbl">🎧 Teste dos fones</div><div class="set-desc" id="test-msg" role="status" aria-live="polite">Use fones de ouvido. No teste, o sino vem da esquerda, as gotas da direita e as batidas da frente.</div></div>
+      <div style="flex:1"><div class="set-lbl"><span class="ico-i" data-ico="headphones" data-ico-size="16"></span> Teste dos fones</div><div class="set-desc" id="test-msg" role="status" aria-live="polite">Use fones de ouvido. No teste, o sino vem da esquerda, as gotas da direita e as batidas da frente.</div></div>
     </div>
     <div class="set-row" id="bat-aviso" style="cursor:default" hidden>
-      <div style="flex:1"><div class="set-lbl">🥁 Cuide do ouvido</div><div class="set-desc">Quem toca bateria já expõe o ouvido a volume alto. Comece com o volume baixo e aumente só até ouvir bem.</div></div>
+      <div style="flex:1"><div class="set-lbl"><span class="ico-i" data-ico="volume" data-ico-size="16"></span> Cuide do ouvido</div><div class="set-desc">Quem toca bateria já expõe o ouvido a volume alto. Comece com o volume baixo e aumente só até ouvir bem.</div></div>
     </div>
     <div class="set-row only-classico" id="voice-wrap" style="cursor:default">
-      <div style="flex:1"><div class="set-lbl">🗣️ Instruções faladas</div><div class="set-desc">Uma voz anuncia cada troca de som.</div></div>
+      <div style="flex:1"><div class="set-lbl"><span class="ico-i" data-ico="message" data-ico-size="16"></span> Instruções faladas</div><div class="set-desc">Uma voz anuncia cada troca de som.</div></div>
       <label class="switch"><input type="checkbox" id="voice" aria-label="Instruções faladas"><span class="switch-track"></span></label>
     </div>
   </div>
@@ -270,10 +271,10 @@
   <div class="sdiv">Acesso rápido</div>
   <div class="quick-grid">
     <div class="quick-card" onclick="goTo('learn')">
-      <div class="quick-icon">📚</div><div class="quick-title">Aprender</div><div class="quick-sub">Entender a técnica</div>
+      <div class="quick-icon" data-ico="book" data-ico-size="24"></div><div class="quick-title">Aprender</div><div class="quick-sub">Entender a técnica</div>
     </div>
     <div class="quick-card crisis-card" onclick="openCrisis()">
-      <div class="quick-icon">🤍</div><div class="quick-title">Preciso de ajuda agora</div><div class="quick-sub">188 · 192</div>
+      <div class="quick-icon" data-ico="heart" data-ico-size="24"></div><div class="quick-title">Preciso de ajuda agora</div><div class="quick-sub">188 · 192</div>
     </div>
   </div>
 
@@ -292,8 +293,8 @@
       </div>
     </div>
     <div class="brand-footer-links">
-      <a href="https://www.psicoterapiaeafins.com.br" target="_blank" rel="noopener" class="brand-link mint">🌐 Site</a>
-      <a href="https://www.instagram.com/psicoterapiaeafins" target="_blank" rel="noopener" class="brand-link coral">📷 @psicoterapiaeafins</a>
+      <a href="https://www.psicoterapiaeafins.com.br" target="_blank" rel="noopener" class="brand-link mint"><span class="ico-i" data-ico="globe" data-ico-size="16"></span> Site</a>
+      <a href="https://www.instagram.com/psicoterapiaeafins" target="_blank" rel="noopener" class="brand-link coral"><span class="ico-i" data-ico="camera" data-ico-size="16"></span> @psicoterapiaeafins</a>
     </div>
   </div>
 </div>
@@ -567,34 +568,34 @@
   <div class="sdiv">Seus dados</div>
   <div class="set-group">
     <div class="set-row" onclick="exportJSON()"><div><div class="set-lbl">⬇️ Baixar meus registros (JSON)</div><div class="set-desc">Notas de antes e depois, duração e observações</div></div><span class="set-arr">›</span></div>
-    <div class="set-row" onclick="exportCSV()"><div><div class="set-lbl">📄 Baixar em planilha (CSV)</div><div class="set-desc">Para abrir em planilha ou levar para uma consulta</div></div><span class="set-arr">›</span></div>
-    <div class="set-row" onclick="openModal('del')"><div><div class="set-lbl" style="color:var(--coral)">🗑️ Apagar os dados deste aparelho</div><div class="set-desc">Se você usa uma conta, apague-a em "Minha conta" (botão no topo)</div></div><span class="set-arr">›</span></div>
+    <div class="set-row" onclick="exportCSV()"><div><div class="set-lbl"><span class="ico-i" data-ico="file-text" data-ico-size="16"></span> Baixar em planilha (CSV)</div><div class="set-desc">Para abrir em planilha ou levar para uma consulta</div></div><span class="set-arr">›</span></div>
+    <div class="set-row" onclick="openModal('del')"><div><div class="set-lbl" style="color:var(--coral)"><span class="ico-i" data-ico="trash" data-ico-size="16"></span> Apagar os dados deste aparelho</div><div class="set-desc">Se você usa uma conta, apague-a em "Minha conta" (botão no topo)</div></div><span class="set-arr">›</span></div>
   </div>
 
   <div class="sdiv">Atalho</div>
   <div class="set-group">
-    <div class="set-row" onclick="showInstallModal()"><div><div class="set-lbl">📲 Instalar na tela de início</div><div class="set-desc">Abra a Sintonia como um app e use até sem internet</div></div><span class="set-arr">›</span></div>
+    <div class="set-row" onclick="showInstallModal()"><div><div class="set-lbl"><span class="ico-i" data-ico="mobile" data-ico-size="16"></span> Instalar na tela de início</div><div class="set-desc">Abra a Sintonia como um app e use até sem internet</div></div><span class="set-arr">›</span></div>
   </div>
 
   <div class="sdiv">Sobre este app</div>
   <div class="legal-card">
-    <div class="legal-item"><span class="legal-item-icon">🏛️</span>
+    <div class="legal-item"><span class="legal-item-icon" data-ico="building" data-ico-size="20"></span>
       <div><strong>Criado por Psicoterapia e Afins</strong>
       Um projeto para tornar a psicologia baseada em evidências mais acessível a todos.<br>
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
-        <a href="https://www.psicoterapiaeafins.com.br" target="_blank" rel="noopener" class="brand-link mint" style="font-size:12px">🌐 psicoterapiaeafins.com.br</a>
-        <a href="https://www.instagram.com/psicoterapiaeafins" target="_blank" rel="noopener" class="brand-link coral" style="font-size:12px">📷 @psicoterapiaeafins</a>
+        <a href="https://www.psicoterapiaeafins.com.br" target="_blank" rel="noopener" class="brand-link mint" style="font-size:12px"><span class="ico-i" data-ico="globe" data-ico-size="16"></span> psicoterapiaeafins.com.br</a>
+        <a href="https://www.instagram.com/psicoterapiaeafins" target="_blank" rel="noopener" class="brand-link coral" style="font-size:12px"><span class="ico-i" data-ico="camera" data-ico-size="16"></span> @psicoterapiaeafins</a>
       </div></div>
     </div>
-    <div class="legal-item"><span class="legal-item-icon">⚕️</span>
+    <div class="legal-item"><span class="legal-item-icon" data-ico="shield" data-ico-size="20"></span>
       <div><strong>Não é tratamento psicológico</strong>
       A Sintonia é um recurso <em>psicoeducativo</em> de apoio entre as sessões. Ela complementa, mas não substitui, o acompanhamento com um/a psicólogo/a ou psiquiatra.</div>
     </div>
-    <div class="legal-item"><span class="legal-item-icon">📖</span>
+    <div class="legal-item"><span class="legal-item-icon" data-ico="book" data-ico-size="20"></span>
       <div><strong>Fonte</strong>
       Wells, A. (1990). Panic disorder in association with relaxation induced anxiety: an attentional training approach to treatment. <em>Behavior Therapy</em>. Wells, A. (2009). <em>Metacognitive therapy for anxiety and depression</em>. Guilford Press.</div>
     </div>
-    <div class="legal-item"><span class="legal-item-icon">🤍</span>
+    <div class="legal-item"><span class="legal-item-icon" data-ico="heart" data-ico-size="20"></span>
       <div><strong>Em crise?</strong>
       Ligue <a href="tel:188">188 (CVV)</a>, 24 horas, gratuito, ou <a href="tel:192">192 (SAMU)</a>.</div>
     </div>
