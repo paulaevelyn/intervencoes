@@ -163,7 +163,7 @@ h2{font-size:32px;line-height:1.2;font-weight:300;letter-spacing:-.02em;color:va
   <a href="https://www.psicoterapiaeafins.com.br" aria-label="Psicoterapia e Afins, página inicial"><img class="logo" src="assets/psicoterapia-logo.png" alt="Psicoterapia e Afins"></a>
   <div class="hdr-acoes">
     <a class="pill ajuda" href="#ajuda"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.6-7 10-7 10z"/></svg><span class="so-d">Preciso de ajuda agora</span><span class="so-m">Preciso de ajuda</span></a>
-    <a class="pill p-cuidado" href="#cuidado"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6zM12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/></svg>Cuidado digital</a>
+    <a class="pill p-cuidado" id="abrir-cuidado" href="#cuidado" aria-haspopup="dialog"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6zM12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/></svg>Cuidado digital</a>
   </div>
 </header>
 
@@ -272,5 +272,11 @@ h2{font-size:32px;line-height:1.2;font-weight:300;letter-spacing:-.02em;color:va
   <p class="legal">© 2026 Psicoterapia e Afins · Todos os direitos reservados. Textos, marcas e logos desta página pertencem ao Psicoterapia e Afins. Reprodução somente com autorização.</p>
 </footer>
 
+<script>
+/* "Cuidado digital" abre o painel de ajustes; sem JavaScript, o link leva à seção "O que você pode esperar". */
+document.getElementById('abrir-cuidado').addEventListener('click',function(e){
+  if(window.PeaBemEstar&&typeof window.PeaBemEstar.abrir==='function'){e.preventDefault();window.PeaBemEstar.abrir();}
+});
+</script>
 </body>
 </html>
