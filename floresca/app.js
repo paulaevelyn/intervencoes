@@ -499,9 +499,9 @@ const MODULES = [
       {
         type:'info', typeLabel:'Psicoeducação',
         title:'Seu cérebro tem um viés, e não é culpa sua',
-        content:`<p class="step-text">Se você sente que as coisas ruins do dia ocupam mais espaço na cabeça do que as boas, você está certo/a, e isso tem nome.</p>
+        content:`<p class="step-text">Se as coisas ruins do dia ocupam mais espaço na sua cabeça do que as boas, faz parte, e isso tem nome.</p>
 ${svgNegativityBias()}
-<p class="step-text" style="margin-top:10px">A boa notícia vem da pesquisadora <strong>Barbara Fredrickson</strong>: emoções positivas não servem só para "sentir-se bem". A teoria <em>Broaden-and-Build</em> (ampliar e construir), com décadas de evidência, mostra que elas têm uma função evolutiva poderosa:</p>
+<p class="step-text" style="margin-top:10px">A boa notícia vem da pesquisadora <strong>Barbara Fredrickson</strong>: emoções positivas fazem mais do que nos fazer sentir bem. Pela teoria <em>ampliar e construir</em> (broaden-and-build), elas ampliam a atenção e, com o tempo, ajudam a construir recursos. Pesquisas apoiam essa ideia, com efeitos de pequenos a moderados.</p>
 ${svgBroaden()}
 <div class="tip mint"><strong>Ideia central:</strong> Emoções difíceis estreitam o foco para sobreviver ao agora. Emoções positivas <strong>ampliam a mente e constroem recursos duráveis</strong>, criatividade, vínculos, saúde, resiliência. Cultivá-las é um investimento, não um luxo.</div>`
       },
@@ -555,10 +555,10 @@ ${svgBroaden()}
       {
         type:'info', typeLabel:'Psicoeducação',
         title:'Granularidade: o vocabulário do sentir',
-        content:`<p class="step-text">A neurocientista <strong>Lisa Feldman Barrett</strong> descobriu algo curioso: pessoas que nomeiam suas emoções com <em>precisão</em> ("estou sentindo serenidade", em vez de só "estou bem") regulam melhor o que sentem, e sentem com mais riqueza.</p>
-<p class="step-text" style="margin-top:10px">Isso se chama <strong>granularidade emocional</strong>. E funciona como paladar: quem só conhece "doce e salgado" sente menos sabores do que quem reconhece nuances. Conheça as <strong>10 emoções positivas mais estudadas</strong> (Fredrickson):</p>
+        content:`<p class="step-text">A neurocientista <strong>Lisa Feldman Barrett</strong> mostrou que pessoas que nomeiam suas emoções com <em>precisão</em> ("estou sentindo serenidade", em vez de só "estou bem") costumam regular melhor o que sentem.</p>
+<p class="step-text" style="margin-top:10px">Isso se chama <strong>granularidade emocional</strong>. Funciona como o paladar: quem só conhece "doce e salgado" sente menos sabores do que quem reconhece nuances. Conheça as <strong>10 emoções positivas mais estudadas</strong> (Fredrickson):</p>
 ${emoGridHTML()}
-<div class="tip lav">Repare: só 2 ou 3 delas são "animadas". A maioria é <strong>sutil e silenciosa</strong>, serenidade, gratidão, admiração. Se você só procura euforia, deixa 80% do repertório passar.</div>`
+<div class="tip lav">Repare: só 2 ou 3 delas são "animadas". A maioria é <strong>sutil e silenciosa</strong>, serenidade, gratidão, admiração. Se só procuramos euforia, boa parte do repertório passa batido.</div>`
       },
       {
         type:'flipcard', typeLabel:'Cartas interativas',
@@ -612,8 +612,8 @@ ${emoGridHTML()}
         type:'info', typeLabel:'Psicoeducação',
         title:'O que você procura, você encontra',
         content:`<p class="step-text">A atenção funciona como um holofote: ilumina uma coisa e deixa o resto no escuro. O viés de negatividade aponta esse holofote para problemas, <strong>automaticamente</strong>.</p>
-<p class="step-text" style="margin-top:10px">Mas holofotes podem ser redirecionados. Uma das práticas mais estudadas para isso chama-se <strong>Três Coisas Boas</strong> (Seligman): anotar, no fim do dia, 3 coisas que foram bem, e <em>por que</em> foram bem.</p>
-<div class="tip amber"><strong>A evidência:</strong> No estudo original, uma semana desta prática aumentou felicidade e reduziu sintomas depressivos por até <strong>6 meses</strong>. Não porque o dia melhora, mas porque o radar aprende a captar o que antes passava batido.</div>
+<p class="step-text" style="margin-top:10px">Mas holofotes podem ser redirecionados. Uma das práticas mais estudadas para isso se chama <strong>Três Coisas Boas</strong> (Seligman): anotar, no fim do dia, 3 coisas que foram bem, e <em>por que</em> foram bem.</p>
+<div class="tip amber"><strong>A evidência:</strong> No estudo original, uma semana da prática foi associada a mais felicidade e menos sintomas depressivos por até <strong>6 meses</strong>. Revisões posteriores encontram efeitos menores, mas a prática é simples e de baixo custo. A hipótese é que o dia nem sempre melhora, mas o radar aprende a captar o que antes passava batido.</div>
 <div style="display:flex;flex-direction:column;gap:8px;margin:14px 0">
   <div class="tip mint" style="margin:0"><strong>Vale notar:</strong> o café que estava bom · o ônibus que passou na hora · a mensagem de alguém · 10 minutos de silêncio · você ter feito algo apesar do cansaço</div>
   <div class="tip coral" style="margin:0"><strong>Armadilha comum:</strong> esperar coisas GRANDES. Quem só registra promoções e viagens registra 3 vezes por ano. O treino é com o pequeno e cotidiano.</div>
@@ -665,15 +665,15 @@ ${emoGridHTML()}
     steps:[
       {
         type:'info', typeLabel:'Psicoeducação',
-        title:'Savoring: a arte de ficar no momento bom',
+        title:'Saborear: a arte de ficar no momento bom',
         content:`<p class="step-text">Notar é o primeiro passo. <strong>Saborear</strong> (savoring, Bryant & Veroff) é o segundo: a capacidade de <em>amplificar e prolongar</em> a experiência positiva, em vez de deixá-la escorregar.</p>
-<p class="step-text" style="margin-top:10px">E aqui está o segredo que quase ninguém usa: dá para saborear em <strong>três tempos</strong>:</p>
+<p class="step-text" style="margin-top:10px">Dá para saborear em <strong>três tempos</strong>:</p>
 <div style="display:flex;flex-direction:column;gap:8px;margin:14px 0">
   <div class="tip coral" style="margin:0"><strong>Presente</strong>: absorção total: desacelerar, usar os sentidos, expressar a emoção (sorrir, dizer em voz alta "que bom isso").</div>
   <div class="tip amber" style="margin:0"><strong>Passado</strong>: reminiscência: revisitar memórias boas com detalhes. Fotos, cheiros e músicas são portais.</div>
-  <div class="tip lav" style="margin:0"><strong>Futuro</strong>: antecipação: planejar algo bom e saboreá-lo ANTES de acontecer. Metade do prazer da viagem acontece antes da viagem.</div>
+  <div class="tip lav" style="margin:0"><strong>Futuro</strong>: antecipação: planejar algo bom e saboreá-lo ANTES de acontecer. Parte do prazer de uma viagem já acontece antes dela.</div>
 </div>
-<div class="tip mint">E o inimigo do sabor tem nome: <strong>amortecimento</strong> (dampening). São os pensamentos que apagam o momento bom: <em>"não mereço", "vai acabar logo", "foi só sorte"</em>, e o hábito de estar no celular enquanto a vida boa acontece. Vamos treinar para reconhecê-los.</div>`
+<div class="tip mint">O que atrapalha o saborear tem nome: <strong>amortecimento</strong> (dampening). São os pensamentos que apagam o momento bom: <em>"não mereço", "vai acabar logo", "foi só sorte"</em>, e o hábito de estar no celular enquanto a vida boa acontece. Vamos treinar para reconhecê-los.</div>`
       },
       {
         type:'guided', typeLabel:'Prática guiada',
@@ -728,12 +728,12 @@ ${emoGridHTML()}
 <p class="step-text" style="margin-top:10px">O mecanismo tem duas engrenagens:</p>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0">
   <div class="tip mint" style="margin:0"><strong>Atenção</strong><br>Gratidão obriga o radar a varrer o que foi <em>recebido</em>, que o viés de negatividade esconde.</div>
-  <div class="tip coral" style="margin:0"><strong>Vínculo</strong><br>Reconhecer quem nos fez bem fortalece os laços, um dos preditores mais consistentes de bem-estar.</div>
+  <div class="tip coral" style="margin:0"><strong>Vínculo</strong><br>Reconhecer quem nos fez bem fortalece os laços, algo associado de forma consistente ao bem-estar.</div>
 </div>
 <div style="display:flex;flex-direction:column;gap:8px;margin:14px 0">
   <div class="tip amber" style="margin:0"><strong>O que gratidão NÃO é:</strong><br>• Dívida ("agora tenho que retribuir"), isso é peso, não gratidão.<br>• Obrigação de estar grato/a por tudo, sempre.<br>• Anular queixas legítimas ("seja grato/a e não reclame").</div>
 </div>
-<div class="tip lav"><strong>Segredo da eficácia:</strong> especificidade e variedade. "Sou grata pela minha família" (genérico, repetido) perde efeito rápido. "Sou grata porque minha irmã me ligou ontem só para saber de mim", isso o cérebro sente.</div>`
+<div class="tip lav"><strong>Segredo da eficácia:</strong> especificidade e variedade. "Sou grato/a pela minha família" (genérico, repetido) perde efeito rápido. "Sou grato/a porque minha irmã me ligou ontem só para saber de mim": isso o cérebro sente.</div>`
       },
       {
         type:'quiz', typeLabel:'Atividade',
@@ -781,14 +781,14 @@ ${emoGridHTML()}
       {
         type:'info', typeLabel:'Psicoeducação',
         title:'Dois tipos de "sentir-se bem"',
-        content:`<p class="step-text">Paul Gilbert, criador da Terapia Focada na Compaixão (TFC), mostrou que temos <strong>três sistemas emocionais</strong>, e que existem dois tipos muito diferentes de emoção positiva:</p>
+        content:`<p class="step-text">Paul Gilbert, criador da Terapia Focada na Compaixão (TFC), descreve <strong>três sistemas emocionais</strong>, e dois tipos bem diferentes de emoção positiva:</p>
 ${svgThreeSystems()}
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0">
   <div class="tip amber" style="margin:0"><strong>Positivas de Conquista</strong><br>Excitação, euforia, "consegui!". Dependem de alcançar algo. Aceleram.</div>
   <div class="tip mint" style="margin:0"><strong>Positivas de Calmaria</strong><br>Contentamento, segurança, calor humano. Não dependem de conquistar nada. Desaceleram.</div>
 </div>
-<p class="step-text">A nossa cultura hipertreina o sistema de Conquista: sentir-se bem só quando produz, alcança, ganha. O resultado é uma vida em que o descanso vira culpa e o bem-estar está sempre <em>no próximo objetivo</em>.</p>
-<div class="tip lav"><strong>Ideia central:</strong> o sistema Calmante é ativado por ritmo lento, calor humano, memória de afeto e segurança. Ele é <strong>treinável</strong>, e é a base da resiliência: quem consegue se acalmar, consegue se recuperar.</div>`
+<p class="step-text">Nossa cultura costuma treinar demais o sistema de Conquista: sentir-se bem só quando produzimos, alcançamos, ganhamos. O resultado, muitas vezes, é uma vida em que o descanso vira culpa e o bem-estar está sempre <em>no próximo objetivo</em>.</p>
+<div class="tip lav"><strong>Ideia central:</strong> o sistema Calmante é ativado por ritmo lento, calor humano, memória de afeto e segurança. Ele é <strong>treinável</strong> e é uma das bases da resiliência: acalmar-se ajuda a se recuperar.</div>`
       },
       {
         type:'breath', typeLabel:'Respiração do ritmo calmante',
@@ -831,15 +831,15 @@ ${svgThreeSystems()}
       {
         type:'info', typeLabel:'Psicoeducação',
         title:'Medo de sentir-se bem existe, e tem lógica',
-        content:`<p class="step-text">Parece contraditório, mas é comum e bem documentado: muitas pessoas têm <strong>medo das emoções positivas</strong> (Gilbert). O bem-estar dispara um alarme:</p>
+        content:`<p class="step-text">Parece contraditório, mas é mais comum do que parece: muitas pessoas têm <strong>medo das emoções positivas</strong> (Gilbert). O bem-estar dispara um alarme:</p>
 <div style="display:flex;flex-direction:column;gap:8px;margin:14px 0">
   <div class="tip coral" style="margin:0">"Se eu ficar muito feliz, <strong>algo ruim vai acontecer</strong>" (não posso baixar a guarda)</div>
   <div class="tip coral" style="margin:0">"Eu <strong>não mereço</strong> me sentir bem" (enquanto outros sofrem / com tudo que fiz)</div>
   <div class="tip coral" style="margin:0">"Sentir orgulho é <strong>se achar</strong>" (vão me julgar, vou atrair inveja)</div>
   <div class="tip coral" style="margin:0">"Descansar e aproveitar é <strong>perda de tempo</strong>" (só produção justifica existir)</div>
 </div>
-<p class="step-text">Essas crenças geralmente foram <strong>aprendidas como proteção</strong>: em algum momento, relaxar saiu caro, comemorar atraiu crítica, ou a alegria foi interrompida por algo doloroso. A crença virou um guarda na porta do jardim.</p>
-<div class="tip mint">O problema: a crença faz você <strong>evitar ou amortecer</strong> o bem-estar, e assim ela nunca é testada. O guarda nunca descobre que a guerra acabou. A saída não é discutir com a crença: é <strong>testá-la em experimentos pequenos e seguros</strong>.</div>`
+<p class="step-text">Muitas vezes essas crenças foram <strong>aprendidas como proteção</strong>: em algum momento, relaxar saiu caro, comemorar atraiu crítica, ou a alegria foi interrompida por algo doloroso. A crença virou um guarda na porta do jardim.</p>
+<div class="tip mint">O problema: a crença nos faz <strong>evitar ou amortecer</strong> o bem-estar, e assim ela nunca é testada. O guarda nunca descobre que a guerra acabou. A saída não é discutir com a crença: é <strong>testá-la em experimentos pequenos e seguros</strong>.</div>`
       },
       {
         type:'flipcard', typeLabel:'Cartas interativas',
@@ -857,7 +857,7 @@ ${svgThreeSystems()}
       {
         type:'info', typeLabel:'Método',
         title:'Como funciona um experimento comportamental',
-        content:`<p class="step-text">O experimento comportamental é a ferramenta mais poderosa da TCC, porque a mente acredita mais no que <strong>vive</strong> do que no que ouve. O ciclo tem 4 passos:</p>
+        content:`<p class="step-text">O experimento comportamental é uma das ferramentas centrais da TCC, porque a mente acredita mais no que <strong>vive</strong> do que no que ouve. O ciclo tem 4 passos:</p>
 <div class="ob-num-steps" style="margin:14px 0">
   <div class="ob-num-step">
     <div class="ob-num-circle" style="background:var(--coral-xl);color:var(--coral-d)">1</div>
@@ -876,7 +876,7 @@ ${svgThreeSystems()}
     <div class="ob-num-step-body"><strong>Revisão</strong><span>Compare com a previsão. A crença sobreviveu aos dados? O que isso muda?</span></div>
   </div>
 </div>
-<div class="tip lav">O <strong>Laboratório</strong> deste app (aba "Testar") faz exatamente esse ciclo: você escolhe um experimento, registra sua previsão, testa na vida real e compara. Spoiler dos estudos: a mente <strong>subestima sistematicamente</strong> o quanto essas experiências fazem bem.</div>`
+<div class="tip lav">O <strong>Laboratório</strong> deste app (aba "Testar") faz exatamente esse ciclo: você escolhe um experimento, registra sua previsão, testa na vida real e compara. Pesquisas sugerem que <strong>muitas vezes subestimamos</strong> o quanto essas experiências fazem bem.</div>`
       },
       {
         type:'fill', typeLabel:'Meu experimento',
@@ -906,7 +906,7 @@ ${svgThreeSystems()}
 <div class="emo-grid" style="grid-template-columns:1fr">
   <div class="emo-cell"><span class="emo-emoji">${ico('smile',20)}</span><div><div class="emo-name">P: Emoções Positivas</div><div class="emo-desc">Tudo que você treinou até aqui: notar, saborear, gratidão</div></div></div>
   <div class="emo-cell"><span class="emo-emoji">${ico('target',20)}</span><div><div class="emo-name">E: Engajamento</div><div class="emo-desc">Atividades que te absorvem por inteiro (flow)</div></div></div>
-  <div class="emo-cell"><span class="emo-emoji">${ico('users',20)}</span><div><div class="emo-name">R: Relacionamentos</div><div class="emo-desc">Um dos preditores mais consistentes de bem-estar nos estudos</div></div></div>
+  <div class="emo-cell"><span class="emo-emoji">${ico('users',20)}</span><div><div class="emo-name">R: Relacionamentos</div><div class="emo-desc">Associados de forma consistente ao bem-estar nos estudos</div></div></div>
   <div class="emo-cell"><span class="emo-emoji">${ico('compass',20)}</span><div><div class="emo-name">M: Significado (Meaning)</div><div class="emo-desc">Fazer parte de algo maior que você</div></div></div>
   <div class="emo-cell"><span class="emo-emoji">${ico('award',20)}</span><div><div class="emo-name">A: Realização (Accomplishment)</div><div class="emo-desc">Progredir em algo que importa, e reconhecer o progresso</div></div></div>
 </div>
@@ -2954,7 +2954,7 @@ function copyParticipantId(){
   } else { toast('Selecione o código e copie manualmente.'); }
 }
 /* Versão do app: mesma numeração do cache do service worker (sw.js) */
-const APP_VERSION = '26';
+const APP_VERSION = '27';
 async function renderAppVersion(){
   const el = document.getElementById('app-version-box'); if(!el) return;
   let status = '';

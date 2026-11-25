@@ -341,7 +341,7 @@ function svgCycleWorry(){
     <!-- Arrow left-top -->
     <path d="M60,118 Q90,70 90,45" fill="none" stroke="#A0ADB8" stroke-width="1.5" marker-end="url(#arrowM)" class="cycle-arrow"/>
   </svg>
-  <p style="font-size:12px;color:var(--muted);text-align:center;margin-top:8px;line-height:1.5">Cada etapa alimenta a próxima: perceber o ciclo é o primeiro passo para sair dele.</p>
+  <p style="font-size:12px;color:var(--muted);text-align:center;margin-top:8px;line-height:1.5">Cada etapa alimenta a próxima. Perceber o ciclo já é um primeiro passo.</p>
 </div>`;
 }
 
@@ -410,10 +410,10 @@ const MODULES = [
       {
         type:'info', typeLabel:'Psicoeducação',
         title:'O que são preocupações?',
-        content:`<p class="step-text">Preocupações são <strong>pensamentos verbais sobre ameaças futuras</strong>, o cérebro tentando antecipar e resolver problemas. Isso é evolutivamente inteligente.</p>
-<p class="step-text" style="margin-top:10px">O problema aparece quando o sistema de alerta fica <strong>hipersensível</strong>, disparando alarmes mesmo sem perigo real. O pensamento cria tensão no corpo, que o cérebro lê como "confirmação" do perigo.</p>
+        content:`<p class="step-text">Preocupar-se é <strong>pensar, em palavras, sobre o que pode dar errado lá na frente</strong>. É o cérebro tentando antecipar e resolver problemas, e isso tem uma função de proteção.</p>
+<p class="step-text" style="margin-top:10px">O problema aparece quando o alarme fica <strong>sensível demais</strong> e dispara sem perigo real. O pensamento cria tensão no corpo, e o cérebro lê essa tensão como confirmação de que há perigo. Muitas vezes é assim que o ciclo se fecha.</p>
 ${svgCycleWorry()}
-<div class="tip mint"><strong>Ideia central:</strong> Não é falta de força de vontade. É biologia. E biologia pode ser re-treinada.</div>`
+<div class="tip mint"><strong>Ideia central:</strong> Não é falta de força de vontade. É um alarme fazendo o trabalho dele, só que demais. E alarmes podem ser reajustados.</div>`
       },
       {
         type:'quiz', typeLabel:'Atividade',
@@ -452,12 +452,12 @@ ${svgCycleWorry()}
       {
         type:'info', typeLabel:'Psicoeducação',
         title:'Dois tipos de preocupação',
-        content:`<p class="step-text">O pesquisador Borkovec identificou uma distinção crucial entre dois tipos de preocupação:</p>
+        content:`<p class="step-text">O pesquisador Borkovec observou que há dois tipos de preocupação. Uma leva a uma ação e tem fim. A outra gira em círculos, sem sair do lugar: é a ruminação, ou seja, pensar em círculos.</p>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0">
   <div class="tip mint" style="margin:0"><strong>Produtiva</strong><br>Leva a uma ação. Tem fim. Ex.: "Tenho uma reunião amanhã: vou preparar os pontos principais."</div>
   <div class="tip coral" style="margin:0"><strong>Ruminação</strong><br>Circular, sem progresso. Ex.: "E se eu fizer feio? E se me julgarem? E se...?"</div>
 </div>
-<div class="tip amber"><strong>3 Perguntas-filtro de Borkovec:</strong><br>1. Estou chegando a alguma conclusão <em>nova</em>?<br>2. Estou planejando algo <em>concreto</em>?<br>3. Este pensamento está me <em>ajudando</em>?<br><br>Se as respostas forem "não", é ruminação. E ruminação não resolve nada.</div>`
+<div class="tip amber"><strong>3 Perguntas-filtro de Borkovec:</strong><br>1. Estou chegando a alguma conclusão <em>nova</em>?<br>2. Estou planejando algo <em>concreto</em>?<br>3. Este pensamento está me <em>ajudando</em>?<br><br>Se as respostas forem "não", talvez seja ruminação. E ruminar quase nunca resolve o que está preocupando.</div>`
       },
       {
         type:'flipcard', typeLabel:'🃏 Cartas interativas',
@@ -509,13 +509,13 @@ ${svgCycleWorry()}
       {
         type:'info', typeLabel:'Psicoeducação',
         title:'O que são metacognições?',
-        content:`<p class="step-text">Metacognições são <strong>crenças sobre os seus próprios pensamentos</strong>. São o motor da preocupação crônica.</p>
-<p class="step-text" style="margin-top:10px">Adrian Wells, criador da Terapia Metacognitiva (MCT), mostrou que não é o <em>conteúdo</em> da preocupação que causa mais sofrimento, é a <em>relação</em> que você tem com ela.</p>
+        content:`<p class="step-text">Metacognição é um nome difícil para algo cotidiano: <strong>o que pensamos sobre o nosso próprio pensar</strong>. Essas crenças costumam ser o motor da preocupação que não larga.</p>
+<p class="step-text" style="margin-top:10px">Adrian Wells, criador da Terapia Metacognitiva (MCT), observou que muitas vezes o que mais pesa não é o <em>conteúdo</em> da preocupação, e sim a <em>relação</em> que temos com ela.</p>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0">
-  <div class="tip lav" style="margin:0"><strong>Crenças positivas</strong><br>"Preocupar me ajuda a estar preparada"<br>"Se eu pensar em tudo, evito o pior"</div>
-  <div class="tip coral" style="margin:0"><strong>Crenças negativas</strong><br>"Não consigo controlar meus pensamentos"<br>"Me preocupar pode me deixar louca"</div>
+  <div class="tip lav" style="margin:0"><strong>Crenças positivas</strong><br>"Preocupar-me me ajuda a estar preparado/a"<br>"Se eu pensar em tudo, evito o pior"</div>
+  <div class="tip coral" style="margin:0"><strong>Crenças negativas</strong><br>"Não consigo controlar meus pensamentos"<br>"Me preocupar pode me fazer perder o controle"</div>
 </div>
-<div class="tip mint"><strong>Insight central:</strong> Ambos os tipos alimentam o ciclo. As positivas fazem você preocupar <em>de propósito</em>. As negativas fazem você ter medo <em>das preocupações em si</em>.</div>`
+<div class="tip mint"><strong>Insight central:</strong> As duas alimentam o ciclo. As positivas nos fazem preocupar <em>de propósito</em>. As negativas nos fazem ter medo <em>da própria preocupação</em>.</div>`
       },
       {
         type:'quiz', typeLabel:'Atividade',
@@ -553,16 +553,16 @@ ${svgCycleWorry()}
     steps:[
       {
         type:'info', typeLabel:'Psicoeducação',
-        title:'A técnica do Worry Time',
-        content:`<p class="step-text">Tentar <em>suprimir</em> preocupações faz o oposto: elas voltam mais fortes (efeito rebote, Wegner). A solução não é parar de pensar, é <strong>reorganizar quando você pensa</strong>.</p>
-<p class="step-text" style="margin-top:10px">O Tempo de Preocupação (Borkovec & Costello) é uma técnica com forte evidência científica:</p>
+        title:'A técnica do Tempo de Preocupação',
+        content:`<p class="step-text">Tentar <em>suprimir</em> preocupações costuma ter o efeito contrário: elas voltam mais fortes (efeito rebote, descrito por Wegner). Muitas vezes o caminho não é parar de pensar, e sim <strong>escolher quando pensar</strong>.</p>
+<p class="step-text" style="margin-top:10px">O Tempo de Preocupação (Borkovec & Costello) é uma técnica com base em pesquisa:</p>
 <div style="counter-reset:steps;display:flex;flex-direction:column;gap:8px;margin:14px 0">
   <div class="tip mint" style="margin:0"><strong>1. Defina um horário fixo</strong>: ex.: 17h, por 15-20 minutos. Não antes de dormir.</div>
   <div class="tip mint" style="margin:0"><strong>2. Fora do horário</strong>: quando surgir uma preocupação, diga: "Esse pensamento é válido. Vou guardar para as 17h." Anote brevemente se ajudar.</div>
   <div class="tip mint" style="margin:0"><strong>3. No horário</strong>: preocupe-se com intenção. Pense, escreva, encontre ações possíveis.</div>
   <div class="tip mint" style="margin:0"><strong>4. Encerre</strong>: ao acabar o tempo, feche mentalmente. Você cuidou disso.</div>
 </div>
-<div class="tip coral"><strong>Isso não é ignorar seus sentimentos.</strong> É dar a eles um espaço adequado, e proteger o restante do dia.</div>`
+<div class="tip coral"><strong>Isso não é ignorar o que sentimos.</strong> É dar à preocupação um espaço adequado e proteger o resto do dia.</div>`
       },
       {
         type:'guided', typeLabel:'Prática guiada',
@@ -575,7 +575,7 @@ ${svgCycleWorry()}
       },
       {
         type:'fill', typeLabel:'Comprometimento',
-        title:'Meu compromisso com o Worry Time',
+        title:'Meu compromisso com o Tempo de Preocupação',
         prompt:'Escreva: Qual horário você escolheu? Onde vai anotar as preocupações durante o dia? O que vai dizer a si mesmo/a quando surgir uma preocupação fora do horário?',
         placeholder:'Meu horário será às...\nVou anotar as preocupações em...\nQuando surgir fora do horário, vou dizer...',
         minChars:30
@@ -597,8 +597,8 @@ ${svgCycleWorry()}
       {
         type:'info', typeLabel:'Psicoeducação',
         title:'O sistema nervoso autônomo',
-        content:`<p class="step-text">Quando você se preocupa, o sistema nervoso <strong>simpático</strong> ativa o modo "luta ou fuga", coração acelera, músculos tensionam, respiração encurta. Isso é automático.</p>
-<p class="step-text" style="margin-top:10px">A boa notícia: a respiração é a <strong>única função autônoma que você controla conscientemente</strong>. Ao respirar devagar, você ativa o nervo vago e o sistema parassimpático.</p>
+        content:`<p class="step-text">Quando nos preocupamos, o corpo costuma entrar no modo <strong>"luta ou fuga"</strong> (sistema nervoso simpático): o coração acelera, os músculos tensionam, a respiração encurta. Isso é automático, e faz parte.</p>
+<p class="step-text" style="margin-top:10px">A boa notícia: a respiração é <strong>uma das poucas funções automáticas que podemos guiar</strong>. Respirar devagar ajuda o corpo a entrar no modo descanso (sistema parassimpático), pelo nervo vago.</p>
 ${svgANS()}`
       },
       {
@@ -636,15 +636,15 @@ ${svgANS()}`
       {
         type:'info', typeLabel:'Psicoeducação',
         title:'Pensamentos automáticos e distorções',
-        content:`<p class="step-text">Na TCC, identificamos que pensamentos automáticos negativos tendem a seguir padrões distorcidos. Reconhecê-los reduz seu poder.</p>
+        content:`<p class="step-text">Na TCC, observamos que os pensamentos automáticos costumam seguir padrões previsíveis, as chamadas distorções. Reconhecê-las tira parte do poder delas.</p>
 <div style="display:flex;flex-direction:column;gap:8px;margin:14px 0">
-  <div class="tip coral" style="margin:0"><strong>Catastrofização:</strong> "Com certeza vai dar errado e vai ser terrível."</div>
+  <div class="tip coral" style="margin:0"><strong>Catastrofização</strong> (imaginar sempre o pior): "Com certeza vai dar errado e vai ser terrível."</div>
   <div class="tip coral" style="margin:0"><strong>Leitura mental:</strong> "Todo mundo está me julgando."</div>
   <div class="tip coral" style="margin:0"><strong>Previsão do futuro:</strong> "Eu sei que vou fracassar."</div>
   <div class="tip coral" style="margin:0"><strong>Tudo ou nada:</strong> "Se não for perfeito, não presta."</div>
   <div class="tip coral" style="margin:0"><strong>Desconto do positivo:</strong> "Fui bem desta vez, mas foi sorte."</div>
 </div>
-<div class="tip mint"><strong>Objetivo:</strong> Não é <em>pensar positivo</em>, é pensar com <em>mais precisão e equilíbrio</em>. A realidade raramente é tão catastrófica quanto o pensamento ansioso sugere.</div>`
+<div class="tip mint"><strong>Objetivo:</strong> Não é <em>pensar positivo</em>, é pensar com <em>mais precisão e equilíbrio</em>. Muitas vezes a realidade é menos catastrófica do que o pensamento ansioso sugere.</div>`
       },
       {
         type:'quiz', typeLabel:'Atividade',
@@ -682,9 +682,9 @@ ${svgANS()}`
     steps:[
       {
         type:'info', typeLabel:'Psicoeducação',
-        title:'Fusão vs. desfusão cognitiva',
-        content:`<p class="step-text">Na <strong>fusão cognitiva</strong> (ACT, Hayes), você se torna o pensamento. O pensamento "Sou incompetente" vira verdade absoluta, não um evento mental.</p>
-<p class="step-text" style="margin-top:10px">Na <strong>desfusão</strong>, você cria distância: <em>"Estou tendo o pensamento de que sou incompetente."</em> Isso não muda o conteúdo, muda a relação com ele.</p>
+        title:'Tomar distância do pensamento (desfusão)',
+        content:`<p class="step-text">Quando estamos <strong>fundidos a um pensamento</strong>, ele deixa de ser uma frase que passou pela cabeça e vira fato: "Sou incompetente."</p>
+<p class="step-text" style="margin-top:10px">Na <strong>desfusão</strong> (ACT, Hayes), tomamos distância: <em>"Estou tendo o pensamento de que sou incompetente."</em> O conteúdo é o mesmo. O que muda é a relação com ele.</p>
 <div style="display:flex;flex-direction:column;gap:8px;margin:14px 0">
   <div class="tip lav" style="margin:0"><strong>Técnica 1: Nomeie o pensamento:</strong><br>"Estou tendo o pensamento de que..."</div>
   <div class="tip lav" style="margin:0"><strong>Técnica 2: Dê um nome à sua mente:</strong><br>"Lá vem o Rádio Catástrofe novamente..."</div>
@@ -725,10 +725,10 @@ ${svgANS()}`
       {
         type:'info', typeLabel:'Psicoeducação',
         title:'Os três sistemas de Gilbert',
-        content:`<p class="step-text">Paul Gilbert identificou três sistemas emocionais que todo ser humano possui. Na ansiedade, o sistema de <strong style="color:var(--coral-d)">Ameaça</strong> domina: é hiperativo, exigindo atenção constante.</p>
+        content:`<p class="step-text">Paul Gilbert descreve três sistemas emocionais que todos nós temos. Na ansiedade, o sistema de <strong style="color:var(--coral-d)">Ameaça</strong> costuma dominar: fica ativo demais, pedindo atenção o tempo todo.</p>
 ${svgThreeSystems()}
-<p class="step-text">A Terapia Focada na Compaixão (TFC/CFT) não tenta eliminar o sistema de Ameaça, ele é necessário. O objetivo é <strong>fortalecer o sistema Calmante</strong>, criando equilíbrio.</p>
-<div class="tip mint">O sistema calmante é ativado por: calor humano, toque gentil, respiração lenta, presença segura e, crucialmente, por como <strong>você fala consigo mesmo/a</strong>.</div>`
+<p class="step-text">A Terapia Focada na Compaixão (TFC/CFT) não tenta eliminar o sistema de Ameaça, que é necessário. Busca <strong>fortalecer o sistema Calmante</strong>, para criar equilíbrio.</p>
+<div class="tip mint">O sistema Calmante responde a calor humano, toque gentil, respiração lenta, presença segura e, muitas vezes, ao <strong>jeito como falamos com nós mesmos</strong>.<br><br><em>Você se trata com o mesmo carinho que trata quem você ama?</em></div>`
       },
       {
         type:'breath', typeLabel:'Respiração do ritmo calmante',
@@ -2012,7 +2012,7 @@ function renderAssessResult(){
   const a=D.assessment;
   const info={
     low:{title:'Preocupação mínima',icon:'',msg:'Pontuação '+a.score+'/21. As preocupações estão em um nível que não interfere significativamente no dia a dia.',rec:'Continue explorando os módulos e use o diário para monitorar os seus padrões.'},
-    mid:{title:'Preocupação leve',icon:'',msg:'Pontuação '+a.score+'/21. As preocupações têm algum impacto no cotidiano. Há ferramentas eficazes.',rec:'Os módulos 4 (Worry Time) e 6 (Reestruturação) são especialmente indicados.'},
+    mid:{title:'Preocupação leve',icon:'',msg:'Pontuação '+a.score+'/21. As preocupações têm algum impacto no cotidiano. Há ferramentas eficazes.',rec:'Os módulos 4 (Tempo de Preocupação) e 6 (Reestruturação) são especialmente indicados.'},
     hi:{title:'Preocupação moderada',icon:'',msg:'Pontuação '+a.score+'/21. As preocupações parecem causar impacto significativo. Este app pode ser apoio, mas considere consultar um profissional.',rec:'O app pode complementar o atendimento profissional. Módulo 5 (Regulação) e 8 (TFC) podem ajudar agora.'},
     sev:{title:'Preocupação severa',icon:'',msg:'Pontuação '+a.score+'/21. Este nível sugere um sofrimento intenso, e ninguém deveria atravessá-lo sem apoio.',rec:'Recomendamos fortemente procurar um/a psicólogo/a ou o CAPS da sua cidade. O app continua aqui como complemento, Módulo 5 (Regulação) pode ajudar nos momentos agudos.'},
   }[a.level] || {title:'Avaliação',icon:'',msg:'Pontuação '+a.score+'/21.',rec:''};
@@ -2436,7 +2436,7 @@ function renderHomeMore(){
    duplica a probabilidade de executar o comportamento planeado */
 const IFTHEN_PLANS = [
   'Quando eu notar a preocupação a crescer, vou <strong>respirar fundo 3 vezes</strong> antes de reagir.',
-  'Quando um pensamento "e se..." aparecer, vou <strong>anotá-lo e adiá-lo para o meu Worry Time</strong>.',
+  'Quando um pensamento "e se..." aparecer, vou <strong>anotá-lo e adiá-lo para o meu Tempo de Preocupação</strong>.',
   'Quando o corpo ficar tenso, vou <strong>soltar os ombros e desacelerar a expiração</strong>.',
   'Quando eu me pegar ruminando, vou <strong>nomear: "isto é só um pensamento"</strong> e voltar ao presente.',
 ];
