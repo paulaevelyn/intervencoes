@@ -1,7 +1,7 @@
 /* ════════════════════════════════════════════════════════
-   Floresça — Cultivando Emoções Positivas · app.js v1
+   Floresça: Cultivando Emoções Positivas · app.js v1
    Gameful Learning · pt-BR · Psicologia Positiva · TFC · TCC · COM-B
-   © 2026 Psicoterapia e Afins — psicoterapiaeafins.com.br
+   © 2026 Psicoterapia e Afins: psicoterapiaeafins.com.br
    ════════════════════════════════════════════════════════ */
 'use strict';
 
@@ -25,7 +25,7 @@ const BRAND_FOOTER_HTML = `
     <img src="../logos/floresca.svg" alt="Floresça" width="150" style="display:block">
   </div>
   <div style="font-size:12px;color:#5A6B65;line-height:1.65;border-top:1px solid rgba(94,125,115,.15);padding-top:10px">
-    <strong>Recurso psicoeducativo</strong> — não substitui acompanhamento psicológico profissional.<br>
+    <strong>Recurso psicoeducativo</strong>, não substitui acompanhamento psicológico profissional.<br>
     <a href="https://www.psicoterapiaeafins.com.br" target="_blank" style="color:#3D5A52;font-weight:700;text-decoration:none">psicoterapiaeafins.com.br</a>
     &nbsp;·&nbsp;
     <a href="https://www.instagram.com/psicoterapiaeafins" target="_blank" style="color:#A34A45;font-weight:700;text-decoration:none">@psicoterapiaeafins</a>
@@ -37,7 +37,7 @@ const BRAND_FOOTER_HTML = `
 </div>`;
 
 /* ══════════════════════════════════
-   ÍCONES — traço fino (1.5px), cantos arredondados, estilo Lucide
+   ÍCONES: traço fino (1.5px), cantos arredondados, estilo Lucide
    Direção do design system: leves, lineares, sem preenchimento.
    ══════════════════════════════════ */
 const ICONS = {
@@ -100,7 +100,7 @@ let D = {
   badges: [],
   obDone: false,
   obLevel: 0,
-  userProfile: null,    // { onboardingPath: 0|1|2 } — definido ao responder obs5
+  userProfile: null,    // { onboardingPath: 0|1|2 }, definido ao responder obs5
   moduleProgress: {},   // { m1: { steps: [true,false,...], done: false } }
   entries: [],          // registro de momentos positivos
   experiments: [],      // execuções de experimentos { id, expId, ts, date, predicted, predictNote, status, actual, noticed, tsDone }
@@ -190,12 +190,12 @@ function supportCardHTML(){
       e procurá-la é um ato de coragem, não de fraqueza.
     </div>
     <div class="crisis-resources">
-      <a href="tel:188" class="crisis-res"><span>${ico('phone',22)}</span><div><strong>CVV — 188</strong><small>Ligação gratuita, 24h, todos os dias</small></div></a>
-      <a href="https://www.cvv.org.br" target="_blank" class="crisis-res"><span>${ico('message',22)}</span><div><strong>Chat do CVV</strong><small>cvv.org.br — conversa por escrito</small></div></a>
+      <a href="tel:188" class="crisis-res"><span>${ico('phone',22)}</span><div><strong>CVV: 188</strong><small>Ligação gratuita, 24h, todos os dias</small></div></a>
+      <a href="https://www.cvv.org.br" target="_blank" class="crisis-res"><span>${ico('message',22)}</span><div><strong>Chat do CVV</strong><small>cvv.org.br: conversa por escrito</small></div></a>
       <div class="crisis-res"><span>${ico('building',22)}</span><div><strong>CAPS ou UBS</strong><small>Atendimento gratuito pelo SUS na sua cidade</small></div></div>
-      <div class="crisis-res"><span>${ico('alert',22)}</span><div><strong>SAMU — 192</strong><small>Em emergência, ligue imediatamente</small></div></div>
-      <a href="tel:988" class="crisis-res"><span>${ico('globe',22)}</span><div><strong>EUA e Canadá — 988</strong><small>Linha de crise e prevenção do suicídio, ligação ou SMS, 24h. Emergência: 911</small></div></a>
-      <a href="tel:024" class="crisis-res"><span>${ico('globe',22)}</span><div><strong>Espanha — 024</strong><small>Linha de atenção ao comportamento suicida, 24h. Emergência: 112</small></div></a>
+      <div class="crisis-res"><span>${ico('alert',22)}</span><div><strong>SAMU: 192</strong><small>Em emergência, ligue imediatamente</small></div></div>
+      <a href="tel:988" class="crisis-res"><span>${ico('globe',22)}</span><div><strong>EUA e Canadá: 988</strong><small>Linha de crise e prevenção do suicídio, ligação ou SMS, 24h. Emergência: 911</small></div></a>
+      <a href="tel:024" class="crisis-res"><span>${ico('globe',22)}</span><div><strong>Espanha: 024</strong><small>Linha de atenção ao comportamento suicida, 24h. Emergência: 112</small></div></a>
       <div class="crisis-res"><span>${ico('globe',22)}</span><div><strong>Em outro país</strong><small>Ligue para o número de emergência local (112 na Europa)</small></div></div>
     </div>
   </div>`;
@@ -225,7 +225,7 @@ const DOSE_TAGS = ['Notei','Saboreei','Agradeci','Me acalmei',
   'Testei uma crença','Compartilhei algo bom','Reconheci meu esforço','Planejei algo bom'];
 
 /* ══════════════════════════════════
-   XP / LEVEL SYSTEM — crescimento da planta
+   XP / LEVEL SYSTEM: crescimento da planta
    ══════════════════════════════════ */
 const LEVELS = [
   { n:1, name:'Semente',        emoji:'', min:0,   max:100  },
@@ -284,7 +284,7 @@ function calcTotalDays(){
 }
 
 /* ══════════════════════════════════
-   JARDIM VISUAL — substitui XP e níveis
+   JARDIM VISUAL: substitui XP e níveis
    Cada emoção positiva vira uma planta. Ela avança quando a pessoa
    registra, em dias diferentes, um momento com aquela emoção
    (no máximo um avanço por dia). Nada encolhe nem murcha.
@@ -426,7 +426,7 @@ function svgBroaden(){
     <text x="52" y="147" text-anchor="middle" font-size="9" fill="#A34A45" font-family="Poppins,sans-serif">amortece as quedas</text>
     <path d="M60,118 Q90,70 90,45" fill="none" stroke="#A0ADB8" stroke-width="1.5" marker-end="url(#arrowJ)"/>
   </svg>
-  <p style="font-size:12px;color:var(--muted);text-align:center;margin-top:8px;line-height:1.5">Cada volta da espiral deixa você com <strong>mais recursos</strong> do que tinha antes — mesmo depois que a emoção passa.</p>
+  <p style="font-size:12px;color:var(--muted);text-align:center;margin-top:8px;line-height:1.5">Cada volta da espiral deixa você com <strong>mais recursos</strong> do que tinha antes: mesmo depois que a emoção passa.</p>
 </div>`;
 }
 
@@ -445,7 +445,7 @@ function svgNegativityBias(){
     </div>
   </div>
   <div style="background:var(--white);border-radius:10px;padding:10px 12px;margin-top:10px;font-size:12px;color:var(--muted);line-height:1.6;border-left:3px solid var(--mint)">
-    Isso é o <strong style="color:var(--mint-d)">viés de negatividade</strong> — uma herança evolutiva. Quem notava o perigo sobrevivia. Notar o bom não era urgente. Por isso, cultivar o positivo exige <strong>intenção</strong>.
+    Isso é o <strong style="color:var(--mint-d)">viés de negatividade</strong>, uma herança evolutiva. Quem notava o perigo sobrevivia. Notar o bom não era urgente. Por isso, cultivar o positivo exige <strong>intenção</strong>.
   </div>
 </div>`;
 }
@@ -470,7 +470,7 @@ function svgThreeSystems(){
     <text x="150" y="101" text-anchor="middle" font-size="9" fill="#3D5A52" font-family="Poppins,sans-serif">contentamento · segurança</text>
     <text x="150" y="113" text-anchor="middle" font-size="9" fill="#3D5A52" font-family="Poppins,sans-serif">pertencimento · calor</text>
   </svg>
-  <p style="font-size:12px;color:var(--muted);text-align:center;margin-top:8px;line-height:1.5">Vivemos alternando entre <strong style="color:#A34A45">Ameaça</strong> e <strong style="color:#7A4A10">Conquista</strong>. O sistema <strong style="color:#3D5A52">Calmante</strong> — fonte do contentamento — costuma ser o mais esquecido.</p>
+  <p style="font-size:12px;color:var(--muted);text-align:center;margin-top:8px;line-height:1.5">Vivemos alternando entre <strong style="color:#A34A45">Ameaça</strong> e <strong style="color:#7A4A10">Conquista</strong>. O sistema <strong style="color:#3D5A52">Calmante</strong>, fonte do contentamento: costuma ser o mais esquecido.</p>
 </div>`;
 }
 
@@ -482,7 +482,7 @@ function emoGridHTML(){
 }
 
 /* ══════════════════════════════════
-   MODULE DATA — 8 canteiros
+   MODULE DATA, 8 canteiros
    ══════════════════════════════════ */
 const MODULES = [
   /* ─────────────────────────────────────────
@@ -498,12 +498,12 @@ const MODULES = [
     steps:[
       {
         type:'info', typeLabel:'Psicoeducação',
-        title:'Seu cérebro tem um viés — e não é culpa sua',
-        content:`<p class="step-text">Se você sente que as coisas ruins do dia ocupam mais espaço na cabeça do que as boas, você está certo/a — e isso tem nome.</p>
+        title:'Seu cérebro tem um viés, e não é culpa sua',
+        content:`<p class="step-text">Se você sente que as coisas ruins do dia ocupam mais espaço na cabeça do que as boas, você está certo/a, e isso tem nome.</p>
 ${svgNegativityBias()}
 <p class="step-text" style="margin-top:10px">A boa notícia vem da pesquisadora <strong>Barbara Fredrickson</strong>: emoções positivas não servem só para "sentir-se bem". A teoria <em>Broaden-and-Build</em> (ampliar e construir), com décadas de evidência, mostra que elas têm uma função evolutiva poderosa:</p>
 ${svgBroaden()}
-<div class="tip mint"><strong>Ideia central:</strong> Emoções difíceis estreitam o foco para sobreviver ao agora. Emoções positivas <strong>ampliam a mente e constroem recursos duráveis</strong> — criatividade, vínculos, saúde, resiliência. Cultivá-las é um investimento, não um luxo.</div>`
+<div class="tip mint"><strong>Ideia central:</strong> Emoções difíceis estreitam o foco para sobreviver ao agora. Emoções positivas <strong>ampliam a mente e constroem recursos duráveis</strong>, criatividade, vínculos, saúde, resiliência. Cultivá-las é um investimento, não um luxo.</div>`
       },
       {
         type:'quiz', typeLabel:'Atividade',
@@ -513,22 +513,22 @@ ${svgBroaden()}
           { text:'Substituir e eliminar as emoções negativas', correct:false },
           { text:'Ampliar a mente e construir recursos duráveis (vínculos, ideias, resiliência)', correct:true },
           { text:'Mostrar aos outros que estamos bem', correct:false },
-          { text:'Nenhuma — são apenas um efeito colateral agradável', correct:false },
+          { text:'Nenhuma: são apenas um efeito colateral agradável', correct:false },
         ],
-        feedbackOk:'Exato! Emoções positivas ampliam a atenção e o pensamento no momento — e, repetidas ao longo do tempo, constroem recursos que ficam com você mesmo depois que a emoção passa.',
-        feedbackNo:'Quase! Emoções positivas não existem para eliminar as negativas (todas têm função). Elas <strong>ampliam a mente e constroem recursos duráveis</strong> — essa é a descoberta central de Fredrickson.'
+        feedbackOk:'Isso mesmo. Emoções positivas ampliam a atenção e o pensamento no momento, e, repetidas ao longo do tempo, constroem recursos que ficam com você mesmo depois que a emoção passa.',
+        feedbackNo:'Quase. Emoções positivas não existem para eliminar as negativas (todas têm função). Elas <strong>ampliam a mente e constroem recursos duráveis</strong>, essa é a descoberta central de Fredrickson.'
       },
       {
         type:'flipcard', typeLabel:'Cartas interativas',
         title:'Mito ou fato? Vire as cartas',
         hint:'Toque em cada carta para revelar o que a ciência diz.',
         cards:[
-          { front:'"Cultivar emoções positivas é fingir que está tudo bem"', back:'Mito — isso seria positividade tóxica. Cultivar o positivo é ADICIONAR, não negar. As emoções difíceis continuam válidas.', color:'coral' },
-          { front:'"Felicidade é questão de sorte ou genética"', back:'Em parte — mas uma fatia importante do bem-estar responde a atividades intencionais (Lyubomirsky). É treinável.', color:'mint' },
-          { front:'"Preciso resolver todos os problemas antes de me permitir sentir bem"', back:'Mito — é o contrário: emoções positivas RECUPERAM o corpo do estresse (efeito undo) e ajudam a resolver melhor.', color:'coral' },
-          { front:'"Emoções positivas duram pouco"', back:'Fato — e é por isso que notar e saborear importam tanto. O efeito delas é cumulativo, como regar uma planta.', color:'mint' },
-          { front:'"Pessoas resilientes sentem menos emoções negativas"', back:'Mito — elas sentem as negativas TAMBÉM, mas mantêm acesso às positivas durante a adversidade. É isso que amortece.', color:'coral' },
-          { front:'"Sentir alegria em tempos difíceis é falta de respeito"', back:'Mito — no luto e na crise, momentos de leveza são combustível para aguentar. Não é traição, é sustento.', color:'mint' },
+          { front:'"Cultivar emoções positivas é fingir que está tudo bem"', back:'Mito: isso seria positividade tóxica. Cultivar o positivo é ADICIONAR, não negar. As emoções difíceis continuam válidas.', color:'coral' },
+          { front:'"Felicidade é questão de sorte ou genética"', back:'Em parte: mas uma fatia importante do bem-estar responde a atividades intencionais (Lyubomirsky). É treinável.', color:'mint' },
+          { front:'"Preciso resolver todos os problemas antes de me permitir sentir bem"', back:'Mito: é o contrário. Emoções positivas RECUPERAM o corpo do estresse (efeito undo) e ajudam a resolver melhor.', color:'coral' },
+          { front:'"Emoções positivas duram pouco"', back:'Fato: e é por isso que notar e saborear importam tanto. O efeito delas é cumulativo, como regar uma planta.', color:'mint' },
+          { front:'"Pessoas resilientes sentem menos emoções negativas"', back:'Mito: elas sentem as negativas TAMBÉM, mas mantêm acesso às positivas durante a adversidade. É isso que amortece.', color:'coral' },
+          { front:'"Sentir alegria em tempos difíceis é falta de respeito"', back:'Mito: no luto e na crise, momentos de leveza são combustível para aguentar. Não é traição, é sustento.', color:'mint' },
         ]
       },
       {
@@ -542,7 +542,7 @@ ${svgBroaden()}
   },
 
   /* ─────────────────────────────────────────
-     M2: O repertório — 10 emoções positivas
+     M2: O repertório, 10 emoções positivas
      ───────────────────────────────────────── */
   {
     id:'m2', color:'lav', emoji:'', ico:'palette',
@@ -555,22 +555,22 @@ ${svgBroaden()}
       {
         type:'info', typeLabel:'Psicoeducação',
         title:'Granularidade: o vocabulário do sentir',
-        content:`<p class="step-text">A neurocientista <strong>Lisa Feldman Barrett</strong> descobriu algo curioso: pessoas que nomeiam suas emoções com <em>precisão</em> ("estou sentindo serenidade", em vez de só "estou bem") regulam melhor o que sentem — e sentem com mais riqueza.</p>
+        content:`<p class="step-text">A neurocientista <strong>Lisa Feldman Barrett</strong> descobriu algo curioso: pessoas que nomeiam suas emoções com <em>precisão</em> ("estou sentindo serenidade", em vez de só "estou bem") regulam melhor o que sentem, e sentem com mais riqueza.</p>
 <p class="step-text" style="margin-top:10px">Isso se chama <strong>granularidade emocional</strong>. E funciona como paladar: quem só conhece "doce e salgado" sente menos sabores do que quem reconhece nuances. Conheça as <strong>10 emoções positivas mais estudadas</strong> (Fredrickson):</p>
 ${emoGridHTML()}
-<div class="tip lav">Repare: só 2 ou 3 delas são "animadas". A maioria é <strong>sutil e silenciosa</strong> — serenidade, gratidão, admiração. Se você só procura euforia, deixa 80% do repertório passar.</div>`
+<div class="tip lav">Repare: só 2 ou 3 delas são "animadas". A maioria é <strong>sutil e silenciosa</strong>, serenidade, gratidão, admiração. Se você só procura euforia, deixa 80% do repertório passar.</div>`
       },
       {
         type:'flipcard', typeLabel:'Cartas interativas',
         title:'Que emoção é essa?',
         hint:'Leia a cena e tente nomear a emoção antes de virar a carta.',
         cards:[
-          { front:'Você olha o mar à noite e se sente pequeno/a — de um jeito bom.', back:'Admiração (awe) — a emoção diante do que é vasto. Expande a noção de tempo e reduz a ruminação.', color:'mint' },
-          { front:'Alguém segurou o elevador para você e sorriu.', back:'Amor — micro-momento de conexão. Para o cérebro, conexão breve e genuína já conta.', color:'coral' },
-          { front:'Domingo de manhã, café pronto, nada urgente para fazer.', back:'Serenidade — a emoção do "está tudo bem agora". Baixa ativação, alto valor.', color:'mint' },
-          { front:'Você assiste a um vídeo de alguém superando algo enorme.', back:'Inspiração — testemunhar excelência humana desperta vontade de crescer.', color:'coral' },
-          { front:'Você terminou algo difícil que vinha adiando.', back:'Orgulho — reconhecer o próprio esforço. Não é arrogância: é combustível de motivação.', color:'mint' },
-          { front:'Você já imagina a viagem do próximo mês.', back:'Esperança + antecipação — saborear o futuro também é emoção positiva no presente.', color:'coral' },
+          { front:'Você olha o mar à noite e se sente pequeno/a, de um jeito bom.', back:'Admiração (awe): a emoção diante do que é vasto. Expande a noção de tempo e reduz a ruminação.', color:'mint' },
+          { front:'Alguém segurou o elevador para você e sorriu.', back:'Amor: micro-momento de conexão. Para o cérebro, conexão breve e genuína já conta.', color:'coral' },
+          { front:'Domingo de manhã, café pronto, nada urgente para fazer.', back:'Serenidade: a emoção do "está tudo bem agora". Baixa ativação, alto valor.', color:'mint' },
+          { front:'Você assiste a um vídeo de alguém superando algo enorme.', back:'Inspiração: testemunhar excelência humana desperta vontade de crescer.', color:'coral' },
+          { front:'Você terminou algo difícil que vinha adiando.', back:'Orgulho: reconhecer o próprio esforço. Não é arrogância: é combustível de motivação.', color:'mint' },
+          { front:'Você já imagina a viagem do próximo mês.', back:'Esperança + antecipação: saborear o futuro também é emoção positiva no presente.', color:'coral' },
         ]
       },
       {
@@ -579,12 +579,12 @@ ${emoGridHTML()}
         instruction:'Emoções positivas vêm em dois "volumes": as expansivas (alta energia) e as tranquilas (baixa energia). Classifique:',
         btnA:'Expansiva', btnB:'Tranquila',
         items:[
-          { text:'Diversão — rir alto com amigos', cat:'u', label:'Expansiva — alta energia' },
-          { text:'Serenidade — paz de um fim de tarde', cat:'n', label:'Tranquila — baixa energia' },
-          { text:'Alegria — receber uma ótima notícia', cat:'u', label:'Expansiva — alta energia' },
-          { text:'Gratidão — reconhecer o que se recebeu', cat:'n', label:'Tranquila — baixa energia' },
-          { text:'Inspiração — vontade de criar agora', cat:'u', label:'Expansiva — alta energia' },
-          { text:'Contentamento — "não falta nada agora"', cat:'n', label:'Tranquila — baixa energia' },
+          { text:'Diversão: rir alto com amigos', cat:'u', label:'Expansiva: alta energia' },
+          { text:'Serenidade: paz de um fim de tarde', cat:'n', label:'Tranquila: baixa energia' },
+          { text:'Alegria: receber uma ótima notícia', cat:'u', label:'Expansiva: alta energia' },
+          { text:'Gratidão: reconhecer o que se recebeu', cat:'n', label:'Tranquila: baixa energia' },
+          { text:'Inspiração: vontade de criar agora', cat:'u', label:'Expansiva: alta energia' },
+          { text:'Contentamento, "não falta nada agora"', cat:'n', label:'Tranquila: baixa energia' },
         ]
       },
       {
@@ -598,7 +598,7 @@ ${emoGridHTML()}
   },
 
   /* ─────────────────────────────────────────
-     M3: Notar — o radar do positivo
+     M3: Notar: o radar do positivo
      ───────────────────────────────────────── */
   {
     id:'m3', color:'amber', emoji:'', ico:'search',
@@ -611,22 +611,22 @@ ${emoGridHTML()}
       {
         type:'info', typeLabel:'Psicoeducação',
         title:'O que você procura, você encontra',
-        content:`<p class="step-text">A atenção funciona como um holofote: ilumina uma coisa e deixa o resto no escuro. O viés de negatividade aponta esse holofote para problemas — <strong>automaticamente</strong>.</p>
-<p class="step-text" style="margin-top:10px">Mas holofotes podem ser redirecionados. Uma das práticas mais estudadas para isso chama-se <strong>Três Coisas Boas</strong> (Seligman): anotar, no fim do dia, 3 coisas que foram bem — e <em>por que</em> foram bem.</p>
-<div class="tip amber"><strong>A evidência:</strong> No estudo original, uma semana desta prática aumentou felicidade e reduziu sintomas depressivos por até <strong>6 meses</strong>. Não porque o dia melhora — mas porque o radar aprende a captar o que antes passava batido.</div>
+        content:`<p class="step-text">A atenção funciona como um holofote: ilumina uma coisa e deixa o resto no escuro. O viés de negatividade aponta esse holofote para problemas, <strong>automaticamente</strong>.</p>
+<p class="step-text" style="margin-top:10px">Mas holofotes podem ser redirecionados. Uma das práticas mais estudadas para isso chama-se <strong>Três Coisas Boas</strong> (Seligman): anotar, no fim do dia, 3 coisas que foram bem, e <em>por que</em> foram bem.</p>
+<div class="tip amber"><strong>A evidência:</strong> No estudo original, uma semana desta prática aumentou felicidade e reduziu sintomas depressivos por até <strong>6 meses</strong>. Não porque o dia melhora, mas porque o radar aprende a captar o que antes passava batido.</div>
 <div style="display:flex;flex-direction:column;gap:8px;margin:14px 0">
   <div class="tip mint" style="margin:0"><strong>Vale notar:</strong> o café que estava bom · o ônibus que passou na hora · a mensagem de alguém · 10 minutos de silêncio · você ter feito algo apesar do cansaço</div>
   <div class="tip coral" style="margin:0"><strong>Armadilha comum:</strong> esperar coisas GRANDES. Quem só registra promoções e viagens registra 3 vezes por ano. O treino é com o pequeno e cotidiano.</div>
 </div>
-<p class="step-text">É exatamente para isso que existe o botão <strong>Registrar</strong> aqui do app — seu caderno de jardineiro/a.</p>`
+<p class="step-text">É exatamente para isso que existe o botão <strong>Registrar</strong> aqui do app: seu caderno de jardineiro/a.</p>`
       },
       {
         type:'guided', typeLabel:'Prática guiada',
-        title:'Caça ao positivo — agora mesmo',
+        title:'Caça ao positivo: agora mesmo',
         phases:[
-          { num:'Passo 1', title:'Ao seu redor', text:'Olhe ao redor, agora, e encontre <strong>uma coisa agradável aos sentidos</strong> que você não tinha notado.<br><br>Uma cor, a luz entrando, uma textura, um som distante, o cheiro do ambiente.<br><br>Fique 15 segundos só com ela. Não precisa ser especial — precisa ser <em>notada</em>.', btn:'Encontrei' },
-          { num:'Passo 2', title:'Nas últimas 24 horas', text:'Agora escaneie o seu ontem e hoje: <strong>o que foi bem?</strong> Mesmo pequeno.<br><br>Encontrou? Agora reviva por 20 segundos: onde você estava, o que sentiu no corpo, quem estava junto.<br><br>Reviver com detalhes é o que grava a memória — o cérebro re-sente o que você re-visita.', btn:'Revivi' },
-          { num:'Passo 3', title:'Em você', text:'A parte mais difícil do radar: apontar para dentro.<br><br>Note <strong>uma coisa em você</strong> — um esforço que você fez, uma qualidade que apareceu, algo que você aguentou.<br><br>Diga mentalmente, como um fato: <em>"Hoje eu [fiz/fui/aguentei]..."</em><br><br>Tire uma "foto mental" desse reconhecimento.', btn:'Concluído ✓' },
+          { num:'Passo 1', title:'Ao seu redor', text:'Olhe ao redor, agora, e encontre <strong>uma coisa agradável aos sentidos</strong> que você não tinha notado.<br><br>Uma cor, a luz entrando, uma textura, um som distante, o cheiro do ambiente.<br><br>Fique 15 segundos só com ela. Não precisa ser especial, precisa ser <em>notada</em>.', btn:'Encontrei' },
+          { num:'Passo 2', title:'Nas últimas 24 horas', text:'Agora escaneie o seu ontem e hoje: <strong>o que foi bem?</strong> Mesmo pequeno.<br><br>Encontrou? Agora reviva por 20 segundos: onde você estava, o que sentiu no corpo, quem estava junto.<br><br>Reviver com detalhes é o que grava a memória, o cérebro re-sente o que você re-visita.', btn:'Revivi' },
+          { num:'Passo 3', title:'Em você', text:'A parte mais difícil do radar: apontar para dentro.<br><br>Note <strong>uma coisa em você</strong>, um esforço que você fez, uma qualidade que apareceu, algo que você aguentou.<br><br>Diga mentalmente, como um fato: <em>"Hoje eu [fiz/fui/aguentei]..."</em><br><br>Tire uma "foto mental" desse reconhecimento.', btn:'Concluído ✓' },
         ]
       },
       {
@@ -635,17 +635,17 @@ ${emoGridHTML()}
         question:'A prática das Três Coisas Boas pede para ESCREVER, não só pensar. Por quê?',
         opts:[
           { text:'Porque pensar não tem nenhum efeito', correct:false },
-          { text:'Escrever exige atenção sustentada e elaboração — o que consolida a memória e treina o radar', correct:true },
+          { text:'Escrever exige atenção sustentada e elaboração, o que consolida a memória e treina o radar', correct:true },
           { text:'Para ter provas de que o dia foi bom', correct:false },
           { text:'Porque escrever dá mais trabalho e esforço sempre é melhor', correct:false },
         ],
-        feedbackOk:'Isso! Escrever obriga a mente a segurar o momento por mais tempo e a elaborá-lo ("por que isso foi bom?"). É essa demora + elaboração que muda o padrão de atenção.',
-        feedbackNo:'Pensar ajuda, mas escrever exige <strong>atenção sustentada e elaboração</strong> — a mente segura o momento por mais tempo, e é isso que consolida a memória e re-treina o radar.'
+        feedbackOk:'Isso mesmo. Escrever obriga a mente a segurar o momento por mais tempo e a elaborá-lo ("por que isso foi bom?"). É essa demora + elaboração que muda o padrão de atenção.',
+        feedbackNo:'Pensar ajuda, mas escrever exige <strong>atenção sustentada e elaboração</strong>, a mente segura o momento por mais tempo, e é isso que consolida a memória e re-treina o radar.'
       },
       {
         type:'fill', typeLabel:'Design de hábito',
         title:'Quando o seu radar vai ligar?',
-        prompt:'Hábitos precisam de âncora (COM-B: criar oportunidade). Complete o plano:\n\n"Depois de [algo que já faço todo dia — ex.: escovar os dentes à noite, deitar na cama, almoçar], vou abrir o Floresça e registrar 1 momento bom do dia."\n\nOnde o celular vai estar nesse momento? O que pode atrapalhar, e como resolver?',
+        prompt:'Hábitos precisam de âncora (COM-B: criar oportunidade). Complete o plano:\n\n"Depois de [algo que já faço todo dia, ex.: escovar os dentes à noite, deitar na cama, almoçar], vou abrir o Floresça e registrar 1 momento bom do dia."\n\nOnde o celular vai estar nesse momento? O que pode atrapalhar, e como resolver?',
         placeholder:'Depois de..., vou registrar 1 momento bom.\nO celular estará...\nSe eu esquecer, vou...',
         minChars:30
       }
@@ -666,23 +666,23 @@ ${emoGridHTML()}
       {
         type:'info', typeLabel:'Psicoeducação',
         title:'Savoring: a arte de ficar no momento bom',
-        content:`<p class="step-text">Notar é o primeiro passo. <strong>Saborear</strong> (savoring — Bryant & Veroff) é o segundo: a capacidade de <em>amplificar e prolongar</em> a experiência positiva, em vez de deixá-la escorregar.</p>
+        content:`<p class="step-text">Notar é o primeiro passo. <strong>Saborear</strong> (savoring, Bryant & Veroff) é o segundo: a capacidade de <em>amplificar e prolongar</em> a experiência positiva, em vez de deixá-la escorregar.</p>
 <p class="step-text" style="margin-top:10px">E aqui está o segredo que quase ninguém usa: dá para saborear em <strong>três tempos</strong>:</p>
 <div style="display:flex;flex-direction:column;gap:8px;margin:14px 0">
-  <div class="tip coral" style="margin:0"><strong>Presente</strong> — absorção total: desacelerar, usar os sentidos, expressar a emoção (sorrir, dizer em voz alta "que bom isso").</div>
-  <div class="tip amber" style="margin:0"><strong>Passado</strong> — reminiscência: revisitar memórias boas com detalhes. Fotos, cheiros e músicas são portais.</div>
-  <div class="tip lav" style="margin:0"><strong>Futuro</strong> — antecipação: planejar algo bom e saboreá-lo ANTES de acontecer. Metade do prazer da viagem acontece antes da viagem.</div>
+  <div class="tip coral" style="margin:0"><strong>Presente</strong>: absorção total: desacelerar, usar os sentidos, expressar a emoção (sorrir, dizer em voz alta "que bom isso").</div>
+  <div class="tip amber" style="margin:0"><strong>Passado</strong>: reminiscência: revisitar memórias boas com detalhes. Fotos, cheiros e músicas são portais.</div>
+  <div class="tip lav" style="margin:0"><strong>Futuro</strong>: antecipação: planejar algo bom e saboreá-lo ANTES de acontecer. Metade do prazer da viagem acontece antes da viagem.</div>
 </div>
-<div class="tip mint">E o inimigo do sabor tem nome: <strong>amortecimento</strong> (dampening). São os pensamentos que apagam o momento bom: <em>"não mereço", "vai acabar logo", "foi só sorte"</em> — e o hábito de estar no celular enquanto a vida boa acontece. Vamos treinar para reconhecê-los.</div>`
+<div class="tip mint">E o inimigo do sabor tem nome: <strong>amortecimento</strong> (dampening). São os pensamentos que apagam o momento bom: <em>"não mereço", "vai acabar logo", "foi só sorte"</em>, e o hábito de estar no celular enquanto a vida boa acontece. Vamos treinar para reconhecê-los.</div>`
       },
       {
         type:'guided', typeLabel:'Prática guiada',
-        title:'Saborear em 2 minutos — agora',
+        title:'Saborear em 2 minutos: agora',
         phases:[
           { num:'Fase 1', title:'Escolha algo para saborear', text:'Escolha UMA coisa agradável disponível agora: um gole de café ou água, uma música, a vista da janela, uma memória boa recente.<br><br>Decida: pelos próximos 2 minutos, <strong>só isso existe</strong>.', btn:'Escolhi' },
           { num:'Fase 2', title:'Absorção pelos sentidos', text:'Explore devagar, como se fosse a primeira vez:<br><br><em>O que você vê? Que detalhes? E os sons? Temperatura? Textura? Sabor?</em><br><br>Quando a mente fugir (ela vai), traga de volta sem bronca. Isso É o exercício.', btn:'Próxima fase' },
-          { num:'Fase 3', title:'Nomeie e expresse', text:'Que emoção apareceu? Serenidade? Interesse? Gratidão? <strong>Nomeie</strong> — de preferência em voz baixa.<br><br>Agora <strong>expresse</strong>: deixe um meio-sorriso acontecer, solte os ombros, respire fundo uma vez.<br><br>Expressar a emoção no corpo amplifica o sinal no cérebro.', btn:'Próxima fase' },
-          { num:'Fase 4', title:'Guarde a semente', text:'Antes de encerrar, tire uma "foto mental" deliberada: <em>"quero lembrar disto".</em><br><br>Se quiser potencializar: registre este momento no app (botão Registrar) ou conte a alguém hoje.<br><br>Compartilhar um momento bom <strong>dobra o efeito dele</strong> — é a prática de capitalização.', btn:'Concluído ✓' },
+          { num:'Fase 3', title:'Nomeie e expresse', text:'Que emoção apareceu? Serenidade? Interesse? Gratidão? <strong>Nomeie</strong>, de preferência em voz baixa.<br><br>Agora <strong>expresse</strong>: deixe um meio-sorriso acontecer, solte os ombros, respire fundo uma vez.<br><br>Expressar a emoção no corpo amplifica o sinal no cérebro.', btn:'Próxima fase' },
+          { num:'Fase 4', title:'Guarde a semente', text:'Antes de encerrar, tire uma "foto mental" deliberada: <em>"quero lembrar disto".</em><br><br>Se quiser potencializar: registre este momento no app (botão Registrar) ou conte a alguém hoje.<br><br>Compartilhar um momento bom <strong>dobra o efeito dele</strong>, é a prática de capitalização.', btn:'Concluído ✓' },
         ]
       },
       {
@@ -691,12 +691,12 @@ ${emoGridHTML()}
         instruction:'Diante de um momento bom, cada reação amplifica o sabor ou apaga. Classifique:',
         btnA:'Amplifica', btnB:'Apaga',
         items:[
-          { text:'Contar a novidade boa para alguém querido', cat:'u', label:'Amplifica — capitalização, com respaldo em pesquisa' },
-          { text:'"Foi só sorte, não conta"', cat:'n', label:'Apaga — desqualifica a experiência' },
-          { text:'Fechar os olhos para ouvir a música favorita', cat:'u', label:'Amplifica — absorção sensorial' },
-          { text:'Checar e-mails durante o jantar especial', cat:'n', label:'Apaga — atenção dividida mata o sabor' },
-          { text:'"Amanhã tem reunião difícil" no meio do passeio', cat:'n', label:'Apaga — viagem mental para o problema' },
-          { text:'Dizer em voz alta: "que momento bom esse"', cat:'u', label:'Amplifica — expressar marca a emoção' },
+          { text:'Contar a novidade boa para alguém querido', cat:'u', label:'Amplifica: capitalização, com respaldo em pesquisa' },
+          { text:'"Foi só sorte, não conta"', cat:'n', label:'Apaga: desqualifica a experiência' },
+          { text:'Fechar os olhos para ouvir a música favorita', cat:'u', label:'Amplifica: absorção sensorial' },
+          { text:'Checar e-mails durante o jantar especial', cat:'n', label:'Apaga: atenção dividida mata o sabor' },
+          { text:'"Amanhã tem reunião difícil" no meio do passeio', cat:'n', label:'Apaga: viagem mental para o problema' },
+          { text:'Dizer em voz alta: "que momento bom esse"', cat:'u', label:'Amplifica: expressar marca a emoção' },
         ]
       },
       {
@@ -727,13 +727,13 @@ ${emoGridHTML()}
 <p class="step-text" style="margin-top:10px">Vale saber o <strong>tamanho</strong> disso: nas revisões de muitos estudos, os efeitos são <strong>pequenos a moderados</strong> e nem sempre se repetem. Para depressão e ansiedade, o efeito é pequeno (Cregg & Cheavens, 2021). A gratidão pode somar ao seu cuidado, mas não substitui acompanhamento profissional.</p>
 <p class="step-text" style="margin-top:10px">O mecanismo tem duas engrenagens:</p>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0">
-  <div class="tip mint" style="margin:0"><strong>Atenção</strong><br>Gratidão obriga o radar a varrer o que foi <em>recebido</em> — que o viés de negatividade esconde.</div>
-  <div class="tip coral" style="margin:0"><strong>Vínculo</strong><br>Reconhecer quem nos fez bem fortalece os laços — um dos preditores mais consistentes de bem-estar.</div>
+  <div class="tip mint" style="margin:0"><strong>Atenção</strong><br>Gratidão obriga o radar a varrer o que foi <em>recebido</em>, que o viés de negatividade esconde.</div>
+  <div class="tip coral" style="margin:0"><strong>Vínculo</strong><br>Reconhecer quem nos fez bem fortalece os laços, um dos preditores mais consistentes de bem-estar.</div>
 </div>
 <div style="display:flex;flex-direction:column;gap:8px;margin:14px 0">
-  <div class="tip amber" style="margin:0"><strong>O que gratidão NÃO é:</strong><br>• Dívida ("agora tenho que retribuir") — isso é peso, não gratidão.<br>• Obrigação de estar grato/a por tudo, sempre.<br>• Anular queixas legítimas ("seja grato/a e não reclame").</div>
+  <div class="tip amber" style="margin:0"><strong>O que gratidão NÃO é:</strong><br>• Dívida ("agora tenho que retribuir"), isso é peso, não gratidão.<br>• Obrigação de estar grato/a por tudo, sempre.<br>• Anular queixas legítimas ("seja grato/a e não reclame").</div>
 </div>
-<div class="tip lav"><strong>Segredo da eficácia:</strong> especificidade e variedade. "Sou grata pela minha família" (genérico, repetido) perde efeito rápido. "Sou grata porque minha irmã me ligou ontem só para saber de mim" — isso o cérebro sente.</div>`
+<div class="tip lav"><strong>Segredo da eficácia:</strong> especificidade e variedade. "Sou grata pela minha família" (genérico, repetido) perde efeito rápido. "Sou grata porque minha irmã me ligou ontem só para saber de mim", isso o cérebro sente.</div>`
       },
       {
         type:'quiz', typeLabel:'Atividade',
@@ -741,11 +741,11 @@ ${emoGridHTML()}
         question:'Duas pessoas praticam gratidão diariamente. Qual delas tende a manter os benefícios ao longo do tempo?',
         opts:[
           { text:'Ana: escreve todo dia "sou grata pela saúde, família e trabalho"', correct:false },
-          { text:'Bia: escreve a cada dia algo específico e diferente — "o motorista esperou eu correr até o ponto"', correct:true },
-          { text:'As duas igualmente — o que importa é repetir', correct:false },
-          { text:'Nenhuma — gratidão só funciona em datas especiais', correct:false },
+          { text:'Bia: escreve a cada dia algo específico e diferente, "o motorista esperou eu correr até o ponto"', correct:true },
+          { text:'As duas igualmente: o que importa é repetir', correct:false },
+          { text:'Nenhuma: gratidão só funciona em datas especiais', correct:false },
         ],
-        feedbackOk:'Exato! O cérebro se adapta ao repetido (adaptação hedônica). Especificidade + variedade mantêm a prática "viva" — cada registro exige que o radar realmente procure.',
+        feedbackOk:'Isso mesmo. O cérebro se adapta ao repetido (adaptação hedônica). Especificidade + variedade mantêm a prática "viva", cada registro exige que o radar realmente procure.',
         feedbackNo:'A prática da Bia é mais eficaz: o cérebro se <strong>adapta ao repetido</strong> e a lista genérica vira ritual vazio. Especificidade e variedade obrigam o radar a procurar de verdade.'
       },
       {
@@ -754,7 +754,7 @@ ${emoGridHTML()}
         phases:[
           { num:'Passo 1', title:'Escolha a pessoa', text:'Pense em alguém que fez algo importante por você e que <strong>nunca foi devidamente agradecido/a</strong>.<br><br>Pode ser algo grande ou um gesto pequeno que ficou. Um professor, um amigo, um familiar, alguém que apareceu na hora certa.<br><br>Deixe um nome surgir. O primeiro que veio geralmente é o certo.', btn:'Escolhi' },
           { num:'Passo 2', title:'Reviva o que ela fez', text:'Antes de escrever, reconstrua mentalmente:<br><br><em>O que exatamente essa pessoa fez? O que estava acontecendo na sua vida? O que teria sido diferente sem ela? O que isso diz sobre ela?</em><br><br>Sinta o que aparece no corpo enquanto lembra. Isso já é a gratidão trabalhando.', btn:'Próximo passo' },
-          { num:'Passo 3', title:'Decida o destino', text:'Na próxima etapa você vai escrever a carta. Ela pode ter três destinos — <strong>todos válidos</strong>:<br><br><strong>Entregar/ler para a pessoa</strong> — efeito mais forte nos estudos (a "visita de gratidão" de Seligman).<br>✉<strong>Enviar por mensagem</strong> — mais viável, ainda poderoso.<br><strong>Só escrever e guardar</strong> — o benefício de escrever já é real.<br><br>Escolha sem pressão.', btn:'Vamos escrever ✓' },
+          { num:'Passo 3', title:'Decida o destino', text:'Na próxima etapa você vai escrever a carta. Ela pode ter três destinos, <strong>todos válidos</strong>:<br><br><strong>Entregar/ler para a pessoa</strong>, efeito mais forte nos estudos (a "visita de gratidão" de Seligman).<br>✉<strong>Enviar por mensagem</strong>, mais viável, ainda poderoso.<br><strong>Só escrever e guardar</strong>, o benefício de escrever já é real.<br><br>Escolha sem pressão.', btn:'Vamos escrever ✓' },
         ]
       },
       {
@@ -781,19 +781,19 @@ ${emoGridHTML()}
       {
         type:'info', typeLabel:'Psicoeducação',
         title:'Dois tipos de "sentir-se bem"',
-        content:`<p class="step-text">Paul Gilbert, criador da Terapia Focada na Compaixão (TFC), mostrou que temos <strong>três sistemas emocionais</strong> — e que existem dois tipos muito diferentes de emoção positiva:</p>
+        content:`<p class="step-text">Paul Gilbert, criador da Terapia Focada na Compaixão (TFC), mostrou que temos <strong>três sistemas emocionais</strong>, e que existem dois tipos muito diferentes de emoção positiva:</p>
 ${svgThreeSystems()}
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0">
   <div class="tip amber" style="margin:0"><strong>Positivas de Conquista</strong><br>Excitação, euforia, "consegui!". Dependem de alcançar algo. Aceleram.</div>
   <div class="tip mint" style="margin:0"><strong>Positivas de Calmaria</strong><br>Contentamento, segurança, calor humano. Não dependem de conquistar nada. Desaceleram.</div>
 </div>
 <p class="step-text">A nossa cultura hipertreina o sistema de Conquista: sentir-se bem só quando produz, alcança, ganha. O resultado é uma vida em que o descanso vira culpa e o bem-estar está sempre <em>no próximo objetivo</em>.</p>
-<div class="tip lav"><strong>Ideia central:</strong> o sistema Calmante é ativado por ritmo lento, calor humano, memória de afeto e segurança. Ele é <strong>treinável</strong> — e é a base da resiliência: quem consegue se acalmar, consegue se recuperar.</div>`
+<div class="tip lav"><strong>Ideia central:</strong> o sistema Calmante é ativado por ritmo lento, calor humano, memória de afeto e segurança. Ele é <strong>treinável</strong>, e é a base da resiliência: quem consegue se acalmar, consegue se recuperar.</div>`
       },
       {
         type:'breath', typeLabel:'Respiração do ritmo calmante',
         title:'Ativando o sistema calmante',
-        instruction:'Esta respiração, usada na TFC, é mais lenta e focada na <em>sensação</em> de desaceleração. Imagine que o corpo encontra o próprio ritmo — como ondas calmas.<br><br>Ritmo: inspire suavemente pelo nariz (5s), expire lentamente (7s). A expiração longa é o freio fisiológico do corpo.<br><br>Toque para começar. Faça 4 ciclos com atenção gentil.',
+        instruction:'Esta respiração, usada na TFC, é mais lenta e focada na <em>sensação</em> de desaceleração. Imagine que o corpo encontra o próprio ritmo, como ondas calmas.<br><br>Ritmo: inspire suavemente pelo nariz (5s), expire lentamente (7s). A expiração longa é o freio fisiológico do corpo.<br><br>Toque para começar. Faça 4 ciclos com atenção gentil.',
         pattern:[ {label:'Inspira suave',dur:5,cls:'expand soothe'},{label:'Expira lenta',dur:7,cls:'contract soothe'} ],
         totalCycles:4
       },
@@ -801,10 +801,10 @@ ${svgThreeSystems()}
         type:'guided', typeLabel:'Prática guiada (TFC)',
         title:'Memória de gentileza',
         phases:[
-          { num:'Preparação', title:'Postura e ritmo', text:'Sente-se confortavelmente. Suavize o olhar ou feche os olhos.<br><br>Respire duas vezes no ritmo calmante que você acabou de praticar.<br><br>Você vai acessar uma memória — e o seu sistema nervoso vai respondê-la como se fosse agora. Isso é fisiologia, não imaginação.', btn:'Estou pronto/a' },
-          { num:'A memória', title:'Alguém foi gentil com você', text:'Lembre de um momento em que alguém foi <strong>genuinamente gentil</strong> com você. Um cuidado, uma palavra na hora certa, uma presença.<br><br>Reconstrua a cena: onde era? Que expressão a pessoa tinha? Que tom de voz?<br><br>Deixe a sensação de <em>ser cuidado/a</em> aparecer. Não force — permita.', btn:'Estou lá' },
-          { num:'No corpo', title:'Onde você sente?', text:'Onde essa memória toca o corpo?<br><br>Um calor no peito? Os ombros que descem? A respiração que solta?<br><br>Fique 30 segundos com essa sensação. Isso é o seu sistema calmante <strong>ligado</strong> — contentamento e segurança têm endereço físico.', btn:'Próxima fase' },
-          { num:'Alegria compassiva', title:'Sentir junto', text:'Última camada: lembre de uma alegria de <strong>alguém que você ama</strong> — uma conquista, uma boa notícia dela.<br><br>Perceba: dá para sentir prazer com a alegria do outro. Essa emoção (os budistas chamam <em>mudita</em>) é uma fonte infinita — porque não depende só da SUA vida ir bem.<br><br>Crie um gesto de âncora: mão no peito + uma respiração lenta. Ele te traz de volta aqui quando precisar.', btn:'Concluído ✓' },
+          { num:'Preparação', title:'Postura e ritmo', text:'Sente-se confortavelmente. Suavize o olhar ou feche os olhos.<br><br>Respire duas vezes no ritmo calmante que você acabou de praticar.<br><br>Você vai acessar uma memória, e o seu sistema nervoso vai respondê-la como se fosse agora. Isso é fisiologia, não imaginação.', btn:'Estou pronto/a' },
+          { num:'A memória', title:'Alguém foi gentil com você', text:'Lembre de um momento em que alguém foi <strong>genuinamente gentil</strong> com você. Um cuidado, uma palavra na hora certa, uma presença.<br><br>Reconstrua a cena: onde era? Que expressão a pessoa tinha? Que tom de voz?<br><br>Deixe a sensação de <em>ser cuidado/a</em> aparecer. Não force: permita.', btn:'Estou lá' },
+          { num:'No corpo', title:'Onde você sente?', text:'Onde essa memória toca o corpo?<br><br>Um calor no peito? Os ombros que descem? A respiração que solta?<br><br>Fique 30 segundos com essa sensação. Isso é o seu sistema calmante <strong>ligado</strong>, contentamento e segurança têm endereço físico.', btn:'Próxima fase' },
+          { num:'Alegria compassiva', title:'Sentir junto', text:'Última camada: lembre de uma alegria de <strong>alguém que você ama</strong>, uma conquista, uma boa notícia dela.<br><br>Perceba: dá para sentir prazer com a alegria do outro. Essa emoção (os budistas chamam <em>mudita</em>) é uma fonte infinita: porque não depende só da SUA vida ir bem.<br><br>Crie um gesto de âncora: mão no peito + uma respiração lenta. Ele te traz de volta aqui quando precisar.', btn:'Concluído ✓' },
         ]
       },
       {
@@ -830,7 +830,7 @@ ${svgThreeSystems()}
     steps:[
       {
         type:'info', typeLabel:'Psicoeducação',
-        title:'Medo de sentir-se bem existe — e tem lógica',
+        title:'Medo de sentir-se bem existe, e tem lógica',
         content:`<p class="step-text">Parece contraditório, mas é comum e bem documentado: muitas pessoas têm <strong>medo das emoções positivas</strong> (Gilbert). O bem-estar dispara um alarme:</p>
 <div style="display:flex;flex-direction:column;gap:8px;margin:14px 0">
   <div class="tip coral" style="margin:0">"Se eu ficar muito feliz, <strong>algo ruim vai acontecer</strong>" (não posso baixar a guarda)</div>
@@ -839,33 +839,33 @@ ${svgThreeSystems()}
   <div class="tip coral" style="margin:0">"Descansar e aproveitar é <strong>perda de tempo</strong>" (só produção justifica existir)</div>
 </div>
 <p class="step-text">Essas crenças geralmente foram <strong>aprendidas como proteção</strong>: em algum momento, relaxar saiu caro, comemorar atraiu crítica, ou a alegria foi interrompida por algo doloroso. A crença virou um guarda na porta do jardim.</p>
-<div class="tip mint">O problema: a crença faz você <strong>evitar ou amortecer</strong> o bem-estar — e assim ela nunca é testada. O guarda nunca descobre que a guerra acabou. A saída não é discutir com a crença: é <strong>testá-la em experimentos pequenos e seguros</strong>.</div>`
+<div class="tip mint">O problema: a crença faz você <strong>evitar ou amortecer</strong> o bem-estar, e assim ela nunca é testada. O guarda nunca descobre que a guerra acabou. A saída não é discutir com a crença: é <strong>testá-la em experimentos pequenos e seguros</strong>.</div>`
       },
       {
         type:'flipcard', typeLabel:'Cartas interativas',
         title:'A crença e o outro lado',
         hint:'Vire cada carta para ver o que os dados e a lógica dizem.',
         cards:[
-          { front:'"Se eu comemorar antes da hora, estrago tudo"', back:'Testável: comemorar não altera probabilidades — mas motiva a continuar. Times que celebram pequenas vitórias persistem mais.', color:'coral' },
+          { front:'"Se eu comemorar antes da hora, estrago tudo"', back:'Testável: comemorar não altera probabilidades, mas motiva a continuar. Times que celebram pequenas vitórias persistem mais.', color:'coral' },
           { front:'"Não mereço estar bem enquanto há problemas"', back:'Inverta: você cuida melhor dos problemas descansado/a ou esgotado/a? Bem-estar é combustível, não prêmio.', color:'mint' },
           { front:'"Se eu relaxar, vou baixar a guarda e ser pego/a"', back:'O corpo em alerta constante erra MAIS, não menos. Vigilância crônica degrada exatamente o desempenho que ela tenta proteger.', color:'coral' },
-          { front:'"Sentir orgulho é arrogância"', back:'Arrogância é se colocar acima dos outros. Orgulho é reconhecer o próprio esforço. São emoções diferentes — e confundi-las custa caro.', color:'mint' },
+          { front:'"Sentir orgulho é arrogância"', back:'Arrogância é se colocar acima dos outros. Orgulho é reconhecer o próprio esforço. São emoções diferentes, e confundi-las custa caro.', color:'mint' },
           { front:'"Alegria demais atrai inveja/olho gordo"', back:'Talvez algumas pessoas se incomodem. Experimente: compartilhe com quem é seguro. O problema era a alegria ou a plateia?', color:'coral' },
-          { front:'"Sou pessimista, não vou mudar"', back:'Ninguém precisa "virar otimista". O treino é de atenção e comportamento — e esses mudam com prática, seja qual for o temperamento.', color:'mint' },
+          { front:'"Sou pessimista, não vou mudar"', back:'Ninguém precisa "virar otimista". O treino é de atenção e comportamento, e esses mudam com prática, seja qual for o temperamento.', color:'mint' },
         ]
       },
       {
         type:'info', typeLabel:'Método',
         title:'Como funciona um experimento comportamental',
-        content:`<p class="step-text">O experimento comportamental é a ferramenta mais poderosa da TCC — porque a mente acredita mais no que <strong>vive</strong> do que no que ouve. O ciclo tem 4 passos:</p>
+        content:`<p class="step-text">O experimento comportamental é a ferramenta mais poderosa da TCC, porque a mente acredita mais no que <strong>vive</strong> do que no que ouve. O ciclo tem 4 passos:</p>
 <div class="ob-num-steps" style="margin:14px 0">
   <div class="ob-num-step">
     <div class="ob-num-circle" style="background:var(--coral-xl);color:var(--coral-d)">1</div>
-    <div class="ob-num-step-body"><strong>Previsão</strong><span>"Se eu fizer X, acho que vai acontecer Y / vou sentir tanto assim." Anote ANTES — sem isso não há experimento.</span></div>
+    <div class="ob-num-step-body"><strong>Previsão</strong><span>"Se eu fizer X, acho que vai acontecer Y / vou sentir tanto assim." Anote ANTES: sem isso não há experimento.</span></div>
   </div>
   <div class="ob-num-step">
     <div class="ob-num-circle" style="background:var(--amber-l);color:#7A4A10">2</div>
-    <div class="ob-num-step-body"><strong>Teste</strong><span>Faça a ação — pequena, segura, definida. Não precisa "dar certo": precisa acontecer.</span></div>
+    <div class="ob-num-step-body"><strong>Teste</strong><span>Faça a ação: pequena, segura, definida. Não precisa "dar certo": precisa acontecer.</span></div>
   </div>
   <div class="ob-num-step">
     <div class="ob-num-circle" style="background:var(--mint-xl);color:var(--mint-d)">3</div>
@@ -904,16 +904,16 @@ ${svgThreeSystems()}
         title:'Bem-estar tem arquitetura',
         content:`<p class="step-text">Seligman resumiu os pilares do bem-estar duradouro no modelo <strong>PERMA</strong>:</p>
 <div class="emo-grid" style="grid-template-columns:1fr">
-  <div class="emo-cell"><span class="emo-emoji">${ico('smile',20)}</span><div><div class="emo-name">P — Emoções Positivas</div><div class="emo-desc">Tudo que você treinou até aqui: notar, saborear, gratidão</div></div></div>
-  <div class="emo-cell"><span class="emo-emoji">${ico('target',20)}</span><div><div class="emo-name">E — Engajamento</div><div class="emo-desc">Atividades que te absorvem por inteiro (flow)</div></div></div>
-  <div class="emo-cell"><span class="emo-emoji">${ico('users',20)}</span><div><div class="emo-name">R — Relacionamentos</div><div class="emo-desc">Um dos preditores mais consistentes de bem-estar nos estudos</div></div></div>
-  <div class="emo-cell"><span class="emo-emoji">${ico('compass',20)}</span><div><div class="emo-name">M — Significado (Meaning)</div><div class="emo-desc">Fazer parte de algo maior que você</div></div></div>
-  <div class="emo-cell"><span class="emo-emoji">${ico('award',20)}</span><div><div class="emo-name">A — Realização (Accomplishment)</div><div class="emo-desc">Progredir em algo que importa — e reconhecer o progresso</div></div></div>
+  <div class="emo-cell"><span class="emo-emoji">${ico('smile',20)}</span><div><div class="emo-name">P: Emoções Positivas</div><div class="emo-desc">Tudo que você treinou até aqui: notar, saborear, gratidão</div></div></div>
+  <div class="emo-cell"><span class="emo-emoji">${ico('target',20)}</span><div><div class="emo-name">E: Engajamento</div><div class="emo-desc">Atividades que te absorvem por inteiro (flow)</div></div></div>
+  <div class="emo-cell"><span class="emo-emoji">${ico('users',20)}</span><div><div class="emo-name">R: Relacionamentos</div><div class="emo-desc">Um dos preditores mais consistentes de bem-estar nos estudos</div></div></div>
+  <div class="emo-cell"><span class="emo-emoji">${ico('compass',20)}</span><div><div class="emo-name">M: Significado (Meaning)</div><div class="emo-desc">Fazer parte de algo maior que você</div></div></div>
+  <div class="emo-cell"><span class="emo-emoji">${ico('award',20)}</span><div><div class="emo-name">A: Realização (Accomplishment)</div><div class="emo-desc">Progredir em algo que importa, e reconhecer o progresso</div></div></div>
 </div>
 <p class="step-text" style="margin-top:10px">E dois avisos da ciência para o longo prazo:</p>
 <div style="display:flex;flex-direction:column;gap:8px;margin:12px 0">
-  <div class="tip coral" style="margin:0"><strong>Adaptação hedônica:</strong> o cérebro se acostuma com o repetido. Antídoto: <strong>variedade</strong> — alterne práticas, mude horários, surpreenda-se (Lyubomirsky).</div>
-  <div class="tip mint" style="margin:0"><strong>Capitalização (Gable):</strong> compartilhar boas notícias com quem responde com interesse genuíno multiplica o efeito delas — e fortalece a relação. Escolha bem a plateia.</div>
+  <div class="tip coral" style="margin:0"><strong>Adaptação hedônica:</strong> o cérebro se acostuma com o repetido. Antídoto: <strong>variedade</strong>, alterne práticas, mude horários, surpreenda-se (Lyubomirsky).</div>
+  <div class="tip mint" style="margin:0"><strong>Capitalização (Gable):</strong> compartilhar boas notícias com quem responde com interesse genuíno multiplica o efeito delas, e fortalece a relação. Escolha bem a plateia.</div>
 </div>`
       },
       {
@@ -923,19 +923,19 @@ ${svgThreeSystems()}
         opts:[
           { text:'"Que ótimo." (e muda de assunto)', correct:false },
           { text:'"Cuidado, essas empresas exploram muito, viu?"', correct:false },
-          { text:'"Que demais! Me conta tudo — como você soube? Como comemorou?"', correct:true },
+          { text:'"Que demais! Me conta tudo: como você soube? Como comemorou?"', correct:true },
           { text:'"Legal! Isso me lembra quando EU fui aprovada..."', correct:false },
         ],
-        feedbackOk:'Perfeito! Essa é a resposta ativa-construtiva: interesse genuíno + perguntas que fazem a pessoa reviver e saborear. É a única das quatro que amplifica a alegria E o vínculo.',
-        feedbackNo:'A resposta que fortalece é a <strong>ativa-construtiva</strong>: "Que demais! Me conta tudo..." — interesse genuíno com perguntas. As outras esvaziam a notícia, roubam a cena ou apontam perigo.'
+        feedbackOk:'Isso mesmo. Essa é a resposta ativa-construtiva: interesse genuíno + perguntas que fazem a pessoa reviver e saborear. É a única das quatro que amplifica a alegria E o vínculo.',
+        feedbackNo:'A resposta que fortalece é a <strong>ativa-construtiva</strong>: "Que demais! Me conta tudo...": interesse genuíno com perguntas. As outras esvaziam a notícia, roubam a cena ou apontam perigo.'
       },
       {
         type:'guided', typeLabel:'Design do sistema',
         title:'Desenhe o seu sistema de cultivo',
         phases:[
-          { num:'Passo 1', title:'Suas práticas favoritas', text:'Olhe para trás no percurso: registro de momentos, saborear em 2 minutos, gratidão específica, respiração calmante, memória de gentileza, experimentos, antecipação...<br><br>Escolha <strong>2 ou 3</strong> que funcionaram DE VERDADE para você. Não as "que deveriam" — as que funcionaram.<br><br>Menos práticas mantidas valem mais que muitas abandonadas.', btn:'Escolhi' },
-          { num:'Passo 2', title:'Âncoras se-então', text:'Agora transforme cada uma em plano <strong>"quando-então"</strong> (Gollwitzer — dobra a chance de acontecer):<br><br><em>"Quando eu deitar na cama, então registro 1 momento bom."<br>"Quando o café ficar pronto, então saboreio os 3 primeiros goles."<br>"Quando alguém me contar uma boa notícia, então pergunto mais."</em><br><br>Formule as suas mentalmente agora.', btn:'Formulei' },
-          { num:'Passo 3', title:'Prepare o terreno', text:'Último passo (COM-B: capacidade você já tem, motivação também — falta desenhar a <strong>oportunidade</strong>):<br><br>• Deixe o app na primeira tela do celular<br>• Ative o lembrete diário (em Dados)<br>• Conte a alguém o que está praticando — testemunhas criam constância<br>• Decida já o que fazer quando falhar um dia: <em>recomeçar sem drama no dia seguinte</em>. Jardins sobrevivem a dias sem rega.', btn:'Concluído ✓' },
+          { num:'Passo 1', title:'Suas práticas favoritas', text:'Olhe para trás no percurso: registro de momentos, saborear em 2 minutos, gratidão específica, respiração calmante, memória de gentileza, experimentos, antecipação...<br><br>Escolha <strong>2 ou 3</strong> que funcionaram DE VERDADE para você. Não as "que deveriam", as que funcionaram.<br><br>Menos práticas mantidas valem mais que muitas abandonadas.', btn:'Escolhi' },
+          { num:'Passo 2', title:'Âncoras se-então', text:'Agora transforme cada uma em plano <strong>"quando-então"</strong> (Gollwitzer: dobra a chance de acontecer):<br><br><em>"Quando eu deitar na cama, então registro 1 momento bom."<br>"Quando o café ficar pronto, então saboreio os 3 primeiros goles."<br>"Quando alguém me contar uma boa notícia, então pergunto mais."</em><br><br>Formule as suas mentalmente agora.', btn:'Formulei' },
+          { num:'Passo 3', title:'Prepare o terreno', text:'Último passo (COM-B: capacidade você já tem, motivação também, falta desenhar a <strong>oportunidade</strong>):<br><br>• Deixe o app na primeira tela do celular<br>• Ative o lembrete diário (em Dados)<br>• Conte a alguém o que está praticando, testemunhas criam constância<br>• Decida já o que fazer quando falhar um dia: <em>recomeçar sem drama no dia seguinte</em>. Jardins sobrevivem a dias sem rega.', btn:'Concluído ✓' },
         ]
       },
       {
@@ -950,7 +950,7 @@ ${svgThreeSystems()}
 ]; // end MODULES
 
 /* ══════════════════════════════════
-   TAILORING — ordem dos módulos por perfil (obs5)
+   TAILORING: ordem dos módulos por perfil (obs5)
    m1 e m2 sempre primeiros (fundamentos para todos)
    ══════════════════════════════════ */
 const MODULE_PATHS = {
@@ -960,7 +960,7 @@ const MODULE_PATHS = {
 };
 const PATH_EXPLANATIONS = {
   0: 'Como as coisas boas passam rápido para você, aprender a saboreá-las vem logo no início do caminho.',
-  2: 'Seu caminho começa pelo sistema calmante e por testar crenças com carinho — preparando o terreno para práticas como a gratidão fazerem sentido.',
+  2: 'Seu caminho começa pelo sistema calmante e por testar crenças com carinho, preparando o terreno para práticas como a gratidão fazerem sentido.',
 };
 function modulePath(){
   const p = D.userProfile && D.userProfile.onboardingPath;
@@ -971,17 +971,17 @@ function orderedModules(){
 }
 
 /* ══════════════════════════════════
-   LABORATÓRIO — banco de experimentos
+   LABORATÓRIO: banco de experimentos
    ══════════════════════════════════ */
 const EXPERIMENTS = [
   { id:'e1',  emoji:'', ico:'message', title:'Mensagem de gratidão',      emotion:'Gratidão',    time:'5 min',
-    desc:'Envie hoje uma mensagem específica a alguém, agradecendo por algo concreto que essa pessoa fez — sem ser data especial, sem motivo "oficial".',
+    desc:'Envie hoje uma mensagem específica a alguém, agradecendo por algo concreto que essa pessoa fez, sem ser data especial, sem motivo "oficial".',
     belief:'"Vão achar estranho / não vai fazer diferença."' },
   { id:'e2',  emoji:'', ico:'coffee', title:'Refeição saboreada',        emotion:'Serenidade',  time:'15 min',
     desc:'Faça UMA refeição sem telas. Nos três primeiros garfos, atenção total: sabor, textura, temperatura. Depois coma normalmente.',
     belief:'"Comer é só abastecer, não dá para curtir isso."' },
   { id:'e3',  emoji:'', ico:'users', title:'Compartilhar a boa notícia', emotion:'Alegria',     time:'5 min',
-    desc:'Aconteceu algo bom, mesmo pequeno? Conte hoje para alguém que responde bem — com detalhes, deixando-se animar ao contar.',
+    desc:'Aconteceu algo bom, mesmo pequeno? Conte hoje para alguém que responde bem, com detalhes, deixando-se animar ao contar.',
     belief:'"Falar das minhas coisas boas é me exibir."' },
   { id:'e4',  emoji:'', ico:'mountain', title:'Caminhada de admiração',     emotion:'Admiração',   time:'15 min',
     desc:'Caminhe 15 minutos procurando deliberadamente o que você nunca notou: uma árvore antiga, um detalhe de prédio, o céu. Pare em 3 coisas.',
@@ -990,16 +990,16 @@ const EXPERIMENTS = [
     desc:'Faça um ato de gentileza sem receber crédito: um elogio sincero, pagar um café, deixar algo bom no caminho de alguém.',
     belief:'"Gestos pequenos não mudam nada."' },
   { id:'e6',  emoji:'', ico:'music', title:'Uma música, corpo inteiro',  emotion:'Diversão',    time:'5 min',
-    desc:'Escolha UMA música que você ama e dance ou cante junto — sozinho/a se preferir, do início ao fim, sem fazer mais nada.',
+    desc:'Escolha UMA música que você ama e dance ou cante junto, sozinho/a se preferir, do início ao fim, sem fazer mais nada.',
     belief:'"Isso é ridículo / não tenho mais idade para isso."' },
   { id:'e7',  emoji:'', ico:'eye', title:'Beleza do dia (3 dias)',     emotion:'Interesse',   time:'1 min/dia',
     desc:'Por 3 dias, fotografe UMA coisa bonita ou interessante por dia. No 3º dia, reveja as três fotos com calma.',
     belief:'"Não tenho olhar para essas coisas."' },
   { id:'e8',  emoji:'', ico:'cloud', title:'Dez minutos de céu',         emotion:'Serenidade',  time:'10 min',
-    desc:'Assista ao pôr do sol, ao céu ou à rua da janela por 10 minutos, sem celular, sem tarefa. Só olhar — como quem não deve nada.',
+    desc:'Assista ao pôr do sol, ao céu ou à rua da janela por 10 minutos, sem celular, sem tarefa. Só olhar, como quem não deve nada.',
     belief:'"Ficar parado/a é desperdiçar tempo."' },
   { id:'e9',  emoji:'', ico:'award', title:'Relembrar uma conquista',    emotion:'Orgulho',     time:'10 min',
-    desc:'Escreva sobre uma conquista sua — o obstáculo, o que VOCÊ fez, como conseguiu. Termine com: "isso fui eu que fiz".',
+    desc:'Escreva sobre uma conquista sua, o obstáculo, o que VOCÊ fez, como conseguiu. Termine com: "isso fui eu que fiz".',
     belief:'"Sentir orgulho é se achar demais."' },
   { id:'e10', emoji:'', ico:'calendar', title:'Plantar uma antecipação',    emotion:'Esperança',   time:'10 min',
     desc:'Marque algo bom e concreto para os próximos 7 dias (com hora!). Nos dias antes, imagine 3 detalhes dele. Saboreie antes de viver.',
@@ -1008,7 +1008,7 @@ const EXPERIMENTS = [
     desc:'Agende 30 minutos de descanso DE PROPÓSITO (não "sobrou tempo"): série, banho longo, sofá. Antes, diga: "isto é descanso, e é legítimo".',
     belief:'"Descansar sem ter terminado tudo é preguiça."' },
   { id:'e12', emoji:'', ico:'heart', title:'Micro-momento de conexão',   emotion:'Amor',        time:'5 min',
-    desc:'Tenha hoje UMA conversa de verdade — olho no olho ou voz — com alguém: um colega, o porteiro, um familiar. Pergunte e ouça de verdade.',
+    desc:'Tenha hoje UMA conversa de verdade, olho no olho ou voz, com alguém: um colega, o porteiro, um familiar. Pergunte e ouça de verdade.',
     belief:'"Conversa pequena é vazia, ninguém liga de verdade."' },
   { id:'e13', emoji:'', ico:'sunrise', title:'Melhor eu possível',         emotion:'Esperança',   time:'15 min',
     desc:'Reserve 15 minutos e escreva, sem parar, sobre a sua vida daqui a alguns anos <em>indo bem, de um jeito realista</em>: relações, trabalho, saúde, o que lhe faz bem. Descreva como se já fosse real. Depois releia e circule UM passo que dá para dar esta semana. Se doer comparar com o agora, pare: tudo bem. Uma vez só costuma não durar; repita uma vez por semana, por algumas semanas. <small>Base: King (2001); Carrillo e cols. (2019). Os efeitos são pequenos.</small>',
@@ -1192,15 +1192,15 @@ function trackLabEvent(expId, event){
 }
 
 /* ══════════════════════════════════
-   ESCALAS — SPANE (Diener et al., 2009) + Crenças
+   ESCALAS, SPANE (Diener et al., 2009) + Crenças
    ══════════════════════════════════ */
 const SPANE_ITEMS = [
   { t:'Positivo/a',    k:'p' },
   { t:'Negativo/a',    k:'n' },
   { t:'Bem',           k:'p' },
   { t:'Mal',           k:'n' },
-  { t:'Agradável — em estados agradáveis', k:'p' },
-  { t:'Desagradável — em estados desagradáveis', k:'n' },
+  { t:'Agradável: em estados agradáveis', k:'p' },
+  { t:'Desagradável: em estados desagradáveis', k:'n' },
   { t:'Feliz',         k:'p' },
   { t:'Triste',        k:'n' },
   { t:'Com medo',      k:'n' },
@@ -1212,7 +1212,7 @@ const SPANE_LABELS = ['Muito raramente ou nunca','Raramente','Às vezes','Freque
 
 /* Crenças sobre emoções positivas — checklist psicoeducativo
    (inspirado em Fear of Happiness Scale, Joshanloo 2013, e
-   Fears of Positive Emotions, Gilbert et al. — adaptação livre, não validada) */
+   Fears of Positive Emotions, Gilbert et al., adaptação livre, não validada) */
 const BELIEF_ITEMS = [
   'Quando me sinto muito feliz, temo que algo ruim aconteça em seguida.',
   'Não mereço me sentir bem enquanto houver problemas na minha vida.',
@@ -1235,9 +1235,9 @@ function spaneLevel(b){
 }
 const SPANE_LEVEL_INFO = {
   flor:   { icon:'flower', title:'Florescendo',          msg:'As emoções positivas têm presença forte na sua vida. O cultivo aqui vai torná-las ainda mais conscientes e resilientes.' },
-  verde:  { icon:'leaf', title:'Equilíbrio positivo',  msg:'O saldo emocional está a favor do positivo, com espaço claro para crescer — especialmente em frequência e intensidade.' },
+  verde:  { icon:'leaf', title:'Equilíbrio positivo',  msg:'O saldo emocional está a favor do positivo, com espaço claro para crescer, especialmente em frequência e intensidade.' },
   fragil: { icon:'sprout', title:'Equilíbrio frágil',    msg:'Positivas e difíceis estão praticamente empatadas. É exatamente o cenário em que este treino costuma fazer mais diferença.' },
-  seco:   { icon:'cloud', title:'Uma fase mais pesada', msg:'Nas últimas semanas, as emoções difíceis pesaram mais. É um retrato do momento, não de quem você é. O cultivo pode ajudar — e, se o peso for grande, conversar com um/a profissional pode ajudar muito mais.' },
+  seco:   { icon:'cloud', title:'Uma fase mais pesada', msg:'Nas últimas semanas, as emoções difíceis pesaram mais. É um retrato do momento, não de quem você é. O cultivo pode ajudar, e, se o peso for grande, conversar com um/a profissional pode ajudar muito mais.' },
 };
 
 /* ══════════════════════════════════
@@ -1394,7 +1394,7 @@ function pretestBack(){
 
 function pretestLater(){
   trackAppEvent('pretest_postponed');
-  toast('Sem problema — a pré-avaliação fica à sua espera. ');
+  toast('Sem problema: a pré-avaliação fica à sua espera. ');
   goTo('home');
 }
 
@@ -1415,7 +1415,7 @@ function renderPretestSpane(){
       <div class="pretest-prog-fill" style="width:${pct}%"></div>
     </div>
     <div class="pt-section">
-      <div class="pt-section-lbl">SPANE — Experiências emocionais <span>Pergunta ${q+1}/${SPANE_ITEMS.length}</span></div>
+      <div class="pt-section-lbl">SPANE: Experiências emocionais <span>Pergunta ${q+1}/${SPANE_ITEMS.length}</span></div>
       <div class="pt-q-wrap">
         <div class="pt-q-text">Nas últimas 4 semanas, com que frequência você se sentiu: <em>${SPANE_ITEMS[q].t}</em></div>
         <div class="pt-scale">
@@ -1452,7 +1452,7 @@ function renderPretestBeliefs(){
         </div>
       </div>
     </div>
-    <p style="font-size:12px;color:var(--light);text-align:center;margin-top:4px">Não há respostas certas ou erradas — responda com sinceridade.</p>
+    <p style="font-size:12px;color:var(--light);text-align:center;margin-top:4px">Não há respostas certas ou erradas, responda com sinceridade.</p>
     ${pretestFooterHTML()}
   </div>`;
 }
@@ -1491,7 +1491,7 @@ function finishPretest(){
     el.innerHTML = `
     <div class="pretest-wrap" style="text-align:center;padding-top:60px">
       <div style="font-size:56px;margin-bottom:20px"></div>
-      <h2 style="font-size:22px;font-weight:600;margin-bottom:10px">A semente foi plantada!</h2>
+      <h2 style="font-size:22px;font-weight:600;margin-bottom:10px">A semente foi plantada.</h2>
       <p style="font-size:15px;color:var(--muted);line-height:1.7;margin-bottom:24px">
         Avaliação registrada. Ao longo do cultivo voltaremos a medir<br>para ver o quanto o seu jardim cresceu.
       </p>
@@ -1520,7 +1520,7 @@ function checkPosttestTrigger(){
 function showPosttestPrompt(){
   if(document.getElementById('modal-ov').classList.contains('on')) return;
   document.getElementById('modal-title').textContent='Como você está agora?';
-  document.getElementById('modal-body').textContent='Você já cultivou um bom trecho! Que tal uma reavaliação rápida (≈3 min) para ver o quanto cresceu?';
+  document.getElementById('modal-body').textContent='Você já cultivou um bom trecho. Que tal uma reavaliação rápida (≈3 min) para ver o quanto cresceu?';
   document.getElementById('modal-actions').innerHTML=`
     <button class="btn mint" onclick="startPosttest()">Fazer reavaliação</button>
     <button class="btn ghost" onclick="dismissPosttest()">Agora não</button>`;
@@ -1609,7 +1609,7 @@ function showPosttestDelta(){
 const SUBS = [
   'O que você nota, cresce.',
   'Pequenos momentos, regados todos os dias.',
-  'O positivo sussurra — você está aprendendo a escutar.',
+  'O positivo sussurra: você está aprendendo a escutar.',
   'Saborear é multiplicar.',
   'A constância rega mais que a intensidade.',
   'Seu jardim, suas regras, seu ritmo.',
@@ -1826,7 +1826,7 @@ function renderModuleList(){
 }
 
 /* ══════════════════════════════════
-   MODULE VIEW — step system
+   MODULE VIEW: step system
    ══════════════════════════════════ */
 let _curModId = null, _curStep = 0, _stepOk = false;
 let _breathTimer = null, _breathPhase = 0, _breathCount = 0, _breathCycles = 0;
@@ -1950,9 +1950,9 @@ function completeModule(){
 
 function showCelebrate(mod){
   document.getElementById('cel-emoji').innerHTML  = ico(mod.ico,52);
-  document.getElementById('cel-title').textContent  = mod.title+' concluído!';
+  document.getElementById('cel-title').textContent  = mod.title+' concluído.';
   document.getElementById('cel-xp').textContent     = 'O jardim ganhou um canteiro cuidado';
-  document.getElementById('cel-sub').textContent    = 'Seu progresso foi salvo. Continue para o próximo canteiro ou registre um momento bom!';
+  document.getElementById('cel-sub').textContent    = 'Seu progresso foi salvo. Quando quiser, siga para o próximo canteiro ou registre um momento bom.';
   const w = document.getElementById('cel-word'); if(w) w.value='';
   renderTesteNaPratica(mod);
   document.getElementById('celebrate-card').classList.add('show');
@@ -2018,7 +2018,7 @@ function classifyItem(idx, cat){
   el.innerHTML = `<span style="flex:1">${esc(it.text)}</span><span style="font-size:13px;font-weight:700">${correct?'':''} ${it.label}</span>`;
   _classifyDone[idx]=true;
   if(_classifyDone.filter(Boolean).length >= step.items.length){
-    document.getElementById('cl-score').textContent = 'Classificação concluída! Você identificou o padrão.';
+    document.getElementById('cl-score').textContent = 'Classificação concluída. Você identificou o padrão.';
     document.getElementById('cl-score').classList.add('show');
     enableContinue();
   }
@@ -2110,7 +2110,7 @@ function startBreath(){
         if(_breathCycles >= total){
           stopBreath();
           if(bp)bp.textContent='';
-          if(bphase)bphase.textContent='Completo! Muito bem.';
+          if(bphase)bphase.textContent='Completo. Muito bem.';
           if(bcyc)bcyc.textContent=total+' ciclos concluídos';
           enableContinue();
         }
@@ -2180,7 +2180,7 @@ function renderDiaryForm(){
     <summary>Mais detalhes (opcional)</summary>
     <div style="margin:14px 0 20px">
       <label class="form-lbl">Como você saboreou</label>
-      <div class="form-hint">Saborear amplifica — mas notar já é o primeiro passo.</div>
+      <div class="form-hint">Saborear amplifica: mas notar já é o primeiro passo.</div>
       <div class="chips" id="d-sav">${SAVORING_CHIPS.map(c=>`<span class="chip" onclick="toggleChip(this)">${c}</span>`).join('')}</div>
     </div>
     <div style="margin-bottom:24px">
@@ -2291,7 +2291,7 @@ function renderLab(){
   _labPredictOpen = null;
   const el = document.getElementById('lab-content');
   const active = D.experiments.find(e=>e.status==='active');
-  let html = `<div class="lab-intro"><strong>Como funciona:</strong> escolha um experimento, registre sua <strong>previsão</strong> (quanto prazer/emoção você acha que vai sentir), faça na vida real e depois volte para <strong>comparar</strong>. É assim que crenças são testadas — com dados, não com discussão.</div>`;
+  let html = `<div class="lab-intro"><strong>Como funciona:</strong> escolha um experimento, registre sua <strong>previsão</strong> (quanto prazer/emoção você acha que vai sentir), faça na vida real e depois volte para <strong>comparar</strong>. É assim que crenças são testadas, com dados, não com discussão.</div>`;
 
   if(active){
     const exp = EXPERIMENTS.find(x=>x.id===active.expId);
@@ -2394,7 +2394,7 @@ function startExperiment(expId){
   });
   save();
   trackLabEvent(expId,'start');
-  toast('Experimento ativado! Agora é viver — depois volte para comparar.');
+  toast('Experimento ativado. Agora é viver, depois volte para comparar.');
   renderLab();
 }
 
@@ -2415,9 +2415,9 @@ function completeExperiment(){
   const exp = EXPERIMENTS.find(x=>x.id===run.expId);
   const delta = actual - run.predicted;
   let insight;
-  if(delta > 0) insight = `Você previu <strong>${run.predicted}/5</strong> e sentiu <strong>${actual}/5</strong>. A mente subestimou o que faz bem — os estudos mostram que isso é a regra, não a exceção. O que mais ela pode estar subestimando?`;
-  else if(delta === 0) insight = `Você previu <strong>${run.predicted}/5</strong> e sentiu <strong>${actual}/5</strong>. Previsão precisa! O valor está no dado: agora você sabe por experiência, não por suposição.`;
-  else insight = `Você previu <strong>${run.predicted}/5</strong> e sentiu <strong>${actual}/5</strong>. Nem todo experimento floresce — e isso também é dado. Contexto, dia e cansaço contam. Vale repetir em outro momento antes de concluir.`;
+  if(delta > 0) insight = `Você previu <strong>${run.predicted}/5</strong> e sentiu <strong>${actual}/5</strong>. A mente subestimou o que faz bem, os estudos mostram que isso é a regra, não a exceção. O que mais ela pode estar subestimando?`;
+  else if(delta === 0) insight = `Você previu <strong>${run.predicted}/5</strong> e sentiu <strong>${actual}/5</strong>. Previsão precisa. O valor está no dado: agora você sabe por experiência, não por suposição.`;
+  else insight = `Você previu <strong>${run.predicted}/5</strong> e sentiu <strong>${actual}/5</strong>. Nem todo experimento floresce, e isso também é dado. Contexto, dia e cansaço contam. Vale repetir em outro momento antes de concluir.`;
 
   // comparação com o que a própria pessoa já fez (convite, nunca interpretação sobre ela)
   let comparacao = '';
@@ -2463,12 +2463,12 @@ function cancelExperiment(){
   if(idx<0) return;
   D.experiments.splice(idx,1);
   save();
-  toast('Sem problema — o experimento fica para outro momento. ');
+  toast('Sem problema: o experimento fica para outro momento. ');
   renderLab();
 }
 
 /* ══════════════════════════════════
-   DOSE CULTIVADA — prática ativa semanal
+   DOSE CULTIVADA: prática ativa semanal
    Mede o que a pessoa PRATICOU (dose cultivada),
    distinto do Registro de Momentos (estado).
    ══════════════════════════════════ */
@@ -2675,7 +2675,7 @@ function renderProgress(){
     </div>
     ${weekHTML}
     <div class="card">
-      <div class="card-lbl">Momentos positivos — 7 dias</div>
+      <div class="card-lbl">Momentos positivos (7 dias)</div>
       <svg class="chart-svg" id="p-chart" viewBox="0 0 320 72" role="img" aria-label="Gráfico de momentos positivos nos últimos sete dias"></svg>
       <div id="p-chart-e" style="display:none;font-size:13px;color:var(--muted);text-align:center;padding:10px 0">Sem dados suficientes.</div>
     </div>
@@ -2756,13 +2756,13 @@ function exportJSON(){
   if(!D.entries.length && !D.experiments.length){toast('Sem dados para exportar.');return;}
   dl('floresca-dados-'+today()+'.json',JSON.stringify({
     exportedAt:new Date().toISOString(),
-    app:'Floresça — Cultivando Emoções Positivas',
+    app:'Floresça: Cultivando Emoções Positivas',
     xp:D.xp,badges:D.badges,
     modulesCompleted:MODULES.filter(m=>D.moduleProgress[m.id]?.done).map(m=>m.title),
     assessment:D.assessment,pretest:D.pretest,posttest:D.posttest,
     entries:D.entries,experiments:D.experiments,doseRecords:D.doseRecords,moduleFeedback:D.moduleFeedback,
   },null,2),'application/json');
-  toast('Dados exportados!');
+  toast('Dados exportados.');
 }
 
 function exportHTML(){
@@ -2785,7 +2785,7 @@ function exportHTML(){
     const exp=EXPERIMENTS.find(x=>x.id===r.expId)||{};
     return `<tr><td>${new Date(r.tsDone).toLocaleDateString('pt-BR',{day:'2-digit',month:'short'})}</td><td>${exp.emoji||''} ${exp.title||r.expId}</td><td>${r.predicted}/5</td><td>${r.actual}/5</td><td>${esc(r.noticed||'—')}</td></tr>`;
   }).join('');
-  const html=`<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><title>Relatório — Floresça</title>
+  const html=`<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><title>Relatório: Floresça</title>
 <style>@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;700;800&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}body{font-family:'Poppins',sans-serif;background:#F7F3EF;color:#3F434B}
 .hero{background:linear-gradient(140deg,#5E7D73,#2B4A42);padding:40px 32px 32px;color:white}.hero h1{font-size:26px;font-weight:600;margin-bottom:6px}.hero p{font-size:13px;opacity:.82}
@@ -2799,7 +2799,7 @@ table{width:100%;border-collapse:collapse;background:white;border-radius:12px;ov
 @media print{body{background:white}.hero{-webkit-print-color-adjust:exact;print-color-adjust:exact}}</style></head><body>
 <div class="hero">
   <div style="font-size:12px;opacity:.75;font-weight:600;margin-bottom:2px">Psicoterapia e Afins · psicoterapiaeafins.com.br</div>
-  <h1>Floresça — Cultivando Emoções Positivas</h1>
+  <h1>Floresça: Cultivando Emoções Positivas</h1>
   <p>Relatório gerado em ${new Date().toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'})} · ${D.entries.length} momentos registrados</p>
 </div>
 <div class="body"><h2>Resumo</h2>
@@ -2826,7 +2826,7 @@ ${[...D.doseRecords].sort((a,b)=>b.ts-a.ts).map(r=>
 <div class="ft">
   <strong>© 2026 Psicoterapia e Afins · Todos os direitos reservados</strong><br>
   Este relatório contém dados pessoais. Compartilhe somente com seu profissional de saúde mental de confiança.<br>
-  <strong>Recurso psicoeducativo baseado em evidências — não substitui psicoterapia profissional.</strong><br>
+  <strong>Recurso psicoeducativo baseado em evidências, não substitui psicoterapia profissional.</strong><br>
   <a href="https://www.psicoterapiaeafins.com.br" style="color:#5E7D73">psicoterapiaeafins.com.br</a>
   &nbsp;·&nbsp;
   <a href="https://www.instagram.com/psicoterapiaeafins" style="color:#D96C63">@psicoterapiaeafins</a><br>
@@ -2834,7 +2834,7 @@ ${[...D.doseRecords].sort((a,b)=>b.ts-a.ts).map(r=>
 </div>
 </div></body></html>`;
   dl('floresca-relatorio-'+today()+'.html',html,'text/html;charset=utf-8');
-  toast('Relatório exportado!');
+  toast('Relatório exportado.');
 }
 
 function exportCSV(){
@@ -2862,7 +2862,7 @@ function exportCSV(){
   });
   if(rows.length<=1){ toast('Sem dados para exportar.'); return; }
   dl('floresca-pesquisa-'+today()+'.csv', '﻿'+rows.join('\n'), 'text/csv;charset=utf-8');
-  toast('CSV exportado! ');
+  toast('CSV exportado.');
 }
 
 function dl(name,content,type){ const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([content],{type})); a.download=name; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),1000); }
@@ -2927,7 +2927,7 @@ async function syncToResearch({ silent=false, requirePretest=true }={}){
       save();
       renderDadosSync();
       trackAppEvent('research_sync_ok');
-      toast(silent ? 'Dados enviados para a investigação.' : 'Dados enviados! Obrigada pela contribuição.');
+      toast(silent ? 'Dados enviados para a pesquisa.' : 'Dados enviados. Obrigada pela contribuição.');
     } else {
       if(!silent) toast('Erro no servidor: '+(result.error||'resposta inesperada'));
       console.warn('[Floresça] sync error:', result.error);
@@ -2954,7 +2954,7 @@ function copyParticipantId(){
   } else { toast('Selecione o código e copie manualmente.'); }
 }
 /* Versão do app: mesma numeração do cache do service worker (sw.js) */
-const APP_VERSION = '24';
+const APP_VERSION = '25';
 async function renderAppVersion(){
   const el = document.getElementById('app-version-box'); if(!el) return;
   let status = '';
@@ -2996,7 +2996,7 @@ function renderDadosSync(){
     const fmt=d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear()+' '+p2(d.getHours())+':'+p2(d.getMinutes());
     desc.textContent='Último envio: '+fmt;
   } else {
-    desc.textContent='Nunca enviado — contribua com a investigação!';
+    desc.textContent='Nunca enviado. Você pode contribuir com a pesquisa.';
   }
 }
 
@@ -3110,7 +3110,7 @@ function renderNudge(){
     html = `<div class="nudge lav">
       <div class="nudge-icon">${ico('mobile',24)}</div>
       <div class="nudge-body"><strong>Leve o Floresça com você.</strong>
-      Adicione à tela de início para abrir como um app — com o ícone da flor e funcionando offline.</div>
+      Adicione à tela de início para abrir como um app, com o ícone da flor e funcionando offline.</div>
       <button class="nudge-btn" onclick="showInstallModal()">Ver como</button>
     </div>`;
   }
@@ -3147,7 +3147,7 @@ function renderNudge(){
     html = `<div class="nudge lav">
       <div class="nudge-icon">${ico('heart',24)}</div>
       <div class="nudge-body"><strong>Que bom ter você de volta.</strong>
-      Jardins sobrevivem a dias sem rega — o que importa é regar hoje. ${identityLine()?esc(identityLine())+' ':''}Um momento pequeno já recomeça o cultivo.</div>
+      Jardins sobrevivem a dias sem rega, o que importa é regar hoje. ${identityLine()?esc(identityLine())+' ':''}Um momento pequeno já recomeça o cultivo.</div>
       <button class="nudge-btn" onclick="goTo('diary')">Registrar agora</button>
     </div>`;
   }
@@ -3176,7 +3176,7 @@ function renderNudge(){
 const IFTHEN_PLANS = [
   'Quando algo bom acontecer amanhã, vou <strong>parar 10 segundos para saborear</strong> antes de seguir.',
   'Quando eu notar um momento agradável, vou <strong>nomear a emoção</strong> que ele desperta.',
-  'Quando receber um elogio, vou <strong>respirar e só agradecer</strong> — sem devolver nem minimizar.',
+  'Quando receber um elogio, vou <strong>respirar e só agradecer</strong>, sem devolver nem minimizar.',
   'Quando terminar algo difícil, vou <strong>reconhecer meu esforço</strong> em uma frase.',
   'Quando alguém me contar uma boa notícia, vou <strong>perguntar mais e comemorar junto</strong>.',
 ];
@@ -3192,7 +3192,7 @@ function maybeShowIfThen(){
 }
 
 /* ══════════════════════════════════
-   INSTALAÇÃO — atalho na tela de início (PWA)
+   INSTALAÇÃO: atalho na tela de início (PWA)
    ══════════════════════════════════ */
 let _installPrompt = null;
 window.addEventListener('beforeinstallprompt', e => {
@@ -3202,7 +3202,7 @@ window.addEventListener('beforeinstallprompt', e => {
 window.addEventListener('appinstalled', () => {
   _installPrompt = null;
   D.installSeen = true; save();
-  toast('Floresça instalado! Procure a flor na tela de início.');
+  toast('Floresça instalado. Procure a flor na tela de início.');
   trackAppEvent('pwa_installed');
 });
 
@@ -3220,14 +3220,14 @@ function installInstructionsHTML(){
   </div>`;
   if(isIOS) return `<div style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin:8px 0 10px">No iPhone/iPad (Safari)</div>`
     + step(1,'Abra o Floresça no <strong>Safari</strong> (outros navegadores não têm essa opção no iOS)')
-    + step(2,'Toque no botão <strong>Compartilhar</strong> — o quadrado com a seta para cima (), na barra inferior')
+    + step(2,'Toque no botão <strong>Compartilhar</strong>, o quadrado com a seta para cima (), na barra inferior')
     + step(3,'Role a lista e toque em <strong>"Adicionar à Tela de Início"</strong>')
-    + step(4,'Toque em <strong>Adicionar</strong> — a flor aparece junto aos seus apps');
+    + step(4,'Toque em <strong>Adicionar</strong>, a flor aparece junto aos seus apps');
   if(isAndroid) return `<div style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin:8px 0 10px">No Android (Chrome)</div>`
     + step(1,'Abra o Floresça no <strong>Chrome</strong>')
     + step(2,'Toque no menu <strong>⋮</strong> (três pontinhos, no canto superior direito)')
     + step(3,'Toque em <strong>"Adicionar à tela inicial"</strong> (ou <strong>"Instalar app"</strong>)')
-    + step(4,'Confirme — a flor aparece junto aos seus apps');
+    + step(4,'Confirme: a flor aparece junto aos seus apps');
   return `<div style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin:8px 0 10px">No computador (Chrome/Edge)</div>`
     + step(1,'Procure o <strong>ícone de instalação</strong> no fim da barra de endereço (um monitor com uma seta para baixo)')
     + step(2,'Clique nele e depois em <strong>Instalar</strong>')
@@ -3248,9 +3248,9 @@ async function installApp(){
 function showInstallModal(){
   D.installSeen = true; save();
   if(isInstalled()){
-    document.getElementById('modal-title').textContent = 'Já está instalado!';
+    document.getElementById('modal-title').textContent = 'Já está instalado.';
     document.getElementById('modal-body').innerHTML = 'Você já está usando o Floresça como app. É só procurar a flor na tela de início sempre que quiser voltar.';
-    document.getElementById('modal-actions').innerHTML = '<button class="btn mint" onclick="closeModal()">Ótimo!</button>';
+    document.getElementById('modal-actions').innerHTML = '<button class="btn mint" onclick="closeModal()">Ótimo</button>';
     document.getElementById('modal-ov').classList.add('on');
     return;
   }
@@ -3272,7 +3272,7 @@ function showInstallModal(){
 let _reminderTimer = null;
 
 /* Explica como os lembretes funcionam ANTES de pedir permissão ao navegador
-   (pre-permission prompt) — evita pedido "a frio", que tem alta recusa e
+   (pre-permission prompt): evita pedido "a frio", que tem alta recusa e
    é quase irreversível de desfazer depois. */
 function notifAvailable(){
   const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
@@ -3360,12 +3360,12 @@ async function toggleReminders(cb){
     }
     const perm = await Notification.requestPermission();
     if(perm !== 'granted'){
-      toast('Permissão negada — ative nas configurações do navegador.');
+      toast('Permissão negada: ative nas configurações do navegador.');
       cb.checked = false; return;
     }
     D.reminders.enabled = true; save();
     scheduleLocalReminder();
-    toast('Lembrete diário ativado!');
+    toast('Lembrete diário ativado.');
     trackAppEvent('reminders_on');
   } else {
     D.reminders.enabled = false; save();
