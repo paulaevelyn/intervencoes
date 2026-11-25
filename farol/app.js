@@ -523,7 +523,7 @@ ${svgANS()}`
       {
         type:'breath', typeLabel:'🌬️ Prática de respiração',
         title:'Respiração âncora (4-4-6)',
-        instruction:'Esta sequência — inspirar 4s, segurar 4s, expirar 6s — é a mais estudada para redução de ansiedade. A expiração mais longa ativa o freio vagal.<br><br>Toque no círculo para começar. Faça 3 ciclos completos.',
+        instruction:'Esta sequência — inspirar 4s, segurar 4s, expirar 6s — é um padrão simples de respiração lenta, com a expiração mais longa que a inspiração. Costuma ajudar o corpo a desacelerar, e o efeito varia de pessoa para pessoa.<br><br>Toque no círculo para começar. Faça 3 ciclos completos.',
         pattern:[ {label:'Inspira',dur:4,cls:'expand'},{label:'Segura',dur:4,cls:''},{label:'Expira',dur:6,cls:'contract'},{label:'Pausa',dur:2,cls:''} ],
         totalCycles:3
       },
@@ -1824,14 +1824,14 @@ function calcularPadroes(){
     if(nN >= L.tipoMin && nN/comTipo.length >= L.tipoPct)
       out.push({ id:'tipo', ic:'🌊', t:'O tipo das suas preocupações', b:`Em ${nN} de ${comTipo.length} registros você marcou <strong>“Não depende de mim”</strong>. Para esse tipo, o app sugere ${nomeModulo('m7','Desfusão e Aceitação')}.` });
     else if(nC >= L.tipoMin && nC/comTipo.length >= L.tipoPct)
-      out.push({ id:'tipo', ic:'🔧', t:'O tipo das suas preocupações', b:`Em ${nC} de ${comTipo.length} registros você marcou <strong>“Posso agir agora”</strong>. Para esse tipo, o app sugere Resolução de Problemas: escolher UM primeiro passo pequeno e marcar quando fazer.` });
+      out.push({ id:'tipo', ic:'🎯', t:'O tipo das suas preocupações', b:`Em ${nC} de ${comTipo.length} registros você marcou <strong>“Posso agir agora”</strong>. Para esse tipo, o app sugere Resolução de Problemas: escolher UM primeiro passo pequeno e marcar quando fazer.` });
   }
   // 3. reação no corpo mais frequente
   const corpo = {};
   E.forEach(e=>(e.bodyReactions||[]).filter(r=>r!=='Outro').forEach(r=>{ corpo[r]=(corpo[r]||0)+1; }));
   const topC = Object.entries(corpo).sort((x,y)=>y[1]-x[1])[0];
   if(topC && topC[1] >= L.corpoMin && topC[1]/E.length >= L.corpoPct){
-    out.push({ id:'corpo', ic:'🫀', t:'O que o corpo mostra',
+    out.push({ id:'corpo', ic:'💓', t:'O que o corpo mostra',
       b:`A reação no corpo que mais aparece é <strong>“${topC[0]}”</strong> (${topC[1]} de ${E.length} registros).`+linkModulo('m5','Regulação pelo Corpo') });
   }
   // 4. estratégias mais usadas e ainda não tentadas

@@ -175,3 +175,9 @@ Manter sincronizado a cada mudança de módulo ou componente transversal.*
   - Para ajustar, mude só os números de `PADROES_LIM` e repita a simulação antes de publicar.
 - **Experimentos:** o Farol não tem laboratório. Se vier a ter (por exemplo adiar a preocupação, ou testar uma metacrença), o mapa módulo → experimentos do Floresça (`EXP_DO_MODULO`) é o modelo a seguir; exige conteúdo clínico novo, revisado por quem conduz o programa.
 
+## Linguagem sobre evidência (mesma regra do Floresça)
+Os efeitos de programas de autoajuda como este costumam ser **de pequenos a moderados**. No texto do app:
+- não dizer "mais evidência", "comprovado" nem "publicado em centenas de estudos"; dizer "base em pesquisa", "estudada" e o tamanho do efeito quando houver;
+- técnicas de respiração e de relaxamento "costumam ajudar", e o efeito varia de pessoa para pessoa; não afirmar mecanismos como fato;
+- o Farol complementa o acompanhamento profissional, não o substitui.
+
