@@ -6,6 +6,7 @@ const CORE = [
   './',
   './index.html',
   './style.css',
+  './fonte.css',
   './app.js',
   './manifest.json',
   '../logos/farol.svg',

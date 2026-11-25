@@ -167,7 +167,8 @@ de revisão teórica antes de ir para o código.
 Manter sincronizado a cada mudança de módulo ou componente transversal.*
 
 ## Tela inicial, insights e padrões (mesmo desenho do Floresça)
-- **Tela inicial:** um único passo em destaque. Quem começa vê "Primeiros passos" (pré-avaliação, primeiro módulo, um registro); depois, módulo a meio, próximo módulo do caminho (`effectivePath()`) ou manter a prática, com acolhimento sem culpa a quem volta depois de 3+ dias. "Sua travessia" mostra os 8 módulos em sequência ("você está aqui"). Quem adia a pré-avaliação não é cobrado (`D.pretestAdiado`): o destaque passa ao próximo passo e ela vira lembrete secundário. Nível, XP, módulos e gráfico só aparecem quando há atividade; avisos secundários (instalar, lembretes, dias de prática) só depois dos primeiros passos.
+- **Tela inicial (mesmo desenho do Floresça):** um aviso no topo, se houver (pré-avaliação pendente, instalar, lembretes, retorno após pausa, módulo a meio); o cartão verde "Seu próximo passo" (quem está começando vê o primeiro módulo; depois, registrar em um minuto; no dia em que já registrou, "Hoje já foi registrado" e o próximo módulo); "Sua travessia" com os 8 módulos em sequência (`effectivePath()`) e "você está aqui"; a "Prática da semana" compacta; e "Para quando quiser" com o próximo módulo, o diário, a autoavaliação e os dados, mais "Preciso de apoio agora" (CVV 188, chat, CAPS/UBS, SAMU 192). Quem adia a pré-avaliação não é cobrado (`D.pretestAdiado`). **Sem XP, níveis nem emblemas na tela**: os pontos e as marcas continuam guardados nos dados (continuidade da pesquisa), mas não aparecem nem são anunciados.
+- **Prática da semana:** fechada por padrão (uma linha, botão "Responder"); abre o formulário ao tocar e tem "Recolher". Volta fechada a cada visita à tela inicial.
 - **Ao salvar um registro:** no máximo 2 avisos, dispensáveis, só a partir do que a pessoa **escolheu** (tipo, estratégias, "como ficou depois"); o texto livre não é lido. Ex.: "nem toda vez alivia na hora, e tudo bem" (depois ≥ 4), pausa de 1 minuto quando não marcou estratégia (com link ao módulo 5 se estiver aberto), Desfusão e Aceitação para "não depende de mim", lembrar a ferramenta quando houve alívio.
 - **Padrões provisórios (Progresso):** a partir de 4 registros (`PADROES_MIN`), até 5 pistas, em tom de convite, com o aviso "pistas, não conclusões", cada uma dispensável (`D.padroesOff`, só no aparelho, fora da sincronização da pesquisa): quando as preocupações aparecem (período do dia), tipo mais frequente, reação no corpo mais frequente, estratégias mais usadas e ainda não tentadas, e **com qual estratégia o "depois" costuma ficar melhor**. Limites em `PADROES_LIM` no `app.js`.
   - Os **descritivos** (só contam fatos) têm limites soltos.
@@ -180,4 +181,10 @@ Os efeitos de programas de autoajuda como este costumam ser **de pequenos a mode
 - não dizer "mais evidência", "comprovado" nem "publicado em centenas de estudos"; dizer "base em pesquisa", "estudada" e o tamanho do efeito quando houver;
 - técnicas de respiração e de relaxamento "costumam ajudar", e o efeito varia de pessoa para pessoa; não afirmar mecanismos como fato;
 - o Farol complementa o acompanhamento profissional, não o substitui.
+
+## Design (mesmo padrão do Floresça)
+- **Visual sem emoji:** ícones de traço fino (1,5 px, estilo Lucide) em `ICONS`/`ico()`/`iconize()`; no HTML, `data-ico="nome"` e `data-ico-size`. Cada módulo tem `ico` no lugar de `emoji`. Os ícones só do Farol (relógio, vento, ondas, âncora, lápis) ficam em `Object.assign(ICONS, …)`.
+- **Tipografia e tokens:** fonte Poppins via `fonte.css` (carregado depois de `../shared/marca.css`, só neste app); títulos leves (300), nenhum peso 800 e nenhum texto abaixo de 12 px; contraste revisado (`--muted`, `--light`, `--coral-d`).
+- **Acessibilidade:** telas em `<main>`, título da tela inicial em `<h1>`, `role="dialog"` nos modais e na celebração, `aria-live` no aviso rápido (toast).
+- Para manter os dois apps iguais, mudanças de CSS comuns devem ir para ambos; o que é só de um app (laboratório no Floresça, travessia no Farol) fica no próprio.
 

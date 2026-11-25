@@ -1736,6 +1736,7 @@ function renderHome(){
   renderNextStep();
   renderWeekSummary();
   renderGardenCard();
+  _doseAberta = false;
   renderDoseCard();
   renderHomeMore();
 }
@@ -2471,6 +2472,9 @@ function cancelExperiment(){
    Mede o que a pessoa PRATICOU (dose cultivada),
    distinto do Registro de Momentos (estado).
    ══════════════════════════════════ */
+let _doseAberta = false;
+function abrirDose(){ _doseAberta = true; renderDoseCard(); const t=document.getElementById('dose-text'); if(t) t.focus(); }
+function recolherDose(){ _doseAberta = false; renderDoseCard(); }
 function renderDoseCard(){
   const el = document.getElementById('h-dose');
   if(!el) return;
@@ -2478,15 +2482,23 @@ function renderDoseCard(){
   const answered = D.doseRecords.some(r=>r.weekStart===ws);
   const skipped  = D.doseSkipWeek === ws;
   if(answered || skipped || !D.pretest){ el.innerHTML=''; return; }
+  if(!_doseAberta){   // fechado por padrão: uma linha só, para não dominar a tela
+    el.innerHTML = `<div class="card dose-compacta"><div class="dose-linha">
+      <div><div class="card-lbl">Dose da semana</div><div class="dose-sub">O que você cultivou nesta semana?</div></div>
+      <button type="button" class="dose-btn" aria-expanded="false" onclick="abrirDose()">Responder</button>
+    </div></div>`;
+    return;
+  }
   el.innerHTML = `<div class="card" style="border:1.5px solid var(--mint-l)">
     <div class="card-lbl">Dose da semana</div>
     <div style="font-size:14px;line-height:1.6;margin-bottom:10px">Essa semana, o que você <strong>cultivou</strong>? Cultivar é todo pequeno passo: notar, saborear, agradecer, testar uma crença...</div>
     <div class="chips" id="dose-tags" style="margin-bottom:10px">${DOSE_TAGS.map(t=>`<span class="chip" onclick="toggleChip(this)">${t}</span>`).join('')}</div>
     <textarea id="dose-text" rows="2" maxlength="400" placeholder="Escreva aqui..." style="width:100%"></textarea>
     <div style="display:flex;gap:8px;margin-top:10px">
-      <button class="btn mint" style="flex:1;margin:0" onclick="saveDose()">Guardar </button>
+      <button class="btn mint" style="flex:1;margin:0" onclick="saveDose()">Guardar</button>
       <button class="btn ghost" style="width:auto;margin:0;padding:0 16px" onclick="skipDose()">Agora não</button>
     </div>
+    <button type="button" class="link-btn" style="margin-top:6px" onclick="recolherDose()">Recolher</button>
   </div>`;
 }
 function saveDose(){
@@ -2497,6 +2509,7 @@ function saveDose(){
   save();
   awardXP(15,'Dose da semana cultivada');
   trackAppEvent('dose_saved');
+  _doseAberta = false;
   renderDoseCard();
 }
 function skipDose(){
@@ -2941,7 +2954,7 @@ function copyParticipantId(){
   } else { toast('Selecione o código e copie manualmente.'); }
 }
 /* Versão do app: mesma numeração do cache do service worker (sw.js) */
-const APP_VERSION = '23';
+const APP_VERSION = '24';
 async function renderAppVersion(){
   const el = document.getElementById('app-version-box'); if(!el) return;
   let status = '';
