@@ -165,3 +165,26 @@ de revisão teórica antes de ir para o código.
 
 *Documento gerado a partir do conteúdo real de `app.js` (v4) em 2026-07-12.
 Manter sincronizado a cada mudança de módulo ou componente transversal.*
+
+## Tela inicial, insights e padrões (mesmo desenho do Floresça)
+- **Tela inicial (mesmo desenho do Floresça):** um aviso no topo, se houver (pré-avaliação pendente, instalar, lembretes, retorno após pausa, módulo a meio); o cartão verde "Seu próximo passo" (quem está começando vê o primeiro módulo; depois, registrar em um minuto; no dia em que já registrou, "Hoje já foi registrado" e o próximo módulo); "Sua travessia" com os 8 módulos em sequência (`effectivePath()`) e "você está aqui"; a "Prática da semana" compacta; e "Para quando quiser" com o próximo módulo, o diário, a autoavaliação e os dados, mais "Preciso de apoio agora" (CVV 188, chat, CAPS/UBS, SAMU 192). Quem adia a pré-avaliação não é cobrado (`D.pretestAdiado`). **Sem XP, níveis nem emblemas na tela**: os pontos e as marcas continuam guardados nos dados (continuidade da pesquisa), mas não aparecem nem são anunciados.
+- **Prática da semana:** fechada por padrão (uma linha, botão "Responder"); abre o formulário ao tocar e tem "Recolher". Volta fechada a cada visita à tela inicial.
+- **Ao salvar um registro:** no máximo 2 avisos, dispensáveis, só a partir do que a pessoa **escolheu** (tipo, estratégias, "como ficou depois"); o texto livre não é lido. Ex.: "nem toda vez alivia na hora, e tudo bem" (depois ≥ 4), pausa de 1 minuto quando não marcou estratégia (com link ao módulo 5 se estiver aberto), Desfusão e Aceitação para "não depende de mim", lembrar a ferramenta quando houve alívio.
+- **Padrões provisórios (Progresso):** a partir de 4 registros (`PADROES_MIN`), até 5 pistas, em tom de convite, com o aviso "pistas, não conclusões", cada uma dispensável (`D.padroesOff`, só no aparelho, fora da sincronização da pesquisa): quando as preocupações aparecem (período do dia), tipo mais frequente, reação no corpo mais frequente, estratégias mais usadas e ainda não tentadas, e **com qual estratégia o "depois" costuma ficar melhor**. Limites em `PADROES_LIM` no `app.js`.
+  - Os **descritivos** (só contam fatos) têm limites soltos.
+  - O **comparativo** ("depois" com × sem uma estratégia; lembre que 1 = muito melhor e 5 = igual ou pior) exige diferença mínima de 0,8, pelo menos 4 registros em cada grupo e |t| de Welch ≥ 3,5 (alto porque se escolhe a estratégia mais extrema entre até 7). Simulação com registros aleatórios (2000 por cenário): pistas inventadas em 4,4% (10 registros), 5,7% (20) e 1,8% (40); só com limite de diferença eram 49–89%. Um efeito real de 1,5 ponto foi detectado em 18%, 63% e 94% das vezes. O padrão sempre diz que é pista e que pode ser o contrário: quem recorre a uma estratégia pode estar nos momentos mais difíceis.
+  - Para ajustar, mude só os números de `PADROES_LIM` e repita a simulação antes de publicar.
+- **Experimentos:** o Farol não tem laboratório. Se vier a ter (por exemplo adiar a preocupação, ou testar uma metacrença), o mapa módulo → experimentos do Floresça (`EXP_DO_MODULO`) é o modelo a seguir; exige conteúdo clínico novo, revisado por quem conduz o programa.
+
+## Linguagem sobre evidência (mesma regra do Floresça)
+Os efeitos de programas de autoajuda como este costumam ser **de pequenos a moderados**. No texto do app:
+- não dizer "mais evidência", "comprovado" nem "publicado em centenas de estudos"; dizer "base em pesquisa", "estudada" e o tamanho do efeito quando houver;
+- técnicas de respiração e de relaxamento "costumam ajudar", e o efeito varia de pessoa para pessoa; não afirmar mecanismos como fato;
+- o Farol complementa o acompanhamento profissional, não o substitui.
+
+## Design (mesmo padrão do Floresça)
+- **Visual sem emoji:** ícones de traço fino (1,5 px, estilo Lucide) em `ICONS`/`ico()`/`iconize()`; no HTML, `data-ico="nome"` e `data-ico-size`. Cada módulo tem `ico` no lugar de `emoji`. Os ícones só do Farol (relógio, vento, ondas, âncora, lápis) ficam em `Object.assign(ICONS, …)`.
+- **Tipografia e tokens:** fonte Poppins via `fonte.css` (carregado depois de `../shared/marca.css`, só neste app); títulos leves (300), nenhum peso 800 e nenhum texto abaixo de 12 px; contraste revisado (`--muted`, `--light`, `--coral-d`).
+- **Acessibilidade:** telas em `<main>`, título da tela inicial em `<h1>`, `role="dialog"` nos modais e na celebração, `aria-live` no aviso rápido (toast).
+- Para manter os dois apps iguais, mudanças de CSS comuns devem ir para ambos; o que é só de um app (laboratório no Floresça, travessia no Farol) fica no próprio.
+

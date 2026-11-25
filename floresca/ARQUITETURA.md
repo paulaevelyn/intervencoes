@@ -132,3 +132,7 @@ Os efeitos das intervenções em psicologia positiva são **pequenos a moderados
   - **Padrões descritivos** (quando registra, emoções que faltam, técnica mais usada) só contam fatos: limites soltos (mínimo 4 registros).
   - **Padrões que comparam intensidade** (período do dia; fim de semana × dias úteis) exigem, além de uma diferença mínima de 0,8, que ela seja grande frente à variação dos próprios registros (teste t de Welch: |t| ≥ 2,5 na semana e ≥ 3 entre períodos, por escolher o par mais extremo), com pelo menos 3 registros em cada grupo. Motivo: numa simulação com registros totalmente aleatórios, só com limites de diferença (1,0 e 0,8), esses padrões apareciam do acaso em 38–44% (período) e 24–26% (semana) das vezes com 10 a 20 registros; com o teste caíram para 0–5% e 1–5%.
   - Para afrouxar ou endurecer, mude só os números de `PADROES_LIM`; para medir o efeito, repita a simulação com dados aleatórios antes de publicar.
+
+## Dose da semana compacta
+O cartão "Dose da semana" da tela inicial vem fechado (uma linha, botão "Responder") e abre o formulário ao tocar; "Recolher" fecha de novo e a cada visita à tela inicial ele volta fechado. O objetivo é que ele não domine a tela.
+
