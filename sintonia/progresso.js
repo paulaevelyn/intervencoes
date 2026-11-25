@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════════════
-   Sintonia — progresso.js
+   Sintonia: progresso.js
    Parte do tipo "Com toques" que também vale para o clássico: comparação com os próprios blocos anteriores,
    gráficos, reflexão semanal sobre o dia a dia e relatório para a profissional (PDF, texto, planilha, resumo).
    Adaptado da Clareira. A pessoa se compara só consigo mesma; nada aqui é ranking, meta ou diagnóstico.

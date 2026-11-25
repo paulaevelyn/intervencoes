@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════════════
-   Sintonia — toques.js
+   Sintonia: toques.js
    Tipo de treino "Com toques": adaptação para TDAH, a partir da Clareira (artefato criado pela Paula).
    Cada bloco é UMA fase (Foco seletivo, Alternância ou Atenção dividida), de 3, 5 ou 8 minutos, num cenário
    sonoro (Floresta, Oceano ou Espaço). De vez em quando um som vem DUAS vezes seguidas (a segunda, um pouco

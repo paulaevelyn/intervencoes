@@ -20,31 +20,31 @@ document.addEventListener('DOMContentLoaded', function () {
   var concepts = [
     {
       icon: '🧩', title: 'O que é uma emoção?',
-      text: 'Não é "coisa da cabeça" nem fraqueza — é informação rápida. Toda emoção tem três partes que acontecem quase juntas: <strong>uma mudança no corpo</strong> (coração, respiração, tensão), <strong>um sentimento</strong> (o jeito como isso é vivido por dentro) e <strong>uma vontade de agir</strong> específica. Quando você sente antes de "pensar", é essa engrenagem funcionando.'
+      text: 'Não é "coisa da cabeça" nem fraqueza: é informação rápida. Toda emoção tem três partes que acontecem quase juntas: <strong>uma mudança no corpo</strong> (coração, respiração, tensão), <strong>um sentimento</strong> (o jeito como isso é vivido por dentro) e <strong>uma vontade de agir</strong> específica. Quando você sente antes de "pensar", é essa engrenagem funcionando.'
     },
     {
       icon: '🛡️', title: 'Pra que servem as emoções',
-      text: 'Cada uma das seis emoções básicas existe porque, ao longo da nossa história como espécie, ela resolveu um problema real: fugir de perigo, notar uma perda, defender um limite, se aproximar do que é bom. <strong>Não existe emoção "errada"</strong> — existe emoção incômoda de sentir. O objetivo aqui não é eliminar nenhuma delas, é entender o recado que cada uma traz.'
+      text: 'Cada uma das seis emoções básicas existe porque, ao longo da nossa história como espécie, ela resolveu um problema real: fugir de perigo, notar uma perda, defender um limite, se aproximar do que é bom. <strong>Não existe emoção "errada"</strong>, existe emoção incômoda de sentir. O objetivo aqui não é eliminar nenhuma delas, é entender o recado que cada uma traz.'
     },
     {
       icon: '⚡', title: 'Tendência de ação',
-      text: 'Cada emoção vem com um "programa" pronto: um impulso específico do que fazer — o medo empurra pra fugir, a raiva empurra pra enfrentar, o nojo empurra pra afastar. Isso se chama <strong>tendência de ação</strong>. Reconhecer esse impulso não significa obedecer a ele automaticamente — significa ganhar a escolha de segui-lo ou não.'
+      text: 'Cada emoção vem com um "programa" pronto: um impulso específico do que fazer, o medo empurra pra fugir, a raiva empurra pra enfrentar, o nojo empurra pra afastar. Isso se chama <strong>tendência de ação</strong>. Reconhecer esse impulso não significa obedecer a ele automaticamente, significa ganhar a escolha de segui-lo ou não.'
     },
     {
       icon: '🧠', title: 'Seu cérebro emocional',
-      text: 'Quando algo acontece, a <strong>amígdala</strong> dá o alarme rápido, antes de qualquer análise consciente. A <strong>ínsula</strong> lê os sinais do corpo (é ela que te avisa do coração acelerado, do nó na garganta). O <strong>córtex pré-frontal</strong> é o "painel de controle" mais lento e mais reflexivo — é ele que avalia, pondera e ajuda a escolher a resposta, e é a conexão entre ele e a amígdala que fica mais forte quando a gente pratica nomear emoções. Por baixo disso tudo, o <strong>sistema nervoso autônomo</strong> funciona como acelerador (sistema simpático, prepara ação) e freio (sistema parassimpático, traz calma) — as sensações do corpo que você percebe em cada emoção são esse sistema em ação.'
+      text: 'Quando algo acontece, a <strong>amígdala</strong> dá o alarme rápido, antes de qualquer análise consciente. A <strong>ínsula</strong> lê os sinais do corpo (é ela que te avisa do coração acelerado, do nó na garganta). O <strong>córtex pré-frontal</strong> é o "painel de controle" mais lento e mais reflexivo, é ele que avalia, pondera e ajuda a escolher a resposta, e é a conexão entre ele e a amígdala que fica mais forte quando a gente pratica nomear emoções. Por baixo disso tudo, o <strong>sistema nervoso autônomo</strong> funciona como acelerador (sistema simpático, prepara ação) e freio (sistema parassimpático, traz calma), as sensações do corpo que você percebe em cada emoção são esse sistema em ação.'
     },
     {
       icon: '🎛️', title: 'O que é regulação emocional',
-      text: 'Regular uma emoção <strong>não é reprimir</strong> nem "ficar bem" o tempo todo. É um processo de três passos: <strong>perceber</strong> o que está acontecendo no corpo, <strong>nomear</strong> a emoção com precisão, e só então <strong>escolher</strong> a resposta — em vez de reagir no piloto automático. Regular bem não significa nunca sentir raiva ou medo; significa ter mais opções quando eles aparecerem.'
+      text: 'Regular uma emoção <strong>não é reprimir</strong> nem "ficar bem" o tempo todo. É um processo de três passos: <strong>perceber</strong> o que está acontecendo no corpo, <strong>nomear</strong> a emoção com precisão, e só então <strong>escolher</strong> a resposta: em vez de reagir no piloto automático. Regular bem não significa nunca sentir raiva ou medo; significa ter mais opções quando eles aparecerem.'
     },
     {
       icon: '👥', title: 'Reconhecer em você e nos outros',
-      text: 'Existem dois radares: um <strong>interno</strong> (interocepção) — os sinais do seu próprio corpo — e um <strong>externo</strong> — expressões faciais e de postura que, segundo o pesquisador Paul Ekman, se repetem de forma parecida em culturas bem diferentes. Treinar os dois radares é a base do que costuma ser chamado de inteligência emocional.'
+      text: 'Existem dois radares: um <strong>interno</strong> (interocepção): os sinais do seu próprio corpo, e um <strong>externo</strong>, expressões faciais e de postura que, segundo o pesquisador Paul Ekman, se repetem de forma parecida em culturas bem diferentes. Treinar os dois radares é a base do que costuma ser chamado de inteligência emocional.'
     },
     {
       icon: '🧭', title: 'Emoção como informação (Terapia Focada nas Emoções)',
-      text: 'Na Terapia Focada nas Emoções (Leslie Greenberg), a emoção não é vista como "problema" a ser eliminado, mas como uma <strong>fonte de informação</strong> sobre o que importa pra você — o trabalho é <strong>chegar até ela</strong>, sentir o que realmente está ali, e usar essa informação, em vez de evitá-la ou ser dominado por ela. Nem toda emoção que aparece, porém, é o retrato mais direto do que está acontecendo — e é isso que vamos ver a seguir.'
+      text: 'Na Terapia Focada nas Emoções (Leslie Greenberg), a emoção não é vista como "problema" a ser eliminado, mas como uma <strong>fonte de informação</strong> sobre o que importa pra você, o trabalho é <strong>chegar até ela</strong>, sentir o que realmente está ali, e usar essa informação, em vez de evitá-la ou ser dominado por ela. Nem toda emoção que aparece, porém, é o retrato mais direto do que está acontecendo, e é isso que vamos ver a seguir.'
     }
   ];
 
@@ -63,16 +63,16 @@ document.addEventListener('DOMContentLoaded', function () {
     {
       icon: '🕰️', title: 'Emoção primária mal-adaptativa',
       text: 'Um padrão antigo, aprendido em outro momento da vida, que continua sendo ativado mesmo quando não cabe mais na situação atual.',
-      example: 'Uma vergonha profunda ativada por uma crítica pequena — como se ainda fosse aquela criança sendo julgada.'
+      example: 'Uma vergonha profunda ativada por uma crítica pequena, como se ainda fosse aquela criança sendo julgada.'
     },
     {
       icon: '🌊', title: 'Emoção secundária',
-      text: 'Uma emoção que aparece por cima de outra mais primária — às vezes reagindo a ela, às vezes escondendo-a.',
+      text: 'Uma emoção que aparece por cima de outra mais primária, às vezes reagindo a ela, às vezes escondendo-a.',
       example: 'Raiva que aparece no lugar de uma tristeza ou de um medo mais vulnerável de se mostrar.'
     },
     {
       icon: '🎭', title: 'Emoção instrumental',
-      text: 'Expressa — nem sempre de forma consciente — para produzir um efeito em alguém, mais do que sentida de forma genuína naquele momento.',
+      text: 'Expressa: nem sempre de forma consciente, para produzir um efeito em alguém, mais do que sentida de forma genuína naquele momento.',
       example: 'Um choro ou uma irritação usados (mesmo sem perceber) pra conseguir atenção ou fazer o outro ceder.'
     }
   ];
@@ -89,28 +89,28 @@ document.addEventListener('DOMContentLoaded', function () {
     {
       name: 'Alegria', emoji: '😊', accent: 'joy', trigger: 'uma sensação de leveza no corpo',
       definition: 'Uma sensação boa que aparece quando algo dá certo ou é agradável.',
-      origin: 'Evoluiu porque nos aproxima do que é bom — comida, companhia, segurança. Quem sentia prazer em se conectar e explorar tinha mais chances de sobreviver e prosperar.',
+      origin: 'Evoluiu porque nos aproxima do que é bom, comida, companhia, segurança. Quem sentia prazer em se conectar e explorar tinha mais chances de sobreviver e prosperar.',
       actionTendency: ['Dá vontade de se aproximar', 'Compartilhar com alguém', 'Continuar fazendo aquilo'],
       thoughts: ['"Isso é bom."', '"Quero repetir isso."', '"Quero contar pra alguém."'],
       physical: ['Mais energia no corpo', 'Sorriso que vem sem esforço', 'Sensação de leveza'],
       recognizeOthers: ['Sorriso que chega aos olhos', 'Postura mais aberta e solta', 'Fala mais leve e mais rápida'],
-      scenario: 'Você recebe uma notícia boa e sente vontade de contar pra alguém na mesma hora — é a alegria empurrando você a compartilhar e fortalecer vínculos.',
+      scenario: 'Você recebe uma notícia boa e sente vontade de contar pra alguém na mesma hora, é a alegria empurrando você a compartilhar e fortalecer vínculos.',
       applyPrompt: 'Da próxima vez: nomeie em voz alta e aproveite 10 segundos antes de seguir em frente.',
       healthy: ['Aproveitar o momento', 'Agradecer', 'Compartilhar com alguém de confiança'],
       unhealthy: ['Buscar só prazer rápido o tempo todo', 'Depender da aprovação dos outros para se sentir bem'],
       fn: 'Nos motiva a repetir o que faz bem e fortalece nossos laços com as pessoas.',
-      science: 'O cérebro libera dopamina e serotonina — substâncias ligadas a prazer e bem-estar.'
+      science: 'O cérebro libera dopamina e serotonina, substâncias ligadas a prazer e bem-estar.'
     },
     {
       name: 'Tristeza', emoji: '😢', accent: 'sad', trigger: 'um nó na garganta',
       definition: 'Aparece quando perdemos algo ou alguém, ou vivemos uma decepção.',
-      origin: 'Evoluiu como resposta à perda — de pessoas, vínculos, recursos. Ela reduz nossa energia pra pedir ajuda e reavaliar o que realmente importa.',
+      origin: 'Evoluiu como resposta à perda, de pessoas, vínculos, recursos. Ela reduz nossa energia pra pedir ajuda e reavaliar o que realmente importa.',
       actionTendency: ['Dá vontade de se recolher', 'Ficar quieto por um tempo', 'Buscar conforto'],
       thoughts: ['"Sinto falta disso."', '"Isso é difícil."', '"Preciso de um tempo."'],
       physical: ['Peito mais pesado', 'Menos energia', 'Vontade de chorar'],
       recognizeOthers: ['Cantos da boca caídos', 'Olhar baixo, ombros curvados', 'Fala mais devagar e mais baixa'],
-      scenario: 'Um amigo se muda de cidade e você sente um vazio quando pensa nele — a tristeza está sinalizando o quanto esse vínculo importava.',
-      applyPrompt: 'Da próxima vez: permita-se sentir por alguns minutos antes de tentar "resolver" — a tristeza pede tempo, não solução imediata.',
+      scenario: 'Um amigo se muda de cidade e você sente um vazio quando pensa nele, a tristeza está sinalizando o quanto esse vínculo importava.',
+      applyPrompt: 'Da próxima vez: permita-se sentir por alguns minutos antes de tentar "resolver", a tristeza pede tempo, não solução imediata.',
       healthy: ['Permitir-se sentir', 'Pedir apoio', 'Dar tempo pra si mesmo'],
       unhealthy: ['Esconder o que sente', 'Se isolar completamente', 'Ficar remoendo sem buscar ajuda'],
       fn: 'Ajuda a processar perdas e avisa às pessoas ao redor que precisamos de cuidado.',
@@ -119,13 +119,13 @@ document.addEventListener('DOMContentLoaded', function () {
     {
       name: 'Raiva', emoji: '😠', accent: 'anger', trigger: 'o coração acelerado e músculos tensos',
       definition: 'Surge quando algo parece injusto, quando somos frustrados ou nos sentimos ameaçados.',
-      origin: 'Evoluiu para nos defender quando algo importante é violado — nossos limites, nosso espaço, nossa dignidade.',
+      origin: 'Evoluiu para nos defender quando algo importante é violado, nossos limites, nosso espaço, nossa dignidade.',
       actionTendency: ['Dá vontade de enfrentar', 'Corrigir a injustiça', 'Se impor'],
       thoughts: ['"Isso é injusto."', '"Não vou aceitar isso."', '"Preciso me defender."'],
       physical: ['Coração acelera', 'Músculos tensos', 'Sensação de calor'],
       recognizeOthers: ['Sobrancelhas franzidas, olhar fixo', 'Mandíbula tensa, lábios apertados', 'Gestos mais bruscos'],
-      scenario: 'Alguém fura sua fila depois de você esperar 40 minutos — a raiva é o sinal de que um limite foi ultrapassado.',
-      applyPrompt: 'Da próxima vez: nomeie "estou com raiva" antes de agir — isso já cria uma pausa entre sentir e fazer.',
+      scenario: 'Alguém fura sua fila depois de você esperar 40 minutos, a raiva é o sinal de que um limite foi ultrapassado.',
+      applyPrompt: 'Da próxima vez: nomeie "estou com raiva" antes de agir: isso já cria uma pausa entre sentir e fazer.',
       healthy: ['Reconhecer o que sente', 'Falar de forma direta e respeitosa', 'Colocar limites'],
       unhealthy: ['Explodir sem pensar', 'Agredir com palavras ou ações', 'Engolir tudo por dentro'],
       fn: 'Ajuda a enfrentar obstáculos e proteger o que é importante pra gente.',
@@ -134,13 +134,13 @@ document.addEventListener('DOMContentLoaded', function () {
     {
       name: 'Medo', emoji: '😨', accent: 'fear', trigger: 'o coração disparado e a respiração rápida',
       definition: 'Aparece quando algo parece uma ameaça à nossa segurança, física ou emocional.',
-      origin: 'Evoluiu para nos manter vivos diante de ameaças reais — é um dos sistemas mais antigos e mais rápidos do cérebro.',
+      origin: 'Evoluiu para nos manter vivos diante de ameaças reais, é um dos sistemas mais antigos e mais rápidos do cérebro.',
       actionTendency: ['Dá vontade de fugir', 'Se esconder', 'Congelar no lugar'],
       thoughts: ['"Isso é perigoso."', '"Algo ruim pode acontecer."', '"Preciso me proteger."'],
       physical: ['Coração dispara', 'Pupilas dilatam', 'Respiração rápida'],
       recognizeOthers: ['Olhos arregalados, sobrancelhas erguidas', 'Corpo encolhido ou tenso', 'Voz mais aguda ou trêmula'],
-      scenario: 'Um carro freia bruscamente perto de você — o coração dispara antes mesmo de "pensar" no perigo. É o medo te protegendo.',
-      applyPrompt: 'Da próxima vez: pergunte-se "esse perigo é real e imediato, ou é só uma possibilidade?" — ajuda a calibrar a resposta.',
+      scenario: 'Um carro freia bruscamente perto de você, o coração dispara antes mesmo de "pensar" no perigo. É o medo te protegendo.',
+      applyPrompt: 'Da próxima vez: pergunte-se "esse perigo é real e imediato, ou é só uma possibilidade?", ajuda a calibrar a resposta.',
       healthy: ['Avaliar o perigo com calma', 'Se proteger quando necessário', 'Encarar aos poucos o que assusta'],
       unhealthy: ['Evitar tudo que dá medo', 'Entrar em pânico', 'Viver preocupado com coisas pouco prováveis'],
       fn: 'Nos protege de perigos reais, preparando o corpo para agir rápido.',
@@ -149,13 +149,13 @@ document.addEventListener('DOMContentLoaded', function () {
     {
       name: 'Nojo', emoji: '🤢', accent: 'disgust', trigger: 'vontade de me afastar de algo ou alguém',
       definition: 'Uma reação de rejeição a algo que parece contaminado, nocivo ou que fere nossos valores.',
-      origin: 'Evoluiu para nos afastar do que pode contaminar ou adoecer — comida estragada, doenças e, mais tarde, também violações morais.',
+      origin: 'Evoluiu para nos afastar do que pode contaminar ou adoecer, comida estragada, doenças e, mais tarde, também violações morais.',
       actionTendency: ['Dá vontade de se afastar', 'Rejeitar', 'Expelir ou evitar contato'],
       thoughts: ['"Isso é repulsivo."', '"Preciso me afastar."', '"Isso pode me fazer mal."'],
       physical: ['Enjoo', 'Nariz franzido', 'Vontade de se afastar'],
       recognizeOthers: ['Nariz enrugado, lábio superior levantado', 'Cabeça ou corpo virado pra longe', 'Expressão de repulsa no rosto'],
-      scenario: 'Você abre a geladeira e sente um cheiro estranho — o nojo faz você recuar antes de qualquer risco real.',
-      applyPrompt: 'Da próxima vez: repare se o nojo é sobre algo concreto (comida, cheiro) ou um julgamento moral — parecem iguais, mas pedem respostas diferentes.',
+      scenario: 'Você abre a geladeira e sente um cheiro estranho, o nojo faz você recuar antes de qualquer risco real.',
+      applyPrompt: 'Da próxima vez: repare se o nojo é sobre algo concreto (comida, cheiro) ou um julgamento moral, parecem iguais, mas pedem respostas diferentes.',
       healthy: ['Reconhecer o incômodo', 'Se afastar quando faz sentido', 'Questionar reações exageradas'],
       unhealthy: ['Rejeitar pessoas ou situações sem refletir', 'Julgar com base só numa reação forte'],
       fn: 'Nos protege de coisas que podem nos fazer mal, como comida estragada ou situações arriscadas.',
@@ -164,12 +164,12 @@ document.addEventListener('DOMContentLoaded', function () {
     {
       name: 'Surpresa', emoji: '😲', accent: 'surprise', trigger: 'uma reação rápida a algo inesperado',
       definition: 'Uma reação rápida a algo inesperado, que interrompe o que estávamos pensando ou fazendo.',
-      origin: 'Evoluiu pra interromper o que estávamos fazendo e redirecionar toda a atenção pro que é novo — antes mesmo de sabermos se é bom ou ruim.',
+      origin: 'Evoluiu pra interromper o que estávamos fazendo e redirecionar toda a atenção pro que é novo, antes mesmo de sabermos se é bom ou ruim.',
       actionTendency: ['Dá vontade de parar', 'Olhar e prestar atenção', 'Entender rápido o que aconteceu'],
       thoughts: ['"Não esperava por isso!"', '"O que está acontecendo?"', '"Preciso entender rápido."'],
       physical: ['Sobrancelhas sobem', 'Olhos arregalam', 'Respiração muda de repente'],
       recognizeOthers: ['Sobrancelhas erguidas, olhos arregalados', 'Boca aberta', 'Corpo momentaneamente parado'],
-      scenario: 'Alguém aparece de surpresa numa festa — antes de sentir alegria ou susto, o corpo já reagiu à surpresa em si.',
+      scenario: 'Alguém aparece de surpresa numa festa, antes de sentir alegria ou susto, o corpo já reagiu à surpresa em si.',
       applyPrompt: 'Da próxima vez: dê um segundo pra deixar a surpresa passar antes de decidir como reagir ao que veio depois dela.',
       healthy: ['Ficar aberto ao novo', 'Se adaptar com calma à mudança'],
       unhealthy: ['Travar diante do inesperado', 'Reagir de forma exagerada a pequenas mudanças'],
@@ -264,7 +264,7 @@ document.addEventListener('DOMContentLoaded', function () {
       { label: 'Fúria', text: 'Intensa, quase avassaladora, difícil de conter.' }
     ],
     fear: [
-      { label: 'Cautela', text: 'Um alerta leve — mais atenção do que medo.' },
+      { label: 'Cautela', text: 'Um alerta leve: mais atenção do que medo.' },
       { label: 'Preocupação', text: 'A mente já antecipa o que pode dar errado.' },
       { label: 'Medo', text: 'O corpo entra em alerta de verdade.' },
       { label: 'Pânico', text: 'Intensidade máxima, sensação de perigo iminente.' }
@@ -776,7 +776,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var quad = moodQuadrants[quadKey];
     state.moodPoint = { valence: Math.round(valence * 100) / 100, arousal: Math.round(arousal * 100) / 100, quadrant: quadKey };
 
-    el.moodFeedback.innerHTML = '<p><strong>' + quad.label + '.</strong> Emoções que costumam morar por aqui: ' + quad.words + '.</p><p class="info-note">Não existe posição errada — isso é só um retrato de agora, não um rótulo fixo.</p>';
+    el.moodFeedback.innerHTML = '<p><strong>' + quad.label + '.</strong> Emoções que costumam morar por aqui: ' + quad.words + '.</p><p class="info-note">Não existe posição errada: isso é só um retrato de agora, não um rótulo fixo.</p>';
   }
 
   el.moodPad.addEventListener('click', function (ev) { handleMoodPadPick(ev.clientX, ev.clientY); });
@@ -1001,7 +1001,7 @@ document.addEventListener('DOMContentLoaded', function () {
   function revealMoreFamilies() {
     var remaining = ALL_ACCENTS.filter(function (a) { return state.checkin.suggestedFamilies.indexOf(a) === -1; });
     el.familyOptions.innerHTML =
-      '<p style="color:var(--muted);margin-top:0">Sem problema — aqui estão as outras:</p>' +
+      '<p style="color:var(--muted);margin-top:0">Sem problema: aqui estão as outras:</p>' +
       remaining.map(familyCardHtml).join('') +
       '<button type="button" class="family-card family-card-more" id="family-unknown-btn">Ainda não sei</button>';
     wireFamilyCards();
@@ -1101,7 +1101,7 @@ document.addEventListener('DOMContentLoaded', function () {
         '<div class="apply-tip">🎯 ' + e.applyPrompt + '</div>';
     } else {
       el.actionContent.innerHTML =
-        '<p>Sem problema não ter uma família ainda — só perceber a sensação já é um passo.</p>' +
+        '<p>Sem problema não ter uma família ainda, só perceber a sensação já é um passo.</p>' +
         '<div class="emotion-block"><h4>Algumas ideias gerais</h4><ul>' +
         li('Respirar fundo por alguns segundos') + li('Beber um pouco de água') + li('Mudar de ambiente por um momento') + li('Só continuar observando, sem pressa de nomear') +
         '</ul></div>';
@@ -1151,7 +1151,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var html = '<p style="margin:0 0 10px"><strong>Você já tem ' + s.total + ' registro' + (s.total === 1 ? '' : 's') + '</strong> no seu mapa pessoal.</p>';
     if (s.topSensation) html += '<p style="margin:4px 0">Sensação mais comum: <strong>' + sensationLabelOf(s.topSensation) + '</strong> (' + s.topSensationCount + 'x)</p>';
     if (s.topFamily) html += '<p style="margin:4px 0">Família mais identificada: <strong>' + emotionByAccent(s.topFamily).name + '</strong> (' + s.topFamilyCount + 'x)</p>';
-    if (s.unknownCount) html += '<p style="margin:4px 0;color:var(--muted)">Em ' + s.unknownRate + '% dos registros, ainda não rolou identificar uma família — completamente normal, isso também é dado.</p>';
+    if (s.unknownCount) html += '<p style="margin:4px 0;color:var(--muted)">Em ' + s.unknownRate + '% dos registros, ainda não rolou identificar uma família, completamente normal, isso também é dado.</p>';
     el.mapRegisterSummary.innerHTML = html;
   }
 
@@ -1226,7 +1226,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (state.selfBefore.every(function (v) { return v !== null; }) && state.selfAfter.every(function (v) { return v !== null; })) {
       var d1 = state.selfAfter[0] - state.selfBefore[0];
       var d2 = state.selfAfter[1] - state.selfBefore[1];
-      deltaHtml = '<p class="science-note">Sua autopercepção mudou em ' + (d1 >= 0 ? '+' + d1 : d1) + ' ponto(s) na questão 1 e ' + (d2 >= 0 ? '+' + d2 : d2) + ' ponto(s) na questão 2, comparado ao início. Isso não é um diagnóstico — é só um retrato de como você se percebeu hoje.</p>';
+      deltaHtml = '<p class="science-note">Sua autopercepção mudou em ' + (d1 >= 0 ? '+' + d1 : d1) + ' ponto(s) na questão 1 e ' + (d2 >= 0 ? '+' + d2 : d2) + ' ponto(s) na questão 2, comparado ao início. Isso não é um diagnóstico, é só um retrato de como você se percebeu hoje.</p>';
     }
     el.resultDelta.innerHTML = deltaHtml;
     // Progresso (calculado dos registros): mostra o nível e o XP depois do check-in.
@@ -1319,7 +1319,7 @@ document.addEventListener('DOMContentLoaded', function () {
       el.sessionList.innerHTML = map.slice().reverse().map(function (r) {
         var d = new Date(r.date);
         var familyName = r.chosenFamily ? emotionByAccent(r.chosenFamily).name : 'ainda não identificada';
-        return '<div class="session-row"><span>' + d.toLocaleDateString('pt-BR') + ' ' + d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) + ' — ' + (r.sensationLabel || r.sensationKey) + '</span><span>' + familyName + '</span></div>';
+        return '<div class="session-row"><span>' + d.toLocaleDateString('pt-BR') + ' ' + d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) + ', ' + (r.sensationLabel || r.sensationKey) + '</span><span>' + familyName + '</span></div>';
       }).join('');
     }
 
@@ -1366,9 +1366,9 @@ document.addEventListener('DOMContentLoaded', function () {
       var d = new Date(r.date);
       var familyName = r.chosenFamily ? emotionByAccent(r.chosenFamily).name : 'ainda não identificada';
       return '<div style="margin-bottom:24px;padding:16px;border:1px solid #E5E0D8;border-radius:12px;">' +
-        '<strong>Registro ' + (i + 1) + '</strong> — ' + d.toLocaleDateString('pt-BR') + ' às ' + d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) +
+        '<strong>Registro ' + (i + 1) + '</strong>, ' + d.toLocaleDateString('pt-BR') + ' às ' + d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) +
         '<p>Sensação: ' + (r.sensationLabel || r.sensationKey) + ' · Família: ' + familyName + (r.intensityLabel ? ' (' + r.intensityLabel + ')' : '') + '</p>' +
-        (r.context && (r.context.situation || r.context.note) ? '<p>Contexto: ' + (r.context.situation || '') + (r.context.note ? ' — ' + r.context.note : '') + '</p>' : '') +
+        (r.context && (r.context.situation || r.context.note) ? '<p>Contexto: ' + (r.context.situation || '') + (r.context.note ? ', ' + r.context.note : '') + '</p>' : '') +
         (r.ifThenPlan ? '<p><strong>Plano:</strong> ' + r.ifThenPlan + '</p>' : '') +
         '</div>';
     }).join('');
@@ -1377,7 +1377,7 @@ document.addEventListener('DOMContentLoaded', function () {
       '<title>Relatório Matiz</title>' +
       '<style>body{font-family:sans-serif;max-width:720px;margin:40px auto;color:#12372F;padding:0 20px}h1{color:#146E57}</style>' +
       '</head><body>' +
-      '<h1>Relatório pessoal — Matiz</h1>' +
+      '<h1>Relatório pessoal: Matiz</h1>' +
       '<p>Exportado em ' + new Date().toLocaleString('pt-BR') + '.</p>' +
       '<p style="background:#D7EEE6;padding:12px 16px;border-radius:10px;"><strong>Nota:</strong> este relatório é um recurso psicoeducativo e não substitui avaliação ou acompanhamento profissional. Pode ser levado ou enviado para conversar com seu/sua psicólogo/a.</p>' +
       rows +
@@ -1399,10 +1399,10 @@ document.addEventListener('DOMContentLoaded', function () {
     }).join('');
 
     var html = '<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">' +
-      '<title>Cartão de referência rápida — Matiz</title>' +
+      '<title>Cartão de referência rápida: Matiz</title>' +
       '<style>body{font-family:sans-serif;max-width:480px;margin:30px auto;color:#12372F;padding:0 16px}h1{font-size:20px;color:#146E57}@media print{body{margin:0}}</style>' +
       '</head><body>' +
-      '<h1>Matiz — cartão de referência rápida</h1>' +
+      '<h1>Matiz: cartão de referência rápida</h1>' +
       '<p style="font-size:13px;color:#6B6863">Guarde ou imprima. Um lembrete rápido das 6 emoções básicas, suas pistas no corpo e pensamentos comuns.</p>' +
       cards +
       '<p style="font-size:11px;color:#A9A399;margin-top:16px">Recurso psicoeducativo · © Psicoterapia e Afins</p>' +

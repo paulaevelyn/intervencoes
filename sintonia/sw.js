@@ -1,13 +1,14 @@
 /* Sintonia — Service Worker
    Offline-first para assets, network-first para HTML.
    Incrementar CACHE_VERSION a cada deploy para forçar atualização. */
-const CACHE_VERSION = 'sintonia-v8';
+const CACHE_VERSION = 'sintonia-v9';
 const CORE = [
   './',
   './index.html',
   './style.css',
   './extra.css',
   './sintonia.css',
+  './fonte.css',
   './app.js',
   './toques.js',
   './progresso.js',

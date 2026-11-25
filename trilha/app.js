@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════════════
-   Trilha — app.js (núcleo)
+   Trilha: app.js (núcleo)
    Mesma arquitetura dos outros apps: HTML/CSS/JS puros (sem build), dados no localStorage,
    SCREENS + goTo(), uma render*() por tela. As ferramentas ficam em ferramentas.js.
    Veja ARQUITETURA.md.
@@ -10,7 +10,7 @@
    • Apoio de crise sempre à mão (188, 192, 100) e o app NUNCA avisa ninguém sozinho.
    • Responsáveis não acessam o sistema. A profissional só vê o que o adolescente liberar.
    • O que a profissional escreve (módulo, sessões, tarefas) chega por trilha_orientacoes,
-     somente leitura aqui, e é sempre inserido como texto (esc) — links só https.
+     somente leitura aqui, e é sempre inserido como texto (esc), links só https.
    ═══════════════════════════════════════════════════════════════════════ */
 'use strict';
 
