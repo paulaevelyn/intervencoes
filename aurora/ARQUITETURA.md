@@ -43,7 +43,7 @@ se explica ou ilustra → superficial.
 | Estrutura | Módulos sequenciais | **Livre**: Ativar, Registrar, Sentir, Aprender | A ativação comportamental é prática diária, não um currículo. |
 | Pesquisa | Envio opcional para planilha | **Nenhuma** | Dados de saúde mental sem coleta de pesquisa; consentimento mais simples. |
 | Segurança | Aviso geral | **Apoio de crise sempre à mão** (botão na Hoje, aba Aprender, onboarding) e **item 9 do PHQ-9** com ação imediata | Triagem de depressão exige cuidado com ideação suicida. |
-| Onboarding | 9 slides | **5 telas curtas** | Menos leitura para quem está sem energia. |
+| Onboarding | 9 slides | **3 telas curtas**, com detalhes recolhíveis (ciclo, dados) | Menos leitura para quem está sem energia. |
 
 ---
 
@@ -82,3 +82,11 @@ Painel (`../shared/aurora-painel.js` + `projecao_aurora`): prazer e domínio, va
 ## Pendências conhecidas
 - Os lembretes dependem de o navegador manter o app vivo: sem push de servidor, uma notificação local pode não disparar se o aparelho encerrar o aplicativo.
 - Possíveis próximos passos: registrar **atividades de dias futuros** (programar para amanhã), **monitoramento por horário** (agenda horária) e **revisão semanal** com a pessoa.
+
+## Revisão de design e bem-estar (como no Floresça)
+- `revisao.css` (carregado por último) aplica os tokens do design system Psicoterapia e Afins e a fonte **Poppins**; `style.css` importa só a Poppins.
+- `icones.js` troca os emoji por ícones lineares (`icone()` e `rostoHumor()`); os campos `emoji` de `data.js` seguem como estão e são convertidos na hora de desenhar.
+- Onboarding em 3 telas (acolhimento, como funciona e dados, cuidado), com detalhes em `<details>`.
+- Hoje: o **próximo passo** vem primeiro; o humor é opcional; estatísticas e gráfico ficam em "Ver meu caminho"; "Preciso de ajuda" sempre no topo.
+- `sw.js`: cache `aurora-v10`.
+- Pendente: ícones do painel compartilhado (`shared/aurora-painel.js`) e revisão visual em aparelho real.

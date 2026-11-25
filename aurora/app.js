@@ -50,7 +50,7 @@ const PROMPTS = [
 function rd(k, fb) { try { const r = localStorage.getItem(k); return r !== null ? JSON.parse(r) : fb; } catch (e) { return fb; } }
 function wr(k, v) {
   try { localStorage.setItem(k, JSON.stringify(v)); }
-  catch (e) { console.warn('[Aurora] não consegui salvar:', e.message); if (typeof toast === 'function') toast('⚠️ Não foi possível guardar neste aparelho.'); }
+  catch (e) { console.warn('[Aurora] não consegui salvar:', e.message); if (typeof toast === 'function') toast('Não foi possível guardar neste aparelho.'); }
 }
 const getMood = () => rd(K.mood, {});
 const getLog = () => rd(K.log, {});
@@ -145,7 +145,7 @@ function openCrisis() {
 /* ═══════════════ HOJE ═══════════════ */
 let _stepOffset = 0;
 function moodPickerHTML(sel) {
-  return MOODS.map(m => `<button class="mood-btn" role="radio" aria-checked="${sel === m.v}" onclick="pickMood(${m.v})"><span class="mo-e">${m.e}</span><span class="mo-l">${m.l}</span></button>`).join('');
+  return MOODS.map(m => `<button class="mood-btn" role="radio" aria-checked="${sel === m.v}" onclick="pickMood(${m.v})"><span class="mo-e">${rostoHumor(m.v)}</span><span class="mo-l">${m.l}</span></button>`).join('');
 }
 function pickMood(v) { saveMood(v); toast('Humor registrado. Obrigado/a por contar.'); renderHome(); }
 
@@ -193,8 +193,8 @@ function renderStep() {
   const d = new Date(), doy = Math.floor((d - new Date(d.getFullYear(), 0, 0)) / 864e5);
   const a = lista[(doy + _stepOffset) % lista.length], cat = CATEGORIES[a.category];
   const jaProg = (getSched()[today()] || []).indexOf(a.id) >= 0;
-  el.innerHTML = `<div class="step-card"><div class="st-lbl">Um passo pequeno para hoje</div>
-    <div class="st-t">${esc(a.label)}</div><div class="st-m">${cat.emoji} ${esc(cat.label)} · ${esc(a.duration)}</div>
+  el.innerHTML = `<div class="step-card"><div class="st-lbl">Seu próximo passo</div>
+    <div class="st-t">${esc(a.label)}</div><div class="st-m">${icone(cat.emoji)} ${esc(cat.label)} · ${esc(a.duration)}</div>
     ${jaProg ? '<button class="btn ghost" disabled style="opacity:.7">Já está na sua lista de hoje ✓</button>' : `<button class="btn" onclick="stepAdd('${a.id}')">Programar para hoje</button>`}
     <button class="btn ghost" style="margin:8px 0 0" onclick="stepOther()">Outra ideia</button></div>`;
 }
@@ -215,7 +215,7 @@ function actRow(id, isDone, fn) {
   const a = activityById(id); if (!a) return '';
   const c = CATEGORIES[a.category];
   return `<div class="act${isDone ? ' done' : ''}"><button class="act-ck" aria-label="${isDone ? 'Desmarcar' : 'Marcar como feito'}: ${esc(a.label)}" onclick="${fn}('${id}')">${isDone ? '✓' : ''}</button>
-    <div class="act-body"><div class="act-t">${esc(a.label)}</div><div class="act-meta"><span class="act-cat">${c.emoji} ${esc(c.label)}</span><span>${esc(a.duration)}</span></div>${ratingLinkHTML(id, isDone)}</div></div>`;
+    <div class="act-body"><div class="act-t">${esc(a.label)}</div><div class="act-meta"><span class="act-cat">${icone(c.emoji)} ${esc(c.label)}</span><span>${esc(a.duration)}</span></div>${ratingLinkHTML(id, isDone)}</div></div>`;
 }
 
 function renderMoodChart() {
@@ -235,7 +235,7 @@ let _aFilter = 'all', _aOnlyToday = false;
 const _aOpen = new Set();
 function renderActivate() {
   const chips = [['all', '✨', 'Todas']].concat(Object.keys(CATEGORIES).map(k => [k, CATEGORIES[k].emoji, CATEGORIES[k].label]));
-  $('a-filters').innerHTML = chips.map(c => `<button class="chip${_aFilter === c[0] ? ' sel' : ''}" onclick="setFilter('${c[0]}')">${c[1]} ${esc(c[2])}</button>`).join('');
+  $('a-filters').innerHTML = chips.map(c => `<button class="chip${_aFilter === c[0] ? ' sel' : ''}" onclick="setFilter('${c[0]}')">${icone(c[1])} ${esc(c[2])}</button>`).join('');
   const t = today(), sched = getSched()[t] || [], done = getLog()[t] || [];
   let lista = ACTIVITIES.filter(a => _aFilter === 'all' || a.category === _aFilter);
   if (_aOnlyToday) lista = lista.filter(a => sched.indexOf(a.id) >= 0);
@@ -246,7 +246,7 @@ function renderActivate() {
     return `<div class="act${isDone ? ' done' : ''}">
       <button class="act-ck" aria-label="${isDone ? 'Desmarcar' : 'Marcar como feito'}: ${esc(a.label)}" onclick="actDone('${a.id}')">${isDone ? '✓' : ''}</button>
       <div class="act-body"><div class="act-t">${esc(a.label)}</div>
-        <div class="act-meta"><span class="act-cat">${c.emoji} ${esc(c.label)}</span><span>${esc(a.duration)}</span></div>
+        <div class="act-meta"><span class="act-cat">${icone(c.emoji)} ${esc(c.label)}</span><span>${esc(a.duration)}</span></div>
         ${isSched ? planLinhaHTML(a.id) : ''}
         <button class="act-why" aria-expanded="${open}" onclick="toggleWhy('${a.id}')">Por que funciona?</button>${isDone ? '<br>' + ratingLinkHTML(a.id, true) : ''}
         ${open ? `<div class="act-ev">${esc(a.evidence)}</div>` : ''}</div>
@@ -272,12 +272,12 @@ function renderDiary() {
 
   $('d-form').innerHTML = `
     ${!isToday ? `<div class="insight-c l" style="margin:0 0 12px"><div class="insight-t">${esc(fmtDay(_dDate, true))}</div><div class="insight-b">Você está vendo um dia anterior. <a href="#" onclick="event.preventDefault();pickDay('${t}')" style="color:var(--mint-d);font-weight:800">Voltar para hoje</a></div></div>` : ''}
-    <div class="card"><div class="card-lbl">📓 Humor${isToday ? '' : ' desse dia'}</div>
-      <div class="mood-row" role="radiogroup" aria-label="Humor">${MOODS.map(x => `<button class="mood-btn" role="radio" aria-checked="${_dRating === x.v}" ${isToday ? `onclick="dMood(${x.v})"` : 'disabled'}><span class="mo-e">${x.e}</span><span class="mo-l">${x.l}</span></button>`).join('')}</div>
+    <div class="card"><div class="card-lbl">${icone('book')} Humor${isToday ? '' : ' desse dia'}</div>
+      <div class="mood-row" role="radiogroup" aria-label="Humor">${MOODS.map(x => `<button class="mood-btn" role="radio" aria-checked="${_dRating === x.v}" ${isToday ? `onclick="dMood(${x.v})"` : 'disabled'}><span class="mo-e">${rostoHumor(x.v)}</span><span class="mo-l">${x.l}</span></button>`).join('')}</div>
       <div class="mood-caption">${mo ? esc(mo.l) : ''}</div>
       <textarea class="d-note" id="d-note" maxlength="500" ${isToday ? '' : 'readonly'} placeholder="${isToday ? 'Como foi o dia? O que estava acontecendo? (opcional)' : 'Sem nota registrada.'}" aria-label="Nota do dia">${esc(m ? m.note : '')}</textarea>
       ${isToday ? `<button class="btn" style="margin-top:10px" ${_dRating ? '' : 'disabled'} onclick="dSaveMood()">${m ? 'Atualizar humor' : 'Salvar humor'}</button>` : ''}</div>
-    <div class="card"><div class="card-lbl">✨ 3 coisas boas</div>
+    <div class="card"><div class="card-lbl">${icone('sparkle')} 3 coisas boas</div>
       <div class="as-note" style="margin-bottom:10px">“${esc(prompt)}”</div>
       ${gSaved && !(_gEdit && isToday)
         ? itens.map((x, i) => x.trim() ? `<div class="g-saved"><strong>${i + 1}.</strong> ${esc(x)}</div>` : '').join('') + (isToday ? '<button class="btn ghost" style="margin-top:10px" onclick="gEdit()">Editar</button>' : '')
@@ -315,7 +315,7 @@ function renderFeel() {
     if (open) {
       corpo = `<div class="acc-b"><div class="acc-theory">${esc(ex.theory)}</div>`;
       if (st === 'done') {
-        corpo += `<div class="ex-done"><div style="font-size:1.8rem">🌱</div><div style="font-weight:800;margin:4px 0">Exercício concluído</div><div class="as-note">Cada prática fortalece novos padrões.</div><button class="btn ghost" style="margin-top:10px;width:auto;padding:9px 18px" onclick="exReset('${ex.id}')">Fazer novamente</button></div>`;
+        corpo += `<div class="ex-done"><div style="font-size:1.8rem">${icone('leaf')}</div><div style="font-weight:800;margin:4px 0">Exercício concluído</div><div class="as-note">Cada prática fortalece novos padrões.</div><button class="btn ghost" style="margin-top:10px;width:auto;padding:9px 18px" onclick="exReset('${ex.id}')">Fazer novamente</button></div>`;
       } else if (typeof st === 'number') {
         corpo += `<div class="ex-guide"><div class="as-note">Passo ${st + 1} de ${ex.steps.length}</div><div class="ex-prog">${ex.steps.map((_, i) => `<span class="${i <= st ? 'on' : ''}"></span>`).join('')}</div><div class="ex-cur">${esc(ex.steps[st])}</div><button class="btn" onclick="exNext('${ex.id}')">${st < ex.steps.length - 1 ? 'Próximo passo' : 'Concluir'}</button></div>`;
       } else {
@@ -323,7 +323,7 @@ function renderFeel() {
       }
       corpo += '</div>';
     }
-    return `<div class="acc${open ? ' open' : ''}"><button class="acc-h" aria-expanded="${open}" onclick="exToggle('${ex.id}')"><span class="acc-e">${ex.emoji}</span><span class="acc-tt"><div class="acc-t">${esc(ex.title)}</div><div class="acc-s">${esc(ex.duration)}</div></span><span class="acc-ar">⌄</span></button>${corpo}</div>`;
+    return `<div class="acc${open ? ' open' : ''}"><button class="acc-h" aria-expanded="${open}" onclick="exToggle('${ex.id}')"><span class="acc-e">${icone(ex.emoji)}</span><span class="acc-tt"><div class="acc-t">${esc(ex.title)}</div><div class="acc-s">${esc(ex.duration)}</div></span><span class="acc-ar">⌄</span></button>${corpo}</div>`;
   }).join('');
 }
 function exToggle(id) { if (_fOpen.has(id)) _fOpen.delete(id); else _fOpen.add(id); renderFeel(); }
@@ -336,7 +336,7 @@ const _lOpen = new Set();
 function renderLearn() {
   $('l-list').innerHTML = ARTICLES.map(a => {
     const open = _lOpen.has(a.id);
-    return `<div class="acc${open ? ' open' : ''}${a.id === 'crisis' ? ' crisis' : ''}"><button class="acc-h" aria-expanded="${open}" onclick="artToggle('${a.id}')"><span class="acc-e">${a.emoji}</span><span class="acc-tt"><div class="acc-t">${esc(a.title)}</div><div class="acc-s">${esc(a.subtitle)}</div></span><span class="acc-ar">⌄</span></button>
+    return `<div class="acc${open ? ' open' : ''}${a.id === 'crisis' ? ' crisis' : ''}"><button class="acc-h" aria-expanded="${open}" onclick="artToggle('${a.id}')"><span class="acc-e">${icone(a.emoji)}</span><span class="acc-tt"><div class="acc-t">${esc(a.title)}</div><div class="acc-s">${esc(a.subtitle)}</div></span><span class="acc-ar">⌄</span></button>
       ${open ? `<div class="acc-b">${a.content.map(s => `<div class="acc-sec"><h4>${esc(s.heading)}</h4><p>${esc(s.text)}</p></div>`).join('')}</div>` : ''}</div>`;
   }).join('');
 }
@@ -443,7 +443,7 @@ function exportCSV() {
 function planLinhaHTML(id) {
   const p = (rd(K.plan, {})[today()] || {})[id];
   const txt = p ? [p.quando, p.onde].filter(Boolean).join(' · ') : '';
-  return '<div class="act-meta"><button class="act-why" onclick="askPlan(\x27' + id + '\x27)">' + (txt ? '🕒 ' + esc(txt) + ' (mudar)' : 'Definir quando e onde') + '</button></div>';
+  return '<div class="act-meta"><button class="act-why" onclick="askPlan(\x27' + id + '\x27)">' + (txt ? icone('clock') + ' ' + esc(txt) + ' (mudar)' : 'Definir quando e onde') + '</button></div>';
 }
 function askPlan(id, date) {
   const a = activityById(id); if (!a) return;
@@ -479,10 +479,10 @@ window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); _insta
 function isInstalled() { return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true; }
 function installApp() { if (!_installPrompt) return; _installPrompt.prompt(); _installPrompt.userChoice.finally(() => { _installPrompt = null; closeModal(); }); }
 function showInstallModal() {
-  if (isInstalled()) { showModal('🌅 Já está instalado!', 'Você já está usando o Aurora como app. É só procurar o ícone do sol nascendo na tela de início.', '<button class="btn mint" onclick="closeModal()">Ótimo!</button>'); return; }
-  showModal('📲 Aurora na tela de início',
+  if (isInstalled()) { showModal('Já está instalado!', 'Você já está usando o Aurora como app. É só procurar o ícone do sol nascendo na tela de início.', '<button class="btn mint" onclick="closeModal()">Ótimo!</button>'); return; }
+  showModal('Aurora na tela de início',
     '<p style="text-align:left;margin-bottom:10px">Com o atalho, o Aurora abre em tela cheia, como um app, e funciona até sem internet.</p>' +
-    (_installPrompt ? '<p style="font-size:13px;color:var(--muted);text-align:left">Seu navegador instala com um toque. 👇</p>'
+    (_installPrompt ? '<p style="font-size:13px;color:var(--muted);text-align:left">Seu navegador instala com um toque. </p>'
       : '<p style="font-size:13px;color:var(--muted);text-align:left"><strong>iPhone (Safari):</strong> toque em Compartilhar e depois em "Adicionar à Tela de Início".<br><strong>Android (Chrome):</strong> menu ⋮ e depois "Instalar app" ou "Adicionar à tela inicial".</p>'),
     (_installPrompt ? '<button class="btn mint" onclick="installApp()">Instalar agora</button>' : '') + `<button class="btn ${_installPrompt ? 'ghost' : 'mint'}" onclick="closeModal()">Entendi</button>`);
 }
@@ -663,7 +663,7 @@ function renderValues() {
   h += DOMINIOS.map(d => {
     const x = _vDraft[d.id] || {}, im = x.imp, co = x.cons;
     const sl = (k, rot, v) => `<div class="rt-field"><label for="v-${d.id}-${k}">${rot}: <span class="rt-v" id="v-${d.id}-${k}v">${v == null ? '–' : v}</span>/10</label><input type="range" id="v-${d.id}-${k}" min="0" max="10" value="${v == null ? 5 : v}" oninput="vTouch('${d.id}','${k}',this.value)"></div>`;
-    return `<div class="card"><div class="card-lbl">${d.emoji} ${esc(d.titulo)}</div><div class="as-note" style="margin-bottom:8px">${esc(d.dica)}</div>
+    return `<div class="card"><div class="card-lbl">${icone(d.emoji)} ${esc(d.titulo)}</div><div class="as-note" style="margin-bottom:8px">${esc(d.dica)}</div>
       ${sl('imp', 'O quanto isso importa para mim', im)}${sl('cons', 'O quanto tenho vivido isso nas últimas semanas', co)}
       <label class="form-lbl" for="v-${d.id}-t">O que isso significa para mim (opcional)</label>
       <input class="d-note" style="min-height:0" type="text" id="v-${d.id}-t" maxlength="140" value="${esc(x.texto || '')}" oninput="vText('${d.id}',this.value)" placeholder="Em uma frase"></div>`;
@@ -675,7 +675,7 @@ function renderValues() {
 function valuesSummary(dom) {
   const itens = DOMINIOS.map(d => ({ d, x: dom[d.id] })).filter(o => o.x && o.x.imp != null && o.x.cons != null).map(o => ({ d: o.d, gap: o.x.imp - o.x.cons, x: o.x })).filter(o => o.gap >= 3).sort((a, b) => b.gap - a.gap).slice(0, 2);
   if (!itens.length) return '';
-  return `<div class="sdiv" style="margin:16px 0 8px">Onde há mais distância</div>` + itens.map(o => `<div class="card"><div class="card-lbl">${o.d.emoji} ${esc(o.d.titulo)}</div><div class="as-note">Importa ${o.x.imp} · vivido ${o.x.cons}. Um passo pequeno nessa direção pode ajudar.</div><button class="btn ghost" style="margin-top:8px" onclick="vAtividades('${o.d.id}')">Ver atividades para isso</button></div>`).join('');
+  return `<div class="sdiv" style="margin:16px 0 8px">Onde há mais distância</div>` + itens.map(o => `<div class="card"><div class="card-lbl">${icone(o.d.emoji)} ${esc(o.d.titulo)}</div><div class="as-note">Importa ${o.x.imp} · vivido ${o.x.cons}. Um passo pequeno nessa direção pode ajudar.</div><button class="btn ghost" style="margin-top:8px" onclick="vAtividades('${o.d.id}')">Ver atividades para isso</button></div>`).join('');
 }
 function vTouch(id, k, v) { _vDraft[id] = _vDraft[id] || {}; _vDraft[id][k] = parseInt(v, 10); $('v-' + id + '-' + k + 'v').textContent = v; }
 function vText(id, v) { _vDraft[id] = _vDraft[id] || {}; _vDraft[id].texto = v; }
@@ -694,9 +694,9 @@ const LEM = 'depressao_app_lembrete';
 const getLem = () => rd(LEM, { enabled: false, hour: 20, visto: false });
 let _remTimer = null;
 const REMINDER_MSGS = [
-  '🌅 Que tal um passo pequeno hoje? Uma atividade de 5 minutos já conta.',
-  '💛 Como você está hoje? Registrar o humor leva 10 segundos.',
-  '🌿 Sem pressão: se hoje está pesado, só marcar o humor já é um bom começo.'
+  'Que tal um passo pequeno hoje? Uma atividade de 5 minutos já conta.',
+  'Como você está hoje? Registrar o humor leva 10 segundos.',
+  'Sem pressão: se hoje está pesado, só marcar o humor já é um bom começo.'
 ];
 function praticouHoje() { return !!getMood()[today()] || (getLog()[today()] || []).length > 0; }
 function scheduleLocalReminder() {
@@ -729,7 +729,7 @@ async function toggleReminders(cb) {
     if (!('Notification' in window)) { toast('Este navegador não suporta notificações.'); cb.checked = false; return; }
     const perm = await Notification.requestPermission();
     if (perm !== 'granted') { toast('Permissão negada. Ative nas configurações do navegador.'); cb.checked = false; return; }
-    l.enabled = true; wr(LEM, l); scheduleLocalReminder(); toast('🔔 Lembrete diário ativado.');
+    l.enabled = true; wr(LEM, l); scheduleLocalReminder(); toast('Lembrete diário ativado.');
   } else { l.enabled = false; wr(LEM, l); if (_remTimer) clearTimeout(_remTimer); toast('Lembrete desativado.'); }
   renderReminderUI();
 }
@@ -738,30 +738,30 @@ function showNotifModal() {
   const l = getLem(); l.visto = true; wr(LEM, l);
   const ios = /iphone|ipad|ipod/i.test(navigator.userAgent);
   if (ios && !isInstalled()) {
-    showModal('📲 Primeiro, instale o app', '<p style="text-align:left">No iPhone, os lembretes só funcionam depois que o Aurora está instalado na tela de início. É uma regra da Apple.</p>',
+    showModal('Primeiro, instale o app', '<p style="text-align:left">No iPhone, os lembretes só funcionam depois que o Aurora está instalado na tela de início. É uma regra da Apple.</p>',
       '<button class="btn mint" onclick="closeModal();showInstallModal()">Ver como instalar</button><button class="btn ghost" onclick="closeModal();renderHome()">Agora não</button>'); return;
   }
   if (!('Notification' in window)) { toast('Este navegador não suporta notificações.'); return; }
   if (Notification.permission === 'denied') {
-    showModal('🔕 Notificações bloqueadas', '<p style="text-align:left">Você bloqueou as notificações do Aurora antes. Para ativar, libere nas configurações do navegador (o cadeado ao lado do endereço, e depois "Notificações").</p>', '<button class="btn mint" onclick="closeModal()">Entendi</button>'); return;
+    showModal('Notificações bloqueadas', '<p style="text-align:left">Você bloqueou as notificações do Aurora antes. Para ativar, libere nas configurações do navegador (o cadeado ao lado do endereço, e depois "Notificações").</p>', '<button class="btn mint" onclick="closeModal()">Entendi</button>'); return;
   }
-  showModal('🔔 Como funcionam os lembretes',
+  showModal('Como funcionam os lembretes',
     `<div style="text-align:left;font-size:13.5px;line-height:1.6">
-      <div style="margin-bottom:10px">🔔 <strong>1 lembrete por dia</strong>, no máximo, no horário que você escolher.</div>
-      <div style="margin-bottom:10px">🤫 <strong>Se você já registrou algo naquele dia</strong>, ele nem aparece.</div>
-      <div style="margin-bottom:10px">💛 O tom é gentil: sem cobrança, sem "você está falhando".</div>
-      <div style="margin-bottom:10px">📲 Funciona melhor com o app <strong>instalado</strong> na tela de início.</div>
-      <div style="margin-bottom:14px">🔕 Você desliga quando quiser, em Dados → Lembretes.</div>
+      <div style="margin-bottom:10px">${icone('bell')} <strong>1 lembrete por dia</strong>, no máximo, no horário que você escolher.</div>
+      <div style="margin-bottom:10px">${icone('moon')} <strong>Se você já registrou algo naquele dia</strong>, ele nem aparece.</div>
+      <div style="margin-bottom:10px">${icone('heart')} O tom é gentil: sem cobrança, sem "você está falhando".</div>
+      <div style="margin-bottom:10px">${icone('phone')} Funciona melhor com o app <strong>instalado</strong> na tela de início.</div>
+      <div style="margin-bottom:14px">${icone('bell')} Você desliga quando quiser, em Dados → Lembretes.</div>
       <label for="notif-hour" style="font-size:12.5px;font-weight:700;color:var(--muted);display:block;margin-bottom:6px">Horário</label>
       <select id="notif-hour" class="demo-input" style="width:auto;padding:8px 12px"><option value="8">08:00</option><option value="10">10:00</option><option value="12">12:00</option><option value="16">16:00</option><option value="18">18:00</option><option value="20" selected>20:00</option></select></div>`,
-    '<button class="btn mint" onclick="activateNotifFromModal()">Ativar lembrete 🔔</button><button class="btn ghost" onclick="closeModal();renderHome()">Agora não</button>');
+    '<button class="btn mint" onclick="activateNotifFromModal()">Ativar lembrete </button><button class="btn ghost" onclick="closeModal();renderHome()">Agora não</button>');
 }
 async function activateNotifFromModal() {
   const hour = parseInt($('notif-hour')?.value || '20', 10), perm = await Notification.requestPermission();
   if (perm !== 'granted') { toast('Permissão negada. Você pode ativar depois em Dados → Lembretes.'); closeModal(); return; }
-  const l = getLem(); l.enabled = true; l.hour = hour; wr(LEM, l); scheduleLocalReminder(); closeModal(); toast('🔔 Lembrete ativado para as ' + pad(hour) + ':00.');
+  const l = getLem(); l.enabled = true; l.hour = hour; wr(LEM, l); scheduleLocalReminder(); closeModal(); toast('Lembrete ativado para as ' + pad(hour) + ':00.');
   try {
-    const reg = await navigator.serviceWorker?.getRegistration(), msg = '🌅 Combinado! Todo dia às ' + pad(hour) + ':00 eu te lembro, só se você ainda não tiver passado por aqui.';
+    const reg = await navigator.serviceWorker?.getRegistration(), msg = 'Combinado! Todo dia às ' + pad(hour) + ':00 eu te lembro, só se você ainda não tiver passado por aqui.';
     if (reg) reg.showNotification('Aurora', { body: msg, icon: 'icon-192.png', badge: 'icon-192.png', tag: 'aurora-welcome' }); else new Notification('Aurora', { body: msg, icon: 'icon-192.png' });
   } catch (e) { /* ok */ }
   renderReminderUI(); renderHome();
