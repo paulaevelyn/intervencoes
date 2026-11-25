@@ -60,6 +60,7 @@ let D = {
   notifSeen: false,     // já viu a instrução de ativar lembretes
   consentGiven: false,
   consentDate: null,
+  firstPracticeSeen: false, // já viu a primeira prática de 1 minuto
   participantId: null,
   lastSync: null,
   pretest:  null,       // { spane:{p,n,b,answers}, beliefs:{score,answers}, date }
@@ -94,6 +95,7 @@ function load(){
       if(!D.moduleFeedback) D.moduleFeedback=[];
       if(!D.participantId) D.participantId = generateUUID();
       if(D.consentDate  === undefined) D.consentDate  = null;
+      if(D.firstPracticeSeen === undefined) D.firstPracticeSeen = false;
       if(D.lastSync     === undefined) D.lastSync     = null;
       if(D.nickname     === undefined) D.nickname     = '';
       if(D.demographics === undefined) D.demographics = null;
@@ -210,8 +212,11 @@ function checkBadges(){
   const expDone = D.experiments.filter(e=>e.status==='done').length;
   if(expDone >= 1) awardBadge('b_exp1');
   if(expDone >= 5) awardBadge('b_exp5');
-  // dias com pratica (nao precisam ser seguidos)
-  if(new Set(D.entries.map(e=>e.date)).size>=7) awardBadge('b_str7');
+  // dias de cultivo (acumulado: pausas não zeram o progresso)
+  if(calcTotalDays() >= 7) awardBadge('b_str7');
+}
+function calcTotalDays(){
+  return new Set(D.entries.map(e=>e.date)).size;
 }
 
 /* ══════════════════════════════════
@@ -1065,7 +1070,71 @@ let _pt = {
   beliefAnswers: [], beliefQ: 0,
 };
 
-function renderPretest(){
+/* Primeira prática curta (1 min), oferecida antes do pré-teste para a pessoa sentir um benefício cedo.
+   Respiração com expiração prolongada (sistema calmante, Gilbert; ver Módulo 6). Sempre pode pular. */
+let _fp = { timer:null };
+function firstPracticeStop(){ if(_fp.timer){ clearInterval(_fp.timer); _fp.timer=null; } }
+function renderFirstPractice(){
+  firstPracticeStop();
+  document.getElementById('pretest-content').innerHTML = `
+  <div class="pretest-wrap" style="text-align:center;padding-top:48px">
+    <div style="font-size:48px;margin-bottom:14px">🌬️</div>
+    <h2 style="font-size:22px;font-weight:800;margin-bottom:10px">Um minuto só para você</h2>
+    <p style="font-size:15px;color:var(--muted);line-height:1.7;margin-bottom:20px">
+      Antes da avaliação, uma pausa curta: inspire pelo nariz e solte o ar devagar, mais longo do que a inspiração.
+      Se algo incomodar, respire do seu jeito ou pule. Não existe jeito errado.
+    </p>
+    <div id="fp-circle" style="width:120px;height:120px;border-radius:50%;margin:0 auto 14px;background:var(--mint-l,#DDF1EA);border:2px solid var(--mint-d,#1B6A58);transition:transform 4s ease-in-out"></div>
+    <div id="fp-text" style="font-size:16px;font-weight:700;min-height:24px;margin-bottom:6px"> </div>
+    <div id="fp-time" style="font-size:13px;color:var(--light);margin-bottom:18px"> </div>
+    <button class="btn" id="fp-start" onclick="firstPracticeStart()">Começar (1 minuto)</button>
+    <button class="btn ghost" style="margin-top:0" onclick="firstPracticeSkip()">Pular</button>
+  </div>`;
+}
+function firstPracticeStart(){
+  const btn=document.getElementById('fp-start'); if(btn) btn.style.display='none';
+  const circle=document.getElementById('fp-circle'), txt=document.getElementById('fp-text'), tm=document.getElementById('fp-time');
+  const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const TOTAL=60; let t=0; let phaseLeft=0, inhale=true;
+  const tick=()=>{
+    if(t>=TOTAL){ firstPracticeDone(); return; }
+    if(phaseLeft<=0){
+      inhale = !inhale || t===0;
+      if(t===0) inhale = true;
+      phaseLeft = inhale ? 4 : 6;
+      txt.textContent = inhale ? 'Inspire' : 'Solte o ar devagar';
+      if(!reduce){ circle.style.transition='transform '+phaseLeft+'s ease-in-out'; circle.style.transform = inhale ? 'scale(1.35)' : 'scale(1)'; }
+    }
+    phaseLeft--; t++;
+    tm.textContent = (TOTAL-t)+'s';
+  };
+  tick();
+  _fp.timer = setInterval(tick, 1000);
+}
+function firstPracticeDone(){
+  firstPracticeStop();
+  D.firstPracticeDone = true; D.firstPracticeSeen = true;
+  trackAppEvent('first_practice_done');
+  awardXP(10, 'primeira prática concluída');
+  document.getElementById('pretest-content').innerHTML = `
+  <div class="pretest-wrap" style="text-align:center;padding-top:60px">
+    <div style="font-size:52px;margin-bottom:16px">🌱</div>
+    <h2 style="font-size:22px;font-weight:800;margin-bottom:10px">Pronto, esse foi o primeiro cuidado.</h2>
+    <p style="font-size:15px;color:var(--muted);line-height:1.7;margin-bottom:24px">
+      Notou alguma diferença no corpo ou na mente? Qualquer resposta serve. Agora, uma avaliação rápida para marcar o seu ponto de partida.
+    </p>
+    <button class="btn" style="max-width:320px;margin:0 auto" onclick="renderPretest(true)">Continuar para a avaliação</button>
+  </div>`;
+}
+function firstPracticeSkip(){
+  firstPracticeStop();
+  D.firstPracticeSeen = true;
+  trackAppEvent('first_practice_skipped');
+  save();
+  renderPretest(true);
+}
+function renderPretest(skipIntro){
+  if(!skipIntro && !D.pretest && !D.firstPracticeSeen){ renderFirstPractice(); return; }
   _pt.phase='spane';
   _pt.spaneAnswers=[]; _pt.spaneQ=0;
   _pt.beliefAnswers=[]; _pt.beliefQ=0;
@@ -1345,9 +1414,8 @@ function renderHome(){
     </div>`;
 
   const done = MODULES.filter(m=>D.moduleProgress[m.id]?.done).length;
-  const streak = calcStreak();
   document.getElementById('hs-mod').textContent = done+'/'+MODULES.length;
-  document.getElementById('hs-str').textContent = streak;
+  document.getElementById('hs-str').textContent = calcTotalDays();
   document.getElementById('hs-xp').textContent  = D.xp;
   document.getElementById('h-assess-sub').textContent = D.assessment?'Refazer avaliação':'SPANE · Como você se sente';
 
@@ -1364,12 +1432,6 @@ function renderHome(){
   if(!D.entries.length){ rll.style.display='none'; rp.innerHTML=''; return; }
   rll.style.display='block';
   rp.innerHTML = buildEntry([...D.entries].sort((a,b)=>b.ts-a.ts)[0]);
-}
-
-function calcStreak(){
-  // dias com pratica nos ultimos 14 dias (sem sequencia a quebrar)
-  const lim=prevDay(13);
-  return new Set(D.entries.filter(e=>e.date>=lim).map(e=>e.date)).size;
 }
 
 function renderMiniChart(svgId,emptyId){
@@ -2215,8 +2277,8 @@ function renderProgress(){
     const savored=D.entries.filter(e=>(e.savoring||[]).some(s=>s!=='Ainda não saboreei')).length;
     const pctS=Math.round(savored/D.entries.length*100);
     insights.push({c:'l',t:'🍯 Taxa de saboreio',b:`Em <strong>${pctS}% dos momentos</strong> você fez algo para amplificar a experiência. Saborear é o multiplicador do notar.`});
-    const streak=calcStreak();
-    if(streak>0) insights.push({c:'',t:'🌱 Dias de cultivo',b:`<strong>${streak} dia${streak!==1?'s':''}</strong> com registro nas últimas duas semanas. Regar de vez em quando também faz o jardim crescer.`});
+    const totalDays=calcTotalDays();
+    if(totalDays>0) insights.push({c:'',t:'🌿 Dias de cultivo',b:`<strong>${totalDays} dia${totalDays!==1?'s':''}</strong> em que você registrou um momento. Cada dia conta, e as pausas não apagam o que você já cultivou.`});
   }
   // experimentos
   const expDone = D.experiments.filter(e=>e.status==='done');
@@ -2634,7 +2696,7 @@ function htmlCaminho(){
     + '<ol class="tj-dots">'+dots+'</ol><p class="tj-leg">'+onde+' Cada canteiro abre ao concluir o anterior, sem pressa.</p></section>';
 }
 function dicaSecundaria(){
-  const streak = calcStreak();
+  const totalDias = calcTotalDays();
   // pré-avaliação ainda pendente, para quem já começou um canteiro sem ela: um lembrete, não o destaque
   if(!D.pretest && D.obDone && !D.pretestAdiado){
     return `<div class="nudge mint">
@@ -2660,11 +2722,11 @@ function dicaSecundaria(){
       <button class="nudge-btn" onclick="showNotifModal()">Ver como funciona</button>
     </div>`;
   }
-  if(streak >= 2){
+  if(totalDias >= 2){
     return `<div class="nudge amber">
       <div class="nudge-icon">🌱</div>
-      <div class="nudge-body"><strong>Você cultivou em ${streak} dias nas últimas duas semanas.</strong>
-      Voltar, no seu ritmo, é o que treina o radar. Os intervalos fazem parte.</div>
+      <div class="nudge-body"><strong>${totalDias} dias de cultivo até agora.</strong>
+      Cada dia conta, e as pausas não apagam o que você já cultivou. Voltar, no seu ritmo, é o que treina o radar.</div>
     </div>`;
   }
   return '';

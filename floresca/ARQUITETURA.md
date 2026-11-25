@@ -24,6 +24,8 @@ se explica/ilustra → superficial (adaptar à vontade).
 | Metáfora do jardim | Canteiros, regar, semente→jardim. Pode virar qualquer metáfora de cultivo gradual | Comunicar que bem-estar é **prática incremental**, não estado fixo; normalizar pausas sem culpa |
 | Gamificação (XP, níveis, badges) | Nomes dos níveis, emojis, valores de XP | Reforço imediato de cada prática; progresso visível; celebração de conclusão (motivação — COM-B) |
 | Nudges da Home | Textos, emojis, ordem visual | Retorno após pausa SEM culpa (evitar efeito "estraguei tudo"); efeito Zeigarnik (módulo a meio); lembrar experimento aberto |
+| Contagem de dias | Texto e ícone do contador | Contagem **cumulativa** de dias de cultivo, que nunca zera (sequência consecutiva pune pausas e reforça o "tudo ou nada") |
+| Primeira prática (1 min) | Texto, animação, duração da fase | Benefício percebido cedo, antes do pré-teste; expiração prolongada (sistema calmante, TFC); sempre opcional (pular) |
 | Planos "quando-então" | Frases específicas dos planos | Formato implementation intention (Gollwitzer, 1999): gatilho situacional + ação específica |
 | Registro de Momentos | Chips, emojis, textos do formulário | Registro escrito + nomeação da emoção + intensidade (dose recebida / estado) |
 | Dose Cultivada | Tags, pergunta, visual do card | Auto-relato SEMANAL de prática ativa (dose cultivada ≠ dose recebida); não bloqueante; dispensável |
