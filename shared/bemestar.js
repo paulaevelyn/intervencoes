@@ -97,7 +97,7 @@
     fechar();
     var cx = el('div', { class: 'pea-bem-cx', role: 'dialog', 'aria-modal': 'true', 'aria-labelledby': 'pea-bem-t' });
     cx.appendChild(el('h2', { id: 'pea-bem-t' }, 'Cuidado digital'));
-    cx.appendChild(el('p', {}, 'Como este app tenta cuidar de você, e não do seu tempo de tela:'));
+    cx.appendChild(el('p', {}, 'Como ' + (ehPortal() ? 'esta página tenta' : 'este app tenta') + ' cuidar de você, e não do seu tempo de tela:'));
     var ul = el('ul');
     ['Sem anúncios, sem rolagem infinita e sem feed. O objetivo é ajudar e deixar você livre, não prender a sua atenção.',
      'Notificações só se você pedir, no máximo uma por dia e sem cobrança.',
@@ -159,6 +159,8 @@
   global.addEventListener('appinstalled', function () { cfg.instalar = 'feito'; gravar(cfg); adiado = null; fecharConviteInstalar(); fechar(); });
   function instalado() { return (global.matchMedia && matchMedia('(display-mode: standalone)').matches) || navigator.standalone === true; }
   function appDeste() { var s = document.querySelector('script[data-app]'); return s ? s.getAttribute('data-app') : ''; }
+  /* No portal (index.html, script com data-portal) o painel fala em "esta página"; nos apps, em "este app". */
+  function ehPortal() { return !!document.querySelector('script[data-portal]'); }
   function nomeDoApp() { var s = document.querySelector('script[data-nome]'); return s ? s.getAttribute('data-nome') : ''; }
   function passosInstalar() {
     var ua = navigator.userAgent || '';
@@ -183,8 +185,8 @@
     var cx = el('div', { class: 'pea-bem-instalar', id: 'pea-bem-instalar' });
     var nome = nomeDoApp();
     cx.appendChild(el('strong', {}, 'Adicionar à tela inicial'));
-    if (instalado()) { cx.appendChild(el('small', {}, 'Este app já está na sua tela inicial. Você pode abri-lo por lá.')); return cx; }
-    cx.appendChild(el('small', {}, (nome ? 'Abra o ' + nome : 'Abra este app') + ' com um toque, direto do seu celular ou computador, sem precisar digitar o endereço. Não ocupa quase espaço e não muda nada no que você já registrou.'));
+    if (instalado()) { cx.appendChild(el('small', {}, (ehPortal() ? 'Esta página já está na sua tela inicial. Você pode abri-la por lá.' : 'Este app já está na sua tela inicial. Você pode abri-lo por lá.'))); return cx; }
+    cx.appendChild(el('small', {}, (nome ? 'Abra o ' + nome : (ehPortal() ? 'Abra esta página' : 'Abra este app')) + ' com um toque, direto do seu celular ou computador, sem precisar digitar o endereço. Não ocupa quase espaço' + (ehPortal() ? '.' : ' e não muda nada no que você já registrou.')));
     if (adiado) {
       var b = el('button', { class: 'pea-bem-btn', type: 'button' }, 'Instalar agora');
       b.addEventListener('click', function () { instalarAgora(function () { fechar(); }); });
@@ -223,7 +225,7 @@
   }
   function mostrarConviteInstalar() {
     conviteInst = el('div', { id: 'pea-instalar', class: 'on', role: 'status' });
-    conviteInst.appendChild(el('strong', {}, 'Deixe este app à mão'));
+    conviteInst.appendChild(el('strong', {}, ehPortal() ? 'Deixe esta página à mão' : 'Deixe este app à mão'));
     conviteInst.appendChild(document.createTextNode('Adicione à sua tela inicial para abrir com um toque, sem procurar o endereço. Se preferir, pode ficar como está.'));
     var b1 = el('button', { class: 'pea-bem-btn', type: 'button' }, adiado ? 'Instalar' : 'Ver como adicionar');
     var b2 = el('button', { class: 'pea-bem-btn sec', type: 'button' }, 'Agora não');
