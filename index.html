@@ -4,213 +4,273 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Intervenções · Psicoterapia e Afins</title>
-<meta name="description" content="Programas psicoeducativos interativos para fazer no seu ritmo, no celular ou no computador. Uma iniciativa do Psicoterapia e Afins.">
-<meta name="theme-color" content="#F3EDE2">
+<meta name="description" content="Programas psicoeducativos para fazer no seu ritmo, no celular ou no computador. Escolha pelo que está precisando. Uma iniciativa do Psicoterapia e Afins.">
+<meta name="theme-color" content="#FFFFFF">
 <link rel="icon" type="image/png" href="assets/psicoterapia-simbolo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
 <style>
 :root{
-  --teal:#1B8B6F; --teal-deep:#0F3D33; --teal-text:#146E57;
-  --salmon:#FFAF7F; --lavender:#AEAAF7;
-  --cream:#F3EDE2; --card:#FBF7F0; --tag:#EFE7D8; --line:#D9CFBC;
-  --ink:#12372F; --ink-soft:#3E5C54;
+  --ink:#1F2126; --text:#3F434B; --muted:#6B6F78;
+  --verde:#4B665E; --verde-d:#394E48; --verde-l:#DDEAE2; --verde-xl:#F1F6F3; --verde-line:#C3D6CC;
+  --creme:#F7F3EF; --card:#FDFBF9; --line:#E1D7CC;
+  --coral:#BE5A52; --coral-bg:#FBEFEC; --coral-d:#9B4842; --foco:#D96C63;
 }
 *{box-sizing:border-box}
-body{margin:0;background:var(--cream);color:var(--ink);font-family:'DM Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
-a{color:var(--teal-text)}a:hover{color:var(--teal-deep)}
-.page{position:relative;overflow:hidden}
-.wrap{position:relative;max-width:1200px;margin:0 auto;padding:0 32px}
-.deco{position:absolute;pointer-events:none}
-header.top{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;padding:28px 0}
-header.top img{height:52px;width:auto;display:block}
-header.top a.site{font-size:15px;font-weight:600;text-decoration:none;padding:12px 0}
-.hero{padding:72px 0;display:flex;flex-direction:column;gap:28px;max-width:760px}
-.pill{align-self:flex-start;display:flex;align-items:center;gap:10px;background:var(--card);border-radius:999px;padding:10px 18px 10px 14px;font-size:15px;font-weight:600}
-.pill img{height:28px;width:auto;display:block}
-h1{margin:0;font-family:'Cormorant Garamond',Georgia,serif;font-weight:600;font-size:88px;line-height:.96;letter-spacing:-.01em}
-.lead{margin:0;font-size:21px;line-height:1.55;color:var(--ink-soft);max-width:600px}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
-.card{background:var(--card);border-radius:32px;padding:28px;display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start}
-.card .logo{width:104px;height:104px;flex:none;display:block;border-radius:28px}
-.body{flex:1 1 240px;min-width:0;display:flex;flex-direction:column;gap:10px}
-.name{margin:0;font-family:'Cormorant Garamond',Georgia,serif;font-weight:700;font-size:38px;line-height:1}
-.sub{margin:0;font-size:16px;font-weight:600;color:var(--teal-text)}
-.desc{margin:0;font-size:16px;line-height:1.55;color:var(--ink-soft)}
-.tags{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 6px;padding:0;list-style:none}
-.tag{display:inline-flex;align-items:center;gap:6px;background:var(--tag);font-size:13px;font-weight:600;border-radius:999px;padding:6px 12px}
-.btn{display:inline-flex;align-items:center;gap:8px;align-self:flex-start;min-height:44px;padding:0 22px;border-radius:999px;background:var(--teal-text);color:#fff;font-size:15px;font-weight:600;text-decoration:none}
-.btn:hover{background:var(--teal-deep);color:#fff}
-.card.restrito{opacity:.62;background:transparent;box-shadow:inset 0 0 0 1.5px var(--line)}
-.card.restrito .logo{filter:grayscale(.55)}
-.btn-off{background:transparent;color:var(--ink-soft);box-shadow:inset 0 0 0 1.5px var(--line);cursor:default}
-.btn:focus-visible,a:focus-visible{outline:3px solid var(--lavender);outline-offset:3px}
-.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
-.about{grid-column:1/-1;background:var(--teal-deep);color:var(--card);border-radius:32px;padding:32px;display:flex;flex-direction:column;gap:16px}
-.about .badge{align-self:flex-start;background:var(--card);border-radius:22px;padding:10px 14px}
-.about .badge img{height:40px;width:auto;display:block}
-.about h2{margin:0;font-family:'Cormorant Garamond',Georgia,serif;font-size:38px;font-weight:700;line-height:1.02}
-.about p{margin:0;font-size:16px;line-height:1.55;color:#E4DDCF;max-width:640px}
-.about .actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:4px}
-.btn-light{background:var(--card);color:var(--ink)}
-.btn-light:hover{background:#fff;color:var(--teal-deep)}
-.btn-line{background:transparent;color:var(--card);box-shadow:inset 0 0 0 1.5px var(--card)}
-.btn-line:hover{background:rgba(251,247,240,.12);color:#fff}
-footer.foot{margin-top:72px;padding:36px 0 48px;border-top:1.5px solid var(--line);display:flex;flex-direction:column;gap:18px;font-size:14px;color:var(--ink-soft)}
-footer.foot img{height:44px;width:auto;align-self:flex-start}
-footer.foot p{margin:0;max-width:760px;line-height:1.6}
-.row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 24px}
-.links{display:flex;flex-wrap:wrap;gap:8px 24px;font-weight:600}
-.links a{padding:8px 0}
-@media (max-width:1100px){.deco{display:none}}
-@media (max-width:900px){.grid{grid-template-columns:minmax(0,1fr)}h1{font-size:56px}}
-@media (max-width:520px){.card{padding:22px}h1{font-size:46px}.wrap{padding:0 20px}.lead{font-size:18px}}
-@media (prefers-reduced-motion:no-preference){.btn{transition:background .15s}}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:#FFFFFF;color:var(--text);font-family:'Poppins',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+a:focus-visible,button:focus-visible{outline:2px solid var(--foco);outline-offset:3px}
+h1,h2,h3,p,ul{margin:0}ul{padding:0;list-style:none}
+img{display:block}
+.wrap{max-width:1200px;margin:0 auto;padding:0 32px}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--verde)}
+.num{font-variant-numeric:tabular-nums}
+
+/* cabeçalho */
+.hdr{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;padding-top:24px;padding-bottom:24px}
+.hdr .logo{height:48px;width:auto}
+.hdr-acoes{display:flex;flex-wrap:wrap;align-items:center;gap:12px}
+.pill{display:inline-flex;align-items:center;gap:10px;min-height:48px;padding:0 22px;border-radius:999px;font-size:14px;font-weight:500}
+.pill.ajuda{background:var(--coral-bg);color:var(--coral-d)}
+.pill.p-cuidado{border:1px solid var(--verde-l);color:var(--verde-d);padding:0 18px}
+
+/* abertura */
+.hero{background:var(--creme);border-radius:40px;max-width:1136px;margin:8px auto 0;padding:72px 64px;display:flex;flex-wrap:wrap;align-items:center;gap:48px}
+.hero-t{flex:1 1 440px;min-width:0;display:flex;flex-direction:column;gap:24px}
+h1{font-size:56px;line-height:1.1;font-weight:300;letter-spacing:-.025em;color:var(--ink)}
+.hero p{font-size:18px;line-height:1.7;max-width:520px}
+.cta{align-self:flex-start;display:inline-flex;align-items:center;min-height:52px;padding:0 28px;border-radius:999px;background:var(--coral);color:#fff;font-size:16px;font-weight:500;box-shadow:0 8px 24px rgba(217,108,99,.18)}
+.cta:hover{background:#A94E47}
+.hero-fig{flex:0 1 300px;margin:0 auto;width:300px;height:300px;border-radius:50%;background:var(--verde-l);display:flex;align-items:center;justify-content:center}
+.hero-fig img{width:200px;height:auto}
+
+/* escolher */
+.escolher{padding-top:88px;padding-bottom:24px;display:flex;flex-direction:column;gap:32px}
+.sec-t{display:flex;flex-direction:column;gap:12px;max-width:640px}
+h2{font-size:32px;line-height:1.2;font-weight:300;letter-spacing:-.02em;color:var(--ink)}
+.sec-t p{font-size:16px;line-height:1.7}
+.chips{display:flex;flex-wrap:wrap;gap:12px}
+.chip{display:inline-flex;align-items:center;min-height:48px;padding:0 22px;border-radius:999px;background:#fff;border:1px solid var(--verde-line);color:var(--verde-d);font-size:15px}
+.chip:hover{background:var(--verde-xl)}
+
+/* programas */
+.programas{padding-top:24px;display:flex;flex-direction:column;gap:32px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:24px}
+.card{background:var(--card);border-radius:28px;box-shadow:0 8px 20px rgba(63,67,75,.06),0 2px 4px rgba(63,67,75,.04);padding:32px;display:flex;flex-direction:column;gap:16px;scroll-margin-top:24px}
+.card-top{display:flex;align-items:center;gap:16px}
+.card-top img{width:64px;height:64px;border-radius:18px;flex:none}
+.card h3{font-size:24px;font-weight:500;line-height:1.15;color:var(--ink)}
+.card .sub{margin-top:4px;font-size:14px;line-height:1.4;color:var(--verde)}
+.card .desc{font-size:15px;line-height:1.7;flex-grow:1}
+.card .meta{font-size:13px;color:var(--muted);letter-spacing:.02em}
+.btn-out{align-self:flex-start;display:inline-flex;align-items:center;min-height:48px;padding:0 24px;border-radius:999px;border:1.5px solid var(--verde);color:var(--verde-d);font-size:15px;font-weight:500}
+.btn-out:hover{background:var(--verde-xl)}
+.convite{background:var(--verde-xl);border-radius:28px;padding:32px;display:flex;flex-wrap:wrap;align-items:center;gap:24px}
+.convite img{width:64px;height:64px;border-radius:18px;flex:none;filter:grayscale(.35)}
+.convite div{flex:1 1 360px;min-width:0}
+.convite h3{font-size:24px;font-weight:500;color:var(--ink)}
+.convite p{margin-top:6px;font-size:15px;line-height:1.7;max-width:640px}
+.convite .selo{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 20px;border-radius:999px;background:#fff;color:var(--verde-d);font-size:14px;font-weight:500}
+
+/* o que esperar */
+.cuidado{margin-top:96px;display:flex;flex-direction:column;gap:32px;scroll-margin-top:24px}
+.proms{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px}
+.prom{background:var(--verde-l);border-radius:28px;padding:28px;display:flex;flex-direction:column;gap:12px;color:var(--verde-d)}
+.prom h3{font-size:18px;font-weight:500;color:var(--ink)}
+.prom p{font-size:14px;line-height:1.7;color:var(--text)}
+
+/* ajuda */
+.ajuda-sec{margin-top:96px;scroll-margin-top:24px}
+.ajuda-box{background:var(--coral-bg);border-radius:40px;padding:40px 48px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:24px}
+.ajuda-box div.t{flex:1 1 360px;min-width:0}
+.ajuda-box h2{font-size:24px;font-weight:500;margin-bottom:8px}
+.ajuda-box p{font-size:15px;line-height:1.7;max-width:560px}
+.tels{display:flex;flex-wrap:wrap;gap:12px}
+.tel{display:inline-flex;flex-direction:column;justify-content:center;min-height:56px;padding:8px 24px;border-radius:20px;background:#fff;color:var(--coral-d)}
+.tel b{font-size:20px;font-weight:700}
+.tel small{font-size:12px;color:var(--text)}
+
+/* rodapé */
+.rod{margin-top:96px;padding-top:0;padding-bottom:64px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px 32px}
+.rod::before{content:"";flex-basis:100%;height:1px;background:var(--line);margin-bottom:24px}
+.rod img{height:40px;width:auto}
+.rod p{font-size:13px;line-height:1.7;color:var(--muted);max-width:560px}
+.rod nav{display:flex;gap:24px;font-size:14px;font-weight:500;color:var(--verde-d)}
+.rod nav a{padding:12px 0}
+.rod .legal{flex-basis:100%;max-width:none;font-size:12px}
+
+/* lista para o celular */
+.lista{display:none}
+.so-m{display:none}
+
+@media (max-width:720px){
+  .wrap{padding:0 20px}
+  .hdr{padding-top:16px;padding-bottom:16px;flex-wrap:nowrap}
+  .hdr .logo{height:36px}
+  .pill.p-cuidado{display:none}
+  .pill.ajuda{min-height:44px;padding:0 16px;font-size:13px;gap:8px}
+  .so-d{display:none}.so-m{display:inline}
+  .hero{margin:8px 12px 0;border-radius:28px;padding:40px 24px;gap:20px;max-width:none}
+  .hero-t{gap:20px;flex-basis:100%}
+  h1{font-size:36px;line-height:1.12}
+  .hero p{font-size:16px}
+  .cta,.hero-fig{display:none}
+  .escolher{padding-top:48px;gap:20px}
+  h2{font-size:24px}
+  .sec-t{gap:8px}.sec-t .eyebrow{display:none}
+  .sec-t p{font-size:15px}
+  .chips,.grid{display:none}
+  .lista{display:flex;flex-direction:column;gap:12px}
+  .row{display:flex;align-items:center;gap:16px;min-height:72px;padding:12px 16px;border-radius:20px;background:var(--card);box-shadow:0 2px 6px rgba(63,67,75,.05),0 1px 2px rgba(63,67,75,.04)}
+  .row img{width:48px;height:48px;border-radius:14px;flex:none}
+  .row-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+  .row-need{font-size:15px;line-height:1.35;color:var(--ink);font-weight:500}
+  .row-app{font-size:13px;color:var(--verde)}
+  .row svg{flex:none;color:var(--verde)}
+  .programas{padding-top:0}
+  .convite{padding:16px;border-radius:20px;gap:12px;flex-wrap:nowrap}
+  .convite img,.convite .selo,.convite h3{display:none}
+  .convite p{margin:0;font-size:13px;line-height:1.6}
+  .convite .m-ico{display:block;flex:none;color:var(--verde-d)}
+  .cuidado{margin-top:56px;gap:16px}
+  .cuidado .eyebrow{display:none}
+  .proms{grid-template-columns:1fr;gap:16px}
+  .prom{flex-direction:row;align-items:flex-start;border-radius:20px;padding:20px;gap:16px}
+  .prom svg{width:24px;height:24px;flex:none;margin-top:2px}
+  .prom h3{font-size:16px;margin-bottom:4px}
+  .ajuda-sec{margin-top:56px;padding:0 12px}
+  .ajuda-box{border-radius:28px;padding:28px 24px;flex-direction:column;align-items:stretch;gap:16px}
+  .ajuda-box h2{font-size:22px}
+  .ajuda-box div.t{flex:none}
+  .tels{flex-direction:column}
+  .tel{flex-direction:row-reverse;align-items:center;justify-content:space-between;border-radius:20px;padding:8px 20px}
+  .tel b{font-size:22px}.tel small{font-size:13px}
+  .rod{margin-top:48px;padding-top:32px;padding-bottom:48px;flex-direction:column;align-items:flex-start}
+  .rod img{height:36px}
+  .rod::before{flex-basis:auto;align-self:stretch;margin-bottom:8px}
+}
+.m-ico{display:none}
 </style>
 <link rel="stylesheet" href="shared/bemestar.css">
 <script src="shared/bemestar.js" defer></script>
 </head>
 <body>
-<div class="page">
 
-<div class="deco" aria-hidden="true" style="top:40px;right:40px;width:460px;height:460px;border-radius:50%;background:var(--card)"></div>
-<img class="deco" src="assets/psicoterapia-simbolo.png" alt="" aria-hidden="true" style="top:110px;right:110px;width:320px;height:auto">
-<div class="deco" aria-hidden="true" style="top:400px;right:30px;width:90px;height:90px;border-radius:50%;background:var(--salmon)"></div>
-<div class="deco" aria-hidden="true" style="top:90px;right:420px;width:56px;height:56px;border-radius:50%;background:var(--teal)"></div>
-
-<div class="wrap">
-
-<header class="top">
-  <a href="https://www.psicoterapiaeafins.com.br" aria-label="Psicoterapia e Afins, página inicial"><img src="assets/psicoterapia-logo.png" alt="Psicoterapia e Afins"></a>
-  <a class="site" href="https://www.psicoterapiaeafins.com.br">psicoterapiaeafins.com.br</a>
+<header class="wrap hdr">
+  <a href="https://www.psicoterapiaeafins.com.br" aria-label="Psicoterapia e Afins, página inicial"><img class="logo" src="assets/psicoterapia-logo.png" alt="Psicoterapia e Afins"></a>
+  <div class="hdr-acoes">
+    <a class="pill ajuda" href="#ajuda"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.6-7 10-7 10z"/></svg><span class="so-d">Preciso de ajuda agora</span><span class="so-m">Preciso de ajuda</span></a>
+    <a class="pill p-cuidado" href="#cuidado"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6zM12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/></svg>Cuidado digital</a>
+  </div>
 </header>
 
-<section class="hero">
-  <div class="pill"><img src="assets/psicoterapia-simbolo.png" alt="">Uma iniciativa do Psicoterapia e Afins</div>
-  <h1>Intervenções interativas</h1>
-  <p class="lead">Programas psicoeducativos para fazer no seu ritmo, no celular ou no computador.</p>
+<section class="hero" aria-labelledby="titulo">
+  <div class="hero-t">
+    <span class="eyebrow"><span class="so-d">Intervenções · Psicoterapia e Afins</span><span class="so-m">Intervenções</span></span>
+    <h1 id="titulo">Por onde você quer começar hoje?</h1>
+    <p>Programas para fazer no seu ritmo<span class="so-d">, no celular ou no computador</span>. Você não precisa fazer tudo, nem fazer todo dia.<span class="so-d"> Escolher um já é um bom começo.</span></p>
+    <a class="cta" href="#escolher">Me ajude a escolher</a>
+  </div>
+  <div class="hero-fig" aria-hidden="true"><img src="assets/psicoterapia-simbolo.png" alt=""></div>
 </section>
 
-<main class="grid">
-
-<article class="card">
-  <img class="logo" src="logos/farol.svg" alt="Logo do Farol: um farol com feixes de luz" width="104" height="104">
-  <div class="body">
-    <h2 class="name">Farol</h2>
-    <p class="sub">Para quem se preocupa demais.</p>
-    <p class="desc">Oito módulos sobre a relação com as preocupações, com técnicas de TCC, ACT, mindfulness e compaixão.</p>
-    <ul class="tags"><li class="tag">8 módulos</li><li class="tag">Ansiedade (TAG)</li><li class="tag">Diário</li></ul>
-    <a class="btn" href="farol/">Abrir <span aria-hidden="true">→</span><span class="sr">o Farol</span></a>
+<section id="escolher" class="wrap escolher" aria-labelledby="t-escolher">
+  <div class="sec-t">
+    <span class="eyebrow">Como você está hoje?</span>
+    <h2 id="t-escolher"><span class="so-d">Escolha pelo que está precisando</span><span class="so-m">Como você está hoje?</span></h2>
+    <p><span class="so-d">Não existe resposta certa. Se mudar de ideia amanhã, tudo bem: você pode trocar de programa quando quiser.</span><span class="so-m">Escolha pelo que está precisando. Dá para trocar quando quiser.</span></p>
   </div>
-</article>
+  <ul class="chips"><li><a class="chip" href="#farol">Me preocupo demais</a></li><li><a class="chip" href="#floresca">Quero mais momentos bons</a></li><li><a class="chip" href="#aurora">Falta energia para começar</a></li><li><a class="chip" href="#matiz">Não sei nomear o que sinto</a></li><li><a class="chip" href="#seguranca">Quero mais calma e conexão depois de algo difícil</a></li><li><a class="chip" href="#sintonia">Quero treinar a atenção</a></li><li><a class="chip" href="#ritmo">Preciso de calma e pouco estímulo</a></li></ul>
+</section>
 
-<article class="card">
-  <img class="logo" src="logos/floresca.svg" alt="Logo do Floresça: uma flor de cinco pétalas" width="104" height="104">
-  <div class="body">
-    <h2 class="name">Floresça</h2>
-    <p class="sub">Cultivando emoções positivas.</p>
-    <p class="desc">Oito módulos de psicologia positiva e compaixão, mais um laboratório para testar crenças que bloqueiam o prazer.</p>
-    <ul class="tags"><li class="tag">8 módulos</li><li class="tag">Laboratório</li><li class="tag">Diário</li></ul>
-    <a class="btn" href="floresca/">Abrir <span aria-hidden="true">→</span><span class="sr">o Floresça</span></a>
-  </div>
-</article>
+<main class="wrap programas">
+  <div class="grid">
+      <article id="farol" class="card">
+        <div class="card-top"><img src="logos/farol.svg" alt="" width="64" height="64"><div><h3>Farol</h3><p class="sub">Para quem se preocupa demais</p></div></div>
+        <p class="desc">Oito módulos sobre a sua relação com as preocupações, com técnicas de TCC, ACT, atenção plena e compaixão.</p>
+        <p class="meta">8 módulos · diário opcional</p>
+        <a class="btn-out" href="farol/">Conhecer o Farol</a>
+      </article>
+      <article id="floresca" class="card">
+        <div class="card-top"><img src="logos/floresca.svg" alt="" width="64" height="64"><div><h3>Floresça</h3><p class="sub">Cultivando emoções positivas</p></div></div>
+        <p class="desc">Oito módulos de psicologia positiva e compaixão, mais um laboratório para testar crenças que bloqueiam o prazer.</p>
+        <p class="meta">8 módulos · laboratório de experimentos</p>
+        <a class="btn-out" href="floresca/">Conhecer o Floresça</a>
+      </article>
+      <article id="aurora" class="card">
+        <div class="card-top"><img src="logos/aurora.svg" alt="" width="64" height="64"><div><h3>Aurora</h3><p class="sub">Um passo de cada vez</p></div></div>
+        <p class="desc">Pequenas atividades que você escolhe e planeja, com registro de humor e diário, no seu ritmo.</p>
+        <p class="meta">Atividades pequenas · humor e diário</p>
+        <a class="btn-out" href="aurora/">Conhecer o Aurora</a>
+      </article>
+      <article id="matiz" class="card">
+        <div class="card-top"><img src="logos/matiz.svg" alt="" width="64" height="64"><div><h3>Matiz</h3><p class="sub">Cada sentimento tem seu tom</p></div></div>
+        <p class="desc">Para reconhecer e nomear as seis emoções básicas. Pensado também para quem tem alexitimia ou é neurodivergente.</p>
+        <p class="meta">6 emoções básicas · acessível</p>
+        <a class="btn-out" href="matiz/">Conhecer o Matiz</a>
+      </article>
+      <article id="seguranca" class="card">
+        <div class="card-top"><img src="logos/seguranca-interna.svg" alt="" width="64" height="64"><div><h3>Segurança Interna</h3><p class="sub">Reconstruindo a sensação de segurança</p></div></div>
+        <p class="desc">Para quem viveu situações difíceis ou traumáticas e quer cultivar calma e conexão, a base da sensação interna de segurança: regular o corpo, organizar o que aconteceu e reconstruir a confiança, sem pressa.</p>
+        <p class="meta">5 etapas · trauma · calma e conexão</p>
+        <a class="btn-out" href="seguranca-interna/">Conhecer o Segurança Interna</a>
+      </article>
+      <article id="sintonia" class="card">
+        <div class="card-top"><img src="logos/sintonia.svg" alt="" width="64" height="64"><div><h3>Sintonia</h3><p class="sub">Escolher para onde levar a atenção</p></div></div>
+        <p class="desc">Treino de atenção com sons ambientes, guiado em três fases, para praticar entre sessões.</p>
+        <p class="meta">12 minutos · fones de ouvido</p>
+        <a class="btn-out" href="sintonia/">Conhecer o Sintonia</a>
+      </article>
+      <article id="ritmo" class="card">
+        <div class="card-top"><img src="logos/ritmo.svg" alt="" width="64" height="64"><div><h3>Ritmo</h3><p class="sub">Apoio no seu ritmo</p></div></div>
+        <p class="desc">Para adultos neurodivergentes: tarefas em micro-passos, rotinas visuais e regulação sensorial, sem metas nem cobrança.</p>
+        <p class="meta">Baixo estímulo · sem cadastro</p>
+        <a class="btn-out" href="ritmo/">Conhecer o Ritmo</a>
+      </article>
+      </div>
+  <ul class="lista" aria-label="Programas"><li><a class="row" href="farol/"><img src="logos/farol.svg" alt="" width="48" height="48"><span class="row-t"><span class="row-need">Me preocupo demais</span><span class="row-app">Farol · 8 módulos</span></span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a></li><li><a class="row" href="aurora/"><img src="logos/aurora.svg" alt="" width="48" height="48"><span class="row-t"><span class="row-need">Falta energia para começar</span><span class="row-app">Aurora · passos pequenos</span></span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a></li><li><a class="row" href="floresca/"><img src="logos/floresca.svg" alt="" width="48" height="48"><span class="row-t"><span class="row-need">Quero mais momentos bons</span><span class="row-app">Floresça · 8 módulos</span></span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a></li><li><a class="row" href="matiz/"><img src="logos/matiz.svg" alt="" width="48" height="48"><span class="row-t"><span class="row-need">Não sei nomear o que sinto</span><span class="row-app">Matiz · 6 emoções</span></span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a></li><li><a class="row" href="seguranca-interna/"><img src="logos/seguranca-interna.svg" alt="" width="48" height="48"><span class="row-t"><span class="row-need">Quero mais calma e conexão depois de algo difícil</span><span class="row-app">Segurança Interna · trauma</span></span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a></li><li><a class="row" href="ritmo/"><img src="logos/ritmo.svg" alt="" width="48" height="48"><span class="row-t"><span class="row-need">Preciso de calma e pouco estímulo</span><span class="row-app">Ritmo · sem cadastro</span></span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a></li><li><a class="row" href="sintonia/"><img src="logos/sintonia.svg" alt="" width="48" height="48"><span class="row-t"><span class="row-need">Quero treinar a atenção</span><span class="row-app">Sintonia · 12 minutos</span></span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a></li></ul>
 
-<article class="card">
-  <img class="logo" src="logos/seguranca-interna.svg" alt="Logo do Segurança Interna: arcos de abrigo com um ponto de calor" width="104" height="104">
-  <div class="body">
-    <h2 class="name">Segurança Interna</h2>
-    <p class="sub">Reconstruindo a sensação de segurança.</p>
-    <p class="desc">Percurso em cinco etapas para regular o corpo, organizar o que aconteceu e recuperar a segurança interna.</p>
-    <ul class="tags"><li class="tag">5 etapas</li><li class="tag">Trauma</li></ul>
-    <a class="btn" href="seguranca-interna/">Abrir <span aria-hidden="true">→</span><span class="sr">o Segurança Interna</span></a>
-  </div>
-</article>
-
-<article class="card">
-  <img class="logo" src="logos/matiz.svg" alt="Logo do Matiz: seis arcos em tons diferentes" width="104" height="104">
-  <div class="body">
-    <h2 class="name">Matiz</h2>
-    <p class="sub">Cada sentimento tem seu tom.</p>
-    <p class="desc">Recurso para reconhecer e nomear as seis emoções básicas, pensado também para pessoas com alexitimia ou neurodivergentes.</p>
-    <ul class="tags"><li class="tag">Emoções básicas</li><li class="tag">Acessível</li></ul>
-    <a class="btn" href="matiz/">Abrir <span aria-hidden="true">→</span><span class="sr">o Matiz</span></a>
-  </div>
-</article>
-
-<article class="card">
-  <img class="logo" src="logos/aurora.svg" alt="Logo da Aurora: um sol nascendo no horizonte" width="104" height="104">
-  <div class="body">
-    <h2 class="name">Aurora</h2>
-    <p class="sub">Um passo de cada vez, no seu ritmo.</p>
-    <p class="desc">Ativação comportamental com pequenas atividades planejadas, humor e diário.</p>
-    <ul class="tags"><li class="tag">Ativação comportamental</li><li class="tag">Humor</li><li class="tag">Diário</li></ul>
-    <a class="btn" href="aurora/">Abrir <span aria-hidden="true">→</span><span class="sr">a Aurora</span></a>
-  </div>
-</article>
-
-<article class="card">
-  <img class="logo" src="logos/sintonia.svg" alt="Logo da Sintonia: um ponto central com ondas de som dos dois lados" width="104" height="104">
-  <div class="body">
-    <h2 class="name">Sintonia</h2>
-    <p class="sub">Escolher para onde levar a atenção.</p>
-    <p class="desc">Treino de atenção com sons ambientes, guiado em três fases, para praticar entre sessões.</p>
-    <ul class="tags"><li class="tag">Treino da atenção</li><li class="tag">Fones de ouvido</li><li class="tag">12 minutos</li></ul>
-    <a class="btn" href="sintonia/">Abrir <span aria-hidden="true">→</span><span class="sr">a Sintonia</span></a>
-  </div>
-</article>
-
-<article class="card">
-  <img class="logo" src="logos/ritmo.svg" alt="Logo do Ritmo: infinito formado por barras coloridas" width="104" height="104">
-  <div class="body">
-    <h2 class="name">Ritmo</h2>
-    <p class="sub">Apoio no seu ritmo.</p>
-    <p class="desc">Para adultos neurodivergentes: tarefas em micro-passos, rotinas visuais, regulação sensorial e plano de apoio, sem metas nem cobrança. Os dados ficam no aparelho; a conta é opcional.</p>
-    <ul class="tags"><li class="tag">Neurodiversidade afirmativa</li><li class="tag">Baixo estímulo</li><li class="tag">Sem cadastro</li></ul>
-    <a class="btn" href="ritmo/">Abrir <span aria-hidden="true">→</span><span class="sr">o Ritmo</span></a>
-  </div>
-</article>
-
-<article class="card restrito" aria-label="Trilha: acesso restrito, somente por convite">
-  <img class="logo" src="logos/trilha.svg" alt="Logo da Trilha: um caminho pontilhado que leva a um destino" width="104" height="104">
-  <div class="body">
-    <h2 class="name">Trilha</h2>
-    <p class="sub">Apoio entre as sessões de terapia.</p>
-    <p class="desc">Para adolescentes em acompanhamento online: práticas, registros e orientações para fazer entre as sessões. Acesso somente por convite da psicóloga.</p>
-    <ul class="tags">
-      <li class="tag"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>Acesso restrito</li>
-      <li class="tag">Adolescentes</li><li class="tag">Entre as sessões</li>
-    </ul>
-    <span class="btn btn-off">Acesso somente por convite</span>
-  </div>
-</article>
-
-<aside class="about">
-  <div class="badge"><img src="assets/psicoterapia-logo.png" alt="Psicoterapia e Afins"></div>
-  <h2>Uma iniciativa do Psicoterapia e Afins</h2>
-  <p>Recursos psicoeducativos pensados para acompanhar o cuidado com a saúde mental, entre sessões ou no seu tempo.</p>
-  <div class="actions">
-    <a class="btn btn-light" href="https://www.psicoterapiaeafins.com.br">Conhecer o site <span aria-hidden="true">→</span></a>
-    <a class="btn btn-line" href="https://www.instagram.com/psicoterapiaeafins">@psicoterapiaeafins</a>
-  </div>
-</aside>
-
+  <article class="convite" aria-label="Trilha: acesso somente por convite">
+    <svg class="m-ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 11h14v10H5zM8 11V8a4 4 0 0 1 8 0v3"/></svg>
+    <img src="logos/trilha.svg" alt="" width="64" height="64">
+    <div>
+      <h3>Trilha</h3>
+      <p><span class="so-d">Apoio entre as sessões, para adolescentes em acompanhamento online. O acesso é por convite da psicóloga, para que cada pessoa chegue com o cuidado certo.</span><span class="so-m"><strong style="font-weight:500;color:var(--ink)">Trilha</strong>, para adolescentes, é por convite da psicóloga.</span></p>
+    </div>
+    <span class="selo"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 11h14v10H5zM8 11V8a4 4 0 0 1 8 0v3"/></svg>Somente por convite</span>
+  </article>
 </main>
 
-<footer class="foot">
+<section id="cuidado" class="wrap cuidado" aria-labelledby="t-cuidado">
+  <div class="sec-t">
+    <span class="eyebrow">Cuidado digital</span>
+    <h2 id="t-cuidado"><span class="so-d">O que você pode esperar daqui</span><span class="so-m">O que você pode esperar</span></h2>
+  </div>
+  <div class="proms"><div class="prom"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.6-7 10-7 10z"/></svg><div><h3>Sem cobrança</h3><p>Nada de sequência a manter ou ranking. Dias difíceis fazem parte do processo.</p></div></div><div class="prom"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 7v5l3 2M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"/></svg><div><h3>No seu ritmo</h3><p>Telas curtas, um passo por vez, e sempre dá para pular, voltar ou pausar.</p></div></div><div class="prom"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 11h14v10H5zM8 11V8a4 4 0 0 1 8 0v3"/></svg><div><h3>Seus dados com você</h3><p>Use sem conta. Baixe ou apague quando quiser. Compartilhar com a profissional é escolha sua.</p></div></div><div class="prom"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h16M4 6h16M4 18h10"/></svg><div><h3>Sem rótulos</h3><p>As escalas mostram números para você acompanhar a si mesmo, não diagnósticos.</p></div></div></div>
+</section>
+
+<section id="ajuda" class="wrap ajuda-sec" aria-labelledby="t-ajuda">
+  <div class="ajuda-box">
+    <div class="t">
+      <h2 id="t-ajuda">Se hoje estiver muito difícil</h2>
+      <p>Estes programas não substituem atendimento. Se você estiver em sofrimento intenso ou em risco, fale com alguém agora. A ligação é gratuita.</p>
+    </div>
+    <div class="tels">
+      <a class="tel" href="tel:188"><b class="num">188</b><small>CVV, 24 horas</small></a>
+      <a class="tel" href="tel:192"><b class="num">192</b><small>SAMU, emergência</small></a>
+    </div>
+  </div>
+</section>
+
+<footer class="wrap rod">
   <img src="assets/psicoterapia-logo.png" alt="Psicoterapia e Afins">
-  <p>Os recursos desta página são psicoeducativos e não substituem o acompanhamento com um profissional de saúde mental. Em situação de crise, procure ajuda profissional ou o serviço de emergência da sua região.</p>
-  <div class="row">
-    <span>© 2026 Psicoterapia e Afins · Todos os direitos reservados</span>
-    <span>Textos, marcas e logos desta página pertencem ao Psicoterapia e Afins. Reprodução somente com autorização.</span>
-  </div>
-  <div class="links">
-    <a href="https://www.psicoterapiaeafins.com.br">psicoterapiaeafins.com.br</a>
-    <a href="https://www.instagram.com/psicoterapiaeafins">Instagram @psicoterapiaeafins</a>
-  </div>
+  <p>Recursos psicoeducativos para acompanhar o cuidado com a saúde mental. Não oferecem diagnóstico nem substituem psicoterapia.</p>
+  <nav aria-label="Rodapé"><a href="https://www.psicoterapiaeafins.com.br">Site</a><a href="https://www.instagram.com/psicoterapiaeafins">Instagram</a></nav>
+  <p class="legal">© 2026 Psicoterapia e Afins · Todos os direitos reservados. Textos, marcas e logos desta página pertencem ao Psicoterapia e Afins. Reprodução somente com autorização.</p>
 </footer>
 
-</div>
-</div>
 </body>
 </html>
