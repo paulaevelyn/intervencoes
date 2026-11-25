@@ -22,10 +22,19 @@ se explica/ilustra → superficial (adaptar à vontade).
 | Elemento | Superficial (adaptável) | Profundo (preservar) |
 |---|---|---|
 | Metáfora do jardim | Canteiros, regar, semente→jardim. Pode virar qualquer metáfora de cultivo gradual | Comunicar que bem-estar é **prática incremental**, não estado fixo; normalizar pausas sem culpa |
-| Gamificação (XP, níveis, badges) | Nomes dos níveis, emojis, valores de XP | Reforço imediato de cada prática; progresso visível; celebração de conclusão (motivação — COM-B) |
+| Jardim visual (substitui XP, níveis e emblemas) | Plantas, cores, formas, textos dos marcos (7, 30 e 100 dias) | Retorno de **significado**, não de pontos: cada emoção nomeada, em dias diferentes, faz uma planta avançar (no máximo 1 avanço/dia); nada encolhe nem murcha; devolutiva com as palavras da própria pessoa. XP continua guardado em segundo plano só para continuidade dos dados |
 | Nudges da Home | Textos, emojis, ordem visual | Retorno após pausa SEM culpa (evitar efeito "estraguei tudo"); efeito Zeigarnik (módulo a meio); lembrar experimento aberto |
 | Contagem de dias | Texto e ícone do contador | Contagem **cumulativa** de dias de cultivo, que nunca zera (sequência consecutiva pune pausas e reforça o "tudo ou nada") |
 | Primeira prática (1 min) | Texto, animação, duração da fase | Benefício percebido cedo, antes do pré-teste; expiração prolongada (sistema calmante, TFC); sempre opcional (pular) |
+| Gatilho de rotina (âncora) | Opções de âncora, horários sugeridos | Plano quando-então **logo após a primeira prática** (dia 0), ligado ao lembrete (Gollwitzer, 1999) |
+| Lembrete | Texto, horário | Honesto sobre o limite técnico: evento de calendário (.ics) como canal confiável; notificação do navegador só com o app aberto ou em segundo plano. Sem servidor de push |
+| Registro com "porquê" | Texto da dica, posição do campo | Campo opcional **"Por que isso foi bom?"**: é o ingrediente ativo das Três Coisas Boas (Seligman et al., 2005). Um dia com porquê vale 2 pontos de cuidado na planta (teto de 2 por dia), então elaborar cresce mais do que repetir registros vazios |
+| Compartilhar uma boa notícia | Texto da mensagem, botões | Capitalização (Gable et al.): contar a alguém amplia o efeito. Só envia o que a pessoa tocar para enviar (Web Share ou cópia); sem rede social interna, sem conta |
+| Frases de identidade | Texto das frases, onde aparecem (retorno, "hoje já foi regado", Progresso) | Só enunciar o que a pessoa **de fato fez** ("Você já nomeou 4 emoções"), nunca elogio genérico, comparação com outras pessoas ou ranking. Reforça identidade a partir de evidência comportamental |
+| Resumo semanal | Redação, posição na Home, tipografia da citação | Reflete a semana com os **dados e as palavras da própria pessoa** (uma frase dela é citada). Sem nota, sem comparação, sem alerta quando a semana foi vazia: se não houve registro, o resumo simplesmente não aparece |
+| Meta semanal | Número padrão (2), texto | Meta **semanal** e editável, nunca diária; abaixo da meta não gera aviso negativo |
+| Pesquisa e consentimento | Textos do convite | **Separado do uso do app.** Consentimento só é gravado após aceite explícito (18+); `syncToResearch` exige consentimento; recusar não muda nada no app |
+| Apoio em crise | Texto, ordem dos serviços | Acesso permanente ("Preciso de apoio agora") na Home, no Registro e em Dados, e linguagem de estado (não de traço) nos resultados do SPANE |
 | Planos "quando-então" | Frases específicas dos planos | Formato implementation intention (Gollwitzer, 1999): gatilho situacional + ação específica |
 | Registro de Momentos | Chips, emojis, textos do formulário | Registro escrito + nomeação da emoção + intensidade (dose recebida / estado) |
 | Dose Cultivada | Tags, pergunta, visual do card | Auto-relato SEMANAL de prática ativa (dose cultivada ≠ dose recebida); não bloqueante; dispensável |

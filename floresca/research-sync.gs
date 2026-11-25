@@ -194,6 +194,8 @@ function doPost(e) {
         date: e2.date,
         moment: e2.moment,
         emotions: e2.emotions,
+        why: e2.why || null,
+        shared: !!e2.shared,
         savoring: e2.savoring,
         intensity: e2.intensity,
       }))),
