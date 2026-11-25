@@ -1,12 +1,13 @@
 /* Floresça — Service Worker
    Offline-first para assets, network-first para HTML.
    Incrementar CACHE_VERSION a cada deploy para forçar atualização. */
-const CACHE_VERSION = 'floresca-v20';
+const CACHE_VERSION = 'floresca-v23';
 const CORE = [
   './',
   './index.html',
   './style.css',
   './extra.css',
+  './fonte.css',
   './app.js',
   './manifest.json',
   '../logos/floresca.svg',

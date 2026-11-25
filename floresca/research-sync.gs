@@ -194,6 +194,8 @@ function doPost(e) {
         date: e2.date,
         moment: e2.moment,
         emotions: e2.emotions,
+        why: e2.why || null,
+        shared: !!e2.shared,
         savoring: e2.savoring,
         intensity: e2.intensity,
       }))),
@@ -238,4 +240,62 @@ function doGet() {
   return ContentService
     .createTextOutput('Floresca Research API - OK')
     .setMimeType(ContentService.MimeType.TEXT);
+}
+
+// ============================================================
+// FUNIL DE ABANDONO
+// Cria/atualiza a aba "Funil" com quantas pessoas chegam a cada
+// etapa e onde ha mais perda. Use o menu "Floresca > Atualizar funil"
+// (aparece ao reabrir a planilha) ou execute atualizarFunil() no editor.
+// Depois de colar este arquivo, reimplante o App da Web (Nova versao).
+// ============================================================
+function onOpen() {
+  SpreadsheetApp.getUi()
+    .createMenu('Floresca')
+    .addItem('Atualizar funil', 'atualizarFunil')
+    .addToUi();
+}
+
+function atualizarFunil() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const src = ss.getSheetByName(SHEET_NAME);
+  if (!src || src.getLastRow() < 2) return;
+
+  const values = src.getDataRange().getValues();
+  const head = values[0];
+  const rows = values.slice(1);
+  const col = name => head.indexOf(name);
+  const has = (r, name) => { const i = col(name); return i >= 0 && r[i] !== '' && r[i] != null; };
+  const num = (r, name) => { const i = col(name); return i >= 0 ? Number(r[i]) || 0 : 0; };
+
+  const total = rows.length;
+  const steps = [
+    ['Entrou no app (sincronizou)',        rows.length],
+    ['Deu o consentimento',                 rows.filter(r => has(r, 'consentDate')).length],
+    ['Fez o pre-teste',                     rows.filter(r => has(r, 'pretestDate')).length],
+    ['Registrou ao menos 1 momento',        rows.filter(r => num(r, 'totalMoments') >= 1).length],
+    ['Voltou em 2 ou mais dias',            rows.filter(r => num(r, 'daysOfUse') >= 2).length],
+  ];
+  for (let k = 1; k <= 8; k++) {
+    steps.push(['Concluiu ' + k + ' modulo' + (k > 1 ? 's' : '') + ' ou mais',
+      rows.filter(r => num(r, 'modulesCompleted') >= k).length]);
+  }
+  steps.push(['Fez o pos-teste', rows.filter(r => has(r, 'posttestDate')).length]);
+
+  const out = [['Etapa', 'Participantes', '% do total', 'Perda vs etapa anterior (%)']];
+  steps.forEach((s, i) => {
+    const prev = i === 0 ? null : steps[i - 1][1];
+    const pctTotal = total ? Math.round(s[1] / total * 1000) / 10 : 0;
+    const loss = (prev && prev > 0) ? Math.round((prev - s[1]) / prev * 1000) / 10 : '';
+    out.push([s[0], s[1], pctTotal, loss]);
+  });
+
+  let sh = ss.getSheetByName('Funil');
+  if (!sh) sh = ss.insertSheet('Funil');
+  sh.clear();
+  sh.getRange(1, 1, out.length, 4).setValues(out);
+  sh.getRange(1, 1, 1, 4).setBackground('#1B6A58').setFontColor('#FFFFFF').setFontWeight('bold');
+  sh.setFrozenRows(1);
+  sh.autoResizeColumns(1, 4);
+  sh.getRange(out.length + 2, 1).setValue('Atualizado em ' + new Date().toISOString() + '. A maior perda indica onde ajustar.');
 }

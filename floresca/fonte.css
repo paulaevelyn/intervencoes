@@ -1,0 +1,5 @@
+/* Floresça: fonte Poppins, conforme a revisão de design.
+   Carregado depois de ../shared/marca.css, que define DM Sans (texto) e Cormorant Garamond (títulos)
+   para todos os apps. Aqui só o Floresça muda; a marca compartilhada continua igual nos outros apps. */
+:root { --font: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; --font-corpo: var(--font); --font-display: var(--font); }
+h1, .ob-title, .pea-bem-cx h2 { font-family: var(--font); font-weight: 300; font-size-adjust: none; letter-spacing: -.02em; }
