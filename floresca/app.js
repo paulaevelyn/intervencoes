@@ -129,6 +129,9 @@ function supportCardHTML(){
       <a href="https://www.cvv.org.br" target="_blank" class="crisis-res"><span>💬</span><div><strong>Chat do CVV</strong><small>cvv.org.br — conversa por escrito</small></div></a>
       <div class="crisis-res"><span>🏥</span><div><strong>CAPS ou UBS</strong><small>Atendimento gratuito pelo SUS na sua cidade</small></div></div>
       <div class="crisis-res"><span>🚨</span><div><strong>SAMU — 192</strong><small>Em emergência, ligue imediatamente</small></div></div>
+      <a href="tel:988" class="crisis-res"><span>🌎</span><div><strong>EUA e Canadá — 988</strong><small>Linha de crise e prevenção do suicídio, ligação ou SMS, 24h. Emergência: 911</small></div></a>
+      <a href="tel:024" class="crisis-res"><span>🌍</span><div><strong>Espanha — 024</strong><small>Linha de atenção ao comportamento suicida, 24h. Emergência: 112</small></div></a>
+      <div class="crisis-res"><span>🌐</span><div><strong>Em outro país</strong><small>Ligue para o número de emergência local (112 na Europa)</small></div></div>
     </div>
   </div>`;
 }
@@ -1243,6 +1246,30 @@ function startPosttest(){
   goTo('pretest');
 }
 
+/* Convite voluntário após o pós-teste (sem pressão; só se a pessoa ainda não participa e é maior de 18 anos) */
+function researchAskHTML(){
+  const _a = D.demographics && D.demographics.age;
+  if(!RESEARCH_ENDPOINT || D.consentGiven || (_a !== null && _a !== undefined && _a < 18)) return '';
+  return `
+    <div class="delta-card" id="research-ask">
+      <div class="card-lbl" style="margin-bottom:8px">Quer ajudar a pesquisa?</div>
+      <div style="font-size:14px;line-height:1.7;color:var(--muted)">
+        O seu antes e depois ajuda a entender como o Floresça pode apoiar quem vem depois de você.
+        Se quiser, participe <strong>sem nome nem contato</strong>: o envio inclui as respostas às escalas, o uso do app, idade, gênero, cidade e país (se você informou), e não inclui os textos que você escreve.
+        É uma escolha sua: dizer "agora não" não muda nada no seu jardim, e você pode participar depois em Dados.
+      </div>
+      <button class="btn" style="margin-top:12px" onclick="researchAskJoin()">Participar da pesquisa</button>
+      <button class="btn ghost" style="margin-top:0" onclick="researchAskDismiss()">Agora não</button>
+    </div>`;
+}
+function researchAskJoin(){
+  researchJoin();
+  researchAskDismiss();
+}
+function researchAskDismiss(){
+  const el = document.getElementById('research-ask');
+  if(el) el.remove();
+}
 function showPosttestDelta(){
   const pre = D.pretest, post = D.posttest;
   // Direções: P e B → subir é melhor · N e Crenças → descer é melhor
@@ -1278,8 +1305,9 @@ function showPosttestDelta(){
     <div class="delta-card">
       <div class="card-lbl" style="margin-bottom:8px">Pré vs. Pós</div>
       ${rowsHTML}
-      ${bImproved && post.spane.b>pre.spane.b ? '<div style="font-size:13px;color:var(--mint-d);margin-top:8px">Saldo emocional '+(post.spane.b-pre.spane.b)+' pontos acima — o cultivo está funcionando! 🎉</div>':''}
+      ${bImproved && post.spane.b>pre.spane.b ? '<div style="font-size:13px;color:var(--mint-d);margin-top:8px">Saldo emocional '+(post.spane.b-pre.spane.b)+' pontos acima do que era no início. Esse resultado é seu: você se dedicou a isso. 🌱</div>':''}
     </div>
+    ${researchAskHTML()}
     <button class="btn mint" onclick="goTo('home')" style="margin-top:8px">Ver meu progresso completo</button>
     <button class="btn ghost" onclick="goTo('progress')" style="margin-top:0">Ver marcas do caminho</button>
   </div>`;
@@ -2421,6 +2449,12 @@ async function syncToResearch({ silent=false, requirePretest=true }={}){
     if(!silent) toast('Você não está participando da pesquisa. Ative em Dados.');
     return;
   }
+  // A pesquisa é só para maiores de 18 anos: menores usam o app, mas nada é enviado.
+  const _age = D.demographics && D.demographics.age;
+  if(_age !== null && _age !== undefined && _age < 18){
+    if(!silent) toast('A participação na pesquisa é só para maiores de 18 anos. Seus dados ficam apenas neste aparelho.');
+    return;
+  }
   if(!RESEARCH_ENDPOINT){
     if(!silent) toast('⚙️ URL de pesquisa não configurado em app.js');
     return;
@@ -2492,7 +2526,16 @@ function researchStop(){
   save(); renderDadosSync();
   toast('Você parou de participar. Nada mais será enviado.');
 }
+function copyParticipantId(){
+  const id = D.participantId || '';
+  const done = () => toast('Código copiado.');
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(id).then(done, () => toast('Não foi possível copiar. Selecione o código e copie manualmente.'));
+  } else { toast('Selecione o código e copie manualmente.'); }
+}
 function renderDadosSync(){
+  const pidEl = document.getElementById('pid-code');
+  if(pidEl) pidEl.textContent = D.participantId || '';
   const desc = document.getElementById('sync-desc');
   if(!desc) return;
   const btn = document.getElementById('sync-btn'), stop = document.getElementById('research-stop');
@@ -2523,7 +2566,7 @@ function renderDadosSync(){
 function openModal(id){
   if(id==='del'){
     document.getElementById('modal-title').textContent='Apagar todos os dados?';
-    document.getElementById('modal-body').textContent='Esta ação é permanente e irreversível. Exporte primeiro se quiser guardar uma cópia.';
+    document.getElementById('modal-body').textContent='Esta ação é permanente e irreversível e remove os dados deste dispositivo. Se você já enviou dados para a pesquisa, essa cópia anônima continua com a equipe; para pedir a remoção, escreva para contato@psicoterapiaeafins.com.br com o seu código de participante.';
     document.getElementById('modal-actions').innerHTML='<button class="btn danger" onclick="deleteAll()">Sim, apagar tudo</button><button class="btn ghost" onclick="closeModal()">Cancelar</button>';
     document.getElementById('modal-ov').classList.add('on');
   }
